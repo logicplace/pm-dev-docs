@@ -81,5 +81,5 @@ the upper 8-bit of the value is used.
 
 ## Sound
 
-Timer 3 is also used for [sound](PM_Audio "wikilink") within the Pokemon
+Timer 3 is also used for [sound](PM_Audio.md "wikilink") within the Pokemon
 Mini.

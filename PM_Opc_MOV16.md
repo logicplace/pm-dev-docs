@@ -487,4 +487,4 @@ None
 `; A = 0xEF`
 `; B = 0xBE`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

@@ -100,14 +100,14 @@ None
 **`PUSH`` ``BA`**
 `; BA = 0x1337`
 `; SP = 0x1FFE`
-[`MOV`` ``A,`` ``0x80`](PM_Opc_MOV8 "wikilink")
+[`MOV`` ``A,`` ``0x80`](PM_Opc_MOV8.md "wikilink")
 `; BA = 0x1380`
 `; SP = 0x1FFE`
-[`INC`` ``B`](PM_Opc_INC "wikilink")
+[`INC`` ``B`](PM_Opc_INC.md "wikilink")
 `; BA = 0x1480`
 `; SP = 0x1FFE`
-[`POP`` ``BA`](PM_Opc_POP "wikilink")
+[`POP`` ``BA`](PM_Opc_POP.md "wikilink")
 `; BA = 0x1337`
 `; SP = 0x2000`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

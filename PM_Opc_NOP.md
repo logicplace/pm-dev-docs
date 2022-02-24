@@ -21,4 +21,4 @@ None
 `; Delay 8 Cycles`
 **`NOP`**
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

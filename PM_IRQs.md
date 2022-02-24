@@ -2,7 +2,7 @@
 
 The Minx provides up to 32 hardware mapped interrupts and up to 96
 software interrupts (for bios calls). The full list is defined in the
-[BIOS section](PM_Bios "wikilink") of the standard. Out of the 32
+[BIOS section](PM_Bios.md "wikilink") of the standard. Out of the 32
 interrupts, three are not maskable, $00\~$02.
 
 On startup, **IRQ 0 (reset)** fires. Since BIOS resets the processor

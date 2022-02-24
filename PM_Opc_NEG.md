@@ -51,4 +51,4 @@ Sign: Set when bit 7 of the result is 1
 `; [HL] = 0x80 (0 - 0x80 = 0x80)`
 `; F = (Zero=0):(Carry=1):(Overflow=1):(Sign=1)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

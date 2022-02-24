@@ -2,7 +2,7 @@
 
 The Pokemon Mini LCD is a serial display with it's own on-board
 framebuffer, and display settings. These are all abstracted by the
-[PRC](PM_PRC "wikilink"), which handles display copies ($1000 \~ $12FF)
+[PRC](PM_PRC.md "wikilink"), which handles display copies ($1000 \~ $12FF)
 and other various functions. No commercial roms directly access the
 display, relying on the PRC and BIOS to perform the various
 communications. This allows for the PM to have hardware changes without

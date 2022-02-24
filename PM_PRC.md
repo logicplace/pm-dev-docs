@@ -3,14 +3,14 @@
 Since the Pokemon Mini does not drive a conventional display, it does
 not operate like typical display driver. The PRC was created as a method
 for driving a serial LCD display. It's entire purpose is to
-[blit](Blitter "wikilink") images from various locations in memory to an
+[blit](Blitter.md "wikilink") images from various locations in memory to an
 internal frame buffer, and then force it out to GDRAM in on the [LCD
-Controller](LCD_Controller "wikilink"). This is all done transparently.
+Controller](LCD_Controller.md "wikilink"). This is all done transparently.
 
 The PRC operates by monitoring a display counter that can be accessed by
-reading [PRC_CNT (Reg $8A)](PM_Registers "wikilink"), which overflows
+reading [PRC_CNT (Reg $8A)](PM_Registers.md "wikilink"), which overflows
 65 times a frame (each frame is approx. 72 Hz), and a PRC rate divider
-[PRC_RATE (Reg $81)](PM_Registers "wikilink") that will trigger the PRC
+[PRC_RATE (Reg $81)](PM_Registers.md "wikilink") that will trigger the PRC
 rendering process. When the counter reaches specific values between the
 matching rate divider, the PRC triggers various components. It can
 operates in 2 modes, "Rendering + Frame Copy" and "Frame Copy Only".
@@ -30,7 +30,7 @@ together. (This effect is demonstrated in pokemon shock tetris)
 
 The PRC shares ram with the CPU, so the more modes that are enabled, the
 less ram is usable by the developer (see [PM RAM
-Layout](PM_RAM#RAM_Layout "wikilink")).
+Layout](PM_RAM#RAM_Layout.md "wikilink")).
 
 Two IRQs are associated with the PRC, one associated with the Map and
 Sprite stage, and one with the Frame Copy stage. After Frame Copy is
@@ -49,9 +49,9 @@ the number of on screen sprites.
 Stage 1 of the PRC is a map renderer. This stage can render a variable
 size 8x8 tile based map to the frame buffer (located at $1000). This
 mode operates by using a 24bit address [PRC_MAP_\* (Reg $82 to
-$84)](PM_Registers "wikilink") as the base for the tile set, and a tile
+$84)](PM_Registers.md "wikilink") as the base for the tile set, and a tile
 map located at $1360. This stage is enabled by using bit 2 of [PRC_MODE
-(Reg $80)](PM_Registers "wikilink").
+(Reg $80)](PM_Registers.md "wikilink").
 
 | Mode | Size    |
 | ---- | ------- |
@@ -90,16 +90,16 @@ line.
 
 The value in the tile map then points to an 8 byte tile. The location of
 the tile is specified by (Tile \* 8 +
-[PRC_MAP_\*](PM_Registers "wikilink")). The tiles are encoded in
+[PRC_MAP_\*](PM_Registers.md "wikilink")). The tiles are encoded in
 vertical strips, each 8 pixel strip = 1 byte. The strips are encoded
 with the least significant bit on the top, shifting by one bit right as
 it scans vertically. The PRC can also invert the graphics as it renders
 them by setting the appropriate bit in [PRC_MODE (Reg
-$80)](PM_Registers "wikilink").
+$80)](PM_Registers.md "wikilink").
 
 Maps can be offset up to 127 pixels vertically or horizontally
-([PRC_SCROLL_X (Reg. $86)](PM_Registers "wikilink") and
-[PRC_SCROLL_Y (Reg. $85)](PM_Registers "wikilink")), and is clamped to
+([PRC_SCROLL_X (Reg. $86)](PM_Registers.md "wikilink") and
+[PRC_SCROLL_Y (Reg. $85)](PM_Registers.md "wikilink")), and is clamped to
 the size of the map itself, writes to the scroll registers when the
 value is out of bounds does not update the location in which rendering
 begins, but the values of the registers themselves changes.
@@ -135,7 +135,7 @@ positioned partially off screen on all sides. The MSB of both coordinate
 elements are ignored, so it can wrap around if care is not taken.
 
 Sprite Tiles are loaded using [PRC_SPR_\* (Reg. $87 to
-$89)](PM_Registers "wikilink") as the base address, with sprites tiles
+$89)](PM_Registers.md "wikilink") as the base address, with sprites tiles
 being 64 bytes in length (making a full tile set 16kB).
 
 Sprites are rendered by using 8 tiles, 4 mask and 4 graphic. The mask
@@ -189,21 +189,21 @@ on top. This means internally sprite \#23 is drawn first, followed by
 
 The third and final stage is the simplest of all the PRC functions. It
 simply sequentially moves the $300 bytes from $1000\~$12FF to the GDRAM
-of the [LCD Controller](LCD_Controller "wikilink"). This mode can be
+of the [LCD Controller](LCD_Controller.md "wikilink"). This mode can be
 disabled independently of all the other modes allowing for advanced
 rendering techniques by sacrificing frame rate.
 
 ## PRC Timing Information
 
 The PRC timing is controlled by two registers, the PRC counter [PRC_CNT
-(Reg. $8A)](PM_Registers "wikilink"), and a frame divider. The frame
+(Reg. $8A)](PM_Registers.md "wikilink"), and a frame divider. The frame
 counter move between the values $01 to $41, and overflows approximately
 72 times per second (4,000,000 / 55634). As previously mentioned, this
 counter controls when the PRC fires the various display stages. These
 stages do not fire every time, however. The PRC is configured to skip a
 certain number of display cycles, only activating once every Nth frames
-as configured by [PRC_RATE (Reg. $81)](PM_Registers "wikilink"). The
-top four bits of [PRC_RATE (Reg. $81)](PM_Registers "wikilink") is the
+as configured by [PRC_RATE (Reg. $81)](PM_Registers.md "wikilink"). The
+top four bits of [PRC_RATE (Reg. $81)](PM_Registers.md "wikilink") is the
 current state of the divider, it counts up from 0, resetting when it
 reaches the specified divider value. The PRC only renders and copies
 when the PRC divider is at it's absolute maximum for the configured
@@ -224,7 +224,7 @@ divide rate.
 
 There is no known way to use the PRC to use the full 72hz update
 frequency. This can be circumvented by directly accessing GDRAM through
-the [LCD Controller](LCD_Controller "wikilink")
+the [LCD Controller](LCD_Controller.md "wikilink")
 
 <table>
 <caption><strong>The stages trigger based on <a href="PM_Registers" title="wikilink">PRC_CNT (Reg. $8A)</a> when rate divider match <a href="PM_Registers" title="wikilink">PRC_RATE (Reg. $81)</a>, CPU is stalled in the middle of the process.</strong></caption>

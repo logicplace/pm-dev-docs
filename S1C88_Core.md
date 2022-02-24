@@ -19,8 +19,8 @@ The CPU is clocked at 4.00mhz, although the processor operates on a 4
 cycle data access period, leaving the system with a theoretical limit of
 1MIPS.
 
-  - [Instruction Set](S1C88_InstructionSet "wikilink")
-  - [Interrupt Hardware](PM_IRQs "wikilink")
+  - [Instruction Set](S1C88_InstructionSet.md "wikilink")
+  - [Interrupt Hardware](PM_IRQs.md "wikilink")
 
 ## Minx Register Mapping
 
@@ -116,7 +116,7 @@ microcontroller like bank system.
 
 Since the program cursor is only 16 bits, it uses a special "delayed"
 register to account for the upper 8 bits of program access space. When
-PC has it's [most significant bit](most_significant_bit "wikilink") set,
+PC has it's [most significant bit](most_significant_bit.md "wikilink") set,
 the register V takes the place of the upper 8 bits, extending PC out to
 23 bits in total. To prevent bank switch problems, V is "delayed" by the
 means of register U. After each branch instruction, the value of U is

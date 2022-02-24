@@ -68,4 +68,4 @@ Sign: Set when bit 7 of Quotient is 1
 `; HL = 0xFFFD  (Results are unchanged since Quotient exceed 8-Bits range)`
 `; F = (Zero=0):(Carry=0):(Overflow=1):(Sign=1)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

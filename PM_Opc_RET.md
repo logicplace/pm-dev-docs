@@ -44,16 +44,16 @@ None
 
 ` ; A = 0x10`
 ` ; B = 0x10`
-` `[`CALL`` ``somefunction`](PM_Opc_CALL "wikilink")
+` `[`CALL`` ``somefunction`](PM_Opc_CALL.md "wikilink")
 ` ; A = 0x11`
 ` ; B = 0x0F`
 
 ` (...)`
 
 `somefunction:`
-` `[`INC`` ``A`](PM_Opc_INC "wikilink")
-` `[`DEC`` ``B`](PM_Opc_DEC "wikilink")
+` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")
+` `[`DEC`` ``B`](PM_Opc_DEC.md "wikilink")
 ` `**`RET`**
-` `[`INC`` ``A`](PM_Opc_INC "wikilink")`  ; Never executed`
+` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")`  ; Never executed`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

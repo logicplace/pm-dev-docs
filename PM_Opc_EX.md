@@ -51,4 +51,4 @@ None
 **`EX`` ``BA,`` ``A`**
 `; BA = 0xFF80 (-128)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

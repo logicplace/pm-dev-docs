@@ -1,1 +1,1 @@
-1.  REDIRECT [PM Audio](PM_Audio "wikilink")
+1.  REDIRECT [PM Audio](PM_Audio.md "wikilink")

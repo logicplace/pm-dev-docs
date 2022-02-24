@@ -33,4 +33,4 @@ None
 `; A = 0x01`
 `; B = 0x02`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

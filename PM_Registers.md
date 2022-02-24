@@ -4,7 +4,7 @@ The Pokemon Mini maps $2000 \~ $20FF as hardware control registers. This
 area is reserved for hardware related functions such as video, audio,
 general purpose timers, hardware I/O and system control.
 
-Much of this address space is mapped as [Open-Bus](Open-Bus "wikilink"),
+Much of this address space is mapped as [Open-Bus](Open-Bus.md "wikilink"),
 leading us to beleive that this area is not used for any purpose. Other
 areas respond to requests but their purpose is yet undetermined.
 
@@ -21,7 +21,7 @@ S-R Strobes are used for clearing interrupt events, writting a logical
 '0' leaves them unchanged. Unused bits always return '0'.
 
 Any register not included on this list reads as
-[Open-Bus](Open-Bus "wikilink") and will be excluded unless a function
+[Open-Bus](Open-Bus.md "wikilink") and will be excluded unless a function
 has otherwise been
 determined.
 

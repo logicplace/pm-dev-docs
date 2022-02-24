@@ -114,15 +114,15 @@ None
 
 ` ; A = 0x10`
 ` `[`CMP`` ``A,``
-``0x10`](PM_Opc_CMP8 "wikilink")`  ; Compare A with 0x10`
+``0x10`](PM_Opc_CMP8.md "wikilink")`  ; Compare A with 0x10`
 ` ; F = (Zero=1):(Carry=0):(Overflow=0):(Sign=0)`
 ` `**`JZ`` ``val_is_16`**
-` `[`MOV`` ``A,`` ``0x00`](PM_Opc_MOV8 "wikilink")
+` `[`MOV`` ``A,`` ``0x00`](PM_Opc_MOV8.md "wikilink")
 `val_is_16:`
 ` ; A = 0x10`
 
 `; Jump into a label located at a different bank`
-[`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8 "wikilink")
+[`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8.md "wikilink")
 **`JMP`` ``function_at_bank_15`**
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

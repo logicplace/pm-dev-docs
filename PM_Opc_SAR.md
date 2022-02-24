@@ -63,4 +63,4 @@ Sign: Set when bit 7 of the result is 1
 `; [HL] = 0x00 (0)`
 `; F = (Zero=1):(Carry=1):(Overflow=0):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

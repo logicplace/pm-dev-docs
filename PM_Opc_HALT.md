@@ -30,4 +30,4 @@ None
 **`HALT`**
 `; Operation will resume once the interrupt finish.`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

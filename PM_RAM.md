@@ -4,12 +4,12 @@ The memory used in the Pokemon Mini is general purpose static ram. It is
 high speed and there is no performance hit for accessing it other than
 the instruction processing speed. The biggest problem with the system is
 that the ram is small, and also shared with the [picture rendering
-chip](PM_PRC "wikilink"). Sections of this memory can be disabled, but
+chip](PM_PRC.md "wikilink"). Sections of this memory can be disabled, but
 up to 1248 bytes of 4k can be re-purposed for video.
 
 General purpose memory is considered unused and is safe for all use at
 any time. Disabling various parts of the [picture rendering
-chip](PM_PRC "wikilink") can free up additional memory.
+chip](PM_PRC.md "wikilink") can free up additional memory.
 
 ## RAM Layout
 

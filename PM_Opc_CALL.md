@@ -108,8 +108,8 @@ assembler to auto-detect the appropriate range.
 
 Call a subroutine (CALL\*) or a interrupt vector (CINT).
 
-Use [RET](PM_Opc_RET "wikilink") to return from a subroutine and
-[RETI](PM_Opc_RET "wikilink") from a interrupt.
+Use [RET](PM_Opc_RET.md "wikilink") to return from a subroutine and
+[RETI](PM_Opc_RET.md "wikilink") from a interrupt.
 
 NOTE: All non-branch instructions does "U = V" causing U to be restored,
 any branch that require banking needs "MOV U, A" or "MOV U, \#nn" before
@@ -126,7 +126,7 @@ None
 ` `**`CALL`` ``somefunction`**
 ` ; A = 0x11`
 ` ; B = 0x0F`
-` `[`TST`` ``B,`` ``#0x10`](PM_Opc_TST "wikilink")
+` `[`TST`` ``B,`` ``#0x10`](PM_Opc_TST.md "wikilink")
 ` ; F = (Zero=0):(Sign=0)`
 ` `**`CALLZ`` ``somefunction`**`    ; Condition fail, call not taken`
 ` ; A = 0x11`
@@ -139,13 +139,13 @@ None
 ` (...)`
 
 `somefunction:`
-` `[`INC`` ``A`](PM_Opc_INC "wikilink")
+` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")
 ` `[`DEC``
-``B`](PM_Opc_DEC "wikilink")
-` `[`RET`](PM_Opc_RET "wikilink")`                   ; Return from the call`
+``B`](PM_Opc_DEC.md "wikilink")
+` `[`RET`](PM_Opc_RET.md "wikilink")`                   ; Return from the call`
 
 `; Calling a subroutine at different bank`
-[`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8 "wikilink")
+[`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8.md "wikilink")
 **`CALL`` ``function_at_bank_16`**
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

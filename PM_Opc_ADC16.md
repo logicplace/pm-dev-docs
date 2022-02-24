@@ -67,4 +67,4 @@ Sign: Set when bit 15 of the result is 1
 `; BA = 0x9D9D (0xDEAD + 0xBEEF + 0x0001 = 0x(1)9D9D)`
 `; F = (Zero=0):(Carry=1):(Overflow=1):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

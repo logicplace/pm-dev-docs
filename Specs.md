@@ -11,7 +11,7 @@ The system features a Tiny 96x64 Monochrome LCD, Rumble Motor, Shock
 Detector, EEPROM with 6 slots for savegames, Game cartridge slot and
 monophony sound.
 
-## [CPU](CPU "wikilink")
+## [CPU](CPU.md "wikilink")
 
 Little-endian 8-Bits Nintendo custom IC codenamed "Nintendo Minx",
 clocked 4.00 MHz
@@ -20,26 +20,26 @@ clocked 4.00 MHz
 
 External BUS with 21-Bits Address & 8-Bits Data
 
-## [Memory](Memory "wikilink")
+## [Memory](Memory.md "wikilink")
 
-[*BIOS*](BIOS "wikilink"): 4096 Bytes, read-only
+[*BIOS*](BIOS.md "wikilink"): 4096 Bytes, read-only
 
-[*Hardware Registers*](Registers "wikilink"): Used to control
+[*Hardware Registers*](Registers.md "wikilink"): Used to control
 Pokémon-mini system
 
-[*Internal RAM*](Memory "wikilink"): 4096 Bytes, read/write access,
+[*Internal RAM*](Memory.md "wikilink"): 4096 Bytes, read/write access,
 Note: some RAM space may be required by the hardware
 
-[*Internal EEPROM*](EEPROM "wikilink"): 8192 Bytes, read/write access
+[*Internal EEPROM*](EEPROM.md "wikilink"): 8192 Bytes, read/write access
 (only accessible via SPI interface), used to store savegames
 
-[*Cartridge ROM*](Cartridge "wikilink"): Up to 2 Megabytes (16 Megabits)
+[*Cartridge ROM*](Cartridge.md "wikilink"): Up to 2 Megabytes (16 Megabits)
 
-## [Video](Video "wikilink")
+## [Video](Video.md "wikilink")
 
 96x64 Mono-LCD, 1-bit per pixel
 
-[2D engine](Video "wikilink"): Background support (formed with 8x8
+[2D engine](Video.md "wikilink"): Background support (formed with 8x8
 tiles, 4 different map sizes), Sprites support (16x16 1bpp with mask, up
 to 24 sprites)
 
@@ -47,7 +47,7 @@ toggling pixels allows to add a 3rd color with half tone
 
 Moving tile-map support (not scrolling\!\!\!)
 
-## [Sound](Sound "wikilink")
+## [Sound](Sound.md "wikilink")
 
 Single-channel square-wave with adjustable pulse-width
 
@@ -55,7 +55,7 @@ Single-channel square-wave with adjustable pulse-width
 
 Can read back timer values (since sound is assigned to Timer 3)
 
-## [Timers](Timers "wikilink")
+## [Timers](Timers.md "wikilink")
 
 1x 24-Bits seconds-timer - increments each second, used for RTC
 
@@ -68,15 +68,15 @@ be used to output sound)
 
 ## Extras
 
-[Rumble motor](Rumble "wikilink")
+[Rumble motor](Rumble.md "wikilink")
 
-[Shock detector](Shock "wikilink")
+[Shock detector](Shock.md "wikilink")
 
-[6-Slots RAM for savegames](EEPROM "wikilink")
+[6-Slots RAM for savegames](EEPROM.md "wikilink")
 
-[RTC (real time clock) Build-in](RTC "wikilink")
+[RTC (real time clock) Build-in](RTC.md "wikilink")
 
-[IR transmitter / receiver](IR "wikilink")
+[IR transmitter / receiver](IR.md "wikilink")
 
 ## Power
 

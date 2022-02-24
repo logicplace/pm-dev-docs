@@ -857,4 +857,4 @@ None
 `; [HL] = 0xDE`
 `; A = 0xDE`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

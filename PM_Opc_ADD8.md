@@ -148,4 +148,4 @@ Sign: Always Reset
 `; A = 0x00 (0xF + 0x1 = 0x(1)0)`
 `; F = (Zero=1):(Carry=1):(Overflow=0):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

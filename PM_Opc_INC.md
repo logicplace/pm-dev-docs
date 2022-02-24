@@ -68,4 +68,4 @@ Carry, Overflow and Sign remain unchanged
 `; X = 0x0000 (0xFFFF + 1 = 0x0000)`
 `; F = (Zero=1)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

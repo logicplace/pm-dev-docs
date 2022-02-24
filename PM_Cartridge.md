@@ -6,8 +6,8 @@ address space, it can provide up to a 2MB worth of data without
 additional hardware. One of the more bizzare design choices by Nintendo
 is that the cartridge address space starts relative to the beginning of
 the Pokemon Mini's memory space, which is then overwritten by
-[BIOS](PM_Bios "wikilink"), [RAM](PM_RAM "wikilink") and [Internal
-Register](PM_Registers "wikilink"), making $2100 bytes of ROM space
+[BIOS](PM_Bios.md "wikilink"), [RAM](PM_RAM.md "wikilink") and [Internal
+Register](PM_Registers.md "wikilink"), making $2100 bytes of ROM space
 inaccessible except through mirrors.
 
 After the overloaded memory space, the Pokemon Mini has $D0 byte header

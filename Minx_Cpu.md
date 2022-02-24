@@ -1,1 +1,1 @@
-1.  REDIRECT [S1C88 Core](S1C88_Core "wikilink")
+1.  REDIRECT [S1C88 Core](S1C88_Core.md "wikilink")

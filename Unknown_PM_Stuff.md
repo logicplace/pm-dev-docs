@@ -9,6 +9,6 @@ This is simply a list of things I need to figure out.
     and frame copy take (maybe min \\ max \\ avg)</s>
   - <s>Determine when the PRC stages fire (relative to PRC_CNT)</s>
   - <s>Check undocument Minx instruction behavior</s>
-    [Done](Talk:PM_InstructionList "wikilink")
+    [Done](Talk:PM_InstructionList.md "wikilink")
 
 .. to be continued ..

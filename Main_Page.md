@@ -5,10 +5,10 @@ various community projects
 
 ## Projects
 
-[Pokemon Mini Hardware Reference](Pokemon_Mini "wikilink")
+[Pokemon Mini Hardware Reference](Pokemon_Mini.md "wikilink")
 
 [Color Tamagotchi
-Reference](Tamagotchi_iD_L_and_Tamagotchi_P's "wikilink")
+Reference](Tamagotchi_iD_L_and_Tamagotchi_P's.md "wikilink")
 
 ## Getting started
 

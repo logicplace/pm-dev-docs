@@ -81,4 +81,4 @@ Sign: Set when bit 7 of the result is 1
 `;     0x9E (0xCF - 0x31 = 0x(0)9E)`
 `; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")

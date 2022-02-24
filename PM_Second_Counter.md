@@ -9,7 +9,7 @@ general purpose counter, but is actually one half of the system's real
 time clock.
 
 When a commercial game sets the time, it resets the timer and stores the
-current time and date in the [EEPROM](PM_EEPROM "wikilink"). Calculating
+current time and date in the [EEPROM](PM_EEPROM.md "wikilink"). Calculating
 the current time consists of simply adding the number of elapsed seconds
 to the second counter. Each time the system boots, commercial games
 compare the current seconds against a 24 bit value stored in EEPROM.

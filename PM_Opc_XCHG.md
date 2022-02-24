@@ -54,4 +54,4 @@ None
 `; A = 0x12`
 `; B = 0x45`
 
-[**« Back to Instruction set**](PM_InstructionList "wikilink")
+[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
