@@ -56,4 +56,4 @@ None
 ` `**`RET`**
 ` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")`  ; Never executed`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

@@ -34,4 +34,4 @@ None
 **`SWAP`` ``[HL]`**
 `; [HL] = 0x6F`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

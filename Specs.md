@@ -1,20 +1,14 @@
 # Pokémon-Mini Specifications
 
-The Pokémon-Mini is one of the smallest and cheapest handheld video game
-system designed and manufactured by Nintendo.
+The Pokémon-Mini is one of the smallest and cheapest handheld video game system designed and manufactured by Nintendo.
 
-Only 10 games were released (All Pokémon related), each game (a very
-tinny video game cartridge) could be inserted by slotting-in on the
-top-back of the unit.
+Only 10 games were released (All Pokémon related), each game (a very tiny video game cartridge) could be inserted by slotting-in on the top-back of the unit.
 
-The system features a Tiny 96x64 Monochrome LCD, Rumble Motor, Shock
-Detector, EEPROM with 6 slots for savegames, Game cartridge slot and
-monophony sound.
+The system features a Tiny 96x64 Monochrome LCD, Rumble Motor, Shock Detector, EEPROM with 6 slots for game saves, Game cartridge slot and monophony sound.
 
 ## [CPU](CPU.md "wikilink")
 
-Little-endian 8-Bits Nintendo custom IC codenamed "Nintendo Minx",
-clocked 4.00 MHz
+Little-endian 8-Bits Nintendo custom IC codenamed "Nintendo Minx", clocked 4.00 MHz
 
 8-Bits, 16-Bits and 24-Bits(addressing only) registers
 
@@ -24,8 +18,7 @@ External BUS with 21-Bits Address & 8-Bits Data
 
 [*BIOS*](BIOS.md "wikilink"): 4096 Bytes, read-only
 
-[*Hardware Registers*](Registers.md "wikilink"): Used to control
-Pokémon-mini system
+[*Hardware Registers*](Registers.md "wikilink"): Used to control Pokémon-mini system
 
 [*Internal RAM*](Memory.md "wikilink"): 4096 Bytes, read/write access,
 Note: some RAM space may be required by the hardware
@@ -39,13 +32,11 @@ Note: some RAM space may be required by the hardware
 
 96x64 Mono-LCD, 1-bit per pixel
 
-[2D engine](Video.md "wikilink"): Background support (formed with 8x8
-tiles, 4 different map sizes), Sprites support (16x16 1bpp with mask, up
-to 24 sprites)
+[2D engine](Video.md "wikilink"): Background support (formed with 8x8 tiles, 4 different map sizes), Sprites support (16x16 1bpp with mask, up to 24 sprites)
 
-toggling pixels allows to add a 3rd color with half tone
+Toggling pixels allows to add a 3rd color with half tone
 
-Moving tile-map support (not scrolling\!\!\!)
+Moving tile-map support (not scrolling!!!)
 
 ## [Sound](Sound.md "wikilink")
 

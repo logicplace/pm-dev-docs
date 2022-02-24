@@ -1,1 +1,0 @@
-1.  REDIRECT [S1C88 InstructionSet](S1C88_InstructionSet.md "wikilink")

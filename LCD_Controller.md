@@ -1,38 +1,18 @@
 ## LCD Controller Overview
 
-The Pokemon Mini LCD is a serial display with it's own on-board
-framebuffer, and display settings. These are all abstracted by the
-[PRC](PM_PRC.md "wikilink"), which handles display copies ($1000 \~ $12FF)
-and other various functions. No commercial roms directly access the
-display, relying on the PRC and BIOS to perform the various
-communications. This allows for the PM to have hardware changes without
-having to rely on the same display controller.
+The Pokémon mini LCD is a serial display with it's own on-board framebuffer, and display settings. These are all abstracted by the [PRC](PM_PRC.md "wikilink"), which handles display copies ($1000 \~ $12FF) and other various functions. No commercial roms directly access the display, relying on the PRC and BIOS to perform the various communications. This allows for the PM to have hardware changes without having to rely on the same display controller.
 
-The display is driven by two data ports, $20FE and $20FF. Both ports are
-read\\write, the only difference between them is one sets the CTRL line
-when accessing the data port on the LCD. The port is 8-bits wide, and
-has a small set of standard commands.
+The display is driven by two data ports, $20FE and $20FF. Both ports are read\\write, the only difference between them is one sets the CTRL line when accessing the data port on the LCD. The port is 8-bits wide, and has a small set of standard commands.
 
-The LCD is probably using the on-glass <S>[SSD1828 LCD
-controller](http://www.solomon-systech.com/products/ssd1828.htm) or
-something very simliar.</S>[SED1565 LCD
-Controller](http://www.bolymin.com.tw/Doc/SED1565.pdf)
+The LCD is probably using the on-glass <s>[SSD1828 LCD controller](http://www.solomon-systech.com/products/ssd1828.htm) or something very simliar.</s>[SED1565 LCD Controller](http://www.bolymin.com.tw/Doc/SED1565.pdf)
 
-The controller got <S>96x65</S> 132x65 Graphic Display Data RAM (GDDRAM)
-with 96x64 pixels visible on the LCD. The additional RAM is for an
-unused symbol driver. The PM most likely uses a parallel interface to
-the controller, but serial interface might be available on the connector
-of the LCD.
+The controller got <s>96x65</s> 132x65 Graphic Display Data RAM (GDDRAM) with 96x64 pixels visible on the LCD. The additional RAM is for an unused symbol driver. The PM most likely uses a parallel interface to the controller, but serial interface might be available on the connector of the LCD.
 
 ## LCD Controller Commands
 
-Lower case "x" denotes parameters used by the command. A question mark
-"?" denotes bits that are don't care.
+Lower case "x" denotes parameters used by the command. A question mark "?" denotes bits that are don't care.
 
-The commands in this list are verified to work. The <S>SSD1828</S>
-datasheet holds <S>much</S> more commands <S>that are hard</S>of which a
-few are hard to verify <S>or didn't work</S> on the
-PM.
+The commands in this list are verified to work. The <s>SSD1828</s> datasheet holds <s>much</s> more commands <S>that are hard</S>of which a few are hard to verify <s>or didn't work</s> on the PM.
 
 | Command   | Description                     | Notes                                                                                                                                                                                                                                                                    |
 | --------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -56,13 +36,8 @@ PM.
 
 ## Data reads/writes
 
-Data can be read and written from/to the LCD at any time (but not when
-contrast command was executed, this is a special case). The programmer
-should make sure that the page and column address pointers are pointing
-to the correct location.
+Data can be read and written from/to the LCD at any time (but not when contrast command was executed, this is a special case). The programmer should make sure that the page and column address pointers are pointing to the correct location.
 
-When data was read or written the column address automatically increases
-by one.
+When data was read or written the column address automatically increases by one.
 
-After executing page address and both of the column address set
-operations data can be written to the selected location.
+After executing page address and both of the column address set operations data can be written to the selected location.

@@ -90,4 +90,4 @@ Carry and Overflow remain unchanged
 `; A = 0x50`
 `; F = (Zero=0):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

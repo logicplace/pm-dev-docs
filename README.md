@@ -1,3 +1,3 @@
 ## Projects
 
-[Pokemon Mini Hardware Reference](Pokemon_Mini.md "wikilink")
+[Pokémon mini Hardware Reference](Pokemon_Mini.md "wikilink")

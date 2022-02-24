@@ -56,4 +56,4 @@ Overflow remain unchanged
 `; [HL] = 0x80`
 `; F = (Zero=0):(Carry=1):(Sign=1)`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

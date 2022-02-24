@@ -148,4 +148,4 @@ None
 [`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8.md "wikilink")
 **`CALL`` ``function_at_bank_16`**
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

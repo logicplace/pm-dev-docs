@@ -1,8 +1,1 @@
-Open-Bus is a state in which no hardware on a data path is actively
-responding to a request for data. In many cases this results in
-bus-capacitance driving ghost data to the CPU. This means that when
-reading from a non-existent hardware location, the CPU will see the last
-data on the path (read or write). This often means that reading from
-these locations will result in the data result of things being based
-around the last instruction byte used, such as an opcode or an immediate
-value.
+Open-Bus is a state in which no hardware on a data path is actively responding to a request for data. In many cases this results in bus-capacitance driving ghost data to the CPU. This means that when reading from a non-existent hardware location, the CPU will see the last data on the path (read or write). This often means that reading from these locations will result in the data result of things being based around the last instruction byte used, such as an opcode or an immediate value.

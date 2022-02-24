@@ -59,4 +59,4 @@ Sign: Set when bit 15 of the result is 1
 `; BA = 0xEC6C (0xCF12 - 0xBB7E - 0x0000 = 0x(1)EC6C)`
 `; F = (Zero=0):(Carry=1):(Overflow=0):(Sign=1)`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

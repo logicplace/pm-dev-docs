@@ -105,4 +105,4 @@ None
 `; BA = 0x1337`
 `; SP = 0x2000`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

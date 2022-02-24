@@ -1,25 +1,10 @@
 ## Cartridge Overview
 
-The Pokemon Mini cartridge has a 21 bit addressing bus, which up until
-recently has gone completely unused. Since the PM has a relatively wide
-address space, it can provide up to a 2MB worth of data without
-additional hardware. One of the more bizzare design choices by Nintendo
-is that the cartridge address space starts relative to the beginning of
-the Pokemon Mini's memory space, which is then overwritten by
-[BIOS](PM_Bios.md "wikilink"), [RAM](PM_RAM.md "wikilink") and [Internal
-Register](PM_Registers.md "wikilink"), making $2100 bytes of ROM space
-inaccessible except through mirrors.
+The Pokémon mini cartridge has a 21 bit addressing bus, which up until recently has gone completely unused. Since the PM has a relatively wide address space, it can provide up to a 2MB worth of data without additional hardware. One of the more bizzare design choices by Nintendo is that the cartridge address space starts relative to the beginning of the Pokémon mini's memory space, which is then overwritten by [BIOS](PM_Bios.md "wikilink"), [RAM](PM_RAM.md "wikilink") and [Internal Register](PM_Registers.md "wikilink"), making $2100 bytes of ROM space inaccessible except through mirrors.
 
-After the overloaded memory space, the Pokemon Mini has $D0 byte header
-standard. The vast majority of this space is reserved for IRQ jump
-locations. Much of the remaining space is plain asciiz info about the
-game, with a couple of BIOS checked watermarks to verify a ROM is a PM
-image.
+After the overloaded memory space, the Pokémon mini has $D0 byte header standard. The vast majority of this space is reserved for IRQ jump locations. Much of the remaining space is plain asciiz info about the game, with a couple of BIOS checked watermarks to verify a ROM is a PM image.
 
-Following the header is completely user mapped data. It is typical for
-the reset IRQ location to simply jump to $21D0. The IRQ locations are 6
-bytes in size to accommodate for a U load (3 bytes) and a long jump (3
-bytes)
+Following the header is completely user mapped data. It is typical for the reset IRQ location to simply jump to $21D0. The IRQ locations are 6 bytes in size to accommodate for a U load (3 bytes) and a long jump (3 bytes)
 
 ## Cartridge Header
 
@@ -59,4 +44,4 @@ bytes)
 | $21BC    | 2    | No       | "2P" (Unknown purpose)        |
 | $21BE    | 18   | No       | Reserved (Zero)               |
 
-  - \= This is only required if the IRQ is ever enabled.
+\* = This is only required if the IRQ is ever enabled.

@@ -32,7 +32,7 @@
 | 28    | B14.5 | .      | IRQ     | IN        | Cause "Cartridge IRQ" interrupt when IRQ go high.                                        |
 | 29    | B15   | 19     | WE      | OUT       | Write Enable. Pulled down with 100K in cartridge.                                        |
 | 30    | B15.5 | 18     | CS      | OUT       | Chip select. Enables chip control. Pulled down with 100K in cartridge.                   |
-| 31    | B16   | .      | CARD_N | IN        | Card detect. Active-low. It is connected to GND in the cartridge.                        |
+| 31    | B16   | .      | CARD_N  | IN        | Card detect. Active-low. It is connected to GND in the cartridge.                        |
 | 32    | B16.5 | note 2 | GND     | .         | Ground.                                                                                  |
 | 33    | B17   | note 2 | GND     | .         | Ground.                                                                                  |
 
@@ -93,6 +93,7 @@ GND = Signal ground
 | 16 GND               GND 17 |
 `-------------/ /-------------'
 ```
+
 ## PCB silk screen text
 
 "MIN-KCM1-01"

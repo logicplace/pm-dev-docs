@@ -52,4 +52,4 @@ Sign: Set when bit 15 of the result is 1
 `; HL = 0xFE01 (0xFF * 0xFF = 0xFE01)`
 `; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=1)`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

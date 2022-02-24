@@ -31,4 +31,4 @@ None
 `; Use this code to shutdown your program:`
 [`CINT`` ``$24`](PM_Opc_CALL.md "wikilink")
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")

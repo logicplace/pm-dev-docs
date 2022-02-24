@@ -146,4 +146,4 @@ Sign: Always Reset
 `; A = 0x0D (0xF - 0x1 - 0x1 = 0x(0)D)`
 `; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=0)`
 
-[**« Back to Instruction set**](PM_InstructionList.md "wikilink")
+[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
