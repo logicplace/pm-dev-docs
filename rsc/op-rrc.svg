@@ -46,7 +46,12 @@
         <rect x="82" y="15" width="10" height="14" />
         <rect x="108" y="15" width="10" height="14" />
     </g>
-    <g stroke="black" fill="black" font-size="14" alignment-baseline="text-top">
+    <g
+        stroke="black" fill="black"
+        font-size="14"
+        font-family="Consolas"
+        alignment-baseline="text-top"
+    >
         <text x="13" y="27">7</text>
         <text x="23" y="27">6</text>
         <text x="33" y="27">5</text>

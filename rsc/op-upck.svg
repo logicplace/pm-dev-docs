@@ -23,17 +23,22 @@
         <rect x="60" y="15" width="10" height="14" />
         <rect x="70" y="15" width="10" height="14" />
     </g>
-    <g stroke="white" fill="black" stroke-width="0.5" font-size="18" alignment-baseline="text-top">
-        <text x="7" y="12">A</text>
-        <text x="45" y="12">B</text>
-        <text x="65" y="12">A</text>
-    </g>
-    <g stroke="black" fill="black" font-size="14" alignment-baseline="text-top">
-        <text x="3"  y="27">m</text>
-        <text x="13" y="27">n</text>
-        <text x="41" y="27">0</text>
-        <text x="51" y="27">m</text>
-        <text x="61" y="27">0</text>
-        <text x="71" y="27">n</text>
+    <g 
+        font-family="Consolas"
+        alignment-baseline="text-top"
+    >
+        <g stroke="white" fill="black" stroke-width="0.5" font-size="18">
+            <text x="7" y="12">A</text>
+            <text x="45" y="12">B</text>
+            <text x="65" y="12">A</text>
+        </g>
+        <g stroke="black" fill="black" font-size="14">
+            <text x="3"  y="27">m</text>
+            <text x="13" y="27">n</text>
+            <text x="41" y="27">0</text>
+            <text x="51" y="27">m</text>
+            <text x="61" y="27">0</text>
+            <text x="71" y="27">n</text>
+        </g>
     </g>
 </svg>

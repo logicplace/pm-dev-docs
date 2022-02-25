@@ -40,16 +40,26 @@
         <rect x="98" y="15" width="10" height="14" />
         <rect x="125" y="15" width="10" height="14" />
     </g>
-    <g stroke="black" fill="black" font-size="14" alignment-baseline="text-top">
-        <text x="29" y="27">7</text>
-        <text x="39" y="27">6</text>
-        <text x="49" y="27">5</text>
-        <text x="59" y="27">4</text>
-        <text x="69" y="27">3</text>
-        <text x="79" y="27">2</text>
-        <text x="89" y="27">1</text>
-        <text x="99" y="27">0</text>
-        <text x="126" y="27">C</text>
+    <g 
+        font-family="Consolas"
+        alignment-baseline="text-top"
+    >
+        <g stroke="black" fill="black" font-size="14">
+            <text x="29" y="27">7</text>
+            <text x="39" y="27">6</text>
+            <text x="49" y="27">5</text>
+            <text x="59" y="27">4</text>
+            <text x="69" y="27">3</text>
+            <text x="79" y="27">2</text>
+            <text x="89" y="27">1</text>
+            <text x="99" y="27">0</text>
+            <text x="126" y="27">C</text>
+        </g>
+        <text
+            x="3" y="28"
+            stroke="white" fill="black"
+            stroke-width="0.5"
+            font-size="18"
+        >0</text>
     </g>
-    <text x="3" y="28" stroke="white" fill="black" stroke-width="0.5" font-size="18" alignment-baseline="text-top">0</text>
 </svg>
