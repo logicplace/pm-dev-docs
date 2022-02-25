@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="82" height="45">
+    <g fill="white" stroke-width="0">
+        <rect x="0" y="13" width="44" height="18" />
+        <rect x="58" y="13" width="24" height="18" />
+    </g>
+    <path stroke="white" fill="black" stroke-width="1" d="
+        M 44 21
+        L 56 21
+        l -2 -3
+        l 2 -1
+        L 59 22
+        l -3 5
+        l -2 -1
+        L 56 23
+        L 44 23
+        l 0 -2
+    " />
+    <g stroke="black" fill="white" stroke-width="1">
+        <rect x="2"  y="15" width="10" height="14" />
+        <rect x="12" y="15" width="10" height="14" />
+        <rect x="22" y="15" width="10" height="14" />
+        <rect x="32" y="15" width="10" height="14" />
+        <rect x="60" y="15" width="10" height="14" />
+        <rect x="70" y="15" width="10" height="14" />
+    </g>
+    <g stroke="white" fill="black" stroke-width="0.5" font-size="18" alignment-baseline="text-top">
+        <text x="7" y="12">B</text>
+        <text x="27" y="12">A</text>
+        <text x="65" y="12">A</text>
+    </g>
+    <g stroke="black" fill="black" font-size="14" alignment-baseline="text-top">
+        <text x="3"  y="27">*</text>
+        <text x="13" y="27">m</text>
+        <text x="23" y="27">*</text>
+        <text x="33" y="27">n</text>
+        <text x="61" y="27">m</text>
+        <text x="71" y="27">n</text>
+    </g>
+</svg>

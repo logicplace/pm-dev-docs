@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="44">
+    <g fill="white" stroke-width="0">
+        <rect x="26" y="13" width="84" height="18" />
+        <rect x="123" y="13" width="14" height="18" />
+    </g>
+    <g stroke="white" fill="black" stroke-width="1">
+        <path d="
+            M 13 21
+            l 11 0
+            l -2 -3
+            l 2 -1
+            l 3 5
+            l -3 5
+            l -2 -1
+            l 2 -3
+            l -11 0
+            l 0 -2.5
+        " />
+        <path d="
+            M 110 21
+            l 11 0
+            l -2 -3
+            l 2 -1
+            l 3 5
+            l -3 5
+            l -2 -1
+            l 2 -3
+            l -11 0
+            l 0 -2.5
+        " />
+    </g>
+    <g stroke="black" fill="white" stroke-width="1">
+        <rect x="28" y="15" width="10" height="14" />
+        <rect x="38" y="15" width="10" height="14" />
+        <rect x="48" y="15" width="10" height="14" />
+        <rect x="58" y="15" width="10" height="14" />
+        <rect x="68" y="15" width="10" height="14" />
+        <rect x="78" y="15" width="10" height="14" />
+        <rect x="88" y="15" width="10" height="14" />
+        <rect x="98" y="15" width="10" height="14" />
+        <rect x="125" y="15" width="10" height="14" />
+    </g>
+    <g stroke="black" fill="black" font-size="14" alignment-baseline="text-top">
+        <text x="29" y="27">7</text>
+        <text x="39" y="27">6</text>
+        <text x="49" y="27">5</text>
+        <text x="59" y="27">4</text>
+        <text x="69" y="27">3</text>
+        <text x="79" y="27">2</text>
+        <text x="89" y="27">1</text>
+        <text x="99" y="27">0</text>
+        <text x="126" y="27">C</text>
+    </g>
+    <text x="3" y="28" stroke="white" fill="black" stroke-width="0.5" font-size="18" alignment-baseline="text-top">0</text>
+</svg>
