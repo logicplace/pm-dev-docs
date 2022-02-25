@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="126" height="55">
+    <!-- replace next line with op-rrc.svg -->
+    <svg width="126" height="44"><g fill="white" stroke-width="0"><rect x="10" y="13" width="84" height="18"/><rect x="106" y="13" width="14" height="18"/></g><g stroke="white" fill="black" stroke-width="1"><path d="M 93 21l 11 0l -2 -3l 2 -1l 3 5l -3 5l -2 -1l 2 -3l -11 0l 0 -2.5"/><path d="M 98 21l 0 -13l -94 0l 0 13l 4 0l -2 -3l 2 -1l 3 5l -3 5l -2 -1l 2 -3l -6 0l -0 -17l 98 0l 0 15l -2.5 0"/></g><g stroke="black" fill="white" stroke-width="1"><rect x="12" y="15" width="10" height="14"/><rect x="22" y="15" width="10" height="14"/><rect x="32" y="15" width="10" height="14"/><rect x="42" y="15" width="10" height="14"/><rect x="52" y="15" width="10" height="14"/><rect x="62" y="15" width="10" height="14"/><rect x="72" y="15" width="10" height="14"/><rect x="82" y="15" width="10" height="14"/><rect x="108" y="15" width="10" height="14"/></g><g stroke="black" fill="black" font-size="14" font-family="Consolas" alignment-baseline="text-top"><text x="13" y="27">7</text><text x="23" y="27">6</text><text x="33" y="27">5</text><text x="43" y="27">4</text><text x="53" y="27">3</text><text x="63" y="27">2</text><text x="73" y="27">1</text><text x="83" y="27">0</text><text x="109" y="27">C</text></g></svg>
+    <text
+        x="50%" y="50"
+        stroke="white" fill="black"
+        stroke-width="0.3"
+        font-size="18"
+        font-family="sans-serif"
+        text-anchor="middle"
+        alignment-baseline="text-top"
+    >[HL]</text>
+</svg>
