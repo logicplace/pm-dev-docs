@@ -821,7 +821,7 @@ For example, in `LD BA,[hhll]` the byte _at_ hhll is loaded into A, and the foll
 
 ### **PUSH**: Push
 
-For 16-bit registers loads, the number is written as little-endian.
+For 16-bit register pushes, the number is written as little-endian.
 For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is written to the following address.
 
 | Mnemonic        | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
@@ -832,7 +832,7 @@ For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is 
 | [PUSH][ps] IY   | A3           | SP ← SP - 2; \[SP] ← IY |      4 |     1 |        `– – – – – – – –` |
 | [PUSH][ps] BR   | A4           | SP ← SP - 1; \[SP] ← BR |      3 |     1 |        `– – – – – – – –` |
 | [PUSH][ps] EP   | A5           | SP ← SP - 1; \[SP] ← EP |      3 |     1 |        `– – – – – – – –` |
-| [PUSH][ps] IP   | A6           | SP ← SP - 1; \[SP] ← IP |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] IP   | A6           | SP ← SP - 2; \[SP] ← IP |      4 |     1 |        `– – – – – – – –` |
 | [PUSH][ps] SC   | A7           | SP ← SP - 1; \[SP] ← SC |      3 |     1 |        `– – – – – – – –` |
 | [PUSH][ps] A    | CE,B0        | SP ← SP - 1; \[SP] ← A  |      3 |     2 |        `– – – – – – – –` |
 | [PUSH][ps] B    | CE,B1        | SP ← SP - 1; \[SP] ← B  |      3 |     2 |        `– – – – – – – –` |
@@ -845,15 +845,18 @@ For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is 
 
 ### **POP**: Pop
 
+For 16-bit register pops, the number is read as little-endian.
+For example, in `POP BA`, the byte _at_ the top of the stack is written into A, and the following byte is written into B.
+
 | Mnemonic       | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | -------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
-| [POP][pp] BA   | A8           | BA ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
-| [POP][pp] HL   | A9           | HL ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
-| [POP][pp] IX   | AA           | IX ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
-| [POP][pp] IY   | AB           | IY ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] BA   | A8           | BA ← \[SP]; SP ← SP + 2 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] HL   | A9           | HL ← \[SP]; SP ← SP + 2 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] IX   | AA           | IX ← \[SP]; SP ← SP + 2 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] IY   | AB           | IY ← \[SP]; SP ← SP + 2 |      3 |     1 |        `– – – – – – – –` |
 | [POP][pp] BR   | AC           | BR ← \[SP]; SP ← SP + 1 |      2 |     1 |        `– – – – – – – –` |
 | [POP][pp] EP   | AD           | EP ← \[SP]; SP ← SP + 1 |      2 |     1 |        `– – – – – – – –` |
-| [POP][pp] IP   | AE           | IP ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] IP   | AE           | IP ← \[SP]; SP ← SP + 2 |      3 |     1 |        `– – – – – – – –` |
 | [POP][pp] SC   | AF           | SC ← \[SP]; SP ← SP + 1 |      2 |     1 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 | [POP][pp] A    | CE,B4        | A ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
 | [POP][pp] B    | CE,B5        | B ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
@@ -864,66 +867,110 @@ For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is 
 
 [pp]: S1C88_POP.md "wikilink"
 
-<!--
 ## Branch
+
+In this section's operations, we define the following functions:
+
+```
+skip:
+  PC ← PC + Bytes
+  NB ← CB
+
+X ⇒ jump:
+  if X then
+    jump
+  else
+    skip
+  end
+```
+
+Where `jump` is defined in each section below and the first operation of `skip` is the same as any execution, and is only added for explicitness.
 
 ### **JRS**: Relative short jump
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [JRS][js]                    | F0,rr        | CE,E8,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | F1,rr        | CE,E9,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | C,rr         | E4,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JRS][js]                    | LE,rr        | CE,E1,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | GE,rr        | CE,E3,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | rr           | F1,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JRS][js]                    | NC,rr        | E5,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JRS][js]                    | M,rr         | CE,E7,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | LT,rr        | CE,E0,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | F3,rr        | CE,EB,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | P,rr         | CE,E6,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | NZ,rr        | E7,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JRS][js]                    | GT,rr        | CE,E2,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | NF3,rr       | CE,EF,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | NF2,rr       | CE,EE,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | NF1,rr       | CE,ED,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | V,rr         | CE,E4,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | F2,rr        | CE,EA,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | Z,rr         | E6,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JRS][js]                    | NF0,rr       | CE,EC,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRS][js]                    | NV,rr        | CE,E5,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
+In the below operations, we define the following functions:
+
+```
+jump:
+  PC ← PC + rr + (Bytes - 1)
+  CB ← NB
+```
+
+| Mnemonic          | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
+| [JRS][js] C,rr    | E4,rr        | C ⇒ jump                |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] NC,rr   | E5,rr        | !C ⇒ jump               |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] Z,rr    | E6,rr        | Z ⇒ jump                |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] NZ,rr   | E7,rr        | !Z ⇒ jump               |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] rr      | F1,rr        | jump                    |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] LT,rr   | CE,E0,rr     | (N ^^ V) ⇒ jump         |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] LE,rr   | CE,E1,rr     | (Z || (N ^^ V)) ⇒ jump  |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] GT,rr   | CE,E2,rr     | !(Z || (N ^^ V)) ⇒ jump |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] GE,rr   | CE,E3,rr     | !(N ^^ V) ⇒ jump        |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] V,rr    | CE,E4,rr     | V ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] NV,rr   | CE,E5,rr     | !V ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] P,rr    | CE,E6,rr     | !N ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] M,rr    | CE,E7,rr     | N ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] F0,rr   | CE,E8,rr     | F0 ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] F1,rr   | CE,E9,rr     | F1 ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] F2,rr   | CE,EA,rr     | F2 ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] F3,rr   | CE,EB,rr     | F3 ⇒ jump               |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] NF0,rr  | CE,EC,rr     | !F0 ⇒ jump              |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] NF1,rr  | CE,ED,rr     | !F1 ⇒ jump              |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] NF2,rr  | CE,EE,rr     | !F2 ⇒ jump              |      3 | 3  |        `– – – – – – – –` |
+| [JRS][js] NF3,rr  | CE,EF,rr     | !F3 ⇒ jump              |      3 | 3  |        `– – – – – – – –` |
 
 [js]: S1C88_JRS.md "wikilink"
 
 ### **JRL**: Relative long jump
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [JRL][jl]                    | C,qqrr       | EC,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRL][jl]                    | NC,qqrr      | ED,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRL][jl]                    | Z,qqrr       | EE,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRL][jl]                    | NZ,qqrr      | EF,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [JRL][jl]                    | qqrr         | F3,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
+In the below operations, we define the following functions:
+
+```
+jump:
+  PC ← PC + qqrr + 2
+  CB ← NB
+```
+
+| Mnemonic           | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | --------- | ------:| -----:|:------------------------:|
+| [JRL][jl] C,qqrr   | EC,rr,qq     | C ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jl] NC,qqrr  | ED,rr,qq     | !C ⇒ jump |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jl] Z,qqrr   | EE,rr,qq     | Z ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jl] NZ,qqrr  | EF,rr,qq     | !Z ⇒ jump |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jl] qqrr     | F3,rr,qq     | jump      |      3 |     3 |        `– – – – – – – –` |
 
 [jl]: S1C88_JRL.md "wikilink"
 
 ### **JP**: Indirect jump
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [JP][jp]                    | \[kk]       | FD,kk     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [JP][jp]                    | HL           | F4        | ?PSEUDOCODE | ?CYCLES | 1  |
+For indirect loads, the number is treated as little-endian.
+For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte of PC, and the following byte is loaded into the high byte. 
+
+| Mnemonic        | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| --------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
+| [JP][jp] \[kk]  | FD,kk        | PC ← \[00kk]; CB ← NB | ?CYCLES | 2  |
+| [JP][jp] HL     | F4           | PC ← HL; CB ← NB      | ?CYCLES | 1  |
 
 [jp]: S1C88_JP.md "wikilink"
 
 ### **DJR**: Loop
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [DJR][dj]                    | NZ,rr        | F5,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
+In the below operations, we define the following functions:
+
+```
+jump:
+  PC ← PC + rr + 1
+  CB ← NB
+```
+
+| Mnemonic         | Machine Code | Operation                | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ---------------- | ------------ | ------------------------ | ------:| -----:|:------------------------:|
+| [DJR][dj] NZ,rr  | F5,rr        | B ← B - 1; B == 0 ⇒ jump |      4 |     2 |        `– – – – – – – ↕` |
 
 [dj]: S1C88_DJR.md "wikilink"
 
+<!--
 ### **CARS**: Relative short call
 
 | Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
