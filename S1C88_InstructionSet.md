@@ -725,96 +725,99 @@
 | [DEC][--] IX  | 9A           | IX ← IX - 1 |      2 |     1 |        `– – – – – – – ↕` |
 | [DEC][--] IY  | 9B           | IY ← IY - 1 |      2 |     1 |        `– – – – – – – ↕` |
 
-<!--
 ## 16-bit transfer
 
 ### **LD**: Load
 
+For indirect loads, the number is treated as little-endian.
+For example, in `LD BA,[hhll]` the byte _at_ hhll is loaded into A, and the following byte is loaded into B. 
+
 | Mnemonic             | Machine Code | Operation     | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | -------------------- | ------------ | ------------- | ------:| -----:|:------------------------:|
-| [LD][=] BA,\[hhll]   | B8,ll,hh     | BA ← \[hhll]  |      |     3 |
-| [LD][=] BA,#mmnn     | C4,nn,mm     | BA ← mmnn     |      |     3 |
-| [LD][=] BA,\[SP+dd]  | CE,70,dd     | BA ← \[SP+dd] |      |     3 |
-| [LD][=] BA,\[HL]     | CE,C0        | BA ← \[HL]    |      |     2 |
-| [LD][=] BA,\[IX]     | CE,D0        | BA ← \[IX]    |      |     2 |
-| [LD][=] BA,\[IY]     | CE,D8        | BA ← \[IY]    |      |     2 |
-| [LD][=] BA,BA        | CE,E0        | BA ← BA       |      |     2 |
-| [LD][=] BA,HL        | CE,E1        | BA ← HL       |      |     2 |
-| [LD][=] BA,IX        | CE,E2        | BA ← IX       |      |     2 |
-| [LD][=] BA,IY        | CE,E3        | BA ← IY       |      |     2 |
-| [LD][=] BA,SP        | CE,F8        | BA ← SP       |      |     2 |
-| [LD][=] BA,PC        | CE,F9        | BA ← PC       |      |     2 |
-| [LD][=] HL,\[hhll]   | B9,ll,hh     | HL ← \[hhll]  |      |     3 |
-| [LD][=] HL,#mmnn     | C5,nn,mm     | HL ← #mmnn    |      |     3 |
-| [LD][=] HL,\[SP+dd]  | CE,71,dd     | HL ← \[SP+dd] |      |     3 |
-| [LD][=] HL,\[HL]     | CE,C1        | HL ← \[HL]    |      |     2 |
-| [LD][=] HL,\[IX]     | CE,D1        | HL ← \[IX]    |      |     2 |
-| [LD][=] HL,\[IY]     | CE,D9        | HL ← \[IY]    |      |     2 |
-| [LD][=] HL,BA        | CE,E4        | HL ← BA       |      |     2 |
-| [LD][=] HL,HL        | CE,E5        | HL ← HL       |      |     2 |
-| [LD][=] HL,IX        | CE,E6        | HL ← IX       |      |     2 |
-| [LD][=] HL,IY        | CE,E7        | HL ← IY       |      |     2 |
-| [LD][=] HL,SP        | CE,F4        | HL ← SP       |      |     2 |
-| [LD][=] HL,PC        | CE,F5        | HL ← PC       |      |     2 |
-| [LD][=] IX,\[hhll]   | BA,ll,hh     | IX ← \[hhll]  |      |     3 |
-| [LD][=] IX,#mmnn     | C6,nn,mm     | IX ← mmnn     |      |     3 |
-| [LD][=] IX,\[SP+dd]  | CE,72,dd     | IX ← \[SP+dd] |      |     3 |
-| [LD][=] IX,\[HL]     | CE,C2        | IX ← \[HL]    |      |     2 |
-| [LD][=] IX,\[IX]     | CE,D2        | IX ← \[IX]    |      |     2 |
-| [LD][=] IX,\[IY]     | CE,DA        | IX ← \[IY]    |      |     2 |
-| [LD][=] IX,BA        | CE,E8        | IX ← BA       |      |     2 |
-| [LD][=] IX,HL        | CE,E9        | IX ← HL       |      |     2 |
-| [LD][=] IX,IX        | CE,EA        | IX ← IX       |      |     2 |
-| [LD][=] IX,IY        | CE,EB        | IX ← IY       |      |     2 |
-| [LD][=] IX,SP        | CE,FA        | IX ← SP       |      |     2 |
-| [LD][=] IY,\[hhll]   | BB,ll,hh     | IY ← \[hhll]  |      |     3 |
-| [LD][=] IY,#mmnn     | C7,nn,mm     | IY ← mmnn     |      |     3 |
-| [LD][=] IY,\[SP+dd]  | CE,73,dd     | IY ← \[SP+dd] |      |     3 |
-| [LD][=] IY,\[HL]     | CE,C3        | IY ← \[HL]    |      |     2 |
-| [LD][=] IY,\[IX]     | CE,D3        | IY ← \[IX]    |      |     2 |
-| [LD][=] IY,\[IY]     | CE,DB        | IY ← \[IY]    |      |     2 |
-| [LD][=] IY,BA        | CE,EC        | IY ← BA       |      |     2 |
-| [LD][=] IY,HL        | CE,ED        | IY ← HL       |      |     2 |
-| [LD][=] IY,IX        | CE,EE        | IY ← IX       |      |     2 |
-| [LD][=] IY,IY        | CE,EF        | IY ← IY       |      |     2 |
-| [LD][=] IY,SP        | CE,FE        | IY ← SP       |      |     2 |
-| [LD][=] SP,#mmnn     | CE,6E,nn,mm  | SP ← mmnn     |      |     4 |
-| [LD][=] SP,\[hhll]   | CE,78,ll,hh  | SP ← \[hhll]  |      |     4 |
-| [LD][=] SP,BA        | CE,F0        | SP ← BA       |      |     2 |
-| [LD][=] SP,HL        | CE,F1        | SP ← HL       |      |     2 |
-| [LD][=] SP,IX        | CE,F2        | SP ← IX       |      |     2 |
-| [LD][=] SP,IY        | CE,F3        | SP ← IY       |      |     2 |
-| [LD][=] \[hhll],BA   | BC,ll,hh     | \[hhll] ← BA  |      |     3 |
-| [LD][=] \[hhll],HL   | BD,ll,hh     | \[hhll] ← HL  |      |     3 |
-| [LD][=] \[hhll],IX   | BE,ll,hh     | \[hhll] ← IX  |      |     3 |
-| [LD][=] \[hhll],IY   | BF,ll,hh     | \[hhll] ← IY  |      |     3 |
-| [LD][=] \[hhll],SP   | CE,7C,ll,hh  | \[hhll] ← SP  |      |     4 |
-| [LD][=] \[HL],BA     | CE,C4        | \[HL] ← BA    |      |     2 |
-| [LD][=] \[HL],HL     | CE,C5        | \[HL] ← HL    |      |     2 |
-| [LD][=] \[HL],IX     | CE,C6        | \[HL] ← IX    |      |     2 |
-| [LD][=] \[HL],IY     | CE,C7        | \[HL] ← IY    |      |     2 |
-| [LD][=] \[IX],BA     | CE,D4        | \[IX] ← BA    |      |     2 |
-| [LD][=] \[IX],HL     | CE,D5        | \[IX] ← HL    |      |     2 |
-| [LD][=] \[IX],IX     | CE,D6        | \[IX] ← IX    |      |     2 |
-| [LD][=] \[IX],IY     | CE,D7        | \[IX] ← IY    |      |     2 |
-| [LD][=] \[IY],BA     | CE,DC        | \[IY] ← BA    |      |     2 |
-| [LD][=] \[IY],HL     | CE,DD        | \[IY] ← HL    |      |     2 |
-| [LD][=] \[IY],IX     | CE,DE        | \[IY] ← IX    |      |     2 |
-| [LD][=] \[IY],IY     | CE,DF        | \[IY] ← IY    |      |     2 |
-| [LD][=] \[SP+dd],BA  | CE,74,dd     | \[SP+dd] ← BA |      |     3 |
-| [LD][=] \[SP+dd],HL  | CE,75,dd     | \[SP+dd] ← HL |      |     3 |
-| [LD][=] \[SP+dd],IX  | CE,76,dd     | \[SP+dd] ← IX |      |     3 |
-| [LD][=] \[SP+dd],IY  | CE,77,dd     | \[SP+dd] ← IY |      |     3 |
+| [LD][=] BA,\[hhll]   | B8,ll,hh     | BA ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] BA,#mmnn     | C4,nn,mm     | BA ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] BA,\[SP+dd]  | CE,70,dd     | BA ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] BA,\[HL]     | CE,C0        | BA ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,\[IX]     | CE,D0        | BA ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,\[IY]     | CE,D8        | BA ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,BA        | CE,E0        | BA ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,HL        | CE,E1        | BA ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,IX        | CE,E2        | BA ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,IY        | CE,E3        | BA ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,SP        | CE,F8        | BA ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] BA,PC        | CE,F9        | BA ← PC       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,\[hhll]   | B9,ll,hh     | HL ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] HL,#mmnn     | C5,nn,mm     | HL ← #mmnn    |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] HL,\[SP+dd]  | CE,71,dd     | HL ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] HL,\[HL]     | CE,C1        | HL ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,\[IX]     | CE,D1        | HL ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,\[IY]     | CE,D9        | HL ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,BA        | CE,E4        | HL ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,HL        | CE,E5        | HL ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,IX        | CE,E6        | HL ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,IY        | CE,E7        | HL ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,SP        | CE,F4        | HL ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] HL,PC        | CE,F5        | HL ← PC       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,\[hhll]   | BA,ll,hh     | IX ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] IX,#mmnn     | C6,nn,mm     | IX ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] IX,\[SP+dd]  | CE,72,dd     | IX ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] IX,\[HL]     | CE,C2        | IX ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,\[IX]     | CE,D2        | IX ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,\[IY]     | CE,DA        | IX ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,BA        | CE,E8        | IX ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,HL        | CE,E9        | IX ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,IX        | CE,EA        | IX ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,IY        | CE,EB        | IX ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IX,SP        | CE,FA        | IX ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,\[hhll]   | BB,ll,hh     | IY ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] IY,#mmnn     | C7,nn,mm     | IY ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] IY,\[SP+dd]  | CE,73,dd     | IY ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] IY,\[HL]     | CE,C3        | IY ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,\[IX]     | CE,D3        | IY ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,\[IY]     | CE,DB        | IY ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,BA        | CE,EC        | IY ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,HL        | CE,ED        | IY ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,IX        | CE,EE        | IY ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,IY        | CE,EF        | IY ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] IY,SP        | CE,FE        | IY ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] SP,#mmnn     | CE,6E,nn,mm  | SP ← mmnn     |      4 |     4 |        `– – – – – – – –` |
+| [LD][=] SP,\[hhll]   | CE,78,ll,hh  | SP ← \[hhll]  |      6 |     4 |        `– – – – – – – –` |
+| [LD][=] SP,BA        | CE,F0        | SP ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] SP,HL        | CE,F1        | SP ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] SP,IX        | CE,F2        | SP ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] SP,IY        | CE,F3        | SP ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] \[hhll],BA   | BC,ll,hh     | \[hhll] ← BA  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] \[hhll],HL   | BD,ll,hh     | \[hhll] ← HL  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] \[hhll],IX   | BE,ll,hh     | \[hhll] ← IX  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] \[hhll],IY   | BF,ll,hh     | \[hhll] ← IY  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=] \[hhll],SP   | CE,7C,ll,hh  | \[hhll] ← SP  |      6 |     4 |        `– – – – – – – –` |
+| [LD][=] \[HL],BA     | CE,C4        | \[HL] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[HL],HL     | CE,C5        | \[HL] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[HL],IX     | CE,C6        | \[HL] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[HL],IY     | CE,C7        | \[HL] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IX],BA     | CE,D4        | \[IX] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IX],HL     | CE,D5        | \[IX] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IX],IX     | CE,D6        | \[IX] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IX],IY     | CE,D7        | \[IX] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IY],BA     | CE,DC        | \[IY] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IY],HL     | CE,DD        | \[IY] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IY],IX     | CE,DE        | \[IY] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[IY],IY     | CE,DF        | \[IY] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=] \[SP+dd],BA  | CE,74,dd     | \[SP+dd] ← BA |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] \[SP+dd],HL  | CE,75,dd     | \[SP+dd] ← HL |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] \[SP+dd],IX  | CE,76,dd     | \[SP+dd] ← IX |      6 |     3 |        `– – – – – – – –` |
+| [LD][=] \[SP+dd],IY  | CE,77,dd     | \[SP+dd] ← IY |      6 |     3 |        `– – – – – – – –` |
 
 ### **EX**: Byte exchange
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [EX][ex]                   | BA,HL        | C8          | ?PSEUDOCODE | ?CYCLES | 1  |
-| BA,IX                     | C9           | ?PSEUDOCODE | ?CYCLES     | 1       |
-| BA,IY                     | CA           | ?PSEUDOCODE | ?CYCLES     | 1       |
-| BA,SP                     | CB           | ?PSEUDOCODE | ?CYCLES     | 1       |
+| Mnemonic        | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| --------------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [EX][ex] BA,HL  | C8           | BA ↔ HL   |      3 |     1 |        `– – – – – – – –` |
+| [EX][ex] BA,IX  | C9           | BA ↔ IX   |      3 |     1 |        `– – – – – – – –` |
+| [EX][ex] BA,IY  | CA           | BA ↔ IY   |      3 |     1 |        `– – – – – – – –` |
+| [EX][ex] BA,SP  | CB           | BA ↔ SP   |      3 |     1 |        `– – – – – – – –` |
 
+<!--
 ## Stack Control
 
 ### **PUSH**: Push
