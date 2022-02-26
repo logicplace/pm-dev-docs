@@ -218,7 +218,7 @@
 
 [bt]: S1C88_BIT.md "wikilink"
 
-### **INC**: 1 increment
+### **INC**: Increment by 1
 
 | Mnemonic            | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | ------------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
@@ -232,7 +232,7 @@
 
 [++]: S1C88_INC.md "wikilink"
 
-### **DEC**: 1 decrement
+### **DEC**: Decrement by 1
 
 | Mnemonic            | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | ------------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
@@ -605,127 +605,127 @@
 [se]: S1C88_SEP.md "wikilink"
 [se1]: /rsc/op-sep.svg "sign extend A over B"
 
-<!--
 ## 16-bit arithmetic operation
 
 ### **ADD**: Addition
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [ADD][+]                    | IX,#mmnn    | C2,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| IX,BA                       | CE,40        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| IX,HL                       | CE,41        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [ADD][+]                    | BA,#mmnn    | C0,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| BA,BA                       | CE, 0        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,HL                       | CE, 1        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IX                       | CE, 2        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IY                       | CE, 3        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [ADD][+]                    | SP,BA        | CE,44       | ?PSEUDOCODE | ?CYCLES | 2  |
-| SP,HL                       | CE,45        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| SP,#mmnn                   | CE,68,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
-| [ADD][+]                    | IY,#mmnn    | C3,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| IY,BA                       | CE,42        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| IY,HL                       | CE,43        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [ADD][+]                    | HL,#mmnn    | C1,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| HL,BA                       | CE,20        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,HL                       | CE,21        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IX                       | CE,22        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IY                       | CE,23        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
+| Mnemonic           | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | -------------- | ------:| -----:|:------------------------:|
+| [ADD][+] BA,#mmnn  | C0,nn,mm     | BA ← BA + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] BA,BA     | CE,00        | BA ← BA + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] BA,HL     | CE,01        | BA ← BA + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] BA,IX     | CE,02        | BA ← BA + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] BA,IY     | CE,03        | BA ← BA + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] HL,#mmnn  | C1,nn,mm     | HL ← HL + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] HL,BA     | CE,20        | HL ← HL + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] HL,HL     | CE,21        | HL ← HL + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] HL,IX     | CE,22        | HL ← HL + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] HL,IY     | CE,23        | HL ← HL + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IX,#mmnn  | C2,nn,mm     | IX ← IX + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IX,BA     | CE,40        | IX ← IX + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IX,HL     | CE,41        | IX ← IX + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IY,#mmnn  | C3,nn,mm     | IY ← IY + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IY,BA     | CE,42        | IY ← IY + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] IY,HL     | CE,43        | IY ← IY + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] SP,BA     | CE,44        | SP ← SP + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] SP,HL     | CE,45        | SP ← SP + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+] SP,#mmnn  | CE,68,nn,mm  | SP ← SP + mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
 ### **ADC**: Addition with carry
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [ADC][+c]                    | BA,BA        | CE, 4       | ?PSEUDOCODE | ?CYCLES | 2  |
-| BA,HL                       | CE, 5        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IX                       | CE, 6        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IY                       | CE, 7        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,#mmnn                   | CE,60,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
-| [ADC][+c]                    | HL,BA        | CE,24       | ?PSEUDOCODE | ?CYCLES | 2  |
-| HL,HL                       | CE,25        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IX                       | CE,26        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IY                       | CE,27        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,#mmnn                   | CE,61,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
+| Mnemonic            | Machine Code | Operation          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | ------------------ | ------:| -----:|:------------------------:|
+| [ADC][+c] BA,BA     | CE,04        | BA ← BA + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] BA,HL     | CE,05        | BA ← BA + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] BA,IX     | CE,06        | BA ← BA + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] BA,IY     | CE,07        | BA ← BA + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] BA,#mmnn  | CE,60,nn,mm  | BA ← BA + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] HL,BA     | CE,24        | HL ← HL + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] HL,HL     | CE,25        | HL ← HL + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] HL,IX     | CE,26        | HL ← HL + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] HL,IY     | CE,27        | HL ← HL + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+c] HL,#mmnn  | CE,61,nn,mm  | HL ← HL + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
 ### **SUB**: Subtraction
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [SUB][-]                    | IX,#mmnn    | D2,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| IX,BA                       | CE,48        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| IX,HL                       | CE,49        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [SUB][-]                    | BA,#mmnn    | D0,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| BA,BA                       | CE, 8        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,HL                       | CE, 9        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IX                       | CE, A        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IY                       | CE, B        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [SUB][-]                    | SP,BA        | CE,4C       | ?PSEUDOCODE | ?CYCLES | 2  |
-| SP,HL                       | CE,4D        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| SP,#mmnn                   | CE,6A,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
-| [SUB][-]                    | IY,#mmnn    | D3,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| IY,BA                       | CE,4A        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| IY,HL                       | CE,4B        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [SUB][-]                    | HL,#mmnn    | D1,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| HL,BA                       | CE,28        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,HL                       | CE,29        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IX                       | CE,2A        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IY                       | CE,2B        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
+| Mnemonic           | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | -------------- | ------:| -----:|:------------------------:|
+| [SUB][-] BA,BA     | CE,08        | BA ← BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] BA,HL     | CE,09        | BA ← BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] BA,IX     | CE,0A        | BA ← BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] BA,IY     | CE,0B        | BA ← BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] BA,#mmnn  | D0,nn,mm     | BA ← BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] HL,BA     | CE,28        | HL ← HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] HL,HL     | CE,29        | HL ← HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] HL,IX     | CE,2A        | HL ← HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] HL,IY     | CE,2B        | HL ← HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] HL,#mmnn  | D1,nn,mm     | HL ← HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IX,BA     | CE,48        | IX ← IX - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IX,HL     | CE,49        | IX ← IX - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IX,#mmnn  | D2,nn,mm     | IX ← IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IY,BA     | CE,4A        | IY ← IY - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IY,HL     | CE,4B        | IY ← IY - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] IY,#mmnn  | D3,nn,mm     | IY ← IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] SP,BA     | CE,4C        | SP ← SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] SP,HL     | CE,4D        | SP ← SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-] SP,#mmnn  | CE,6A,nn,mm  | SP ← SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
 ### **SBC**: Subtraction with carry
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [SBC][-c]                    | BA,BA        | CE, C       | ?PSEUDOCODE | ?CYCLES | 2  |
-| BA,HL                       | CE, D        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IX                       | CE, E        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IY                       | CE, F        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,#mmnn                   | CE,62,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
-| [SBC][-c]                    | HL,BA        | CE,2C       | ?PSEUDOCODE | ?CYCLES | 2  |
-| HL,HL                       | CE,2D        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IX                       | CE,2E        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IY                       | CE,2F        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,#mmnn                   | CE,63,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
+| Mnemonic            | Machine Code | Operation          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | ------------------ | ------:| -----:|:------------------------:|
+| [SBC][-c] BA,BA     | CE, C        | BA ← BA - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] BA,HL     | CE, D        | BA ← BA - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] BA,IX     | CE, E        | BA ← BA - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] BA,IY     | CE, F        | BA ← BA - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] BA,#mmnn  | CE,62,nn,mm  | BA ← BA - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] HL,BA     | CE,2C        | HL ← HL - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] HL,HL     | CE,2D        | HL ← HL - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] HL,IX     | CE,2E        | HL ← HL - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] HL,IY     | CE,2F        | HL ← HL - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-c] HL,#mmnn  | CE,63,nn,mm  | HL ← HL - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
 ### **CP**: Comparison
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [CP][cp]                   | IX,#mmnn    | D6,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CP][cp]                   | BA,#mmnn    | D4,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| BA,BA                     | CE,18        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,HL                     | CE,19        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IX                     | CE,1A        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| BA,IY                     | CE,1B        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [CP][cp]                   | IY,#mmnn    | D7,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CP][cp]                   | HL,#mmnn    | D5,nn,mm    | ?PSEUDOCODE | ?CYCLES | 3  |
-| HL,BA                     | CE,38        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,HL                     | CE,39        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IX                     | CE,3A        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| HL,IY                     | CE,3B        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| [CP][cp]                   | SP,BA        | CE,5C       | ?PSEUDOCODE | ?CYCLES | 2  |
-| SP,HL                     | CE,5D        | ?PSEUDOCODE | ?CYCLES     | 2       | –  |
-| SP,#mmnn                 | CE,6C,nn,mm  | ?PSEUDOCODE | ?CYCLES     | 4       | –  |
+| Mnemonic           | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | --------- | ------:| -----:|:------------------------:|
+| [CP][cp] BA,#mmnn  | D4,nn,mm     | BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] BA,BA     | CE,18        | BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] BA,HL     | CE,19        | BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] BA,IX     | CE,1A        | BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] BA,IY     | CE,1B        | BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] HL,#mmnn  | D5,nn,mm     | HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] HL,BA     | CE,38        | HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] HL,HL     | CE,39        | HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] HL,IX     | CE,3A        | HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] HL,IY     | CE,3B        | HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] IX,#mmnn  | D6,nn,mm     | IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] IY,#mmnn  | D7,nn,mm     | IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] SP,BA     | CE,5C        | SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] SP,HL     | CE,5D        | SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cp] SP,#mmnn  | CE,6C,nn,mm  | SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-### **INC**: 1 increment
+### **INC**: Increment by 1
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [INC][++]                    | IX           | 92        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [INC][++]                    | BA           | 90        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [INC][++]                    | HL           | 91        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [INC][++]                    | IY           | 93        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [INC][++]                    | SP           | 87        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic      | Machine Code | Operation   | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------- | ------------ | ----------- | ------:| -----:|:------------------------:|
+| [INC][++] SP  | 87           | SP ← SP + 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [INC][++] BA  | 90           | BA ← BA + 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [INC][++] HL  | 91           | HL ← HL + 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [INC][++] IX  | 92           | IX ← IX + 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [INC][++] IY  | 93           | IY ← IY + 1 |      2 |     1 |        `– – – – – – – ↕` |
 
-### **DEC**: 1 decrement
+### **DEC**: Decrement by 1
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [DEC][--]                    | IX           | 9A        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [DEC][--]                    | BA           | 98        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [DEC][--]                    | HL           | 99        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [DEC][--]                    | IY           | 9B        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [DEC][--]                    | SP           | 8F        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic      | Machine Code | Operation   | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------- | ------------ | ----------- | ------:| -----:|:------------------------:|
+| [DEC][--] SP  | 8F           | SP ← SP - 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [DEC][--] BA  | 98           | BA ← BA - 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [DEC][--] HL  | 99           | HL ← HL - 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [DEC][--] IX  | 9A           | IX ← IX - 1 |      2 |     1 |        `– – – – – – – ↕` |
+| [DEC][--] IY  | 9B           | IY ← IY - 1 |      2 |     1 |        `– – – – – – – ↕` |
 
+<!--
 ## 16-bit transfer
 
 ### **LD**: Load
@@ -811,9 +811,9 @@
 | Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
 | [EX][ex]                   | BA,HL        | C8          | ?PSEUDOCODE | ?CYCLES | 1  |
-| BA,IX                     | C9           | ?PSEUDOCODE | ?CYCLES     | 1       | –  |
-| BA,IY                     | CA           | ?PSEUDOCODE | ?CYCLES     | 1       | –  |
-| BA,SP                     | CB           | ?PSEUDOCODE | ?CYCLES     | 1       | –  |
+| BA,IX                     | C9           | ?PSEUDOCODE | ?CYCLES     | 1       |
+| BA,IY                     | CA           | ?PSEUDOCODE | ?CYCLES     | 1       |
+| BA,SP                     | CB           | ?PSEUDOCODE | ?CYCLES     | 1       |
 
 ## Stack Control
 
