@@ -1,44 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="82" height="45">
+<svg xmlns="http://www.w3.org/2000/svg" width="93" height="45">
     <g fill="white" stroke-width="0">
-        <rect x="0" y="13" width="24" height="18" />
-        <rect x="38" y="13" width="44" height="18" />
+        <rect x="0"  y="13" width="28"   height="20" />
+        <rect x="40" y="13" width="52.5" height="20" />
     </g>
     <path stroke="white" fill="black" stroke-width="1" d="
-        M 24 21
-        L 36 21
-        l -2 -3
-        l 2 -1
-        L 39 22
-        l -3 5
-        l -2 -1
-        L 36 23
-        L 24 23
-        l 0 -2
+        M 27 21.5
+        l 9 0
+        l 0 -3
+        l 5 5
+        l -5 5
+        l 0 -3
+        l -9 0
+        l 0 -4.5
     " />
     <g stroke="black" fill="white" stroke-width="1">
-        <rect x="2"  y="15" width="10" height="14" />
-        <rect x="12" y="15" width="10" height="14" />
-        <rect x="40" y="15" width="10" height="14" />
-        <rect x="50" y="15" width="10" height="14" />
-        <rect x="60" y="15" width="10" height="14" />
-        <rect x="70" y="15" width="10" height="14" />
+        <rect x="2"    y="15" width="12" height="16" />
+        <rect x="14"   y="15" width="12" height="16" />
+        <rect x="42"   y="15" width="12" height="16" />
+        <rect x="54"   y="15" width="12" height="16" />
+        <rect x="66.5" y="15" width="12" height="16" />
+        <rect x="78.5" y="15" width="12" height="16" />
     </g>
     <g 
         font-family="Consolas"
         alignment-baseline="text-top"
     >
-        <g stroke="white" fill="black" stroke-width="0.5" font-size="18">
-            <text x="7" y="12">A</text>
-            <text x="45" y="12">B</text>
-            <text x="65" y="12">A</text>
+        <g stroke="white" fill="black" stroke-width="0.5" font-size="18" font-weight="bold">
+            <text x="9"    y="12">A</text>
+            <text x="49"   y="12">B</text>
+            <text x="73.5" y="12">A</text>
         </g>
         <g stroke="black" fill="black" font-size="14">
-            <text x="3"  y="27">m</text>
-            <text x="13" y="27">n</text>
-            <text x="41" y="27">0</text>
-            <text x="51" y="27">m</text>
-            <text x="61" y="27">0</text>
-            <text x="71" y="27">n</text>
+            <text x="4"    y="28">m</text>
+            <text x="16"   y="28">n</text>
+            <text x="44"   y="28">0</text>
+            <text x="56"   y="28">m</text>
+            <text x="68.5" y="28">0</text>
+            <text x="80.5" y="28">n</text>
         </g>
     </g>
 </svg>
