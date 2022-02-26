@@ -576,33 +576,36 @@
 [»3]: /rsc/op-srl-phl.svg "logical shift [HL] right"
 [»4]: /rsc/op-srl-pbrll.svg "logical shift [BR:ll] right"
 
-<!--
 ## Auxiliary operation
 
 ### **PACK**: Pack
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [PACK][pk]                     |              | DE        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic    | Machine Code | Operation                     | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------- | ------------ | ----------------------------- | ------:| -----:|:------------------------:|
+| [PACK][pk]  | DE           | ![B and A's LSNs into A][pk1] |      2 |     1 |        `– – – – – – – –` |
 
 [pk]: S1C88_PACK.md "wikilink"
+[pk1]: /rsc/op-pack.svg "B and A's least significant nibbles into A"
 
 ### **UPCK**: Unpack
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [UPCK][up]                     |              | DF        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic    | Machine Code | Operation                               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------- | ------------ | --------------------------------------- | ------:| -----:|:------------------------:|
+| [UPCK][up]  | DF           | ![A's nibbles into B and A's LSNs][up1] |      2 |     1 |        `– – – – – – – –` |
 
 [up]: S1C88_UPCK.md "wikilink"
+[up1]: /rsc/op-upck.svg "A's nibbles into B and A's least significant nibbles, setting most significant nibbles to 0"
 
 ### **SEP**: Code extension
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [SEP][se]                    |              | CE,A8     | ?PSEUDOCODE | ?CYCLES | 2  |
+| Mnemonic   | Machine Code | Operation                    | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ---------- | ------------ | ---------------------------- | ------:| -----:|:------------------------:|
+| [SEP][se]  | CE,A8        | ![sign extend A over B][se1] |      3 |     2 |        `– – – – – – – –` |
 
 [se]: S1C88_SEP.md "wikilink"
+[se1]: /rsc/op-sep.svg "sign extend A over B"
 
+<!--
 ## 16-bit arithmetic operation
 
 ### **ADD**: Addition
