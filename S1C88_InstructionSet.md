@@ -817,51 +817,54 @@ For example, in `LD BA,[hhll]` the byte _at_ hhll is loaded into A, and the foll
 | [EX][ex] BA,IY  | CA           | BA ↔ IY   |      3 |     1 |        `– – – – – – – –` |
 | [EX][ex] BA,SP  | CB           | BA ↔ SP   |      3 |     1 |        `– – – – – – – –` |
 
-<!--
 ## Stack Control
 
 ### **PUSH**: Push
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [PUSH][ps]                     | IY           | A3        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | IX           | A2        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | ALL          | CE,B8     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | B            | CE,B1     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | BA           | A0        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | IP           | A6        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | ALE          | CE,B9     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | L            | CE,B2     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | HL           | A1        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | A            | CE,B0     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | BR           | A4        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | H            | CE,B3     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [PUSH][ps]                     | SC           | A7        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [PUSH][ps]                     | EP           | A5        | ?PSEUDOCODE | ?CYCLES | 1  |
+For 16-bit registers loads, the number is written as little-endian.
+For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is written to the following address.
 
-[1]: S1C88_PUSH.md "wikilink"
+| Mnemonic        | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| --------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
+| [PUSH][ps] BA   | A0           | SP ← SP - 2; \[SP] ← BA |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] HL   | A1           | SP ← SP - 2; \[SP] ← HL |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] IX   | A2           | SP ← SP - 2; \[SP] ← IX |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] IY   | A3           | SP ← SP - 2; \[SP] ← IY |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] BR   | A4           | SP ← SP - 1; \[SP] ← BR |      3 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] EP   | A5           | SP ← SP - 1; \[SP] ← EP |      3 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] IP   | A6           | SP ← SP - 1; \[SP] ← IP |      4 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] SC   | A7           | SP ← SP - 1; \[SP] ← SC |      3 |     1 |        `– – – – – – – –` |
+| [PUSH][ps] A    | CE,B0        | SP ← SP - 1; \[SP] ← A  |      3 |     2 |        `– – – – – – – –` |
+| [PUSH][ps] B    | CE,B1        | SP ← SP - 1; \[SP] ← B  |      3 |     2 |        `– – – – – – – –` |
+| [PUSH][ps] L    | CE,B2        | SP ← SP - 1; \[SP] ← L  |      3 |     2 |        `– – – – – – – –` |
+| [PUSH][ps] H    | CE,B3        | SP ← SP - 1; \[SP] ← H  |      3 |     2 |        `– – – – – – – –` |
+| [PUSH][ps] ALL  | CE,B8        | PUSH BA, HL, IX, IY, BR |     12 |     2 |        `– – – – – – – –` |
+| [PUSH][ps] ALE  | CE,B9        | PUSH ALL, EP, IP        |     15 |     2 |        `– – – – – – – –` |
+
+[ps]: S1C88_PUSH.md "wikilink"
 
 ### **POP**: Pop
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [POP][pp]                    | IY           | AB        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | IX           | AA        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | ALL          | CE,BC     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | B            | CE,B5     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | BA           | A8        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | IP           | AE        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | ALE          | CE,BD     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | L            | CE,B6     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | HL           | A9        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | A            | CE,B4     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | BR           | AC        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | H            | CE,B7     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [POP][pp]                    | SC           | AF        | ?PSEUDOCODE | ?CYCLES | 1  |
-| [POP][pp]                    | EP           | AD        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic       | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| -------------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
+| [POP][pp] BA   | A8           | BA ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] HL   | A9           | HL ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] IX   | AA           | IX ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] IY   | AB           | IY ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] BR   | AC           | BR ← \[SP]; SP ← SP + 1 |      2 |     1 |        `– – – – – – – –` |
+| [POP][pp] EP   | AD           | EP ← \[SP]; SP ← SP + 1 |      2 |     1 |        `– – – – – – – –` |
+| [POP][pp] IP   | AE           | IP ← \[SP]; SP ← SP + 1 |      3 |     1 |        `– – – – – – – –` |
+| [POP][pp] SC   | AF           | SC ← \[SP]; SP ← SP + 1 |      2 |     1 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
+| [POP][pp] A    | CE,B4        | A ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
+| [POP][pp] B    | CE,B5        | B ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
+| [POP][pp] L    | CE,B6        | L ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
+| [POP][pp] H    | CE,B7        | H ← \[SP]; SP ← SP + 1  |      3 |     2 |        `– – – – – – – –` |
+| [POP][pp] ALL  | CE,BC        | POP BR, IY, IX, HL, BA  |     11 |     2 |        `– – – – – – – –` |
+| [POP][pp] ALE  | CE,BD        | POP IP, EP, ALL         |     14 |     2 |        `– – – – – – – –` |
 
-[1]: S1C88_POP.md "wikilink"
+[pp]: S1C88_POP.md "wikilink"
 
+<!--
 ## Branch
 
 ### **JRS**: Relative short jump
