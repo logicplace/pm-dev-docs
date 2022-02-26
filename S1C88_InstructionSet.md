@@ -1095,33 +1095,33 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 
 [it]: S1C88_INT.md "wikilink"
 
-<!--
 ## System Control
 
 ### **NOP**: No operation
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [NOP][no]                    |              | FF        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic   | Machine Code | Operation    | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ---------- | ------------ | ------------ | ------:| -----:|:------------------------:|
+| [NOP][no]  | FF           | No operation |      2 |     1 |        `– – – – – – – –` |
 
 [no]: S1C88_NOP.md "wikilink"
 
 ### **HALT**: Shifts to HALT status
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [HALT][ht]                     |              | CE,AE     | ?PSEUDOCODE | ?CYCLES | 2  |
+| Mnemonic    | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [HALT][ht]  | CE,AE        | Halt CPU  |      3 |     2 |        `– – – – – – – –` |
 
 [ht]: S1C88_HALT.md "wikilink"
 
 ### **SLP**: Shifts to SLEEP status
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [SLP][zz]                    |              | CE,AF     | ?PSEUDOCODE | ?CYCLES | 2  |
+| Mnemonic   | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ---------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [SLP][zz]  | CE,AF        | Hibernate |      3 |     2 |        `– – – – – – – –` |
 
 [zz]: S1C88_SLP.md "wikilink"
 
+<!--
 ## Operation Code Map
 
 ### 1st operation code
