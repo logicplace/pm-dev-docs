@@ -876,19 +876,40 @@ skip:
   PC ← PC + Bytes
   NB ← CB
 
-X ⇒ jump:
+X ⇒ fun:
   if X then
-    jump
+    fun
   else
     skip
   end
+
+PUSH CB:
+  SP ← SP - 1
+  [CB] ← CB
+
+PUSH PC:
+  SP ← SP - 2
+  [SP] ← PC
+
+POP CB:
+  CB ← [SP]
+  SP ← SP + 1
+
+POP PC:
+  PC ← [SP]
+  SP ← SP + 2
 ```
 
-Where `jump` is defined in each section below and the first operation of `skip` is the same as any execution, and is only added for explicitness.
+Where `fun` is the name of some function and is defined in each section below
+and the first operation of `skip` is the same as any execution, simply added for explicitness.
+
+Cycles may be specified as `t : f`
+where `t` is the cycle count for if the condition was true
+and `f` is the cycle count for if the condition was false.
 
 ### **JRS**: Relative short jump
 
-In the below operations, we define the following functions:
+In the below operations, we define the following additional function:
 
 ```
 jump:
@@ -924,7 +945,7 @@ jump:
 
 ### **JRL**: Relative long jump
 
-In the below operations, we define the following functions:
+In the below operations, we define the following additional function:
 
 ```
 jump:
@@ -956,7 +977,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 
 ### **DJR**: Loop
 
-In the below operations, we define the following functions:
+In the below operations, we define the following additional function:
 
 ```
 jump:
@@ -970,87 +991,111 @@ jump:
 
 [dj]: S1C88_DJR.md "wikilink"
 
-<!--
 ### **CARS**: Relative short call
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [CARS][cs]                     | F0,rr        | CE,F8,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | F1,rr        | CE,F9,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | C,rr         | E0,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [CARS][cs]                     | LE,rr        | CE,F1,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | GE,rr        | CE,F3,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | rr           | F0,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [CARS][cs]                     | NC,rr        | E1,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [CARS][cs]                     | M,rr         | CE,F7,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | LT,rr        | CE,F0,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | F3,rr        | CE,FB,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | P,rr         | CE,F6,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | NZ,rr        | E3,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [CARS][cs]                     | GT,rr        | CE,F2,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | NF3,rr       | CE,FF,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | NF2,rr       | CE,FE,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | NF1,rr       | CE,FD,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | V,rr         | CE,F4,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | F2,rr        | CE,FA,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | Z,rr         | E2,rr     | ?PSEUDOCODE | ?CYCLES | 2  |
-| [CARS][cs]                     | NF0,rr       | CE,FC,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARS][cs]                     | NV,rr        | CE,F5,rr  | ?PSEUDOCODE | ?CYCLES | 3  |
+In the below operations, we define the following additional function:
+
+```
+call:
+  PUSH CB, PC
+  PC ← PC + rr + (Bytes - 1)
+  CB ← NB
+```
+
+| Mnemonic           | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | ----------------------- | ------:| -----:|:------------------------:|
+| [CARS][cs] C,rr    | E0,rr        | C ⇒ call                |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][cs] NC,rr   | E1,rr        | !C ⇒ call               |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][cs] Z,rr    | E2,rr        | Z ⇒ call                |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][cs] NZ,rr   | E3,rr        | !Z ⇒ call               |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][cs] rr      | F0,rr        | call                    |      5 |     2 |        `– – – – – – – –` |
+| [CARS][cs] LT,rr   | CE,F0,rr     | (N ^^ V) ⇒ call         |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] LE,rr   | CE,F1,rr     | (Z || (N ^^ V)) ⇒ call  |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] GT,rr   | CE,F2,rr     | !(Z || (N ^^ V)) ⇒ call |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] GE,rr   | CE,F3,rr     | !(N ^^ V) ⇒ call        |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] V,rr    | CE,F4,rr     | V ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] NV,rr   | CE,F5,rr     | !V ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] P,rr    | CE,F6,rr     | !N ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] M,rr    | CE,F7,rr     | N ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] F0,rr   | CE,F8,rr     | F0 ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] F1,rr   | CE,F9,rr     | F1 ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] F2,rr   | CE,FA,rr     | F2 ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] F3,rr   | CE,FB,rr     | F3 ⇒ call               |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] NF0,rr  | CE,FC,rr     | !F0 ⇒ call              |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] NF1,rr  | CE,FD,rr     | !F1 ⇒ call              |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] NF2,rr  | CE,FE,rr     | !F2 ⇒ call              |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][cs] NF3,rr  | CE,FF,rr     | !F3 ⇒ call              |  6 : 3 |     3 |        `– – – – – – – –` |
 
 [cs]: S1C88_CARS.md "wikilink"
 
 ### **CARL**: Relative long call
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [CARL][cl]                     | C,qqrr       | E8,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARL][cl]                     | NC,qqrr      | E9,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARL][cl]                     | Z,qqrr       | EA,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARL][cl]                     | NZ,qqrr      | EB,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
-| [CARL][cl]                     | qqrr         | F2,rr,qq  | ?PSEUDOCODE | ?CYCLES | 3  |
+In the below operations, we define the following additional function:
+
+```
+call:
+  PUSH CB, PC
+  PC ← PC + qqrr + 2
+  CB ← NB
+```
+
+| Mnemonic            | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [CARL][cl] C,qqrr   | E8,rr,qq     | C ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][cl] NC,qqrr  | E9,rr,qq     | !C ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][cl] Z,qqrr   | EA,rr,qq     | Z ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][cl] NZ,qqrr  | EB,rr,qq     | !Z ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][cl] qqrr     | F2,rr,qq     | call      |  6 : 3 |    3 |        `– – – – – – – –` |
 
 [cl]: S1C88_CARL.md "wikilink"
 
 ### **CALL**: Indirect call
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [CALL][ca]                     | \[hhll]     | FB,ll,hh  | ?PSEUDOCODE | ?CYCLES | 3  |
+For indirect loads, the number is treated as little-endian.
+For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte of PC, and the following byte is loaded into the high byte. 
+
+| Mnemonic            | Machine Code | Operation                          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | ---------------------------------- | ------:| -----:|:------------------------:|
+| [CALL][ca] \[hhll]  | FB,ll,hh     | PUSH CB, PC; PC ← [hhll]; CB ← NB  |      8 |     3 |        `– – – – – – – –` |
 
 [ca]: S1C88_CALL.md "wikilink"
 
 ### **RET**: Return
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [RET][rt]                    |              | F8        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic   | Machine Code | Operation           | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ---------- | ------------ | ------------------- | ------:| -----:|:------------------------:|
+| [RET][rt]  | F8           | POP PC, CB; NB ← CB |      4 |     1 |        `– – – – – – – –` |
 
 [rt]: S1C88_RET.md "wikilink"
 
 ### **RETE**: Exception processing return
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [RETE][re]                     |              | F9        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic    | Machine Code | Operation               | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
+| [RETE][re]  | F9           | POP SC, PC, CB; NB ← CB |      5 |     1 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 
 [re]: S1C88_RETE.md "wikilink"
 
 ### **RETS**: Return and skip
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [RETS][rs]                     |              | FA        | ?PSEUDOCODE | ?CYCLES | 1  |
+| Mnemonic    | Machine Code | Operation                        | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ----------- | ------------ | -------------------------------- | ------:| -----:|:------------------------:|
+| [RETS][rs]  | FA           | POP PC, CB; NB ← CB; PC ← PC + 2 |      6 |     1 |        `– – – – – – – –` |
 
 [rs]: S1C88_RETS.md "wikilink"
 
 ### **INT**: Software interrupt
 
-| Mnemonic              | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| --------------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [INT][it]                    | \[kk]       | FC,kk     | ?PSEUDOCODE | ?CYCLES | 2  |
+For indirect loads, the number is treated as little-endian.
+For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte of PC, and the following byte is loaded into the high byte. 
+
+| Mnemonic              | Machine Code | Operation                              | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| --------------------- | ------------ | -------------------------------------- | ------:| -----:|:------------------------:|
+| [INT][it] \[kk]       | FC,kk        | PUSH CB, PC, SC; PC ← \[00kk]; CB ← NB |      8 |     2 |        `– – – – – – – –` |
 
 [it]: S1C88_INT.md "wikilink"
 
+<!--
 ## System Control
 
 ### **NOP**: No operation
