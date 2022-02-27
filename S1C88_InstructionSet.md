@@ -1,5 +1,67 @@
 # S1C88 Instruction Set
 
+For the old PMAS mnemonics, see [here](/tools/PMAS.md#mnemonics-and-registers).
+
+Much of this information comes from [this document](http://www.rayslogic.com/Software/TimexUSB/Docs/s1c88%20core%20cpu%20manual.pdf).
+
+## Notation
+
+### Symbol meanings
+
+For a list of CPU registers, see [here](S1C88_Core.md#register-mapping).
+For a list of flags in SC and CC, see [here](S1C88_Core.md#flags-mapping).
+
+| Symbol             | Meaning                                    |
+|:------------------:| ------------------------------------------ |
+| `r`                | 8-bit data register: A, B, L, or H         |
+| `ir`               | Index register: IX or IY                   |
+| `rp`               | 16-bit register: BA, HL, IX, IY, SP, or PC |
+| `er`               | Indexing register: NB, EP, XP, or YP       |
+| rp<sub>(H)</sub>   | Upper 8 bits of rp, (i.e. the high byte)   |
+| rp<sub>(L)</sub>   | Lower 8 bits of rp, (i.e. the low byte)    |
+| `nn`               | Unsigned 8-bit immediate data              |
+| `hh`               | Upper 8 bits of an absolute address        |
+| `ll`               | Lower 8 bits of an absolute address        |
+| `pp`               | 8-bit immediate set to EP, XP, or YP       |
+| `bb`               | 8-bit immediate set to NB (or CB)          |
+| `dd`               | Signed 8-bit displacement (offset)         |
+| `rr`               | 8-bit relative offset in jumps and calls   |
+| `kk`               | Lower 8 buts of a vector address           |
+| `mmnn`             | Unsigned 16-bit immediate data             |
+| `hhll`             | Unsigned 16-bit absolute address           |
+| `qqrr`             | Signed 16-bit relative offset              |
+| `x` or `y`         | Any valid register or immediate            |
+| \[x]               | Memory pointed to by x (dereferencing)     |
+| \[x]<sub>(H)</sub> | Upper 8 bits of \[x]                       |
+| \[x]<sub>(L)</sub> | Lower 8 bits of \[x]                       |
+| \[x+y]             | Memory pointed to by x + y                 |
+| \[x:y]             | Dereference `(x << 8) + y`                 |
+| PUSH x, y, ...     | PUSH x; PUSH y; ...                        |
+| POP x, y, ...      | POP x; POP y; ...                          |
+
+When using either `[hhll]` or `[HL]` in an operation, the EP register is used as the data memory page.
+When using `[IX]`, the XP register is used as the data memory page.
+When using `[IY]`, the YP register is used as the data memory page.
+
+### SC column
+
+The SC column describes how the SC (System Condition flags register) changes when executing the operation.
+The `1` and `0` columns refer to the `I1` and `I0` flags of SC.
+
+Refer to the legend below for what the symbols mean:
+
+| Symbol | Meaning                                  |
+|:------:| ---------------------------------------- |
+| `–`    | Flag is unaffected / mode is unavailable |
+| `↕`    | Flag may change                          |
+| `↓`    | Flag may change from 1 to 0              |
+| `↑`    | Flag may change from 0 to 1              |
+| `0`    | Reset the flag (set to 0)                |
+| `*`    | Indicates the mode is available          |
+
+If D has `*`, this operation permits decimal operations.
+If U has `*`, this operation permits unpack operations.
+
 ## 8-bit arithmetic and logic operation
 
 ### **ADD**: Addition
@@ -1193,20 +1255,6 @@ The entire opcode table has been evaluated on Pokémon mini units and new and ex
 These opcodes are not officially supported (they are not used by commercial games and not even found in the Pokémon Channel emulator) and can produce random results or crashes in some cases.
 
 All mnemonics are prefixed with a \* to indicate they're invalid in official S1C88 tools.
-
-Conversion
-
-```
-HL = HL, BA = BA
-SP = SP, PC = PC
- N = BR,  I = EP
- X = IX,  Y = IY
-XI = XP, YI = YP
- U = NB,  V = CB*
- F = SC
-
-*CB is written as NB when reading
-```
 
 These have been reproduced from the discussion post but seem suspect.
 All conclusions here should be re-checked, ideally against die images, too.
