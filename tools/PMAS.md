@@ -56,7 +56,7 @@ Additionally, the CC register cannot be directly accessed by software and can on
 | Y or X2       | IY             | Index register IY                          |
 | SP            | SP             | Stack Pointer                              |
 | N             | BR             | Base Register                              |
-| F             | SC             | System Condition flags                     |
+| F or FLAGS    | SC             | System Condition flags                     |
 | n/a           | CC             | Custom Condition flags                     |
 | PC            | PC             | Program Counter                            |
 | U             | NB             | New code Bank register                     |
@@ -67,6 +67,30 @@ Additionally, the CC register cannot be directly accessed by software and can on
 | n/a           | IP             | Index Page pair register composed of YP:XP |
 
 For brevity purposes, the few times X or Y are mentioned explicitly in the operations lists below, they will also imply the ability to use X1/X2 instead, respectively.
+
+#### Flags and conditions
+
+Some of the flag registers, and thus branch condition names are also different. Here we use the S1C88 register names SC and CC largely because PMAS does not name CC.
+Bits are indexed from the LSB as usual, so `0b76543210`.
+Here the columns PMAS and S1C88 list the flag's mnemonic for the respective tooling.
+The True and False columns which follow are the literals used in branch conditionals for that flag.
+
+| Position | Name                       | PMAS | True | False | S1C88 | True | False |
+| -------- | -------------------------- | ---- | ---- | ----- | ----- | ---- | ----- |
+| SC bit 0 | Zero Flag                  | ZF   | Z    | NZ    | Z     | Z    | NZ    |
+| SC bit 1 | Carry Flag                 | CF   | C    | NC    | C     | C    | NC    |
+| SC bit 2 | OVerflow Flag              | OF   | O    | NO    | V     | V    | NV    |
+|          | Less Than condition        |      | L    | GE    |       | LT   | GE    |
+|          | Greater Than condition     |      | G    | LE    |       | GT   | LE    |
+| SC bit 3 | Negative Sign Flag         | SF   | S    | NS    | N     | M    | P     |
+| SC bit 4 | BCD Mode / Decimal         | BM   | -    | -     | D     | -    | -     |
+| SC bit 5 | Low Mask / Unpack          | LM   | -    | -     | U     | -    | -     |
+| SC bit 6 | Interrupt flag 0           | -    | -    | -     | I0    | -    | -     |
+| SC bit 7 | Interrupt Enable flag 1    | IE   | -    | -     | I1    | -    | -     |
+| CC bit 0 | Customize Condition Flag 0 | -    | -    | -     | F0    | F0   | NF0   |
+| CC bit 1 | Customize Condition Flag 1 | -    | -    | -     | F1    | F1   | NF1   |
+| CC bit 2 | Customize Condition Flag 2 | -    | -    | -     | F2    | F2   | NF2   |
+| CC bit 3 | Customize Condition Flag 3 | -    | -    | -     | F3    | F3   | NF3   |
 
 ### Short list
 
