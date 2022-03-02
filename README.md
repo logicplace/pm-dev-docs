@@ -1,3 +1,177 @@
-## Projects
+# Pokemon mini documentation
 
-[Pokémon mini Hardware Reference](Pokemon_Mini.md "wikilink")
+This is the repo for the Pokemon mini documentation hosted [here](https://www.pokemon-mini.net/documentation/).
+
+* [Pokémon mini Hardware Reference](Pokemon_Mini.md)
+
+## Editing these docs
+
+- Try to use Markdown syntax where possible, only falling back to HTML if necessary.
+- Rely on editors for wrapping lines. Hard wraps are only allowed if the thought is complete; don't hard wrap mid-line, because then people who edit that line will have to re-hard wrap it, changing all the lines in the git diff, anyway.
+- For complicated situations, you can use Jinja2 templating to generate pages.
+  - This is largely in order to improve readability for complex things or overuse of HTML.
+  - Likely we should centralize Jinja2 macros and design them to parse a more featureful Markdown-like syntax, then explain how to use them here.
+
+## Things to do
+
+- Stuff I'm not sure about from "Unknown PM Stuff" page (with grammar fixes):
+  - The precise timing of a video frame. \<- Hmm, how precise?
+  - ~~The number of cycles each value of PRC_CNT takes~~
+  - Check to see which IRQs are masked by the IRQ Enable and IRQ Branch flags
+  - ~~Determine the approximate amount of time sprite draw, map draw, and frame copy take (maybe min \\ max \\ avg)~~
+  - ~~Determine when the PRC stages fire (relative to PRC_CNT)~~
+- Which/if timers sleep while the system is suspended
+  - See HALT/SLEEP section of official docs
+- ~~Check undocumented Minx instruction behavior~~ [Done](Talk:S1C88_InstructionSet.md#illegal-instructions)
+  - This needs to be double-checked on the console with better/confirmed use of the scientific method. Not just the tester tool, but ROMs specifically written to test everything
+  - Some info like "crashes" was turned into ??? here, because we don't know the actual operation (it crashes because of some important reason!)
+- Check all terminology, make sure it matches up with EPSON docs.
+- Glossary page, move Open-Bus.md there.
+- New layout with sub-directories, see below.
+
+### Proposed layout
+
+- Hardware
+  - CPU: S1C88*
+    - on this page:
+      - Tech specs:
+        - part number
+        - internal ROM
+        - RAM size
+        - what's connected/enabled
+        - docs links
+      - Features
+      - Minimum mode info if that's accessible in PM
+    - Instruction set
+      - ...indiviudal instructions...
+    - Memory map
+    - BIOS
+    - Interrupts
+    - Oscillators & Timers
+    - I/O ports & protocols ?
+    - LCD Driver / PRC
+    - Statuses (SLEEP/HALT)
+  - LCD: SED1565* (display driver)
+    - on this page:
+      - Tech specs
+        - dimensions
+        - refresh rate(s)
+        - RAM size
+        - docs links
+    - Commands and how to use them
+  - EEPROM: 24xx64 alike
+    - on this page:
+      - Tech specs
+        - speed
+        - lifespan
+        - size
+    - Protocol ?
+    - Official layout ? (maybe should be higher?)
+  - IR Transceiver: ???
+    - on this page:
+      - Tech specs
+      - Wiring diagram
+  - Speaker: ??? piezo
+    - on this page:
+      - Tech specs
+      - Wiring diagram
+  - Cartridges & port
+    - on this page:
+      - Link to screwdriver
+      - Pinout
+      - Cartridge dimensions
+        - include lock slot dimensions
+      - Cartridge ROM tech specs
+  - Shell
+    - on this page:
+      - Link to screwdriver
+      - Shell dimensions
+        - include strap hole dimensions and positioning
+      - Button dimensions
+        - include offsets for markings
+        - or straight up STL files...
+  - Flash cards
+    - per card
+      - on the page:
+        - Tech specs
+          - size
+          - read/write speeds
+          - port pinout
+      - How to write to it from software
+      - interacting with other features ? (eg on-board RAM)
+- Tools
+  - EPSON toolchain
+    - Compiler suite
+    - other usable tools
+  - Flashers and their supported cards
+  - Historical
+    - PMAS
+    - old C suite
+  - others...
+- Development
+  - How to set up the recommended dev environment
+    - Windows 10+
+      - EPSON tooling
+      - PokeMini
+      - Flasher (optional)
+      - Graphics editing/conversion tools
+      - Audio editing/conversion tools
+      - Code editor
+        - VS Code
+        - Notepad++
+        - others...
+    - Linux
+      - ...
+    - Mac ?
+      - install a Windows VM? lol
+  - EPSON C compiler
+    - Complete beginner's C syntax and concepts
+    - EPSON-specific decorators and pragmas
+    - pm.h
+    - bios.h (TODO)
+    - Tutorials
+      - Hello World walkthru
+      - Overworld RPG engine (basic)
+      - General purpose timers
+      - Producing sound
+      - Reading and writing saves
+      - Making a two-player game
+      - Writing to PokeCard512 and DITTO
+    - Existing libraries
+      - per library
+        - on the page:
+          - Overview
+          - repo link
+          - API reference
+          - List of open-source projects which use it
+  - EPSON assembler
+    - Concepts, syntax, and command overview (just links for ops details)
+    - startup.asm
+    - Tutorials
+      - Hello World walkthru
+      - Exporting subroutines for use in C
+  - PokeMini
+    - Basics
+      - on this page:
+        - where to get
+        - overview of what it comes with
+        - how to run it, associate .min files, etc
+    - Bundled tools
+      - per tool
+        - on the page:
+          - what it's for
+          - how to use
+          - is it obsolete or not?
+          - differences from other versions (PMAS, Programmer's Notepad)
+    - Debugging
+      - on this page:
+        - features
+        - description of each view
+      - Basic concepts of debugging
+      - Tutorials
+        - Find the main loop
+        - Understanding the RAM locations (and using BPs)
+        - Using the debug output system
+        - Challenge: that CTF someone made, with spoilers
+    - .minc format ?
+
