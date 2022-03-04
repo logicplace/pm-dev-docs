@@ -1,134 +1,109 @@
-## S1C88 Overview
+# S1C88V20 Core
 
-**NOTE: WE NEED TO REFACTOR ALL OF THIS TO ACCOMIDATE THE ACTUAL CORE
-USED**
-
-The S1C88 is an 8-bit microcontroller with 16-bit operations (designed by Timex, now Epson). The processor provides numerous addressing modes with a 24-bit addressing bus (with only 21 bits mapped externally).
+The S1C88V20 is an 8-bit microcontroller with 16-bit operations (designed by Timex, now Epson), part of the S1C88 processor family. The processor provides numerous addressing modes with a 24-bit addressing bus. In the PM's case, only 21 bits are mapped externally.
 
 [Epson S1C88 Core manual](http://www.epsondevice.com/webapp/docs_ic/DownloadServlet?id=ID001149)
 
-Additionally, the S1C88 provides the capibility to handle up to 32 hardware enabled interrupts with delayed response capbility. Up to 128 interrupt vectors may be specified, allowing the remaining 96 for BIOS calls.
+Additionally, the S1C88V20 provides the capability to handle up to 32 exception processing vectors with delayed response capability. Up to 128 interrupt vectors may be specified, allowing the remaining 96 for BIOS calls.
 
 The CPU is clocked at 4.00 MHz, although the processor operates on a 4 cycle data access period, leaving the system with a theoretical limit of 1 MIPS.
 
-- [Instruction Set](S1C88_InstructionSet.md "wikilink")
-- [Interrupt Hardware](PM_IRQs.md "wikilink")
+- [Instruction Set](S1C88_InstructionSet.md)
+- [Interrupt Vectors](PM_IRQs.md)
 
-## Minx Register Mapping
+## Registers
 
-The Minx operates with a handful of registers. The CPU is an amalgamation of Z80 like paradigms combined with an 8-bit microcontroller like bank system.
+The S1C88V20 operates with a handful of registers. The CPU is an amalgamation of Z80 like paradigms combined with something similar to a typical 8-bit microcontroller bank system.
 
-<table>
-<tbody>
-<tr class="odd">
-<td><table>
-<caption><strong>General Purpose Registers</strong></caption>
-<thead>
-<tr class="header">
-<th><p>8 Bit Registers (Low)</p></th>
-<th><p>8 Bit Registers (Hi)</p></th>
-<th><p>16 Bit Register</p></th>
-<th><p>Index Register</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>A</p></td>
-<td><p>B</p></td>
-<td><p>BA</p></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><p>L</p></td>
-<td><p>H</p></td>
-<td><p>HL</p></td>
-<td><p>I</p></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><p>N</p></td>
-<td></td>
-<td><p>I</p></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td><p>X</p></td>
-<td><p>Xi</p></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td><p>Y</p></td>
-<td><p>Yi</p></td>
-</tr>
-</tbody>
-</table></td>
-<td><p>  </p></td>
-<td><table>
-<caption><strong>Fixed Function Registers</strong></caption>
-<thead>
-<tr class="header">
-<th><p>Register</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>PC</p></td>
-<td><p>Program Cursor</p></td>
-</tr>
-<tr class="even">
-<td><p>V</p></td>
-<td><p>PC Bank Register</p></td>
-</tr>
-<tr class="odd">
-<td><p>U</p></td>
-<td><p>V Delay Register</p></td>
-</tr>
-<tr class="even">
-<td><p>SP</p></td>
-<td><p>Stack Pointer</p></td>
-</tr>
-<tr class="odd">
-<td><p>F</p></td>
-<td><p>Flag Register</p></td>
-</tr>
-<tr class="even">
-<td><p>E</p></td>
-<td><p>Exception Register</p></td>
-</tr>
-</tbody>
-</table></td>
-</tr>
-</tbody>
-</table>
+Here, _#hh_ and _#ll_ are immediate data used for addressing operations. _00_ is a fixed zero value and blank means the option is not available. Not having a page register means there is no method of using it for indirectly addressing data.
 
-Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has it's [most significant bit](most_significant_bit.md "wikilink") set, the register V takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, V is "delayed" by the means of register U. After each branch instruction, the value of U is copied to register V implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
+| Page | 16-bit | 8-bit Hi | 8-bit Lo | Description                   |
+|:----:|:------:|:--------:|:--------:| ----------------------------- |
+|      | `BA`   | `B`      | `A`      | Data register                 |
+| `EP` | `HL`   | `H`      | `L`      | Index or data register        |
+| `EP` |        | `BR`     | _#ll_    | Base register                 |
+| `EP` |        | _#hh_    | _#ll_    | Absolute addressing           |
+| `XP` | `IX`   |          |          | Index register                |
+| `YP` | `IY`   |          |          | Index register                |
+| `CB` | `PC`   |          |          | Code bank and program counter |
+| `NB` |        |          |          | New code bank                 |
+| _00_ | `SP`   |          |          | Stack pointer                 |
+|      |        |          | `SC`     | System condition flags        |
+|      |        |          | `CC`     | Custom condition flags        |
 
-The Minx also provides additional facilities to access 24 bit addresses using registers. X and Y both provide 24 bit addresses using the Xi and Yi register as their upper 8 bits.
+### BA pair register
 
-## Flag and Exception Register
+This is a general purpose data register which decomposes into the accumulator, A, and B. This register is most frequently used in arithmetic and data transfer. It cannot be used for indirect addressing.
 
-| Bit | Flag                                       | F. Mne. | Exception | E. Mne. |
-| --- | ------------------------------------------ | ------- | --------- | ------- |
-| 0   | Zero                                       | Z       | ??        | EX0     |
-| 1   | Carry                                      | C       | ??        | EX1     |
-| 2   | Overflow                                   | O       | ??        | EX2     |
-| 3   | Sign                                       | S       | ??        | EX3     |
-| 4   | Binary Coded Decimal Mode (8-bit add\\sub) | BCD     |           |         |
-| 5   | Low-Mask Mode (8-bit add\\sub)             | NIBBLE  |           |         |
-| 6   | Interrupt Disable                          | ID      |           |         |
-| 7   | Interrupt Branch                           | IB      |           |         |
+### HL pair register
 
-**Flag Mapping**
+This is a general purpose indexing register which decomposes into the general purpose data registers H and L. L in particular as some special uses, such as acting as an offset in indirect addressing as well as its use in the MLT operation.
 
-While the F register can, in some cases, be treated as a general purpose 8-bit register, the exception register however is not directly accessible by any conventional means. It is also to be noted that the exception trapping needs to be "enabled" by some means we've not discovered yet. Division by zero causes the system to hard lock, and the existence of this register is only known through the reverse engineering of Pokemon Channel's internal emulator. The lower 4 bits of both registers are used for branch conditions and carry chaining for arithmetic. The upper 4 bits are "control" registers.
+### BR register
 
-## The I register
+BR-based addressing is most useful for accessing register memory quickly. BR provides the mid byte of a 24-bit addressing mode, and the _#ll_ is an 8-bit immediate. For example, `[BR+8Ah]` would point to $208A (VPU_CNT) if BR = 20h and EP = 00h. It is rare to see BR with any value other than 20h, but it is not entirely out of the question to change it.
 
-Unlike X and Y, the upper 8 bits of the remaining addressing modes are not unique. The register I provides a bank extension to the these remaining 24 bit accesses: \[HL\], \[I+$nnnn\], and \[N+$nn\]. It is generally good practice to maintain I as $00 unless otherwise necessary.
+### IX and IY registers
 
-## The N indexed mode
+These are general-purpose registers intended for indirect addressing. They use XP and YP as their page registers, respectively.
 
-The N Indexed mode is most useful for accessing register memory quickly. N provides the mid byte of a 24 bit addressing mode, and the $nn is an 8-bit immediate. In example. \[N+$8A\] would point to $208A (VPU_CNT) if N = $20 and I = $00. It is rare to see N with any value other than $20, but it is not entirely out of the question to see it change.
+### Page registers
+
+In order to access 24-bit addresses using registers, separate page registers are available. IX and IY both provide 24-bit addresses using the XP and YP registers, respectively, as their upper 8 bits. HL, BR, and absolute addressing use the Expand Page register, EP, for selecting the page. It is generally good practice to maintain BR as 00h unless otherwise necessary.
+
+### PC register
+
+Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](Glossary.md#most-significant-bit) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
+
+### SP register
+
+The stack pointer, as the name implies, points to the top of the stack. It may point anywhere between $1EFF and $1FFF (the bottom of the RAM). The stack expands upwards from the bottom and the heap refers to whatever space is above SP, that is, the portion of the potential stack space which is not currently allocated by the stack.
+
+### SC and CC registers
+
+| Bit | SC | Description       | CC | Description |
+| --- | -- | ----------------- | -- | ----------- |
+| 0   | Z  | Zero              | F0 | Div by 0*   |
+| 1   | C  | Carry             | F1 | ??          |
+| 2   | V  | Overflow          | F2 | ??          |
+| 3   | N  | Negative          | F3 | ??          |
+| 4   | D  | Decimal mode      |    |             |
+| 5   | U  | Unpack mode       |    |             |
+| 6   | I0 | Interrupt Disable |    |             |
+| 7   | I1 | Interrupt Branch  |    |             |
+
+While the SC register can, in some cases, be treated as a general purpose 8-bit register, the exception register however is not directly accessible by any conventional means. It is also to be noted that the exception trapping needs to be "enabled" by some means we've not discovered yet.
+
+Division by zero causes the physical system to hard lock, but it is available in Pokemon Channel's emulator.
+
+The lower 4 bits of both registers are used for branch conditions and C is used for carry chaining in certain arithmetic operations. The upper 4 bits are control certain functionality.
+
+While the below sections describe some generalities, not all operations will affect or use all flags. Check each operation's documentation for how it uses them.
+
+#### Zero flag
+
+If some arithmetic operation results in a 0, this flag is set to 1; otherwise, it's reset to 0. For example, if A=10 and we perform the operation `cp A,10` then Z=1, because 10 minus 10 is 0.
+
+#### Carry flag
+
+The carry flag has a different function for each arithmetic operation. See each one to understand how it works. For CP, the operation for which conditional jumps are most often used, carry is set when the signed result of the subtraction results in a negative number. That is, in `cp A,B` when A is less than B.
+
+#### Overflow flag
+
+The overflow flag is set when the signed value overflows, that is, loops around. For 8-bit registers this means if you subtract from -128, causing it to underflow back to (or past) 127; or if you add to 127 causing it to overflow the other way. For 16-bit registers this range is -32768~32767.
+
+#### Negative flag
+
+For most operations, this is a copy of the [most significant bit](Glossary.md#most-significant-bit), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
+
+#### Decimal mode
+
+For operations which support this mode, it causes the operation to treat the operands as being in Binary Coded Decimal form. The exact mechanics of which are described on each supporting operator's documentation.
+
+In this mode, only Z and C flags can be set. V and N are always reset to 0. 
+
+#### Unpack mode
+
+For operations which support this mode, it essentially reduces the register from being a signed 8-bit register to a signed 4-bit register. After performing the operation, the upper 4 bits are set to 0.
+
+Setting flags works the same as normal, except that they too only consider the lower 4 bits.
