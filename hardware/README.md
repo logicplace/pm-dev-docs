@@ -1,4 +1,4 @@
-## Pokémon mini Hardware Overview
+# Pokémon mini Hardware Documentation
 
 The Pokémon mini is a hand held created by Nintendo R\&D3 around 1999. It is based around the Epson S1C88 Core (then Timex/Seiko), and derives most peripherals from this system.
 
@@ -9,7 +9,7 @@ The machine has a 4 KiB on-board OTP BIOS, 4 KiB of internal RAM (shared with th
   - [The Memory Map](PM_Memory.md)
     - [The Hardware Registers](PM_Registers.md)
   - [Internal BIOS](PM_Bios.md)
-  - [Exception Processing Vectors](PM_IRQs.md)
+  - [Interrupt Vectors](PM_IRQs.md)
   - [Watchdog Timer](PM_Second_Counter.md)
   - [Clock Timer](256Hz_Timer.md)
   - [Programmable Timers](Timers.md)
