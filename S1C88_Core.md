@@ -69,8 +69,8 @@ The stack pointer, as the name implies, points to the top of the stack. It may p
 | 3   | N  | Negative          | F3 | ??          |
 | 4   | D  | Decimal mode      |    |             |
 | 5   | U  | Unpack mode       |    |             |
-| 6   | I0 | Interrupt Disable |    |             |
-| 7   | I1 | Interrupt Branch  |    |             |
+| 6   | I0 | Interrupt bit 0   |    |             |
+| 7   | I1 | Interrupt bit 1   |    |             |
 
 While the SC register can, in some cases, be treated as a general purpose 8-bit register, the exception register however is not directly accessible by any conventional means. It is also to be noted that the exception trapping needs to be "enabled" by some means we've not discovered yet.
 
@@ -107,3 +107,11 @@ In this mode, only Z and C flags can be set. V and N are always reset to 0.
 For operations which support this mode, it essentially reduces the register from being a signed 8-bit register to a signed 4-bit register. After performing the operation, the upper 4 bits are set to 0.
 
 Setting flags works the same as normal, except that they too only consider the lower 4 bits.
+
+#### Interrupt flags
+
+These two bits describe the minimum priority level for interrupts to fire. Essentially, this compares the values you set to the interrupt priority registers (or a value of 3 for non-maskable interrupts) to this value. If the priority is strictly greater than this value, it will fire.
+
+After an interrupt fires, this flag will represent the priority of the fired interrupt and must be reset.
+
+For more information, see the [Interrupt Vectors](PM_IRQs.md) page.
