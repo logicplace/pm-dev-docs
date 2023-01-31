@@ -47,7 +47,7 @@ Register H".
 ```
 ; A = 0x02
 ; HL = 0x0007
-DIV HL, A
+DIV
 ; L = 0x03 (0x0007 / 0x02 = 0x03 (with remainder 0x01))
 ; H = 0x01 (Remainder)
 ; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=0)
@@ -56,7 +56,7 @@ DIV HL, A
 ```
 ; A = 0x00
 ; HL = 0x0007
-DIV HL, A
+DIV
 ;          (0x0007 / 0x00 = Division by Zero)
 ; HL = 0x????  (Unpredictable result!?)
 ; SC = (Zero=?):(Carry=?):(Overflow=?):(Negative=?)
@@ -66,7 +66,7 @@ DIV HL, A
 ```
 ; A = 0x02
 ; HL = 0xFFFD
-DIV HL, A
+DIV
 ;          (0xFFFD / 0x02 = 0x7FFE (with rest 0x01))
 ; HL = 0xFFFD  (Results are unchanged since Quotient exceed 8-bits range)
 ; SC = (Zero=0):(Carry=0):(Overflow=1):(Negative=1)

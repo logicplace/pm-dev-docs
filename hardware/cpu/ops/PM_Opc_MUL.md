@@ -1,13 +1,13 @@
-# MUL = Multiply
+# MLT = Multiply
 
 | Hex   | Mnemonic | Cycles |
 | ----- | -------- | ------ |
-| CE D8 | MUL      | 48     |
+| CE D8 | MLT      | 48     |
 
 ## Execute
 
 ```
-; MUL L, A
+; MLT
 ;
 ; L is the Factor/Multiplicand
 ; A is the Multiplier
@@ -33,7 +33,7 @@ placed in "16-bits Register HL".
 ```
 ; A = 0x03
 ; L = 0x03
-MUL L, A
+MLT
 ; A = 0x03
 ; HL = 0x0009 (0x03 * 0x03 = 0x0009)
 ; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=0)
@@ -42,7 +42,7 @@ MUL L, A
 ```
 ; A = 0x00
 ; L = 0x03
-MUL L, A
+MLT
 ; A = 0x00
 ; HL = 0x0000 (0x03 * 0x00 = 0x0000)
 ; SC = (Zero=1):(Carry=0):(Overflow=0):(Negative=0)
@@ -51,7 +51,7 @@ MUL L, A
 ```
 ; A = 0xFF
 ; L = 0xFF
-MUL L, A
+MLT
 ; A = 0xFF
 ; HL = 0xFE01 (0xFF * 0xFF = 0xFE01)
 ; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=1)
