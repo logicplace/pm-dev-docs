@@ -38,9 +38,9 @@ The priority, enable, and strobe registers are defined in the [Registers](PM_Reg
 
 | Address   | Vector | Software | Priority register | Enable register | Hardware strobe | Description                                |
 | --------- | ------ | -------- | ----------------- | --------------- | --------------- | ------------------------------------------ |
-| [$00][00] | $009A  |          <td colspan="3">Non-Maskable</td>                       | System Start-up / System Reset             |
-| [$02][02] | $00AB  |          <td colspan="3">Non-Maskable</td>                       | Unused                                     |
-| [$04][04] | $00AB  |          <td colspan="3">Non-Maskable</td>                       | Unused                                     |
+| [$00][00] | $009A  |          | Non-Maskable                                        ||| System Start-up / System Reset             |
+| [$02][02] | $00AB  |          | Non-Maskable                                        ||| Divide by zero ?                           |
+| [$04][04] | $00AB  |          | Non-Maskable                                        ||| Watchdog timer ?                           |
 | [$06][06] | $01CF  | $2108    | $20\[7..6]        | $23\[7]         | $27\[7]         | [PRC Copy Complete][1]                     |
 | [$08][08] | $01E0  | $210e    | $20\[7..6]        | $23\[6]         | $27\[6]         | [PRC Frame Divider Overflow][1]            |
 | [$0A][0A] | $01F1  | $2114    | $20\[5..4]        | $23\[5]         | $27\[5]         | [Timer2 Upper-8 Underflow][2]              |
@@ -73,6 +73,38 @@ The priority, enable, and strobe registers are defined in the [Registers](PM_Reg
 
 [1]: PM_PRC.md
 [2]: Timers.md
+[00]: #exception-00
+[02]: #exception-02--04
+[04]: #exception-02--04
+[06]: #exception-06
+[08]: #exception-08
+[0A]: #exception-0A
+[0C]: #exception-0C
+[0E]: #exception-0E
+[10]: #exception-10
+[12]: #exception-12
+[14]: #exception-14
+[16]: #exception-16
+[18]: #exception-18
+[1A]: #exception-1A
+[1C]: #exception-1C
+[1E]: #exception-1E
+[20]: #exception-20
+[22]: #exception-22
+[24]: #exception-24
+[26]: #exception-26
+[28]: #exception-28
+[2A]: #exception-2A
+[2C]: #exception-2C
+[2E]: #exception-2E
+[30]: #exception-30
+[32]: #exception-32
+[34]: #exception-34
+[36]: #exception-36
+[38]: #exception-38
+[3A]: #exception-3A
+[3C]: #exception-3C
+[3E]: #exception-3E
 
 ### Software interrupts
 
@@ -125,6 +157,52 @@ These are interrupts you can call manually with `JP [kk]` where `kk` is the addr
 | [$94][94] | $053A  | Nintendo dev card: Select flash game                          |
 | [$96][96] | $0000  | Nintendo SDK                                                  |
 | [$98][98] | $0BBD  | IR pulse                                                      |
+
+[40]: #software-interrupt-40
+[42]: #software-interrupt-42
+[44]: #software-interrupt-44
+[46]: #software-interrupt-46
+[48]: #software-interrupt-48
+[4A]: #software-interrupt-4A
+[4C]: #software-interrupt-4C
+[4E]: #software-interrupt-4E
+[50]: #software-interrupt-50
+[52]: #software-interrupt-52
+[54]: #software-interrupt-54
+[56]: #software-interrupt-56
+[58]: #software-interrupt-58
+[5A]: #software-interrupt-5A
+[5C]: #software-interrupt-5C
+[5E]: #software-interrupt-5E
+[60]: #software-interrupt-60
+[62]: #software-interrupt-62
+[64]: #software-interrupt-64
+[66]: #software-interrupt-66
+[68]: #software-interrupt-68
+[6A]: #software-interrupt-6A
+[6C]: #software-interrupt-6C
+[6E]: #software-interrupt-6E
+[70]: #software-interrupt-70
+[72]: #software-interrupt-72
+[74]: #software-interrupt-74
+[76]: #software-interrupt-76
+[78]: #software-interrupt-78
+[7A]: #software-interrupt-7A
+[7C]: #software-interrupt-7C
+[7E]: #software-interrupt-7E
+[80]: #software-interrupt-80
+[82]: #software-interrupt-82
+[84]: #software-interrupt-84
+[86]: #software-interrupt-86
+[88]: #software-interrupt-88
+[8A]: #software-interrupt-8A
+[8C]: #software-interrupt-8C
+[8E]: #software-interrupt-8E
+[90]: #software-interrupt-90
+[92]: #software-interrupt-92
+[94]: #software-interrupt-94
+[96]: #software-interrupt-96
+[98]: #software-interrupt-98
 
 ## Interrupt list
 
@@ -240,7 +318,7 @@ def cold_reset():
   warm_reset()
 ```
 
-### Exception $02
+### Exception $02 / $04
 
 **Warm reset**
 
@@ -281,6 +359,42 @@ def warm_reset():
 
   # TODO: `movb    [nn+$80],$02	;Enable Tile Map` and below
 ```
+
+### Exception $06
+
+**PRC Copy Complete**
+
+### Exception $08
+
+**PRC Frame Divider Overflow**
+
+### Exception $0A
+### Exception $0C
+### Exception $0E
+### Exception $10
+### Exception $12
+### Exception $14
+### Exception $16
+### Exception $18
+### Exception $1A
+### Exception $1C
+### Exception $1E
+### Exception $20
+### Exception $22
+### Exception $24
+### Exception $26
+### Exception $28
+### Exception $2A
+### Exception $2C
+### Exception $2E
+### Exception $30
+### Exception $32
+### Exception $34
+### Exception $36
+### Exception $38
+### Exception $3A
+### Exception $3C
+### Exception $3E
 
 ### Software interrupt $48
 
