@@ -22,8 +22,8 @@ In the following lists, we use these symbols:
 | Symbol             | Meaning                                       |
 |:------------------:| --------------------------------------------- |
 | `r`                | 8-bit register: e.g. A, B, L, or H            |
-| `rp`               | 16-bit register: e.g. BA, HL, IX, IY, or SP   |
-| `er`               | Indexing register: NB, EP, XP, or YP          |
+| `rp`               | 16-bit register: e.g. BA, HL, X1, X2, or SP   |
+| `er`               | Indexing register: U, I, XI, or YI            |
 | `nn` or `pp`       | Unsigned 8-bit immediate data                 |
 | `dd` or `rr`       | Signed 8-bit immediate (offset, usually)      |
 | `mmnn` or `hhll`   | Unsigned 16-bit immediate                     |
@@ -49,8 +49,8 @@ Additionally, the CC register cannot be directly accessed by software and can on
 | A             | A              | data register A, the Accumulator           |
 | B             | B              | data register B                            |
 | BA            | BA             | BA pair register                           |
-| H             | H              | data register H                            |
 | L             | L              | data register L                            |
+| H             | H              | data register H                            |
 | HL            | HL             | index register HL                          |
 | X or X1       | IX             | Index register IX                          |
 | Y or X2       | IY             | Index register IY                          |
@@ -94,7 +94,7 @@ The True and False columns which follow are the literals used in branch conditio
 
 ### Short list
 
-A list with only the differences, combining aliases into one row and ignoring b/w suffixed ops.
+A list with only the differences, combining aliases into one row and ignoring b/w (Byte/Word) suffixed ops.
 
 | PMAS mnemonic           | S1C88 mnemonic |
 | ----------------------- | -------------- |
