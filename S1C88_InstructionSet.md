@@ -26,7 +26,7 @@ For a list of flags in SC and CC, see [here](S1C88_Core.md#flags-mapping).
 | `bb`               | 8-bit immediate set to NB (or CB)          |
 | `dd`               | Signed 8-bit displacement (offset)         |
 | `rr`               | 8-bit relative offset in jumps and calls   |
-| `kk`               | Lower 8 buts of a vector address           |
+| `kk`               | Lower 8 bits of a vector address           |
 | `mmnn`             | Unsigned 16-bit immediate data             |
 | `hhll`             | Unsigned 16-bit absolute address           |
 | `qqrr`             | Signed 16-bit relative offset              |
@@ -418,14 +418,14 @@ If U has `*`, this operation permits unpack operations.
 | [LD][=] BR,A            | CE,C2        | BR ← A           |      2 |     2 |        `– – – – – – – –` |
 | [LD][=] SC,#nn          | 9F,nn        | SC ← nn          |      3 |     2 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 | [LD][=] SC,A            | CE,C3        | SC ← A           |      3 |     2 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
-| [LD][=] NB,#bb          | CE,C4,bb     | NB ← bb          |      3 |     3 |        `– – – – – – – –` |
-| [LD][=] NB,A            | CE,CC        | NB ← A           |      4 |     2 |        `– – – – – – – –` |
-| [LD][=] EP,#pp          | CE,C5,pp     | EP ← pp          |      2 |     3 |        `– – – – – – – –` |
-| [LD][=] EP,A            | CE,CD        | EP ← A           |      3 |     2 |        `– – – – – – – –` |
-| [LD][=] XP,#pp          | CE,C6,pp     | XP ← pp          |      2 |     3 |        `– – – – – – – –` |
-| [LD][=] XP,A            | CE,CE        | XP ← A           |      3 |     2 |        `– – – – – – – –` |
-| [LD][=] YP,#pp          | CE,C7,pp     | YP ← pp          |      2 |     3 |        `– – – – – – – –` |
-| [LD][=] YP,A            | CE,CF        | YP ← A           |      3 |     2 |        `– – – – – – – –` |
+| [LD][=] NB,#bb          | CE,C4,bb     | NB ← bb          |      4 |     3 |        `– – – – – – – –` |
+| [LD][=] NB,A            | CE,CC        | NB ← A           |      3 |     2 |        `– – – – – – – –` |
+| [LD][=] EP,#pp          | CE,C5,pp     | EP ← pp          |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] EP,A            | CE,CD        | EP ← A           |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] XP,#pp          | CE,C6,pp     | XP ← pp          |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] XP,A            | CE,CE        | XP ← A           |      2 |     2 |        `– – – – – – – –` |
+| [LD][=] YP,#pp          | CE,C7,pp     | YP ← pp          |      3 |     3 |        `– – – – – – – –` |
+| [LD][=] YP,A            | CE,CF        | YP ← A           |      2 |     2 |        `– – – – – – – –` |
 | [LD][=] \[BR:ll],A      | 78,ll        | \[BR:ll] ← A     |      3 |     2 |        `– – – – – – – –` |
 | [LD][=] \[BR:ll],B      | 79,ll        | \[BR:ll] ← B     |      3 |     2 |        `– – – – – – – –` |
 | [LD][=] \[BR:ll],L      | 7A,ll        | \[BR:ll] ← L     |      3 |     2 |        `– – – – – – – –` |
@@ -1032,8 +1032,8 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 
 | Mnemonic        | Machine Code | Operation             | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | --------------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
-| [JP][jp] HL     | F4           | PC ← HL; CB ← NB      |      2 | 1  |
-| [JP][jp] \[kk]  | FD,kk        | PC ← \[00kk]; CB ← NB |      4 | 2  |
+| [JP][jp] HL     | F4           | PC ← HL; CB ← NB      |      2 |     1 |        `– – – – – – – –` |
+| [JP][jp] \[kk]  | FD,kk        | PC ← \[00kk]; CB ← NB |      4 |     2 |        `– – – – – – – –` |
 
 [jp]: S1C88_JP.md "wikilink"
 
