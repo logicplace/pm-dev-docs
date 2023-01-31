@@ -85,7 +85,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADD][+] \[HL],\[IX]  | CE,06        | \[HL] ← \[HL] + \[IX] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [ADD][+] \[HL],\[IY]  | CE,07        | \[HL] ← \[HL] + \[IY] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[+]: S1C88_ADD.md "wikilink"
+[+]: ops/S1C88_ADD8.md
 
 ### **ADC**: Addition with carry
 
@@ -108,7 +108,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADC][+c] \[HL],\[IX]  | CE,0E        | \[HL] ← \[HL] + \[IX] + C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [ADC][+c] \[HL],\[IY]  | CE,0F        | \[HL] ← \[HL] + \[IY] + C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[+c]: S1C88_ADC.md "wikilink"
+[+c]: ops/S1C88_ADC8.md
 
 ### **SUB**: Subtraction
 
@@ -131,7 +131,7 @@ If U has `*`, this operation permits unpack operations.
 | [SUB][-] \[HL],\[IX]  | CE,16        | \[HL] ← \[HL] - \[IX] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [SUB][-] \[HL],\[IY]  | CE,17        | \[HL] ← \[HL] - \[IY] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[-]: S1C88_SUB.md "wikilink"
+[-]: ops/S1C88_SUB8.md
 
 ### **SBC**: Subtraction with carry
 
@@ -154,7 +154,7 @@ If U has `*`, this operation permits unpack operations.
 | [SBC][-c] \[HL],\[IX]  | CE,1E        | \[HL] ← \[HL] - \[IX] - C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [SBC][-c] \[HL],\[IY]  | CE,1F        | \[HL] ← \[HL] - \[IY] - C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[-c]: S1C88_SBC.md "wikilink"
+[-c]: ops/S1C88_SBC8.md
 
 ### **AND**: Logical product
 
@@ -182,7 +182,7 @@ If U has `*`, this operation permits unpack operations.
 | [AND][&] L,#nn        | CE,B1,nn     | L ← L & nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [AND][&] SC,#nn       | 9C,nn        | SC ← SC & nn             |      3 |     2 |        `↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓` |
 
-[&]: S1C88_AND.md "wikilink"
+[&]: ops/S1C88_AND.md
 
 ### **OR**: Logical sum
 
@@ -210,7 +210,7 @@ If U has `*`, this operation permits unpack operations.
 | [OR][or] L,#nn         | CE,B5,nn     | L ← L \| nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [OR][or] SC,#nn        | 9D,nn        | SC ← SC \| nn             |      3 |     2 |        `↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑` |
 
-[or]: S1C88_OR.md "wikilink"
+[or]: ops/S1C88_OR.md
 
 ### **XOR**: Exclusive OR
 
@@ -238,7 +238,7 @@ If U has `*`, this operation permits unpack operations.
 | [XOR][^] L,#nn         | CE,B9,nn     | L ← L ^ nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [XOR][^] SC,#nn        | 9E,nn        | SC ← SC ^ nn             |      3 |     2 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 
-[^]: S1C88_XOR.md "wikilink"
+[^]: ops/S1C88_XOR.md
 
 ### **CP**: Comparison
 
@@ -266,7 +266,7 @@ If U has `*`, this operation permits unpack operations.
 | [CP][cp] \[HL],\[IY]   | CE,37        | \[HL] - \[IY] |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [CP][cp] L,#nn         | CE,BD,nn     | L - nn        |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[cp]: S1C88_CP.md "wikilink"
+[cp]: ops/S1C88_CP8.md
 
 ### **BIT**: Bit test
 
@@ -278,7 +278,7 @@ If U has `*`, this operation permits unpack operations.
 | [BIT][bt] \[HL],#nn     | 95,nn        | \[HL] & nn    |      3 |     2 |        `– – – – ↕ – – ↕` |
 | [BIT][bt] \[BR:ll],#nn  | DC,ll,nn     | \[BR:ll] & nn |      4 |     3 |        `– – – – ↕ – – ↕` |
 
-[bt]: S1C88_BIT.md "wikilink"
+[bt]: ops/S1C88_BIT.md
 
 ### **INC**: Increment by 1
 
@@ -292,7 +292,7 @@ If U has `*`, this operation permits unpack operations.
 | [INC][++] L         | 82           | L ← L + 1               |      2 |     1 |        `– – – – – – – ↕` |
 | [INC][++] BR        | 84           | BR ← BR + 1             |      2 |     1 |        `– – – – – – – ↕` |
 
-[++]: S1C88_INC.md "wikilink"
+[++]: ops/S1C88_INC.md
 
 ### **DEC**: Decrement by 1
 
@@ -306,7 +306,7 @@ If U has `*`, this operation permits unpack operations.
 | [DEC][--] L         | 8A           | L ← L - 1               |      2 |     1 |        `– – – – – – – ↕` |
 | [DEC][--] BR        | 8C           | BR ← BR - 1             |      2 |     1 |        `– – – – – – – ↕` |
 
-[--]: S1C88_DEC.md "wikilink"
+[--]: ops/S1C88_DEC.md
 
 ### **MLT**: Multiplication
 
@@ -314,7 +314,7 @@ If U has `*`, this operation permits unpack operations.
 | --------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
 | [MLT][*]  | CE,D8        | HL ← L * A            |     12 |     2 |        `– – – – ↕ 0 0 ↕` |
 
-[*]: S1C88_MLT.md "wikilink"
+[*]: ops/S1C88_MLT.md
 
 ### **DIV**: Division
 
@@ -322,7 +322,7 @@ If U has `*`, this operation permits unpack operations.
 | --------- | ------------ | ---------------------- | ------:| -----:|:------------------------:|
 | [DIV][/]  | CE,D9        | L ← HL / A, H ← HL % A |     12 |     2 |        `– – – – ↕ ↕ 0 ↕` |
 
-[/]: S1C88_DIV.md "wikilink"
+[/]: ops/S1C88_DIV.md
 
 ### **CPL**: Complement of 1
 
@@ -333,7 +333,7 @@ If U has `*`, this operation permits unpack operations.
 | [CPL][~] \[HL]     | CE,A3        | \[HL] ← ~\[HL]       |      4 |     2 |        `– – – – ↕ – – ↕` |
 | [CPL][~] \[BR:ll]  | CE,A2,ll     | \[BR:ll] ← ~\[BR:ll] |      5 |     3 |        `– – – – ↕ – – ↕` |
 
-[~]: S1C88_CPL.md "wikilink"
+[~]: ops/S1C88_CPL.md
 
 ### **NEG**: Complement of 2
 
@@ -344,7 +344,7 @@ If U has `*`, this operation permits unpack operations.
 | [NEG][ng] \[HL]     | CE,A7        | \[HL] ← -\[HL]       |      4 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [NEG][ng] \[BR:ll]  | CE,A6,ll     | \[BR:ll] ← -\[BR:ll] |      5 |     3 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[ng]: S1C88_NEG.md "wikilink"
+[ng]: ops/S1C88_NEG.md
 
 ## 8-bit transfer
 
@@ -494,7 +494,7 @@ If U has `*`, this operation permits unpack operations.
 | [LD][=] \[IY+L],L       | CE,57        | \[IY+L] ← L      |      4 |     2 |        `– – – – – – – –` |
 | [LD][=] \[IY+L],H       | CE,5F        | \[IY+L] ← H      |      4 |     2 |        `– – – – – – – –` |
 
-[=]: S1C88_LD.md "wikilink"
+[=]: ops/S1C88_LD8.md
 
 ### **EX**: Byte exchange
 
@@ -503,7 +503,7 @@ If U has `*`, this operation permits unpack operations.
 | [EX][ex] A,B      | CC           | A ↔ B     |      2 |     1 |        `– – – – – – – –` |
 | [EX][ex] A,\[HL]  | CD           | A ↔ \[HL] |      3 |     1 |        `– – – – – – – –` |
 
-[ex]: S1C88_EX.md "wikilink"
+[ex]: ops/S1C88_EX.md
 
 ### **SWAP**: Nibble exchange
 
@@ -512,7 +512,7 @@ If U has `*`, this operation permits unpack operations.
 | [SWAP][sw] A      | F6           | ![swap nibbles in A][sw1]    |      2 |     1 |        `– – – – – – – –` |
 | [SWAP][sw] \[HL]  | F7           | ![swap nibbles in [HL]][sw2] |      3 |     1 |        `– – – – – – – –` |
 
-[sw]: S1C88_SWAP.md "wikilink"
+[sw]: ops/S1C88_SWAP.md
 [sw1]: /rsc/op-swap-a.svg "swap nibbles in A"
 [sw2]: /rsc/op-swap-phl.svg "swap nibbles in \[HL\]"
 
@@ -527,7 +527,7 @@ If U has `*`, this operation permits unpack operations.
 | [RL][(] \[HL]     | CE,93        | ![rotate [HL] left thru C][(3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RL][(] \[BR:ll]  | CE,92,ll     | ![rotate [BR:ll] left thru C][(4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[(]: S1C88_RL.md "wikilink"
+[(]: ops/S1C88_RL.md
 [(1]: /rsc/op-rl-a.svg "rotate A left thru C"
 [(2]: /rsc/op-rl-b.svg "rotate B left thru C"
 [(3]: /rsc/op-rl-phl.svg "rotate [HL] left thru C"
@@ -542,7 +542,7 @@ If U has `*`, this operation permits unpack operations.
 | [RLC][(c] \[HL]     | CE,97        | ![rotate [HL] left and set C][(c3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RLC][(c] \[BR:ll]  | CE,96,ll     | ![rotate [BR:ll] left and set C][(c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[(c]: S1C88_RLC.md "wikilink"
+[(c]: ops/S1C88_RLC.md
 [(c1]: /rsc/op-rlc-a.svg "rotate A left and set C"
 [(c2]: /rsc/op-rlc-b.svg "rotate B left and set C"
 [(c3]: /rsc/op-rlc-phl.svg "rotate [HL] left and set C"
@@ -557,7 +557,7 @@ If U has `*`, this operation permits unpack operations.
 | [RR][)] \[HL]     | CE,9B        | ![rotate [HL] right thru C][)3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RR][)] \[BR:ll]  | CE,9A,ll     | ![rotate [BR:ll] right thru C][)4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[)]: S1C88_RR.md "wikilink"
+[)]: ops/S1C88_RR.md
 [)1]: /rsc/op-rr-a.svg "rotate A right thru C"
 [)2]: /rsc/op-rr-b.svg "rotate B right thru C"
 [)3]: /rsc/op-rr-phl.svg "rotate [HL] right thru C"
@@ -572,7 +572,7 @@ If U has `*`, this operation permits unpack operations.
 | [RRC][)c] \[HL]     | CE,9F        | ![rotate [HL] right and set C][)c3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RRC][)c] \[BR:ll]  | CE,9E,ll     | ![rotate [BR:ll] right and set C][)c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[)c]: S1C88_RRC.md "wikilink"
+[)c]: ops/S1C88_RRC.md
 [)c1]: /rsc/op-rrc-a.svg "rotate A right and set C"
 [)c2]: /rsc/op-rrc-b.svg "rotate B right and set C"
 [)c3]: /rsc/op-rrc-phl.svg "rotate [HL] right and set C"
@@ -587,7 +587,7 @@ If U has `*`, this operation permits unpack operations.
 | [SLA][«<] \[HL]     | CE,83        | ![arithmetic shift [HL] left][«<3]    |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [SLA][«<] \[BR:ll]  | CE,82,ll     | ![arithmetic shift [BR:ll] left][«<4] |      5 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[«<]: S1C88_SLA.md "wikilink"
+[«<]: ops/S1C88_SLA.md
 [«<1]: /rsc/op-sll-a.svg "arithmetic shift A left"
 [«<2]: /rsc/op-sll-b.svg "arithmetic shift B left"
 [«<3]: /rsc/op-sll-phl.svg "arithmetic shift [HL] left"
@@ -602,7 +602,7 @@ If U has `*`, this operation permits unpack operations.
 | [SLL][«] \[HL]     | CE,87        | ![logical shift [HL] left][«3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [SLL][«] \[BR:ll]  | CE,86,ll     | ![logical shift [BR:ll] left][«4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[«]: S1C88_SLL.md "wikilink"
+[«]: ops/S1C88_SLL.md
 [«1]: /rsc/op-sll-a.svg "logical shift A left"
 [«2]: /rsc/op-sll-b.svg "logical shift B left"
 [«3]: /rsc/op-sll-phl.svg "logical shift [HL] left"
@@ -617,7 +617,7 @@ If U has `*`, this operation permits unpack operations.
 | [SRA][»>] \[HL]     | CE,8B        | ![arithmetic shift [HL] right][»>3]    |      4 |     2 |        `– – – – ↕ 0 ↕ ↕` |
 | [SRA][»>] \[BR:ll]  | CE,8A,ll     | ![arithmetic shift [BR:ll] right][»>4] |      5 |     3 |        `– – – – ↕ 0 ↕ ↕` |
 
-[»>]: S1C88_SRA.md "wikilink"
+[»>]: ops/S1C88_SRA.md
 [»>1]: /rsc/op-sra-a.svg "arithmetic shift A right"
 [»>2]: /rsc/op-sra-b.svg "arithmetic shift B right"
 [»>3]: /rsc/op-sra-phl.svg "arithmetic shift [HL] right"
@@ -632,7 +632,7 @@ If U has `*`, this operation permits unpack operations.
 | [SRL][»] \[HL]     | CE,8F        | ![logical shift [HL] right][»3]    |      4 |     2 |        `– – – – 0 – ↕ ↕` |
 | [SRL][»] \[BR:ll]  | CE,8E,ll     | ![logical shift [BR:ll] right][»4] |      5 |     3 |        `– – – – 0 – ↕ ↕` |
 
-[»]: S1C88_SRL.md "wikilink"
+[»]: ops/S1C88_SRL.md
 [»1]: /rsc/op-srl-a.svg "logical shift A right"
 [»2]: /rsc/op-srl-b.svg "logical shift B right"
 [»3]: /rsc/op-srl-phl.svg "logical shift [HL] right"
@@ -646,7 +646,7 @@ If U has `*`, this operation permits unpack operations.
 | ----------- | ------------ | ----------------------------- | ------:| -----:|:------------------------:|
 | [PACK][pk]  | DE           | ![B and A's LSNs into A][pk1] |      2 |     1 |        `– – – – – – – –` |
 
-[pk]: S1C88_PACK.md "wikilink"
+[pk]: ops/S1C88_PACK.md
 [pk1]: /rsc/op-pack.svg "B and A's least significant nibbles into A"
 
 ### **UPCK**: Unpack
@@ -655,7 +655,7 @@ If U has `*`, this operation permits unpack operations.
 | ----------- | ------------ | --------------------------------------- | ------:| -----:|:------------------------:|
 | [UPCK][up]  | DF           | ![A's nibbles into B and A's LSNs][up1] |      2 |     1 |        `– – – – – – – –` |
 
-[up]: S1C88_UPCK.md "wikilink"
+[up]: ops/S1C88_UPCK.md
 [up1]: /rsc/op-upck.svg "A's nibbles into B and A's least significant nibbles, setting most significant nibbles to 0"
 
 ### **SEP**: Code extension
@@ -664,108 +664,118 @@ If U has `*`, this operation permits unpack operations.
 | ---------- | ------------ | ---------------------------- | ------:| -----:|:------------------------:|
 | [SEP][se]  | CE,A8        | ![sign extend A over B][se1] |      3 |     2 |        `– – – – – – – –` |
 
-[se]: S1C88_SEP.md "wikilink"
+[se]: ops/S1C88_SEP.md
 [se1]: /rsc/op-sep.svg "sign extend A over B"
 
 ## 16-bit arithmetic operation
 
 ### **ADD**: Addition
 
-| Mnemonic           | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------ | ------------ | -------------- | ------:| -----:|:------------------------:|
-| [ADD][+] BA,#mmnn  | C0,nn,mm     | BA ← BA + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] BA,BA     | CF,00        | BA ← BA + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] BA,HL     | CF,01        | BA ← BA + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] BA,IX     | CF,02        | BA ← BA + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] BA,IY     | CF,03        | BA ← BA + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] HL,#mmnn  | C1,nn,mm     | HL ← HL + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] HL,BA     | CF,20        | HL ← HL + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] HL,HL     | CF,21        | HL ← HL + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] HL,IX     | CF,22        | HL ← HL + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] HL,IY     | CF,23        | HL ← HL + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IX,#mmnn  | C2,nn,mm     | IX ← IX + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IX,BA     | CF,40        | IX ← IX + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IX,HL     | CF,41        | IX ← IX + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IY,#mmnn  | C3,nn,mm     | IY ← IY + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IY,BA     | CF,42        | IY ← IY + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] IY,HL     | CF,43        | IY ← IY + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] SP,BA     | CF,44        | SP ← SP + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] SP,HL     | CF,45        | SP ← SP + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADD][+] SP,#mmnn  | CF,68,nn,mm  | SP ← SP + mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| Mnemonic            | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | -------------- | ------:| -----:|:------------------------:|
+| [ADD][+w] BA,#mmnn  | C0,nn,mm     | BA ← BA + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] BA,BA     | CF,00        | BA ← BA + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] BA,HL     | CF,01        | BA ← BA + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] BA,IX     | CF,02        | BA ← BA + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] BA,IY     | CF,03        | BA ← BA + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] HL,#mmnn  | C1,nn,mm     | HL ← HL + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] HL,BA     | CF,20        | HL ← HL + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] HL,HL     | CF,21        | HL ← HL + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] HL,IX     | CF,22        | HL ← HL + IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] HL,IY     | CF,23        | HL ← HL + IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IX,#mmnn  | C2,nn,mm     | IX ← IX + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IX,BA     | CF,40        | IX ← IX + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IX,HL     | CF,41        | IX ← IX + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IY,#mmnn  | C3,nn,mm     | IY ← IY + mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IY,BA     | CF,42        | IY ← IY + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] IY,HL     | CF,43        | IY ← IY + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] SP,BA     | CF,44        | SP ← SP + BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] SP,HL     | CF,45        | SP ← SP + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADD][+w] SP,#mmnn  | CF,68,nn,mm  | SP ← SP + mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+
+[+w]: ops/S1C88_ADD16.md
 
 ### **ADC**: Addition with carry
 
-| Mnemonic            | Machine Code | Operation          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------- | ------------ | ------------------ | ------:| -----:|:------------------------:|
-| [ADC][+c] BA,BA     | CF,04        | BA ← BA + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] BA,HL     | CF,05        | BA ← BA + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] BA,IX     | CF,06        | BA ← BA + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] BA,IY     | CF,07        | BA ← BA + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] BA,#mmnn  | CF,60,nn,mm  | BA ← BA + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] HL,BA     | CF,24        | HL ← HL + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] HL,HL     | CF,25        | HL ← HL + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] HL,IX     | CF,26        | HL ← HL + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] HL,IY     | CF,27        | HL ← HL + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [ADC][+c] HL,#mmnn  | CF,61,nn,mm  | HL ← HL + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| Mnemonic             | Machine Code | Operation          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| -------------------- | ------------ | ------------------ | ------:| -----:|:------------------------:|
+| [ADC][+cw] BA,BA     | CF,04        | BA ← BA + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] BA,HL     | CF,05        | BA ← BA + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] BA,IX     | CF,06        | BA ← BA + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] BA,IY     | CF,07        | BA ← BA + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] BA,#mmnn  | CF,60,nn,mm  | BA ← BA + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] HL,BA     | CF,24        | HL ← HL + BA + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] HL,HL     | CF,25        | HL ← HL + HL + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] HL,IX     | CF,26        | HL ← HL + IX + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] HL,IY     | CF,27        | HL ← HL + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [ADC][+cw] HL,#mmnn  | CF,61,nn,mm  | HL ← HL + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+
+[+cw]: ops/S1C88_ADC16.md
 
 ### **SUB**: Subtraction
 
-| Mnemonic           | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------ | ------------ | -------------- | ------:| -----:|:------------------------:|
-| [SUB][-] BA,BA     | CF,08        | BA ← BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] BA,HL     | CF,09        | BA ← BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] BA,IX     | CF,0A        | BA ← BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] BA,IY     | CF,0B        | BA ← BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] BA,#mmnn  | D0,nn,mm     | BA ← BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] HL,BA     | CF,28        | HL ← HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] HL,HL     | CF,29        | HL ← HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] HL,IX     | CF,2A        | HL ← HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] HL,IY     | CF,2B        | HL ← HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] HL,#mmnn  | D1,nn,mm     | HL ← HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IX,BA     | CF,48        | IX ← IX - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IX,HL     | CF,49        | IX ← IX - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IX,#mmnn  | D2,nn,mm     | IX ← IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IY,BA     | CF,4A        | IY ← IY - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IY,HL     | CF,4B        | IY ← IY - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] IY,#mmnn  | D3,nn,mm     | IY ← IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] SP,BA     | CF,4C        | SP ← SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] SP,HL     | CF,4D        | SP ← SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SUB][-] SP,#mmnn  | CF,6A,nn,mm  | SP ← SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| Mnemonic            | Machine Code | Operation      | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | -------------- | ------:| -----:|:------------------------:|
+| [SUB][-w] BA,BA     | CF,08        | BA ← BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] BA,HL     | CF,09        | BA ← BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] BA,IX     | CF,0A        | BA ← BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] BA,IY     | CF,0B        | BA ← BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] BA,#mmnn  | D0,nn,mm     | BA ← BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] HL,BA     | CF,28        | HL ← HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] HL,HL     | CF,29        | HL ← HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] HL,IX     | CF,2A        | HL ← HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] HL,IY     | CF,2B        | HL ← HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] HL,#mmnn  | D1,nn,mm     | HL ← HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IX,BA     | CF,48        | IX ← IX - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IX,HL     | CF,49        | IX ← IX - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IX,#mmnn  | D2,nn,mm     | IX ← IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IY,BA     | CF,4A        | IY ← IY - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IY,HL     | CF,4B        | IY ← IY - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] IY,#mmnn  | D3,nn,mm     | IY ← IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] SP,BA     | CF,4C        | SP ← SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] SP,HL     | CF,4D        | SP ← SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SUB][-w] SP,#mmnn  | CF,6A,nn,mm  | SP ← SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+
+[-w]: ops/S1C88_SUB16.md
 
 ### **SBC**: Subtraction with carry
 
 | Mnemonic            | Machine Code | Operation          | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | ------------------- | ------------ | ------------------ | ------:| -----:|:------------------------:|
-| [SBC][-c] BA,BA     | CF,0C        | BA ← BA - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] BA,HL     | CF,0D        | BA ← BA - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] BA,IX     | CF,0E        | BA ← BA - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] BA,IY     | CF,0F        | BA ← BA - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] BA,#mmnn  | CF,62,nn,mm  | BA ← BA - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] HL,BA     | CF,2C        | HL ← HL - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] HL,HL     | CF,2D        | HL ← HL - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] HL,IX     | CF,2E        | HL ← HL - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] HL,IY     | CF,2F        | HL ← HL - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [SBC][-c] HL,#mmnn  | CF,63,nn,mm  | HL ← HL - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] BA,BA     | CF,0C        | BA ← BA - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] BA,HL     | CF,0D        | BA ← BA - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] BA,IX     | CF,0E        | BA ← BA - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] BA,IY     | CF,0F        | BA ← BA - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] BA,#mmnn  | CF,62,nn,mm  | BA ← BA - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] HL,BA     | CF,2C        | HL ← HL - BA - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] HL,HL     | CF,2D        | HL ← HL - HL - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] HL,IX     | CF,2E        | HL ← HL - IX - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] HL,IY     | CF,2F        | HL ← HL - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [SBC][-cw] HL,#mmnn  | CF,63,nn,mm  | HL ← HL - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+
+[-cw]: ops/S1C88_SBC16.md
 
 ### **CP**: Comparison
 
 | Mnemonic           | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
 | ------------------ | ------------ | --------- | ------:| -----:|:------------------------:|
-| [CP][cp] BA,#mmnn  | D4,nn,mm     | BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] BA,BA     | CF,18        | BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] BA,HL     | CF,19        | BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] BA,IX     | CF,1A        | BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] BA,IY     | CF,1B        | BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] HL,#mmnn  | D5,nn,mm     | HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] HL,BA     | CF,38        | HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] HL,HL     | CF,39        | HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] HL,IX     | CF,3A        | HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] HL,IY     | CF,3B        | HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] IX,#mmnn  | D6,nn,mm     | IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] IY,#mmnn  | D7,nn,mm     | IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] SP,BA     | CF,5C        | SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] SP,HL     | CF,5D        | SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
-| [CP][cp] SP,#mmnn  | CF,6C,nn,mm  | SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] BA,#mmnn  | D4,nn,mm     | BA - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] BA,BA     | CF,18        | BA - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] BA,HL     | CF,19        | BA - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] BA,IX     | CF,1A        | BA - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] BA,IY     | CF,1B        | BA - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] HL,#mmnn  | D5,nn,mm     | HL - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] HL,BA     | CF,38        | HL - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] HL,HL     | CF,39        | HL - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] HL,IX     | CF,3A        | HL - IX   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] HL,IY     | CF,3B        | HL - IY   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] IX,#mmnn  | D6,nn,mm     | IX - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] IY,#mmnn  | D7,nn,mm     | IY - mmnn |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] SP,BA     | CF,5C        | SP - BA   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] SP,HL     | CF,5D        | SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
+| [CP][cpw] SP,#mmnn  | CF,6C,nn,mm  | SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
+
+[cpw]: ops/S1C88_CP16.md
 
 ### **INC**: Increment by 1
 
@@ -794,81 +804,83 @@ If U has `*`, this operation permits unpack operations.
 For indirect loads, the number is treated as little-endian.
 For example, in `LD BA,[hhll]` the byte _at_ hhll is loaded into A, and the following byte is loaded into B. 
 
-| Mnemonic             | Machine Code | Operation     | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| -------------------- | ------------ | ------------- | ------:| -----:|:------------------------:|
-| [LD][=] BA,\[hhll]   | B8,ll,hh     | BA ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] BA,#mmnn     | C4,nn,mm     | BA ← mmnn     |      3 |     3 |        `– – – – – – – –` |
-| [LD][=] BA,\[SP+dd]  | CF,70,dd     | BA ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] BA,\[HL]     | CF,C0        | BA ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,\[IX]     | CF,D0        | BA ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,\[IY]     | CF,D8        | BA ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,BA        | CF,E0        | BA ← BA       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,HL        | CF,E1        | BA ← HL       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,IX        | CF,E2        | BA ← IX       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,IY        | CF,E3        | BA ← IY       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,SP        | CF,F8        | BA ← SP       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] BA,PC        | CF,F9        | BA ← PC       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,\[hhll]   | B9,ll,hh     | HL ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] HL,#mmnn     | C5,nn,mm     | HL ← #mmnn    |      3 |     3 |        `– – – – – – – –` |
-| [LD][=] HL,\[SP+dd]  | CF,71,dd     | HL ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] HL,\[HL]     | CF,C1        | HL ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,\[IX]     | CF,D1        | HL ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,\[IY]     | CF,D9        | HL ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,BA        | CF,E4        | HL ← BA       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,HL        | CF,E5        | HL ← HL       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,IX        | CF,E6        | HL ← IX       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,IY        | CF,E7        | HL ← IY       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,SP        | CF,F4        | HL ← SP       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] HL,PC        | CF,F5        | HL ← PC       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,\[hhll]   | BA,ll,hh     | IX ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] IX,#mmnn     | C6,nn,mm     | IX ← mmnn     |      3 |     3 |        `– – – – – – – –` |
-| [LD][=] IX,\[SP+dd]  | CF,72,dd     | IX ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] IX,\[HL]     | CF,C2        | IX ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,\[IX]     | CF,D2        | IX ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,\[IY]     | CF,DA        | IX ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,BA        | CF,E8        | IX ← BA       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,HL        | CF,E9        | IX ← HL       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,IX        | CF,EA        | IX ← IX       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,IY        | CF,EB        | IX ← IY       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IX,SP        | CF,FA        | IX ← SP       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,\[hhll]   | BB,ll,hh     | IY ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] IY,#mmnn     | C7,nn,mm     | IY ← mmnn     |      3 |     3 |        `– – – – – – – –` |
-| [LD][=] IY,\[SP+dd]  | CF,73,dd     | IY ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] IY,\[HL]     | CF,C3        | IY ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,\[IX]     | CF,D3        | IY ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,\[IY]     | CF,DB        | IY ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,BA        | CF,EC        | IY ← BA       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,HL        | CF,ED        | IY ← HL       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,IX        | CF,EE        | IY ← IX       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,IY        | CF,EF        | IY ← IY       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] IY,SP        | CF,FE        | IY ← SP       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] SP,#mmnn     | CF,6E,nn,mm  | SP ← mmnn     |      4 |     4 |        `– – – – – – – –` |
-| [LD][=] SP,\[hhll]   | CF,78,ll,hh  | SP ← \[hhll]  |      6 |     4 |        `– – – – – – – –` |
-| [LD][=] SP,BA        | CF,F0        | SP ← BA       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] SP,HL        | CF,F1        | SP ← HL       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] SP,IX        | CF,F2        | SP ← IX       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] SP,IY        | CF,F3        | SP ← IY       |      2 |     2 |        `– – – – – – – –` |
-| [LD][=] \[hhll],BA   | BC,ll,hh     | \[hhll] ← BA  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] \[hhll],HL   | BD,ll,hh     | \[hhll] ← HL  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] \[hhll],IX   | BE,ll,hh     | \[hhll] ← IX  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] \[hhll],IY   | BF,ll,hh     | \[hhll] ← IY  |      5 |     3 |        `– – – – – – – –` |
-| [LD][=] \[hhll],SP   | CF,7C,ll,hh  | \[hhll] ← SP  |      6 |     4 |        `– – – – – – – –` |
-| [LD][=] \[HL],BA     | CF,C4        | \[HL] ← BA    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[HL],HL     | CF,C5        | \[HL] ← HL    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[HL],IX     | CF,C6        | \[HL] ← IX    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[HL],IY     | CF,C7        | \[HL] ← IY    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IX],BA     | CF,D4        | \[IX] ← BA    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IX],HL     | CF,D5        | \[IX] ← HL    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IX],IX     | CF,D6        | \[IX] ← IX    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IX],IY     | CF,D7        | \[IX] ← IY    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IY],BA     | CF,DC        | \[IY] ← BA    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IY],HL     | CF,DD        | \[IY] ← HL    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IY],IX     | CF,DE        | \[IY] ← IX    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[IY],IY     | CF,DF        | \[IY] ← IY    |      5 |     2 |        `– – – – – – – –` |
-| [LD][=] \[SP+dd],BA  | CF,74,dd     | \[SP+dd] ← BA |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] \[SP+dd],HL  | CF,75,dd     | \[SP+dd] ← HL |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] \[SP+dd],IX  | CF,76,dd     | \[SP+dd] ← IX |      6 |     3 |        `– – – – – – – –` |
-| [LD][=] \[SP+dd],IY  | CF,77,dd     | \[SP+dd] ← IY |      6 |     3 |        `– – – – – – – –` |
+| Mnemonic              | Machine Code | Operation     | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| --------------------- | ------------ | ------------- | ------:| -----:|:------------------------:|
+| [LD][=w] BA,\[hhll]   | B8,ll,hh     | BA ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] BA,#mmnn     | C4,nn,mm     | BA ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=w] BA,\[SP+dd]  | CF,70,dd     | BA ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] BA,\[HL]     | CF,C0        | BA ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,\[IX]     | CF,D0        | BA ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,\[IY]     | CF,D8        | BA ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,BA        | CF,E0        | BA ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,HL        | CF,E1        | BA ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,IX        | CF,E2        | BA ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,IY        | CF,E3        | BA ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,SP        | CF,F8        | BA ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] BA,PC        | CF,F9        | BA ← PC       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,\[hhll]   | B9,ll,hh     | HL ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] HL,#mmnn     | C5,nn,mm     | HL ← #mmnn    |      3 |     3 |        `– – – – – – – –` |
+| [LD][=w] HL,\[SP+dd]  | CF,71,dd     | HL ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] HL,\[HL]     | CF,C1        | HL ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,\[IX]     | CF,D1        | HL ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,\[IY]     | CF,D9        | HL ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,BA        | CF,E4        | HL ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,HL        | CF,E5        | HL ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,IX        | CF,E6        | HL ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,IY        | CF,E7        | HL ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,SP        | CF,F4        | HL ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] HL,PC        | CF,F5        | HL ← PC       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,\[hhll]   | BA,ll,hh     | IX ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] IX,#mmnn     | C6,nn,mm     | IX ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=w] IX,\[SP+dd]  | CF,72,dd     | IX ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] IX,\[HL]     | CF,C2        | IX ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,\[IX]     | CF,D2        | IX ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,\[IY]     | CF,DA        | IX ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,BA        | CF,E8        | IX ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,HL        | CF,E9        | IX ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,IX        | CF,EA        | IX ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,IY        | CF,EB        | IX ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IX,SP        | CF,FA        | IX ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,\[hhll]   | BB,ll,hh     | IY ← \[hhll]  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] IY,#mmnn     | C7,nn,mm     | IY ← mmnn     |      3 |     3 |        `– – – – – – – –` |
+| [LD][=w] IY,\[SP+dd]  | CF,73,dd     | IY ← \[SP+dd] |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] IY,\[HL]     | CF,C3        | IY ← \[HL]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,\[IX]     | CF,D3        | IY ← \[IX]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,\[IY]     | CF,DB        | IY ← \[IY]    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,BA        | CF,EC        | IY ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,HL        | CF,ED        | IY ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,IX        | CF,EE        | IY ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,IY        | CF,EF        | IY ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] IY,SP        | CF,FE        | IY ← SP       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] SP,#mmnn     | CF,6E,nn,mm  | SP ← mmnn     |      4 |     4 |        `– – – – – – – –` |
+| [LD][=w] SP,\[hhll]   | CF,78,ll,hh  | SP ← \[hhll]  |      6 |     4 |        `– – – – – – – –` |
+| [LD][=w] SP,BA        | CF,F0        | SP ← BA       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] SP,HL        | CF,F1        | SP ← HL       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] SP,IX        | CF,F2        | SP ← IX       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] SP,IY        | CF,F3        | SP ← IY       |      2 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[hhll],BA   | BC,ll,hh     | \[hhll] ← BA  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[hhll],HL   | BD,ll,hh     | \[hhll] ← HL  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[hhll],IX   | BE,ll,hh     | \[hhll] ← IX  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[hhll],IY   | BF,ll,hh     | \[hhll] ← IY  |      5 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[hhll],SP   | CF,7C,ll,hh  | \[hhll] ← SP  |      6 |     4 |        `– – – – – – – –` |
+| [LD][=w] \[HL],BA     | CF,C4        | \[HL] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[HL],HL     | CF,C5        | \[HL] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[HL],IX     | CF,C6        | \[HL] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[HL],IY     | CF,C7        | \[HL] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IX],BA     | CF,D4        | \[IX] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IX],HL     | CF,D5        | \[IX] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IX],IX     | CF,D6        | \[IX] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IX],IY     | CF,D7        | \[IX] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IY],BA     | CF,DC        | \[IY] ← BA    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IY],HL     | CF,DD        | \[IY] ← HL    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IY],IX     | CF,DE        | \[IY] ← IX    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[IY],IY     | CF,DF        | \[IY] ← IY    |      5 |     2 |        `– – – – – – – –` |
+| [LD][=w] \[SP+dd],BA  | CF,74,dd     | \[SP+dd] ← BA |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[SP+dd],HL  | CF,75,dd     | \[SP+dd] ← HL |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[SP+dd],IX  | CF,76,dd     | \[SP+dd] ← IX |      6 |     3 |        `– – – – – – – –` |
+| [LD][=w] \[SP+dd],IY  | CF,77,dd     | \[SP+dd] ← IY |      6 |     3 |        `– – – – – – – –` |
+
+[=w]: ops/S1C88_LD16.md
 
 ### **EX**: Byte exchange
 
@@ -903,7 +915,7 @@ For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is 
 | [PUSH][ps] ALL  | CF,B8        | PUSH BA, HL, IX, IY, BR |     12 |     2 |        `– – – – – – – –` |
 | [PUSH][ps] ALE  | CF,B9        | PUSH ALL, EP, IP        |     15 |     2 |        `– – – – – – – –` |
 
-[ps]: S1C88_PUSH.md "wikilink"
+[ps]: ops/S1C88_PUSH.md
 
 ### **POP**: Pop
 
@@ -927,7 +939,7 @@ For example, in `POP BA`, the byte _at_ the top of the stack is written into A, 
 | [POP][pp] ALL  | CF,BC        | POP BR, IY, IX, HL, BA  |     11 |     2 |        `– – – – – – – –` |
 | [POP][pp] ALE  | CF,BD        | POP IP, EP, ALL         |     14 |     2 |        `– – – – – – – –` |
 
-[pp]: S1C88_POP.md "wikilink"
+[pp]: ops/S1C88_POP.md
 
 ## Branch
 
@@ -979,31 +991,32 @@ jump:
   CB ← NB
 ```
 
-| Mnemonic          | Machine Code | Operation                 | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ----------------- | ------------ | ------------------------- | ------:| -----:|:------------------------:|
-| [JRS][js] C,rr    | E4,rr        | C ⇒ jump                  |      2 | 2  |        `– – – – – – – –` |
-| [JRS][js] NC,rr   | E5,rr        | !C ⇒ jump                 |      2 | 2  |        `– – – – – – – –` |
-| [JRS][js] Z,rr    | E6,rr        | Z ⇒ jump                  |      2 | 2  |        `– – – – – – – –` |
-| [JRS][js] NZ,rr   | E7,rr        | !Z ⇒ jump                 |      2 | 2  |        `– – – – – – – –` |
-| [JRS][js] rr      | F1,rr        | jump                      |      2 | 2  |        `– – – – – – – –` |
-| [JRS][js] LT,rr   | CE,E0,rr     | (N ^^ V) ⇒ jump           |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] LE,rr   | CE,E1,rr     | (Z \|\| (N ^^ V)) ⇒ jump  |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] GT,rr   | CE,E2,rr     | !(Z \|\| (N ^^ V)) ⇒ jump |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] GE,rr   | CE,E3,rr     | !(N ^^ V) ⇒ jump          |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] V,rr    | CE,E4,rr     | V ⇒ jump                  |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] NV,rr   | CE,E5,rr     | !V ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] P,rr    | CE,E6,rr     | !N ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] M,rr    | CE,E7,rr     | N ⇒ jump                  |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] F0,rr   | CE,E8,rr     | F0 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] F1,rr   | CE,E9,rr     | F1 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] F2,rr   | CE,EA,rr     | F2 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] F3,rr   | CE,EB,rr     | F3 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] NF0,rr  | CE,EC,rr     | !F0 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] NF1,rr  | CE,ED,rr     | !F1 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] NF2,rr  | CE,EE,rr     | !F2 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
-| [JRS][js] NF3,rr  | CE,EF,rr     | !F3 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| Mnemonic           | Machine Code | Operation                 | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------ | ------------ | ------------------------- | ------:| -----:|:------------------------:|
+| [JRS][jcs] C,rr    | E4,rr        | C ⇒ jump                  |      2 | 2  |        `– – – – – – – –` |
+| [JRS][jcs] NC,rr   | E5,rr        | !C ⇒ jump                 |      2 | 2  |        `– – – – – – – –` |
+| [JRS][jcs] Z,rr    | E6,rr        | Z ⇒ jump                  |      2 | 2  |        `– – – – – – – –` |
+| [JRS][jcs] NZ,rr   | E7,rr        | !Z ⇒ jump                 |      2 | 2  |        `– – – – – – – –` |
+| [JRS][js] rr       | F1,rr        | jump                      |      2 | 2  |        `– – – – – – – –` |
+| [JRS][jcs] LT,rr   | CE,E0,rr     | (N ^^ V) ⇒ jump           |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] LE,rr   | CE,E1,rr     | (Z \|\| (N ^^ V)) ⇒ jump  |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] GT,rr   | CE,E2,rr     | !(Z \|\| (N ^^ V)) ⇒ jump |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] GE,rr   | CE,E3,rr     | !(N ^^ V) ⇒ jump          |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] V,rr    | CE,E4,rr     | V ⇒ jump                  |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] NV,rr   | CE,E5,rr     | !V ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] P,rr    | CE,E6,rr     | !N ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] M,rr    | CE,E7,rr     | N ⇒ jump                  |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] F0,rr   | CE,E8,rr     | F0 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] F1,rr   | CE,E9,rr     | F1 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] F2,rr   | CE,EA,rr     | F2 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] F3,rr   | CE,EB,rr     | F3 ⇒ jump                 |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] NF0,rr  | CE,EC,rr     | !F0 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] NF1,rr  | CE,ED,rr     | !F1 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] NF2,rr  | CE,EE,rr     | !F2 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
+| [JRS][jcs] NF3,rr  | CE,EF,rr     | !F3 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
 
-[js]: S1C88_JRS.md "wikilink"
+[js]: ops/S1C88_JMP.md#jrs
+[jcs]: ops/S1C88_JMP.md#conditional-jrs
 
 ### **JRL**: Relative long jump
 
@@ -1015,15 +1028,16 @@ jump:
   CB ← NB
 ```
 
-| Mnemonic           | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------ | ------------ | --------- | ------:| -----:|:------------------------:|
-| [JRL][jl] C,qqrr   | EC,rr,qq     | C ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
-| [JRL][jl] NC,qqrr  | ED,rr,qq     | !C ⇒ jump |      3 |     3 |        `– – – – – – – –` |
-| [JRL][jl] Z,qqrr   | EE,rr,qq     | Z ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
-| [JRL][jl] NZ,qqrr  | EF,rr,qq     | !Z ⇒ jump |      3 |     3 |        `– – – – – – – –` |
-| [JRL][jl] qqrr     | F3,rr,qq     | jump      |      3 |     3 |        `– – – – – – – –` |
+| Mnemonic            | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [JRL][jcl] C,qqrr   | EC,rr,qq     | C ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jcl] NC,qqrr  | ED,rr,qq     | !C ⇒ jump |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jcl] Z,qqrr   | EE,rr,qq     | Z ⇒ jump  |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jcl] NZ,qqrr  | EF,rr,qq     | !Z ⇒ jump |      3 |     3 |        `– – – – – – – –` |
+| [JRL][jl] qqrr      | F3,rr,qq     | jump      |      3 |     3 |        `– – – – – – – –` |
 
-[jl]: S1C88_JRL.md "wikilink"
+[jl]: ops/S1C88_JMP.md#jrl
+[jcl]: ops/S1C88_JMP.md#conditional-jrl
 
 ### **JP**: Indirect jump
 
@@ -1035,7 +1049,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | [JP][jp] HL     | F4           | PC ← HL; CB ← NB      |      2 |     1 |        `– – – – – – – –` |
 | [JP][jp] \[kk]  | FD,kk        | PC ← \[00kk]; CB ← NB |      4 |     2 |        `– – – – – – – –` |
 
-[jp]: S1C88_JP.md "wikilink"
+[jp]: ops/S1C88_JMP.md#jp
 
 ### **DJR**: Loop
 
@@ -1051,7 +1065,7 @@ jump:
 | ---------------- | ------------ | ------------------------ | ------:| -----:|:------------------------:|
 | [DJR][dj] NZ,rr  | F5,rr        | B ← B - 1; B == 0 ⇒ jump |      4 |     2 |        `– – – – – – – ↕` |
 
-[dj]: S1C88_DJR.md "wikilink"
+[dj]: ops/S1C88_JMP.md#djr
 
 ### **CARS**: Relative short call
 
@@ -1064,31 +1078,32 @@ call:
   CB ← NB
 ```
 
-| Mnemonic           | Machine Code | Operation                 | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------ | ------------ | ------------------------- | ------:| -----:|:------------------------:|
-| [CARS][cs] C,rr    | E0,rr        | C ⇒ call                  |  5 : 2 |     2 |        `– – – – – – – –` |
-| [CARS][cs] NC,rr   | E1,rr        | !C ⇒ call                 |  5 : 2 |     2 |        `– – – – – – – –` |
-| [CARS][cs] Z,rr    | E2,rr        | Z ⇒ call                  |  5 : 2 |     2 |        `– – – – – – – –` |
-| [CARS][cs] NZ,rr   | E3,rr        | !Z ⇒ call                 |  5 : 2 |     2 |        `– – – – – – – –` |
-| [CARS][cs] rr      | F0,rr        | call                      |      5 |     2 |        `– – – – – – – –` |
-| [CARS][cs] LT,rr   | CE,F0,rr     | (N ^^ V) ⇒ call           |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] LE,rr   | CE,F1,rr     | (Z \|\| (N ^^ V)) ⇒ call  |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] GT,rr   | CE,F2,rr     | !(Z \|\| (N ^^ V)) ⇒ call |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] GE,rr   | CE,F3,rr     | !(N ^^ V) ⇒ call          |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] V,rr    | CE,F4,rr     | V ⇒ call                  |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] NV,rr   | CE,F5,rr     | !V ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] P,rr    | CE,F6,rr     | !N ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] M,rr    | CE,F7,rr     | N ⇒ call                  |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] F0,rr   | CE,F8,rr     | F0 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] F1,rr   | CE,F9,rr     | F1 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] F2,rr   | CE,FA,rr     | F2 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] F3,rr   | CE,FB,rr     | F3 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] NF0,rr  | CE,FC,rr     | !F0 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] NF1,rr  | CE,FD,rr     | !F1 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] NF2,rr  | CE,FE,rr     | !F2 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
-| [CARS][cs] NF3,rr  | CE,FF,rr     | !F3 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| Mnemonic            | Machine Code | Operation                 | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| ------------------- | ------------ | ------------------------- | ------:| -----:|:------------------------:|
+| [CARS][ccs] C,rr    | E0,rr        | C ⇒ call                  |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][ccs] NC,rr   | E1,rr        | !C ⇒ call                 |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][ccs] Z,rr    | E2,rr        | Z ⇒ call                  |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][ccs] NZ,rr   | E3,rr        | !Z ⇒ call                 |  5 : 2 |     2 |        `– – – – – – – –` |
+| [CARS][cs] rr       | F0,rr        | call                      |      5 |     2 |        `– – – – – – – –` |
+| [CARS][ccs] LT,rr   | CE,F0,rr     | (N ^^ V) ⇒ call           |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] LE,rr   | CE,F1,rr     | (Z \|\| (N ^^ V)) ⇒ call  |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] GT,rr   | CE,F2,rr     | !(Z \|\| (N ^^ V)) ⇒ call |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] GE,rr   | CE,F3,rr     | !(N ^^ V) ⇒ call          |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] V,rr    | CE,F4,rr     | V ⇒ call                  |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] NV,rr   | CE,F5,rr     | !V ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] P,rr    | CE,F6,rr     | !N ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] M,rr    | CE,F7,rr     | N ⇒ call                  |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] F0,rr   | CE,F8,rr     | F0 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] F1,rr   | CE,F9,rr     | F1 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] F2,rr   | CE,FA,rr     | F2 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] F3,rr   | CE,FB,rr     | F3 ⇒ call                 |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] NF0,rr  | CE,FC,rr     | !F0 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] NF1,rr  | CE,FD,rr     | !F1 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] NF2,rr  | CE,FE,rr     | !F2 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
+| [CARS][ccs] NF3,rr  | CE,FF,rr     | !F3 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
 
-[cs]: S1C88_CARS.md "wikilink"
+[cs]: ops/S1C88_CALL.md#cars
+[ccs]: ops/S1C88_CALL.md#conditional-cars
 
 ### **CARL**: Relative long call
 
@@ -1101,15 +1116,16 @@ call:
   CB ← NB
 ```
 
-| Mnemonic            | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
-| ------------------- | ------------ | --------- | ------:| -----:|:------------------------:|
-| [CARL][cl] C,qqrr   | E8,rr,qq     | C ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
-| [CARL][cl] NC,qqrr  | E9,rr,qq     | !C ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
-| [CARL][cl] Z,qqrr   | EA,rr,qq     | Z ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
-| [CARL][cl] NZ,qqrr  | EB,rr,qq     | !Z ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
-| [CARL][cl] qqrr     | F2,rr,qq     | call      |  6 : 3 |    3 |        `– – – – – – – –` |
+| Mnemonic             | Machine Code | Operation | Cycles | Bytes | SC<br/>`1 0 U D N V C Z` |
+| -------------------- | ------------ | --------- | ------:| -----:|:------------------------:|
+| [CARL][ccl] C,qqrr   | E8,rr,qq     | C ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][ccl] NC,qqrr  | E9,rr,qq     | !C ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][ccl] Z,qqrr   | EA,rr,qq     | Z ⇒ call  |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][ccl] NZ,qqrr  | EB,rr,qq     | !Z ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
+| [CARL][cl] qqrr      | F2,rr,qq     | call      |  6 : 3 |    3 |        `– – – – – – – –` |
 
-[cl]: S1C88_CARL.md "wikilink"
+[cl]: ops/S1C88_CALL.md#carl
+[ccl]: ops/S1C88_CALL.md#conditional-carl
 
 ### **CALL**: Indirect call
 
@@ -1120,7 +1136,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ------------------- | ------------ | ---------------------------------- | ------:| -----:|:------------------------:|
 | [CALL][ca] \[hhll]  | FB,ll,hh     | PUSH CB, PC; PC ← [hhll]; CB ← NB  |      8 |     3 |        `– – – – – – – –` |
 
-[ca]: S1C88_CALL.md "wikilink"
+[ca]: ops/S1C88_CALL.md#call
 
 ### **RET**: Return
 
@@ -1128,7 +1144,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ---------- | ------------ | ------------------- | ------:| -----:|:------------------------:|
 | [RET][rt]  | F8           | POP PC, CB; NB ← CB |      4 |     1 |        `– – – – – – – –` |
 
-[rt]: S1C88_RET.md "wikilink"
+[rt]: ops/S1C88_RET.md#ret
 
 ### **RETE**: Exception processing return
 
@@ -1136,7 +1152,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ----------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
 | [RETE][re]  | F9           | POP SC, PC, CB; NB ← CB |      5 |     1 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 
-[re]: S1C88_RETE.md "wikilink"
+[re]: ops/S1C88_RET.md#rete
 
 ### **RETS**: Return and skip
 
@@ -1144,7 +1160,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ----------- | ------------ | -------------------------------- | ------:| -----:|:------------------------:|
 | [RETS][rs]  | FA           | POP PC, CB; NB ← CB; PC ← PC + 2 |      6 |     1 |        `– – – – – – – –` |
 
-[rs]: S1C88_RETS.md "wikilink"
+[rs]: ops/S1C88_RET.md#rets
 
 ### **INT**: Software interrupt
 
@@ -1155,7 +1171,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | --------------------- | ------------ | -------------------------------------- | ------:| -----:|:------------------------:|
 | [INT][it] \[kk]       | FC,kk        | PUSH CB, PC, SC; PC ← \[00kk]; CB ← NB |      8 |     2 |        `– – – – – – – –` |
 
-[it]: S1C88_INT.md "wikilink"
+[it]: ops/S1C88_CALL.md#int
 
 ## System Control
 
@@ -1165,7 +1181,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ---------- | ------------ | ------------ | ------:| -----:|:------------------------:|
 | [NOP][no]  | FF           | No operation |      2 |     1 |        `– – – – – – – –` |
 
-[no]: S1C88_NOP.md "wikilink"
+[no]: ops/S1C88_NOP.md
 
 ### **HALT**: Shifts to HALT status
 
@@ -1173,7 +1189,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ----------- | ------------ | --------- | ------:| -----:|:------------------------:|
 | [HALT][ht]  | CE,AE        | Halt CPU  |      3 |     2 |        `– – – – – – – –` |
 
-[ht]: S1C88_HALT.md "wikilink"
+[ht]: ops/S1C88_HALT.md
 
 ### **SLP**: Shifts to SLEEP status
 
@@ -1181,7 +1197,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ---------- | ------------ | --------- | ------:| -----:|:------------------------:|
 | [SLP][zz]  | CE,AF        | Hibernate |      3 |     2 |        `– – – – – – – –` |
 
-[zz]: S1C88_SLP.md "wikilink"
+[zz]: ops/S1C88_SLP.md
 
 ## Operation Code Map
 
@@ -1377,8 +1393,8 @@ All conclusions here should be re-checked, ideally against die images, too.
 
 ### Special complex instruction
 
-Notice how all the arithmetic ones perfectly line up with CF cc arithmetic if you assume the test data was all 0xff..
-The load targets compare nicely to CF cc as well, but the source isn't NB.
+Notice how all the arithmetic ones perfectly line up with `CF cc` arithmetic if you assume the test data was all 0xff..
+The load targets compare nicely to `CF cc` as well, but the source isn't NB.
 
 | cc    | Operation             | Cycles | SC<br/>`1 0 U D N V C Z` |
 | ----- | ----------------------| ------ | ------------------------ |

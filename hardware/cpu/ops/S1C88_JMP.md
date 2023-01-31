@@ -88,13 +88,20 @@ CB = NB
 PC = PC + ddss - 1
 ```
 
-### JP HL
+### JP
 
 ```
 ; JP HL
 
 CB = NB
 PC = HL
+```
+
+```
+; JP \[kk] (not fully tested)
+
+CB = NB
+PC = Memory16[kk SLL 1]
 ```
 
 ### DJR
@@ -107,15 +114,6 @@ IF (B <> 0) THEN
   CB = NB
   PC = PC + dd - 1
 ENDIF
-```
-
-### JP
-
-```
-; JP \[kk] (not fully tested)
-
-CB = NB
-PC = Memory16[kk SLL 1]
 ```
 
 ## Description
