@@ -4,10 +4,10 @@ The Pokémon mini is a hand held created by Nintendo R\&D3 around 1999. It is ba
 
 The machine has a 4 KiB on-board OTP BIOS, 4 KiB of internal RAM (shared with the LCD Controller) and a 21-bit cartridge bus. The entire system is controlled by writting to 256 hardware registers, most of which are [Open-Bus](../Glossary.md#open-bus).
 
-- [CPU: S1C88V20](S1C88_Core.md)
-  - [Instruction Set](S1C88_InstructionSet.md)
+- [CPU: S1C88V20](cpu/S1C88_Core.md)
+  - [Instruction Set](cpu/S1C88_InstructionSet.md)
   - [The Memory Map](PM_Memory.md)
-    - [The Hardware Registers](PM_Registers.md)
+    - [The Hardware Registers](cpu/PM_Registers.md)
   - [Internal BIOS](PM_Bios.md)
   - [Interrupt Vectors](PM_IRQs.md)
   - [Watchdog Timer](PM_Second_Counter.md)
