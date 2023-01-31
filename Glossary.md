@@ -2,6 +2,10 @@
 
 Major terms are sorted alphabetically, but register names and stuff like that are organized under a section dedicated to them. Just use your browser's in-page search to find what you need!
 
+## Endianness
+
+Systems can be either Big Endian or Little Endian. The Pokémon mini is a little endian system. This refers to the byte order for multi-byte numbers. Since Pokémon mini is a 16-bit system, it stores numbers in at most 16-bits (at a time). When doing so, little endian stores the bytes as [least significant](#significant-bytes) first.
+
 ## Open-bus
 
 Open-bus is a state in which no hardware on a data path is actively responding to a request for data. In many cases this results in bus-capacitance driving ghost data to the CPU. This means that when reading from a non-existent hardware location, the CPU will see the last data on the path (read or write). This often means that reading from these locations will result in the data result of things being based around the last instruction byte used, such as an opcode or an immediate value.
@@ -116,3 +120,29 @@ Assembly operators refer to what is typically represented by a mnemonic, such as
 * `NOP` - No operation
 * `HALT` - Shifts to HALT status
 * `SLP` - Shifts to SLEEP status
+
+## Significant bits
+
+There are 8 bits in a single byte, when laid out as a binary number (0-padded to 8 bits), the most significant bit is the the most significant digit, that is, the left-most one. Similarly, the least-significant digit is the right-most one.
+
+The reason for this naming is due to the idea of precision. Given 20054 apples, for instace, misplacing 1 or 2 is relatively meaningless. This means the 2 in the ten-thousands place (fifth digit), is much more signifcant than the 4 in the ones place (first digit).
+
+```
+Example:  M000 000L
+Indicies: 7654 3210
+M = Most significant bit
+L = Least significant bit
+```
+
+## Significant bytes
+
+Given a sequence of bytes, arranged in the appropriate order (see [Endianness](#endianness) for more information on when to re-order bytes), the most significant byte is the left-most byte while the least significant byte is the right-most byte.
+
+The reason for this naming is due to the idea of precision. Given 20054 apples, for instace, misplacing 1 or 2 is relatively meaningless. This means the 2 in the ten-thousands place (fifth digit), is much more signifcant than the 4 in the ones place (first digit).
+
+```
+Example:  MM 00 LL
+Indicies:  2  1  0
+MM = Most significant byte
+LL = Least significant byte
+```

@@ -1,6 +1,6 @@
 # Pokemon mini documentation
 
-This is the repo for the Pokemon mini documentation hosted [here](https://www.pokemon-mini.net/documentation/).
+This is the repo for the Pokémon mini documentation hosted [here](https://www.pokemon-mini.net/documentation/).
 
 * [Pokémon mini Hardware Reference](hardware/README.md)
 
