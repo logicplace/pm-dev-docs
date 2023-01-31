@@ -1,128 +1,157 @@
-\== JMP = Jump to routine
-==
+# JMP = Jump to routine
 
-| Hex      | Mnemonic                  | Cycles | Condition                               |
-| -------- | ------------------------- | ------ | --------------------------------------- |
-| E4 ss    | JCB \#ss<sup>\*1</sup>    | 8      | Carry=1                                 |
-| E5 ss    | JNCB \#ss<sup>\*1</sup>   | 8      | Carry=0                                 |
-| E6 ss    | JZB \#ss<sup>\*1</sup>    | 8      | Zero=1                                  |
-| E7 ss    | JNZB \#ss<sup>\*1</sup>   | 8      | Zero=0                                  |
-| EC ss ss | JCW \#ssss<sup>\*1</sup>  | 12     | Carry=1                                 |
-| ED ss ss | JNCW \#ssss<sup>\*1</sup> | 12     | Carry=0                                 |
-| EE ss ss | JZW \#ssss<sup>\*1</sup>  | 12     | Zero=1                                  |
-| EF ss ss | JNZW \#ssss<sup>\*1</sup> | 12     | Zero=0                                  |
-| F1 ss    | JMPB \#ss<sup>\*1</sup>   | 8      | None                                    |
-| F3 ss ss | JMPW \#ssss<sup>\*1</sup> | 12     | None                                    |
-| F4       | JMP HL                    | 8      | None                                    |
-| F5 ss    | JDBNZ \#ss                | 16     | B \<\> 0x00, decrement B before check   |
-| FD nn    | JINT \#nn                 | 8      | None                                    |
-| CE E0 ss | JL \#ss                   | 12     | (Overflow=1) \!= (Sign=1)               |
-| CE E1 ss | JLE \#ss                  | 12     | ((Overflow=0) \!= (Sign=0)) OR (Zero=1) |
-| CE E2 ss | JG \#ss                   | 12     | ((Overflow=1) == (Sign=1)) AND (Zero=0) |
-| CE E3 ss | JGE \#ss                  | 12     | (Overflow=0) == (Sign=0)                |
-| CE E4 ss | JO \#ss                   | 12     | Overflow=1                              |
-| CE E5 ss | JNO \#ss                  | 12     | Overflow=0                              |
-| CE E6 ss | JNS \#ss                  | 12     | Sign=0                                  |
-| CE E7 ss | JS \#ss                   | 12     | Sign=1                                  |
-| CE E8 ss | JNX0 \#ss                 | 12     | ??                                      |
-| CE E9 ss | JNX1 \#ss                 | 12     | ??                                      |
-| CE EA ss | JNX2 \#ss                 | 12     | ??                                      |
-| CE EB ss | JNX3 \#ss                 | 12     | ??                                      |
-| CE EC ss | JX0 \#ss                  | 12     | ??                                      |
-| CE ED ss | JX1 \#ss                  | 12     | ??                                      |
-| CE EE ss | JX2 \#ss                  | 12     | ??                                      |
-| CE EF ss | JX3 \#ss                  | 12     | ??                                      |
+| Hex      | Mnemonic     | Cycles | Condition                                   |
+| -------- | ------------ | ------ | ---------------------------------------     |
+| E4 dd    | JRS C,dd     | 2      | Carry=1                                     |
+| E5 dd    | JRS NC,dd    | 2      | Carry=0                                     |
+| E6 dd    | JRS Z,dd     | 2      | Zero=1                                      |
+| E7 dd    | JRS NZ,dd    | 2      | Zero=0                                      |
+| EC rr qq | JRL C,qqrr   | 3      | Carry=1                                     |
+| ED rr qq | JRL NC,qqrr  | 3      | Carry=0                                     |
+| EE rr qq | JRL Z,qqrr   | 3      | Zero=1                                      |
+| EF rr qq | JRL NZ,qqrr  | 3      | Zero=0                                      |
+| F1 dd    | JRS dd       | 2      | n/a                                         |
+| F3 rr qq | JRL qqrr     | 3      | n/a                                         |
+| F4       | JP HL        | 2      | n/a                                         |
+| F5 dd    | DJR NZ,dd    | 4      | B != 0x00, decrement B before check         |
+| FD kk    | JP \[kk]     | 2      | n/a                                         |
+| CE E0 dd | JRS LT,dd    | 3      | (Overflow=1) != (Negative=1)                |
+| CE E1 dd | JRS LE,dd    | 3      | ((Overflow=0) != (Negative=0)) OR (Zero=1)  |
+| CE E2 dd | JRS GT,dd    | 3      | ((Overflow=1) == (Negative=1)) AND (Zero=0) |
+| CE E3 dd | JRS GE,dd    | 3      | (Overflow=0) == (Negative=0)                |
+| CE E4 dd | JRS V,dd     | 3      | Overflow=1                                  |
+| CE E5 dd | JRS NV,dd    | 3      | Overflow=0                                  |
+| CE E6 dd | JRS P,dd     | 3      | Negative=0                                  |
+| CE E7 dd | JRS M,dd     | 3      | Negative=1                                  |
+| CE E8 dd | JRS F0,dd    | 3      | F0=1<sup>*</sup>                            |
+| CE E9 dd | JRS F1,dd    | 3      | F1=1 (unused flag)                          |
+| CE EA dd | JRS F2,dd    | 3      | F2=1 (unused flag)                          |
+| CE EB dd | JRS F3,dd    | 3      | F3=1 (unused flag)                          |
+| CE EC dd | JRS NF0,dd   | 3      | F0=0<sup>*</sup>                            |
+| CE ED dd | JRS NF1,dd   | 3      | F1=0 (unused flag)                          |
+| CE EE dd | JRS NF2,dd   | 3      | F2=0 (unused flag)                          |
+| CE EF dd | JRS NF3,dd   | 3      | F3=0 (unused flag)                          |
 
-**\*1**: JMP, JC, JNC, JZ and JNZ can be used in the assembler to
-auto-detect the appropriate range.
+\* _F0 is set on the Pokémon Channel emulator when the previous DIV had a denominator of 0._
 
-### Execute
+## Execute
 
-`#nn      = Immediate unsigned 8-Bits`
-`#ss      = Immediate signed 8-Bits`
-`#ssss    = Immediate signed 16-Bits`
-`B        = Register B`
-`U/V      = Register U or V`
-`HL       = Register HL: (H shl 8) or L`
-`SP       = Register SP (Stack Pointer)`
-`PC       = Register PC (Program Counter)`
-`[#nnnn]  = Memory: (I shl 16) or #nnnn`
+```
+kk     = Lower 8 bits of a vector address
+dd     = Immediate signed 8-bits
+qqrr   = Immediate signed 16-bits
+B      = Register B
+NB/CB  = Register NB or CB
+HL     = Register HL: (H shl 8) or L
+SP     = Register SP (Stack Pointer)
+PC     = Register PC (Program Counter)
+[hhll] = Memory: (EP shl 16) or hhll
+```
 
-`; J*B #ss`
+### Conditional JRS
 
-`IF (Condition) THEN`
-`  V = U`
-`  PC = PC + #ss - 1`
-`ENDIF`
+```
+; JRS *,dd
 
-`; J*W #ssss`
+IF (Condition) THEN
+  CB = NB
+  PC = PC + dd - 1
+ENDIF
+```
 
-`IF (Condition) THEN`
-`  V = U`
-`  PC = PC + #ssss - 1`
-`ENDIF`
+### Conditional JRL
 
-`; JMPB #ss`
+```
+; JRL *,ddss
 
-`V = U`
-`PC = PC + #ss - 1`
+IF (Condition) THEN
+  CB = NB
+  PC = PC + ddss - 1
+ENDIF
+```
 
-`; JMPW #ssss`
+### JRS
 
-`V = U`
-`PC = PC + #ssss - 1`
+```
+; JRS dd
 
-`; JMP HL`
+CB = NB
+PC = PC + dd - 1
+```
 
-`V = U`
-`PC = HL`
+### JRL
 
-`; JDBNZ #ss`
+```
+; JRL ddss
 
-`B = B - 1`
-`IF (B <> 0) THEN`
-`  V = U`
-`  PC = PC + #ss - 1`
-`ENDIF`
+CB = NB
+PC = PC + ddss - 1
+```
 
-`; JINT #nn (`*`not`` ``fully`` ``tested`*`)`
+### JP HL
 
-`V = U`
-`PC = Memory16[#nn SHL 1]`
+```
+; JP HL
 
-### Description
+CB = NB
+PC = HL
+```
+
+### DJR
+
+```
+; DJR NZ,dd
+
+B = B - 1
+IF (B <> 0) THEN
+  CB = NB
+  PC = PC + dd - 1
+ENDIF
+```
+
+### JP
+
+```
+; JP \[kk] (not fully tested)
+
+CB = NB
+PC = Memory16[kk SLL 1]
+```
+
+## Description
 
 Jump into a new position of the program.
 
-NOTE: All non-branch instructions does "U = V" causing U to be restored,
-any branch that require banking needs "MOV U, A" or "MOV U, \#nn" before
-JMP/J\*...
+NOTE: All non-branch instructions do "NB = CB" causing NB to be restored, any branch that requires banking needs "LD NB, A" or "LD NB, #nn" directly before any jump.
 
-### Conditions
+## Conditions
 
-'''0xF5 - JDBNZ \#ss '''
+**0xF5 - DJR NZ,dd**
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
 
-Carry, Overflow and Sign remain unchanged
+Carry, Overflow, and Sign remain unchanged
 
 **All others:**
 
 None
 
-### Examples
+## Examples
 
-` ; A = 0x10`
-` `[`CMP`` ``A,``
-``0x10`](PM_Opc_CMP8.md "wikilink")`  ; Compare A with 0x10`
-` ; F = (Zero=1):(Carry=0):(Overflow=0):(Sign=0)`
-` `**`JZ`` ``val_is_16`**
-` `[`MOV`` ``A,`` ``0x00`](PM_Opc_MOV8.md "wikilink")
-`val_is_16:`
-` ; A = 0x10`
+```
+; A = 0x10
+CP A, 0x10  ; Compare A with 0x10`
+; SC = (Zero=1):(Carry=0):(Overflow=0):(Negative=0)
+JZ val_is_16
+LD A, 0x00
+val_is_16:
+; A = 0x10
+```
 
-`; Jump into a label located at a different bank`
-[`MOV`` ``U,`` ``$0F`](PM_Opc_MOV8.md "wikilink")
-**`JMP`` ``function_at_bank_15`**
+```
+; Jump into a label located at a different bank
+LD NB, $0F
+JMP function_at_bank_15
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

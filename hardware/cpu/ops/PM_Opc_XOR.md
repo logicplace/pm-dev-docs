@@ -1,93 +1,104 @@
-\== XOR = Logical Exclusive-OR ==
+# XOR = Logical Exclusive-OR
 
 | Hex      | Mnemonic             | Cycles |
 | -------- | -------------------- | ------ |
-| 38       | XOR A, A             | 8      |
-| 39       | XOR A, B             | 8      |
-| 3A nn    | XOR A, \#nn          | 8      |
-| 3B       | XOR A, \[HL\]        | 8      |
-| 3C nn    | XOR A, \[N+\#nn\]    | 12     |
-| 3D nn nn | XOR A, \[\#nnnn\]    | 16     |
-| 3E       | XOR A, \[X\]         | 8      |
-| 3F       | XOR A, \[Y\]         | 8      |
-| 9E nn    | XOR F, \#nn          | 12     |
-| CE B8 nn | XOR B, \#nn          | 12     |
-| CE B9 nn | XOR L, \#nn          | 12     |
-| CE BA nn | XOR H, \#nn          | 12     |
-| DA nn nn | XOR \[N+\#nn\], \#nn | 20     |
-| CE 38 ss | XOR A, \[X+\#ss\]    | 16     |
-| CE 39 ss | XOR A, \[Y+\#ss\]    | 16     |
-| CE 3A    | XOR A, \[X+L\]       | 16     |
-| CE 3B    | XOR A, \[Y+L\]       | 16     |
-| CE 3C    | XOR \[HL\], A        | 16     |
-| CE 3D nn | XOR \[HL\], \#nn     | 20     |
-| CE 3E    | XOR \[HL\], \[X\]    | 20     |
-| CE 3F    | XOR \[HL\], \[Y\]    | 20     |
+| 38       | XOR A,A              | 2      |
+| 39       | XOR A,B              | 2      |
+| 3A nn    | XOR A,#nn            | 2      |
+| 3B       | XOR A,\[HL]          | 2      |
+| 3C ll    | XOR A,\[BR:ll]       | 3      |
+| 3D ll hh | XOR A,\[hhll]        | 4      |
+| 3E       | XOR A,\[IX]          | 2      |
+| 3F       | XOR A,\[IY]          | 2      |
+| 9E nn    | XOR SC,#nn           | 3      |
+| CE B8 nn | XOR B,#nn            | 3      |
+| CE B9 nn | XOR L,#nn            | 3      |
+| CE BA nn | XOR H,#nn            | 3      |
+| DA ll nn | XOR \[BR:ll],#nn     | 5      |
+| CE 38 dd | XOR A,\[IX+dd]       | 4      |
+| CE 39 dd | XOR A,\[IY+dd]       | 4      |
+| CE 3A    | XOR A,\[IX+L]        | 4      |
+| CE 3B    | XOR A,\[IY+L]        | 4      |
+| CE 3C    | XOR \[HL],A          | 4      |
+| CE 3D nn | XOR \[HL],#nn        | 5      |
+| CE 3E    | XOR \[HL],\[IX]      | 5      |
+| CE 3F    | XOR \[HL],\[IY]      | 5      |
 
-### Execute
+## Execute
 
-`#nn     = Immediate unsigned 8-Bits`
-`A       = Register A`
-`B       = Register B`
-`L       = Register L`
-`H       = Register H`
-`F       = Register F`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
-`[X]     = Memory: (XI shl 16) or X`
-`[Y]     = Memory: (YI shl 16) or Y`
-`[#nnnn] = Memory: #nnnn`
-`[X+#ss] = Memory: (XI shl 16) or (X + #ss)`
-`[Y+#ss] = Memory: (YI shl 16) or (Y + #ss)`
-`[X+L]   = Memory: (XI shl 16) or (X + signed(L))`
-`[Y+L]   = Memory: (YI shl 16) or (Y + signed(L))`
+```
+#nn     = Immediate unsigned 8-bits
+A       = Register A
+B       = Register B
+L       = Register L
+H       = Register H
+SC      = Register SC
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+[IX]    = Memory: (XP shl 16) or IX
+[IY]    = Memory: (YP shl 16) or IY
+[hhll]  = Memory: hhll
+[IX+dd] = Memory: (XP shl 16) or (IX + dd)
+[IY+dd] = Memory: (YP shl 16) or (IY + dd)
+[IX+L]  = Memory: (XP shl 16) or (IX + signed(L))
+[IY+L]  = Memory: (YP shl 16) or (IY + signed(L))
+```
 
-`; XOR Ds, Sc`
-`;`
-`; Ds = Destination`
-`; Sc = Source`
+```
+; XOR Ds, Sc
+;
+; Ds = Destination
+; Sc = Source
 
-`Ds = Ds XOR Sc`
+Ds = Ds XOR Sc
+```
 
-### Description
+## Description
 
-"8-Bits Destination" Logic XOR (Exclusive-OR) with "8-Bits Source".
+"8-bits Destination" Logical XOR (Exclusive-OR) with "8-bits Source".
 
-`Can be used to toggle one or multiple bits.`
+Can be used to toggle one or multiple bits. Below is a table of bytes to XOR with in order to toggle certain bits:
 
-`Bit 0 - Mask $01`
-`Bit 1 - Mask $02`
-`Bit 2 - Mask $04`
-`Bit 3 - Mask $08`
-`Bit 4 - Mask $10`
-`Bit 5 - Mask $20`
-`Bit 6 - Mask $40`
-`Bit 7 - Mask $80`
-`All   - Mask $FF`
+| Toggle bits | Mask to use |
+| ----------- | ----------- |
+| Bit 0       | $01         |
+| Bit 1       | $02         |
+| Bit 2       | $04         |
+| Bit 3       | $08         |
+| Bit 4       | $10         |
+| Bit 5       | $20         |
+| Bit 6       | $40         |
+| Bit 7       | $80         |
+| All bits    | $FF         |
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
-
-Sign: Set when 7th bit of the result is 1
+* Zero: Set when result is 0
+* Negative: Set when 7th bit of the result is 1
 
 Carry and Overflow remain unchanged
 
-### Examples
+## Examples
 
-`; A = 0x45`
-**`XOR`` ``A,`` ``$40`**
-`; A = 0x05`
-`; F = (Zero=0):(Sign=0)`
+```
+; A = 0x45
+XOR A, $40
+; A = 0x05
+; SC = (Zero=0):(Negative=0)
+```
 
-`; B = 0xF0`
-**`XOR`` ``B,`` ``$04`**
-`; B = 0xF4`
-`; F = (Zero=0):(Sign=1)`
+```
+; B = 0xF0
+XOR B, $04
+; B = 0xF4
+; SC = (Zero=0):(Negative=1)
+```
 
-`; A = 0xF0`
-**`XOR`` ``A,`` ``$55`**
-`; A = 0xA5`
-`; F = (Zero=0):(Sign=1)`
+```
+; A = 0xF0
+XOR A, $55
+; A = 0xA5
+; SC = (Zero=0):(Negative=1)
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

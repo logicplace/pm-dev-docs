@@ -1,59 +1,75 @@
-\== RET = Return from routine ==
+# RET = Return from routine
 
 | Hex | Mnemonic | Cycles |
 | --- | -------- | ------ |
-| F8  | RET      | 16     |
-| F9  | RETI     | 16     |
-| FA  | RETSKIP  | 16     |
+| F8  | RET      | 4      |
+| F9  | RETE     | 5      |
+| FA  | RETS     | 6      |
 
-### Execute
+## Execute
 
-`F        = Register F`
-`U/V      = Register U or V`
-`SP       = Register SP (Stack Pointer)`
-`PC       = Register PC (Program Counter)`
+```
+SC    = Register SC
+NB/CB = Register NB or CB
+SP    = Register SP (Stack Pointer)
+PC    = Register PC (Program Counter)
+```
 
-`; RET (Return from a subroutine)`
+### RET
 
-`V = Memory[SP+2]`
-`PC = (Memory[SP+1] SHL 8) + Memory[SP]`
-`SP = SP + 3`
+```
+; RET (Return from a subroutine)
 
-`; RETI (Return from an interrupt)`
+CB = Memory[SP+2]
+PC = (Memory[SP+1] SLL 8) + Memory[SP]
+SP = SP + 3
+```
 
-`V = Memory[SP+3]`
-`PC = (Memory[SP+2] SHL 8) + Memory[SP+1]`
-`F = Memory[SP]`
-`SP = SP + 4`
+### RETE
 
-`; RETSKIP (Return from a subroutine and skip 2 bytes)`
+```
+; RETE (Return from an interrupt)
 
-`V = Memory[SP+2]`
-`PC = (Memory[SP+1] SHL 8) + Memory[SP] + 2`
-`SP = SP + 3`
+CB = Memory[SP+3]
+PC = (Memory[SP+2] SLL 8) + Memory[SP+1]
+SC = Memory[SP]
+SP = SP + 4
+```
 
-### Description
+### RETS
+
+```
+; RETS (Return from a subroutine and skip 2 bytes)
+
+CB = Memory[SP+2]
+PC = (Memory[SP+1] SLL 8) + Memory[SP] + 2
+SP = SP + 3
+```
+
+## Description
 
 Return from a subroutine or an interrupt.
 
-### Conditions
+## Conditions
 
 None
 
-### Examples
+## Examples
 
-` ; A = 0x10`
-` ; B = 0x10`
-` `[`CALL`` ``somefunction`](PM_Opc_CALL.md "wikilink")
-` ; A = 0x11`
-` ; B = 0x0F`
+```
+; A = 0x10
+; B = 0x10
+CALL somefunction
+; A = 0x11
+; B = 0x0F
 
-` (...)`
+(...)
 
-`somefunction:`
-` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")
-` `[`DEC`` ``B`](PM_Opc_DEC.md "wikilink")
-` `**`RET`**
-` `[`INC`` ``A`](PM_Opc_INC.md "wikilink")`  ; Never executed`
+somefunction:
+  INC A
+  DEC B
+  RET
+  INC A  ; Never executed
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

@@ -1,69 +1,81 @@
-\== ROLC = Rotate Left through Carry ==
+# RL = Rotate Left through Carry
 
 | Hex      | Mnemonic        | Cycles |
 | -------- | --------------- | ------ |
-| CE 90    | ROLC A          | 12     |
-| CE 91    | ROLC B          | 12     |
-| CE 92 nn | ROLC \[N+\#nn\] | 20     |
-| CE 93    | ROLC \[HL\]     | 16     |
+| CE 90    | RL A            | 3      |
+| CE 91    | RL B            | 3      |
+| CE 92 ll | RL \[BR:ll]     | 5      |
+| CE 93    | RL \[HL]        | 4      |
 
-### Execute
+## Execute
 
-`A       = Register A`
-`B       = Register B`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
+```
+A       = Register A
+B       = Register B
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+```
 
-`; ROLC Ds`
-`;`
-`; Ds = Source/Destination`
+```
+; RL Ds
+;
+; Ds = Source/Destination
 
-`Ds = (Ds SHL 1) OR Carry`
+Ds = (Ds SLL 1) OR Carry
+```
 
-### Description
+## Description
 
-"8-Bits Destination" bits are rotated left by 1 through Carry.
+"8-bits Destination" bits are rotated left by 1 through Carry.
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
+* Carry: Set when old bit 7 is 1
+* Negative: Set when bit 7 of the result is 1
 
-Carry: Set when old bit 7 is 1
+Overflow remains unchanged
 
-Sign: Set when bit 7 of the result is 1
+## Examples
 
-Overflow remain unchanged
+```
+; A = 0x04
+; SC = (Carry=0)
+RL A
+; A = 0x08
+; SC = (Zero=0):(Carry=0):(Negative=0)
+```
 
-### Examples
+```
+; B = 0x45
+; SC = (Carry=1)
+RL B
+; B = 0x8B
+; SC = (Zero=0):(Carry=0):(Negative=1)
+```
 
-`; A = 0x04`
-`; F = (Carry=0)`
-**`ROLC`` ``A`**
-`; A = 0x08`
-`; F = (Zero=0):(Carry=0):(Sign=0)`
+```
+; B = 0x84
+; SC = (Carry=0)
+RL B
+; B = 0x08
+; SC = (Zero=0):(Carry=1):(Negative=0)
+```
 
-`; B = 0x45`
-`; F = (Carry=1)`
-**`ROLC`` ``B`**
-`; B = 0x8B`
-`; F = (Zero=0):(Carry=0):(Sign=1)`
+```
+; [HL] = 0x80
+; SC = (Carry=0)
+RL [HL]
+; [HL] = 0x00
+; SC = (Zero=1):(Carry=1):(Negative=0)
+```
 
-`; B = 0x84`
-`; F = (Carry=0)`
-**`ROLC`` ``B`**
-`; B = 0x08`
-`; F = (Zero=0):(Carry=1):(Sign=0)`
+```
+; [HL] = 0x80
+; SC = (Carry=1)
+RL [HL]
+; [HL] = 0x01
+; SC = (Zero=0):(Carry=1):(Negative=0)
+```
 
-`; [HL] = 0x80`
-`; F = (Carry=0)`
-**`ROLC`` ``[HL]`**
-`; [HL] = 0x00`
-`; F = (Zero=1):(Carry=1):(Sign=0)`
-
-`; [HL] = 0x80`
-`; F = (Carry=1)`
-**`ROLC`` ``[HL]`**
-`; [HL] = 0x01`
-`; F = (Zero=0):(Carry=1):(Sign=0)`
-
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

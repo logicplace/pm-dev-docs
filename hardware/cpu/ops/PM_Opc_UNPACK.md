@@ -1,36 +1,40 @@
-\== UNPACK = Unpack Nibbles ==
+# UPCK = Unpack Nibbles
 
 | Hex | Mnemonic | Cycles |
 | --- | -------- | ------ |
-| DF  | UNPACK   | 8      |
+| DF  | UPCK     | 2      |
 
-### Execute
+## Execute
 
-`A        =  (8-Bits) Register A`
-`B        =  (8-Bits) Register B`
+```
+A = (8-bits) Register A
+B = (8-bits) Register B
+```
 
-`; UNPACK`
+```
+; UPCK
 
-`B = A SHR 4`
-`A = A AND 0x0F`
+B = A SRL 4
+A = A AND 0x0F
+```
 
-### Description
+## Description
 
-Unpack byte in register A into 2 nibbles, storing them into register A
-and B.
+Unpack byte in register A into 2 nibbles, storing them into register A and B.
 
-Register A receive the lower nibble and register B receive the higher
-nibble.
+Register A receive the lower nibble and register B receive the higher nibble.
 
-### Conditions
+## Conditions
 
 None
 
-### Examples
+## Examples
 
-`; A = 0x21`
-**`UNPACK`**
-`; A = 0x01`
-`; B = 0x02`
+```
+; A = 0x21
+UPCK
+; A = 0x01
+; B = 0x02
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

@@ -1,68 +1,77 @@
-\== SAL = Shift Arithmetic Left ==
+# SLA = Shift Arithmetic Left
 
 | Hex      | Mnemonic       | Cycles |
 | -------- | -------------- | ------ |
-| CE 80    | SAL A          | 12     |
-| CE 81    | SAL B          | 12     |
-| CE 82 nn | SAL \[N+\#nn\] | 20     |
-| CE 83    | SAL \[HL\]     | 16     |
+| CE 80    | SLA A          | 3      |
+| CE 81    | SLA B          | 3      |
+| CE 82 ll | SLA \[BR:ll]   | 5      |
+| CE 83    | SLA \[HL]      | 4      |
 
-### Execute
+## Execute
 
-`A       = Register A`
-`B       = Register B`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
+```
+A       = Register A
+B       = Register B
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+```
 
-`; SAL Ds`
-`;`
-`; Ds = Source/Destination`
+```
+; SLA Ds
+;
+; Ds = Source/Destination
 
-`Ds = Ds SHL 1`
+Ds = Ds SLL 1
+```
 
-### Description
+## Description
 
-"8-Bits Destination" bits are arithmetically shifted left by 1.
+"8-bits Destination" bits are arithmetically shifted left by 1.
 
-NOTE: This instruction can be used as an signed integer multiplication
-by 2.
+NOTE: This instruction can be used as an signed integer multiplication by 2.
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
+* Carry: Set when the old bit 7 was 1
+* Overflow: Set when result overflow 8-bits signed range (< -128 OR > 127)
+* Negative: Set when bit 7 of the result is 1
 
-Carry: Set when the old bit 7 was 1
+## Examples
 
-Overflow: Set when result overflow 8-bits signed range (\< -128 OR \>
-127)
+```
+; A = 0x04 (4)
+SLA A
+; A = 0x08 (8)
+; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=0)
+```
 
-Sign: Set when bit 7 of the result is 1
+```
+; A = 0xFE (-2)
+SLA A
+; A = 0xFC (-4)
+; SC = (Zero=0):(Carry=1):(Overflow=0):(Negative=1)
+```
 
-### Examples
+```
+; B = 0x45 (69)
+SLA B
+; B = 0x8A (-124)
+; SC = (Zero=0):(Carry=0):(Overflow=1):(Negative=1)
+```
 
-`; A = 0x04 (4)`
-**`SAL`` ``A`**
-`; A = 0x08 (8)`
-`; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=0)`
+```
+; B = 0x84 (-124)
+SLA B
+; B = 0x14 (20)
+; SC = (Zero=0):(Carry=1):(Overflow=1):(Negative=0)
+```
 
-`; A = 0xFE (-2)`
-**`SAL`` ``A`**
-`; A = 0xFC (-4)`
-`; F = (Zero=0):(Carry=1):(Overflow=0):(Sign=1)`
+```
+; [HL] = 0x80 (-128)
+SLA [HL]
+; [HL] = 0x00 (0)
+; SC = (Zero=1):(Carry=1):(Overflow=1):(Negative=0)
+```
 
-`; B = 0x45 (69)`
-**`SAL`` ``B`**
-`; B = 0x8A (-124)`
-`; F = (Zero=0):(Carry=0):(Overflow=1):(Sign=1)`
-
-`; B = 0x84 (-124)`
-**`SAL`` ``B`**
-`; B = 0x14 (20)`
-`; F = (Zero=0):(Carry=1):(Overflow=1):(Sign=0)`
-
-`; [HL] = 0x80 (-128)`
-**`SAL`` ``[HL]`**
-`; [HL] = 0x00 (0)`
-`; F = (Zero=1):(Carry=1):(Overflow=1):(Sign=0)`
-
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

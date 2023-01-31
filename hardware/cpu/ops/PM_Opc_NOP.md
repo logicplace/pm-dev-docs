@@ -1,24 +1,26 @@
-\== NOP = No Operation ==
+# NOP = No Operation
 
 | Hex | Mnemonic | Cycles |
 | --- | -------- | ------ |
-| FF  | NOP      | 8      |
+| FF  | NOP      | 2      |
 
-### Execute
+## Execute
 
 Nothing
 
-### Description
+## Description
 
 Does nothing, used for short delays.
 
-### Conditions
+## Conditions
 
 None
 
-### Examples
+## Examples
 
-`; Delay 8 Cycles`
-**`NOP`**
+```
+; Delay 8 Cycles
+NOP
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

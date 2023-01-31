@@ -1,108 +1,131 @@
-\== POP = Pop Register from Stack
-==
+# POP = Pop Register from Stack
 
-| Hex   | Mnemonic | Cycles | Regs stacked from top to bottom              |
-| ----- | -------- | ------ | -------------------------------------------- |
-| A8    | POP BA   | 12     | B, A                                         |
-| A9    | POP HL   | 12     | H, L                                         |
-| AA    | POP X    | 12     | X(Hi), X(Lo)                                 |
-| AB    | POP Y    | 12     | Y(Hi), Y(Lo)                                 |
-| AC    | POP N    | 8      | N                                            |
-| AD    | POP I    | 8      | I                                            |
-| AE    | POPX     | 12     | XI, YI                                       |
-| AF    | POP F    | 8      | F                                            |
-| CF B4 | POP A    | 12     | A                                            |
-| CF B5 | POP B    | 12     | B                                            |
-| CF B6 | POP L    | 12     | L                                            |
-| CF B7 | POP H    | 12     | H                                            |
-| CF BC | POPA     | 44     | B, A, H, L, X(Hi:Lo), Y(Hi:Lo), N            |
-| CF BD | POPAX    | 56     | B, A, H, L, X(Hi:Lo), Y(Hi:Lo), N, I, XI, YI |
+| Hex   | Mnemonic | Cycles | Regs stacked from top to bottom                  |
+| ----- | -------- | ------ | --------------------------------------------     |
+| A8    | POP BA   | 3      | B, A                                             |
+| A9    | POP HL   | 3      | H, L                                             |
+| AA    | POP IX   | 3      | IX(Hi), IX(Lo)                                   |
+| AB    | POP IY   | 3      | IY(Hi), IY(Lo)                                   |
+| AC    | POP BR   | 2      | BR                                               |
+| AD    | POP EP   | 2      | EP                                               |
+| AE    | POP IP   | 3      | XP, YP                                           |
+| AF    | POP SC   | 2      | SC                                               |
+| CF B4 | POP A    | 3      | A                                                |
+| CF B5 | POP B    | 3      | B                                                |
+| CF B6 | POP L    | 3      | L                                                |
+| CF B7 | POP H    | 3      | H                                                |
+| CF BC | POP ALL  | 44     | B, A, H, L, IX(Hi:Lo), IY(Hi:Lo), BR             |
+| CF BD | POP ALE  | 56     | B, A, H, L, IX(Hi:Lo), IY(Hi:Lo), BR, EP, XP, YP |
 
-### Execute
+## Execute
 
-`A        = Register A`
-`B        = Register B`
-`L        = Register L`
-`H        = Register H`
-`N        = Register N`
-`F        = Register F`
-`I        = Register I`
-`XI       = Register XI`
-`YI       = Register YI`
-`BA       = Register BA: (B shl 8) or A`
-`HL       = Register HL: (H shl 8) or L`
-`X        = Register X`
-`Y        = Register Y`
-`SP       = Register SP (Stack Pointer)`
+```
+A  = Register A
+B  = Register B
+L  = Register L
+H  = Register H
+BR = Register BR
+SC = Register SC
+EP = Register EP
+XP = Register XP
+YP = Register YP
+BA = Register BA: (B shl 8) or A
+HL = Register HL: (H shl 8) or L
+IX = Register IX
+IY = Register IY
+SP = Register SP (Stack Pointer)
+```
 
-`; POP r16`
-`;`
-`; r16 = 16-Bits Register (BA, HL, X or Y)`
+### POP 16-bits
 
-`r16 = (Memory[SP+1] SHL 8) OR Memory[SP]`
-`SP = SP + 2`
+```
+; POP r16
+;
+; r16 = 16-bits Register (BA, HL, IX or IY)
 
-`; POP r8`
-`;`
-`; r8  =  8-Bits Register (A, B, L, H, N, I and F)`
+r16 = (Memory[SP+1] SLL 8) OR Memory[SP]
+SP = SP + 2
+```
 
-`r8 = Memory[SP]`
-`SP = SP + 1`
+### POP 8-bits
 
-`; POPX`
+```
+; POP r8
+;
+; r8  =  8-bits Register (A, B, L, H, BR, EP and SC)
 
-`XI = Memory[SP+1]`
-`YI = Memory[SP]`
-`SP = SP + 2`
+r8 = Memory[SP]
+SP = SP + 1
+```
 
-`; POPA`
+### POP IP
 
-`B = Memory[SP+8] = B`
-`A = Memory[SP+7] = A`
-`H = Memory[SP+6] = H`
-`L = Memory[SP+5] = L`
-`X = (Memory[SP+4] SHL 8) OR Memory[SP+3]`
-`Y = (Memory[SP+2] SHL 8) OR Memory[SP+1]`
-`N = Memory[SP]`
-`SP = SP + 9`
+```
+; POP IP
 
-`; POPAX`
+XP = Memory[SP+1]
+YP = Memory[SP]
+SP = SP + 2
+```
 
-`B = Memory[SP+11]`
-`A = Memory[SP+10]`
-`H = Memory[SP+9]`
-`L = Memory[SP+8]`
-`X = (Memory[SP+7] SHL 8) OR Memory[SP+6]`
-`Y = (Memory[SP+5] SHL 8) OR Memory[SP+4]`
-`N = Memory[SP+3]`
-`I = Memory[SP+2]`
-`XI = Memory[SP+1]`
-`YI = Memory[SP]`
-`SP = SP + 12`
+### POP ALL
 
-### Description
+```
+; POP ALL
+
+B = Memory[SP+8] = B
+A = Memory[SP+7] = A
+H = Memory[SP+6] = H
+L = Memory[SP+5] = L
+IX = (Memory[SP+4] SLL 8) OR Memory[SP+3]
+IY = (Memory[SP+2] SLL 8) OR Memory[SP+1]
+BR = Memory[SP]
+SP = SP + 9
+```
+
+### POP ALE
+
+```
+; POP ALE
+
+B = Memory[SP+11]
+A = Memory[SP+10]
+H = Memory[SP+9]
+L = Memory[SP+8]
+IX = (Memory[SP+7] SLL 8) OR Memory[SP+6]
+IY = (Memory[SP+5] SLL 8) OR Memory[SP+4]
+BR = Memory[SP+3]
+EP = Memory[SP+2]
+XP = Memory[SP+1]
+YP = Memory[SP]
+SP = SP + 12
+```
+
+## Description
 
 Pop register(s) from the stack.
 
-### Conditions
+## Conditions
 
 None
 
-### Examples
+## Examples
 
-`; BA = 0x1337`
-`; SP = 0x2000`
-[`PUSH`` ``BA`](PM_Opc_PUSH.md "wikilink")
-`; BA = 0x1337`
-`; SP = 0x1FFE`
-[`MOV`` ``A,`` ``0x80`](PM_Opc_MOV8.md "wikilink")
-`; BA = 0x1380`
-`; SP = 0x1FFE`
-[`INC`` ``B`](PM_Opc_INC.md "wikilink")
-`; BA = 0x1480`
-`; SP = 0x1FFE`
-**`POP`` ``BA`**
-`; BA = 0x1337`
-`; SP = 0x2000`
+```
+; BA = 0x1337
+; SP = 0x2000
+PUSH BA
+; BA = 0x1337
+; SP = 0x1FFE
+LD A, 0x80
+; BA = 0x1380
+; SP = 0x1FFE
+INC B
+; BA = 0x1480
+; SP = 0x1FFE
+POP BA
+; BA = 0x1337
+; SP = 0x2000
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

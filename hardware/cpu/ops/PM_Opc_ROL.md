@@ -1,59 +1,69 @@
-\== ROL = Rotate Left ==
+# RLC = Rotate Left
 
 | Hex      | Mnemonic       | Cycles |
 | -------- | -------------- | ------ |
-| CE 94    | ROL A          | 12     |
-| CE 95    | ROL B          | 12     |
-| CE 96 nn | ROL \[N+\#nn\] | 20     |
-| CE 97    | ROL \[HL\]     | 16     |
+| CE 94    | RLC A          | 3      |
+| CE 95    | RLC B          | 3      |
+| CE 96 ll | RLC \[BR:ll]   | 5      |
+| CE 97    | RLC \[HL]      | 4      |
 
-### Execute
+## Execute
 
-`A       = Register A`
-`B       = Register B`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
+```
+A       = Register A
+B       = Register B
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+```
 
-`; ROL Ds`
-`;`
-`; Ds = Source/Destination`
+```
+; RLC Ds
+;
+; Ds = Source/Destination
 
-`Ds = (Ds SHL 1) OR (Ds SHR 7)`
+Ds = (Ds SLL 1) OR (Ds SRL 7)
+```
 
-### Description
+## Description
 
-"8-Bits Destination" bits are rotated left by 1.
+"8-bits Destination" bits are rotated left by 1.
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
+* Carry: Set when bit 0 of the result is 1
+* Negative: Set when bit 7 of the result is 1
 
-Carry: Set when bit 0 of the result is 1
+Overflow remains unchanged
 
-Sign: Set when bit 7 of the result is 1
+## Examples
 
-Overflow remain unchanged
+```
+; A = 0x04
+RLC A
+; A = 0x08
+; SC = (Zero=0):(Carry=0):(Negative=0)
+```
 
-### Examples
+```
+; B = 0x45
+RLC B
+; B = 0x8A
+; SC = (Zero=0):(Carry=0):(Negative=1)
+```
 
-`; A = 0x04`
-**`ROL`` ``A`**
-`; A = 0x08`
-`; F = (Zero=0):(Carry=0):(Sign=0)`
+```
+; B = 0x84
+RLC B
+; B = 0x15
+; SC = (Zero=0):(Carry=1):(Negative=0)
+```
 
-`; B = 0x45`
-**`ROL`` ``B`**
-`; B = 0x8A`
-`; F = (Zero=0):(Carry=0):(Sign=1)`
+```
+; [HL] = 0x80
+RLC [HL]
+; [HL] = 0x01
+; SC = (Zero=0):(Carry=1):(Negative=0)
+```
 
-`; B = 0x84`
-**`ROL`` ``B`**
-`; B = 0x15`
-`; F = (Zero=0):(Carry=1):(Sign=0)`
-
-`; [HL] = 0x80`
-**`ROL`` ``[HL]`**
-`; [HL] = 0x01`
-`; F = (Zero=0):(Carry=1):(Sign=0)`
-
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

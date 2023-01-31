@@ -1,33 +1,36 @@
-\== HALT = Halt CPU ==
+# HALT = Halt CPU
 
 | Hex   | Mnemonic | Cycles |
 | ----- | -------- | ------ |
-| CE AE | HALT     | 8      |
+| CE AE | HALT     | 2      |
 
-### Execute
+## Execute
 
-`See description.`
+```
+See description.
+```
 
-### Description
+## Description
 
-Halt the CPU until a interrupt is requested.
+Halt the CPU until an interrupt is requested.
 
 Using this instruction will reduce energy consumption.
 
 NOTE:
-If no interrupts are enabled, the system will be unable to resume
-operation.
+If no interrupts are enabled, the system will be unable to resume operation.
 Never call HALT in a middle of an interrupt.
 Code will resume after HALT when the requested interrupt is completed.
 
-### Conditions
+## Conditions
 
 None
 
-### Examples
+## Examples
 
-`; Make sure interrupts are enabled and configured correctly.`
-**`HALT`**
-`; Operation will resume once the interrupt finish.`
+```
+; Make sure interrupts are enabled and configured correctly.
+HALT
+; Operation will resume once the interrupt finish.
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

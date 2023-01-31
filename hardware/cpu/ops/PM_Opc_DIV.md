@@ -1,71 +1,75 @@
-\== DIV = Divide ==
+# DIV = Divide
 
-| Hex   | Mnemonic  | Cycles |
-| ----- | --------- | ------ |
-| CE D9 | DIV HL, A | 52     |
+| Hex   | Mnemonic | Cycles |
+| ----- | -------- | ------ |
+| CE D9 | DIV      | 12     |
 
-### Execute
+## Execute
 
-`; DIV HL, A`
-`;`
-`; HL is the Dividend`
-`; A is the Divisor`
-`; L will be the Quotient`
-`; H will be the Remainder/Rest`
+```
+; DIV
+;
+; HL is the Dividend
+; A is the Divisor
+; L will be the Quotient
+; H will be the Remainder
 
-`Ds = HL ÷ A`
-`IF Ds < 256 THEN`
-`  L = Ds          ; Quotient`
-`  H = HL % A      ; Remainder`
-`ENDIF`
+Ds = HL ÷ A
+IF Ds < 256 THEN
+  L = Ds          ; Quotient
+  H = HL % A      ; Remainder
+ENDIF
+```
 
 **Note:**
 
 Can throw Division by Zero if Divisor is 0 (We need to research more
 about this).
 
-If Quotient can't fit in 8-Bits range, Overflow flag will be set and the
+If Quotient can't fit in 8-bits range, Overflow flag will be set and the
 result won't be saved.
 
-### Description
+## Description
 
-"16-Bits Register HL" divide by "8-Bits Register A", Quotient will be
-stored at "8-Bits Register L" and Remainder will be stored at "8-Bits
+"16-bits Register HL" divide by "8-bits Register A", Quotient will be
+stored at "8-bits Register L" and Remainder will be stored at "8-bits
 Register H".
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
+* Carry: Always reset
+* Overflow: Set when Quotient can't fit in 8-bits range
+* Negative: Set when bit 7 of Quotient is 1
 
-Carry: Always Clear
+## Examples
 
-Overflow: Set when Quotient can't fit in 8-Bits range
+```
+; A = 0x02
+; HL = 0x0007
+DIV HL, A
+; L = 0x03 (0x0007 / 0x02 = 0x03 (with remainder 0x01))
+; H = 0x01 (Remainder)
+; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=0)
+```
 
-Sign: Set when bit 7 of Quotient is 1
+```
+; A = 0x00
+; HL = 0x0007
+DIV HL, A
+;          (0x0007 / 0x00 = Division by Zero)
+; HL = 0x????  (Unpredictable result!?)
+; SC = (Zero=?):(Carry=?):(Overflow=?):(Negative=?)
+; - Throw Division by Zero Exception
+```
 
-### Examples
+```
+; A = 0x02
+; HL = 0xFFFD
+DIV HL, A
+;          (0xFFFD / 0x02 = 0x7FFE (with rest 0x01))
+; HL = 0xFFFD  (Results are unchanged since Quotient exceed 8-bits range)
+; SC = (Zero=0):(Carry=0):(Overflow=1):(Negative=1)
+```
 
-`; A = 0x02`
-`; HL = 0x0007`
-**`DIV`` ``HL,`` ``A`**
-`; L = 0x03 (0x0007 / 0x02 = 0x03 (with rest 0x01))`
-`; H = 0x01 (Remainder/Rest)`
-`; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=0)`
-
-`; A = 0x00`
-`; HL = 0x0007`
-**`DIV`` ``HL,`` ``A`**
-`;          (0x0007 / 0x00 = Division by Zero)`
-`; HL = 0x????  (Unpredictable result!?)`
-`; F = (Zero=?):(Carry=?):(Overflow=?):(Sign=?)`
-`; - Throw Division by Zero Exception`
-
-`; A = 0x02`
-`; HL = 0xFFFD`
-**`DIV`` ``HL,``
-``A`**
-`;          (0xFFFD / 0x02 = 0x7FFE (with rest 0x01))`
-`; HL = 0xFFFD  (Results are unchanged since Quotient exceed 8-Bits range)`
-`; F = (Zero=0):(Carry=0):(Overflow=1):(Sign=1)`
-
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

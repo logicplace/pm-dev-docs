@@ -1,84 +1,88 @@
-\== CMP = Compare (8-Bits) ==
+# CP = Compare (8-bits)
 
 | Hex      | Mnemonic             | Cycles |
 | -------- | -------------------- | ------ |
-| 30       | CMP A, A             | 8      |
-| 31       | CMP A, B             | 8      |
-| 32 nn    | CMP A, \#nn          | 8      |
-| 33       | CMP A, \[HL\]        | 8      |
-| 34 nn    | CMP A, \[N+\#nn\]    | 12     |
-| 35 nn nn | CMP A, \[\#nnnn\]    | 16     |
-| 36       | CMP A, \[X\]         | 8      |
-| 37       | CMP A, \[Y\]         | 8      |
-| DB nn nn | CMP \[N+\#nn\], \#nn | 16     |
-| CE 30 ss | CMP A, \[X+\#ss\]    | 16     |
-| CE 31 ss | CMP A, \[Y+\#ss\]    | 16     |
-| CE 32    | CMP A, \[X+L\]       | 16     |
-| CE 33    | CMP A, \[Y+L\]       | 16     |
-| CE 34    | CMP \[HL\], A        | 16     |
-| CE 35 nn | CMP \[HL\], \#nn     | 20     |
-| CE 36    | CMP \[HL\], \[X\]    | 20     |
-| CE 37    | CMP \[HL\], \[Y\]    | 20     |
-| CE BC nn | CMP B, \#nn          | 12     |
-| CE BD nn | CMP L, \#nn          | 12     |
-| CE BE nn | CMP H, \#nn          | 12     |
-| CE BF nn | CMP N, \#nn          | 12     |
+| 30       | CP A,A               | 2      |
+| 31       | CP A,B               | 2      |
+| 32 nn    | CP A,#nn             | 2      |
+| 33       | CP A,\[HL]           | 2      |
+| 34 ll    | CP A,\[BR:ll]        | 3      |
+| 35 ll hh | CP A,\[hhll]         | 4      |
+| 36       | CP A,\[IX]           | 2      |
+| 37       | CP A,\[IY]           | 2      |
+| DB ll nn | CP \[BR:ll],#nn      | 4      |
+| CE 30 dd | CP A,\[IX+dd]        | 4      |
+| CE 31 dd | CP A,\[IY+dd]        | 4      |
+| CE 32    | CP A,\[IX+L]         | 4      |
+| CE 33    | CP A,\[IY+L]         | 4      |
+| CE 34    | CP \[HL],A           | 4      |
+| CE 35 nn | CP \[HL],#nn         | 5      |
+| CE 36    | CP \[HL],\[IX]       | 5      |
+| CE 37    | CP \[HL],\[IY]       | 5      |
+| CE BC nn | CP B,#nn             | 3      |
+| CE BD nn | CP L,#nn             | 3      |
+| CE BE nn | CP H,#nn             | 3      |
+| CE BF nn | CP BR,#nn            | 3      |
 
-### Execute
+## Execute
 
-`#nn     = Immediate unsigned 8-Bits`
-`#ss     = Immediate signed 8-Bits`
-`A       = Register A`
-`B       = Register B`
-`N       = Register N`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
-`[X]     = Memory: (XI shl 16) or X`
-`[Y]     = Memory: (YI shl 16) or Y`
-`[#nnnn] = Memory: (I shl 16) or #nnnn`
-`[X+#ss] = Memory: (XI shl 16) or (X + #ss)`
-`[Y+#ss] = Memory: (YI shl 16) or (Y + #ss)`
-`[X+L]   = Memory: (XI shl 16) or (X + signed(L))`
-`[Y+L]   = Memory: (YI shl 16) or (Y + signed(L))`
+```
+#nn     = Immediate unsigned 8-bits
+dd      = Immediate signed 8-bits
+A       = Register A
+B       = Register B
+BR      = Register BR
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+[IX]    = Memory: (XP shl 16) or IX
+[IY]    = Memory: (YP shl 16) or IY
+[hhll]  = Memory: (EP shl 16) or hhll
+[IX+dd] = Memory: (XP shl 16) or (IX + dd)
+[IY+dd] = Memory: (YP shl 16) or (IY + dd)
+[IX+L]  = Memory: (XP shl 16) or (IX + signed(L))
+[IY+L]  = Memory: (YP shl 16) or (IY + signed(L))
+```
 
-`; CMP Sc2, Sc`
-`;`
-`; Sc2 = Source 2`
-`; Sc  = Source`
+```
+; CP Sc2, Sc
+;
+; Sc2 = Source 2
+; Sc  = Source
 
-`(discarded) = Sc2 - Sc`
+(discarded) = Sc2 - Sc
+```
 
-### Description
+## Description
 
-"8-Bits Source 2" subtracts with "8-Bits Source", result is discarded.
+Subtracts "8-bits Source 2" from "8-bits Source", result is discarded.
 
 This instruction is used to compare values.
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
+* Zero: Set when result is 0
+* Carry: Set when result is < 0
+* Overflow: Set when result overflow 8-bits signed range (< -128 OR > 127)
+* Negative: Set when bit 7 of the result is 1
 
-Carry: Set when result is \< 0
+## Examples
 
-Overflow: Set when result overflow 8-bits signed range (\< -128 OR \>
-127)
+```
+; A = 0x55
+CP A, $80
+; A = 0x55
+;     0xD5 (0x55 - 0x80 = 0x(1)D4)
+; SC = (Zero=0):(Carry=0):(Overflow=1):(Negative=1)
+```
 
-Sign: Set when bit 7 of the result is 1
+```
+; B = 0x31
+; A = 0xCF
+CP A, B
+; B = 0x31
+; A = 0xCF
+;     0x9E (0xCF - 0x31 = 0x(0)9E)
+; SC = (Zero=0):(Carry=0):(Overflow=0):(Negative=0)
+```
 
-### Examples
-
-`; A = 0x55`
-**`CMP`` ``A,`` ``$80`**
-`; A = 0x55`
-`;     0xD5 (0x55 - 0x80 = 0x(1)D4)`
-`; F = (Zero=0):(Carry=0):(Overflow=1):(Sign=1)`
-
-`; B = 0x31`
-`; A = 0xCF`
-**`CMP`` ``A,`` ``B`**
-`; B = 0x31`
-`; A = 0xCF`
-`;     0x9E (0xCF - 0x31 = 0x(0)9E)`
-`; F = (Zero=0):(Carry=0):(Overflow=0):(Sign=0)`
-
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

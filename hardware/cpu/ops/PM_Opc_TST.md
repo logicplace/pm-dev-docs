@@ -1,71 +1,81 @@
-\== TST = Test Bits ==
+# BIT = Test Bits
 
-| Hex      | Mnemonic             | Cycles |
-| -------- | -------------------- | ------ |
-| 94       | TST A, B             | 8      |
-| 95 nn    | TST \[HL\], \#nn     | 12     |
-| 96 nn    | TST A, \#nn          | 8      |
-| 97 nn    | TST B, \#nn          | 8      |
-| DC nn nn | TST \[N+\#nn\], \#nn | 16     |
+| Hex      | Mnemonic         | Cycles |
+| -------- | ---------------- | ------ |
+| 94       | BIT A,B          | 2      |
+| 95 nn    | BIT \[HL],#nn    | 3      |
+| 96 nn    | BIT A,#nn        | 2      |
+| 97 nn    | BIT B,#nn        | 2      |
+| DC ll nn | BIT \[BR:ll],#nn | 4      |
 
-### Execute
+## Execute
 
-`#nn     = Immediate unsigned 8-Bits`
-`A       = Register A`
-`B       = Register B`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
+```
+#nn     = Immediate unsigned 8-bits
+A       = Register A
+B       = Register B
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+```
 
-`; TST Sc2, Sc`
-`;`
-`; Sc2 = Source 2`
-`; Sc  = Source`
+```
+; BIT Sc2, Sc
+;
+; Sc2 = Source 2
+; Sc  = Source
 
-`(discarded) = Sc2 AND Sc`
+(discarded) = Sc2 AND Sc
+```
 
-### Description
+## Description
 
-"8-Bits Source 2" Logic AND with "8-Bits Source", result is discarded.
+"8-bits Source 2" Logical AND with "8-bits Source", result is discarded.
 
-Source is usually a mask, Flag Z (Zero) return true if the result masked
-bits are all 0.
+Source is usually a mask, Flag Z (Zero) is set if all the masked bits are 0.
+Below is a table of bytes to check against for testing single bits.
 
-`Common usage:`
+| Check bit | Mask |
+| --------- | ---- |
+| Bit 0     | $01  |
+| Bit 1     | $02  |
+| Bit 2     | $04  |
+| Bit 3     | $08  |
+| Bit 4     | $10  |
+| Bit 5     | $20  |
+| Bit 6     | $40  |
+| Bit 7     | $80  |
+| All bits  | $FF  |
 
-`Check Bit 0 - Mask $01`
-`Check Bit 1 - Mask $02`
-`Check Bit 2 - Mask $04`
-`Check Bit 3 - Mask $08`
-`Check Bit 4 - Mask $10`
-`Check Bit 5 - Mask $20`
-`Check Bit 6 - Mask $40`
-`Check Bit 7 - Mask $80`
+Zero result if Bit is 0.
+Non-zero result if Bit is 1.
 
-`Zero result if Bit is 0.`
-`Non-zero result if Bit is 1.`
+## Conditions
 
-### Conditions
-
-Zero: Set when result is 0
-
-Sign: Set when bit 7 of the result is 1
+* Zero: Set when result is 0
+* Negative: Set when bit 7 of the result is 1
 
 Carry and Overflow remain unchanged
 
-### Examples
+## Examples
 
-`; A = 0x85`
-**`TST`` ``A,`` ``$80`**
-`; F = (Zero=0):(Sign=1)`
+```
+; A = 0x85
+BIT A, $80
+; SC = (Zero=0):(Negative=1)
+```
 
-`; B = 0xF0`
-**`TST`` ``B,`` ``$04`**
-`; F = (Zero=1):(Sign=0)`
+```
+; B = 0xF0
+BIT B, $04
+; SC = (Zero=1):(Negative=0)
+```
 
-`; A = 0x05`
-**`TST`` ``A,`` ``$01`**
-`; F = (Zero=0):(Sign=0)`
-`JNZ OddAccu  ; Called when first bit is 1.`
-`JZ EvenAccu`
+```
+; A = 0x05
+BIT A, $01
+; SC = (Zero=0):(Negative=0)
+JNZ OddAccu  ; Called when first bit is 1.
+JZ EvenAccu
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)

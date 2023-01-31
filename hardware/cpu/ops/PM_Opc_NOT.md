@@ -1,52 +1,61 @@
-\== NOT = Logical NOT ==
+# CPL = Logical CPL
 
-| Hex      | Mnemonic       | Cycles |
-| -------- | -------------- | ------ |
-| CE A0    | NOT A          | 12     |
-| CE A1    | NOT B          | 12     |
-| CE A2 nn | NOT \[N+\#nn\] | 20     |
-| CE A3    | NOT \[HL\]     | 16     |
+| Hex      | Mnemonic     | Cycles |
+| -------- | ------------ | ------ |
+| CE A0    | CPL A        | 3      |
+| CE A1    | CPL B        | 3      |
+| CE A2 ll | CPL \[BR:ll] | 5      |
+| CE A3    | CPL \[HL]    | 4      |
 
-### Execute
+## Execute
 
-`A       = Register A`
-`B       = Register B`
-`[N+#nn] = Memory: (I shl 16) or (N shl 8) or #nn`
-`[HL]    = Memory: (I shl 16) or HL`
+```
+A       = Register A
+B       = Register B
+[BR:ll] = Memory: (EP shl 16) or (BR shl 8) or #nn
+[HL]    = Memory: (EP shl 16) or HL
+```
 
-`; NOT Ds`
-`;`
-`; Ds = Source/Destination`
+```
+; CPL Ds
+;
+; Ds = Source/Destination
 
-`Ds = Ds XOR $FF`
+Ds = Ds XOR $FF
+```
 
-### Description
+## Description
 
-8-Bits Destination is inverted (all bits).
+8-bits Destination is inverted (all bits).
 
-### Conditions
+## Conditions
 
-Zero: Set when result is 0
-
-Sign: Set when bit 7 of the result is 1
+* Zero: Set when result is 0
+* Negative: Set when bit 7 of the result is 1
 
 Carry and Overflow remain unchanged
 
-### Examples
+## Examples
 
-`; A = 0x01`
-**`NOT`` ``A`**
-`; A = 0xFE`
-`; F = (Zero=0):(Sign=1)`
+```
+; A = 0x01
+CPL A
+; A = 0xFE
+; SC = (Zero=0):(Negative=1)
+```
 
-`; B = 0x85`
-**`NOT`` ``B`**
-`; B = 0x7A`
-`; F = (Zero=0):(Sign=0)`
+```
+; B = 0x85
+CPL B
+; B = 0x7A
+; SC = (Zero=0):(Negative=0)
+```
 
-`; [HL] = 0xFF`
-**`NOT`` ``[HL]`**
-`; [HL] = 0x00`
-`; F = (Zero=1):(Sign=0)`
+```
+; [HL] = 0xFF
+CPL [HL]
+; [HL] = 0x00
+; SC = (Zero=1):(Negative=0)
+```
 
-[**« Back to Instruction set**](S1C88_InstructionSet.md "wikilink")
+[**« Back to Instruction set**](../S1C88_InstructionSet.md)
