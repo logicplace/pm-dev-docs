@@ -49,11 +49,11 @@ These are general-purpose registers intended for indirect addressing. They use X
 
 ### Page registers
 
-In order to access 24-bit addresses using registers, separate page registers are available. IX and IY both provide 24-bit addresses using the XP and YP registers, respectively, as their upper 8 bits. HL, BR, and absolute addressing use the Expand Page register, EP, for selecting the page. It is generally good practice to maintain BR as 00h unless otherwise necessary.
+In order to access 24-bit addresses using registers, separate page registers are available. IX and IY both provide 24-bit addresses using the XP and YP registers, respectively, as their upper 8 bits. HL, BR, and absolute addressing use the Expand Page register, EP, for selecting the page. It is generally good practice to maintain EP as 00h unless otherwise necessary.
 
 ### PC register
 
-Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](Glossary.md#most-significant-bit) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
+Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](Glossary.md#significant-bits) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
 
 ### SP register
 
@@ -74,9 +74,9 @@ The stack pointer, as the name implies, points to the top of the stack. It may p
 
 While the SC register can, in some cases, be treated as a general purpose 8-bit register, the exception register however is not directly accessible by any conventional means. It is also to be noted that the exception trapping needs to be "enabled" by some means we've not discovered yet.
 
-Division by zero causes the physical system to hard lock, but it is available in Pokemon Channel's emulator.
+Division by zero causes the physical system to hard lock, but it is available in Pokémon Channel's emulator.
 
-The lower 4 bits of both registers are used for branch conditions and C is used for carry chaining in certain arithmetic operations. The upper 4 bits are control certain functionality.
+The lower 4 bits of both registers are used for branch conditions and C is used for carry chaining in certain arithmetic operations. The upper 4 bits control certain functionality.
 
 While the below sections describe some generalities, not all operations will affect or use all flags. Check each operation's documentation for how it uses them.
 
@@ -94,7 +94,7 @@ The overflow flag is set when the signed value overflows, that is, loops around.
 
 #### Negative flag
 
-For most operations, this is a copy of the [most significant bit](Glossary.md#most-significant-bit), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
+For most operations, this is a copy of the [most significant bit](Glossary.md#significant bits), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
 
 #### Decimal mode
 
@@ -112,6 +112,6 @@ Setting flags works the same as normal, except that they too only consider the l
 
 These two bits describe the minimum priority level for interrupts to fire. Essentially, this compares the values you set to the interrupt priority registers (or a value of 3 for non-maskable interrupts) to this value. If the priority is strictly greater than this value, it will fire.
 
-After an interrupt fires, this flag will represent the priority of the fired interrupt and must be reset.
+After an interrupt fires, this flag will represent the priority of the fired interrupt and must be changed for it to fire again.
 
 For more information, see the [Interrupt Vectors](PM_IRQs.md) page.
