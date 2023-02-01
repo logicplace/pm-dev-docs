@@ -9,7 +9,15 @@ Additionally, the S1C88V20 provides the capability to handle up to 32 exception 
 The CPU is clocked at 4.00 MHz, although the processor operates on a 4 cycle data access period, leaving the system with a theoretical limit of 1 MIPS.
 
 - [Instruction Set](S1C88_InstructionSet.md)
-- [Interrupt Vectors](PM_IRQs.md)
+- [The Memory Map](Memory.md)
+  - [The Hardware Registers](Registers.md)
+- [Internal BIOS](BIOS.md)
+- [Interrupts](Interrupts.md)
+- [Oscillators & Timers](../Timers.md)
+- [I/O](IO.md)
+- [Audio / Sound](Sound.md)
+- [LCD Controller](LCD_Controller.md)
+- [Standby modes](Standby.md)
 
 ## Registers
 
@@ -41,7 +49,7 @@ This is a general purpose indexing register which decomposes into the general pu
 
 ### BR register
 
-BR-based addressing is most useful for accessing register memory quickly. BR provides the mid byte of a 24-bit addressing mode, and the _#ll_ is an 8-bit immediate. For example, `[BR+8Ah]` would point to $208A (VPU_CNT) if BR = 20h and EP = 00h. It is rare to see BR with any value other than 20h, but it is not entirely out of the question to change it.
+BR-based addressing is most useful for accessing register memory quickly. BR provides the mid byte of a 24-bit addressing mode, and the _#ll_ is an 8-bit immediate. For example, `[BR:8Ah]` would point to $208A (VPU_CNT) if BR = 20h and EP = 00h. It is rare to see BR with any value other than 20h, but it is not entirely out of the question to change it.
 
 ### IX and IY registers
 
@@ -114,4 +122,4 @@ These two bits describe the minimum priority level for interrupts to fire. Essen
 
 After an interrupt fires, this flag will represent the priority of the fired interrupt and must be changed for it to fire again.
 
-For more information, see the [Interrupt Vectors](PM_IRQs.md) page.
+For more information, see the [Interrupts](Interrupts.md) page.
