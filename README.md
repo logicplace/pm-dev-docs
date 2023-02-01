@@ -1,4 +1,4 @@
-# Pokemon mini documentation
+# Pokémon mini documentation
 
 This is the repo for the Pokémon mini documentation hosted [here](https://www.pokemon-mini.net/documentation/).
 
@@ -41,7 +41,6 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
         - what's connected/enabled
         - docs links
       - Features
-      - Minimum mode info if that's accessible in PM
     - Instruction set
       - ...indiviudal instructions...
     - Memory map
