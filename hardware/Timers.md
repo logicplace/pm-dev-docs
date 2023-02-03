@@ -60,15 +60,7 @@ This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for 
 
 This oscillator is labeled `Y2` on the circuit board and has text printed on the top which looks like a curved M in a box followed by `4.00` and then a single-character serial such as `L` or `J`. It is a surface-mount component.
 
-Disabling this oscillator when not needed can save power. You can also adjust the speed this runs at by writing to register VD1C according to the following table:
-
-| VD1C1 | VD1C0 | Operating voltage | Oscillation        |
-|:-----:|:-----:| ----------------- | ------------------ |
-|   1   |  1/0  | 3.2 V             | 0.03~8.2 MHz       |
-|   0   |   1   | 1.6 V             | 0.03~1.1 MHz / off |
-|   0   |   0   | 2.4 V             | 0.03~4.4 MHz       |
-
-When switching voltages you cannot jump directly between 1.6 V and 3.2 V safely and you must wait some time after switching. See the VD1C register details for usage information. Note that the BIOS will switch between 1.6 V and 2.4 V during some operations.
+Disabling this oscillator when not needed can save power. To turn it off call `int [74h]` and to turn it back on call `int [39h]`.
 
 In previous documentation and code, this oscillator was once known in the community as "oscillator 1".
 
