@@ -60,7 +60,7 @@ This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for 
 
 This oscillator is labeled `Y2` on the circuit board and has text printed on the top which looks like a curved M in a box followed by `4.00` and then a single-character serial such as `L` or `J`. It is a surface-mount component.
 
-Disabling this oscillator when not needed can save power. To turn it off call `int [74h]` and to turn it back on call `int [39h]`.
+Disabling this oscillator when not needed can save power. To turn it off call `int [74h]` and to turn it back on call `int [72h]`. This will cause the CPU to run slower, however.
 
 In previous documentation and code, this oscillator was once known in the community as "oscillator 1".
 
