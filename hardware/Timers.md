@@ -10,6 +10,7 @@
 - [Programmable timers][]
   - [Programmable timer configuration][]
   - [Programmable timer interrupts][]
+  - [Enabling and pausing programmable timers][]
 
 [Oscillators]: #oscillators
 [OSC1]: #osc1
@@ -21,6 +22,7 @@
 [Programmable timers]: #programmable-timers
 [Programmable timer configuration]: #programmable-timer-configuration
 [Programmable timer interrupts]: #programmable-timer-interrupts
+[Enabling and pausing programmable timers]: #[enabling-and-pausing-programmable-timers]
 
 [sleep]: Standby.md#sleep
 
@@ -169,6 +171,8 @@ In previous documentation and code, this timer has been known in the community a
 
 16-bit timer comprised of PTM4 as the lower order 8 bits and PTM5 as the higher order 8 bits. That is, `PTM5:PTM4` or given PTM5 is 0x10 and PTM4 is 0xf3, the value is 0x10f3.
 
+For information on using PTM4-5 for audio, see [Audio / Sound](cpu/Sound.md).
+
 In previous documentation and code, this timer has been known in the community as the "timer 3".
 
 ### Programmable timer configuration
@@ -199,7 +203,7 @@ After this you configure the division ratio (prescale), reload data (preset), an
 
 The prescale along with the clock source determines how quickly the counter decrements. Refer to the table below:
 
-| Prescale | fOSC1 / div = Hz    | OSC3 / div = Hz      |
+| Prescale | fOSC1 / div = Hz    | fOSC3 / div = Hz     |
 | -------- | ------------------- | -------------------- |
 | 0        | 32768 / 1   = 32768 | 4M / 2    = 2M       |
 | 1        | 32768 / 2   = 16384 | 4M / 8    = 500k     |
@@ -246,41 +250,48 @@ The scale registers are constructed as `PRPRTy:PSTy:PRPRTx:PSTx` where each PST 
 
 ### Programmable timer interrupts
 
-There are two interrupts for each timer: the underflow and the compare data interrupts. Underflow occurs the tick after a count reaches 0, causing it to preset. The compare data interrupt occurs when the count is equal to the value stored in the relevant CDR register.
+There are two potential interrupts for each timer: the underflow and the compare data interrupts. Underflow occurs the tick after a count reaches 0, causing it to preset. The compare data interrupt occurs when the count is equal to the value stored in the relevant CDR register.
 
-Although all of these interrupts exist and can be accessed by reading the count or factor flag directely, not all of them are mapped to ROM locations (that is, there's no means to make them jump to software code automatically).
+Although all of these interrupts can exist, not all of them are known to be mapped. The following table lists which ones are known to be accessible.
 
 | Timer interrupt  | Factor | Enable | Priority | Software entry address |
 | ---------------- | ------ | ------ | -------- | ---------------------- |
 | PTM0 underflow   | FTU0   | ETU0   | PPT0-1   | $2126                  |
-| PTM0 CDR match   | FTC0   | ETC0   | n/a      | n/a                    |
 | PTM1 underflow   | FTU1   | ETU1   | PPT0-1   | $2120                  |
-| PTM1 CDR match   | FTC1   | ETC1   | n/a      | n/a                    |
 | PTM2 underflow   | FTU2   | ETU2   | PPT2-3   | $211a                  |
-| PTM2 CDR match   | FTC2   | ETC2   | n/a      | n/a                    |
 | PTM3 underflow   | FTU3   | ETU3   | PPT2-3   | $2114                  |
-| PTM3 CDR match   | FTC3   | ETC3   | n/a      | n/a                    |
-| PTM4 underflow   | FTU4   | ETU4   | n/a      | n/a                    |
-| PTM4 CDR match   | FTC4   | ETC4   | n/a      | n/a                    |
 | PTM5 underflow   | FTU5   | ETU5   | PPT4-5   | $212c                  |
 | PTM5 CDR match   | FTC5   | ETC5   | PPT4-5   | $2132                  |
 | PTM0-1 underflow | FTU1   | ETU1   | PPT0-1   | $2120                  |
-| PTM0-1 CDR match | FTC1   | ETC1   | n/a      | n/a                    |
 | PTM2-3 underflow | FTU3   | ETU3   | PPT2-3   | $2114                  |
-| PTM2-3 CDR match | FTC3   | ETC3   | n/a      | n/a                    |
 | PTM4-5 underflow | FTU5   | ETU5   | PPT4-5   | $212c                  |
 | PTM4-5 CDR match | FTC5   | ETC5   | PPT4-5   | $2132                  |
 
+With pm.h, the factor flags are all in IRQ_ACT1, the enable flags in IRQ_ENA1, and the priority flags in IRQ_PRI1.
+
+| Timer  | Underflow flag  | CDR flag        | Priority macro |
+| ------ | --------------- | --------------- | -------------- |
+| PTM0   | IRQ1_TIM1_LO_UF | n/a             | PRI_TIM1       |
+| PTM1   | IRQ1_TIM1_HI_UF | n/a             | PRI_TIM1       |
+| PTM2   | IRQ1_TIM2_LO_UF | n/a             | PRI_TIM2       |
+| PTM3   | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
+| PTM5   | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
+| PTM0-1 | IRQ1_TIM1_HI_UF | n/a             | PRI_TIM1       |
+| PTM2-3 | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
+| PTM4-5 | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
+
 For more information about how interrupts work, see [Interrupts](cpu/Interrupts.md).
-For information on using PTM4-5 for audio, see [Audio / Sound](cpu/Sound.md).
 
 ### Enabling and pausing programmable timers
 
 In order to turn a timer on, the following must be done, where x is some timer index (use 0 for PTM0-1, etc):
 
 * CKSEL*x* should already be set to 0 by default, do not change it
+  * In pm.h, this is bit 0 in TMR*a*\_CTRL_*hl* registers.
 * Set PRPRT*x* register to 1
+  * As mentioned in the configuration section, in pm.h these are contained in the TMR*a*_SCALE registers as bit 7 and 3.
 * Set PTRUN*x* register to 1
+  * In pm.h, this is bit 2 in TMR*a*\_CTRL_*hl* registers.
 
 To pause the timer, reset PTRUN*x* register to 0. The timer will decrement once more before pausing.
 To resume the timer, set PTRUN*x* register back to 1.
