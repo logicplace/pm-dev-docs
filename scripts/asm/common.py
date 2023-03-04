@@ -75,6 +75,9 @@ class EmptyRender(AccentedData):
 	def render(self):
 		return ""
 
+	def __bool__(self):
+		return False
+
 @dataclass
 class Line:
 	label: AccentedData
@@ -149,7 +152,7 @@ def lines(x) -> Sequence[str]:
 
 
 class Renderer:
-	def __init__(self, use_positions=False) -> None:
+	def __init__(self, use_positions=0) -> None:
 		self.prefixes: list[str] = []
 		self.lines: list[Line] = []
 		self.label_anchors: dict[int,str] = {}
@@ -175,7 +178,7 @@ class Renderer:
 		else:
 			if self.use_positions:
 				if isinstance(line, (OperatorLine, DirectiveLine)) and line.position >= 0:
-					pos = f"{line.position:06X}"
+					pos = f"{line.position:0{self.use_positions}X}"
 					self.prefix_anchors[self.cur_line] = pos
 					self.prefixes.append(f"${pos}")
 				else:
@@ -187,6 +190,7 @@ class Renderer:
 					if self.preroll_start < 0
 					else self.preroll_start
 				] = str(line.label)
+				self.preroll_start = -1
 
 		self.lines.append(line)
 		self.cur_line += 1
@@ -195,7 +199,12 @@ class Renderer:
 		res = '<pre><code class="language-s1c88 hljs">'
 		longest = max(len(x) for x in self.prefixes)
 		prefix_class = 'color="#6e7781" class="line-number"'
-		for i, (p, l) in enumerate(zip(self.prefixes, self.lines)):
+		if self.use_positions:
+			lines = zip(self.prefixes, self.lines)
+		else:
+			lines = self.lines
+
+		for i, (p, l) in enumerate(lines):
 			if p:
 				if i in self.prefix_anchors:
 					name = _id(self.prefix_anchors[i])

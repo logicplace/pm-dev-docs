@@ -136,7 +136,7 @@ def identify_arg_type(arg: str, *, index_ok=True):
 
 	raise ValueError(f"unknown argument type: '{arg}'")
 
-def process_epson(code, *, position=0) -> Renderer:
+def process_epson(code, *, position=0, digits=6) -> Renderer:
 	cont = ""
 	macros = defaultdict(set)
 	macro_sizes = defaultdict(int)
@@ -149,7 +149,7 @@ def process_epson(code, *, position=0) -> Renderer:
 			return "title.function"
 		return "keyword"
 
-	renderer = Renderer(position >= 0)
+	renderer = Renderer(digits)
 
 	for line in lines(code):
 		# TODO: remember and restore break points
@@ -312,6 +312,6 @@ def process_epson(code, *, position=0) -> Renderer:
 	return renderer
 
 
-def render(code, *, position=0) -> str:
-	renderer = process_epson(code, position=position)
+def render(code, *, position=0, digits=6) -> str:
+	renderer = process_epson(code, position=position, digits=digits)
 	return renderer.render()
