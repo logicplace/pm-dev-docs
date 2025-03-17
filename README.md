@@ -26,7 +26,7 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
   - This needs to be double-checked on the console with better/confirmed use of the scientific method. Not just the tester tool, but ROMs specifically written to test everything
   - Some info like "crashes" was turned into ??? here, because we don't know the actual operation (it crashes because of some important reason!)
 - Check all terminology, make sure it matches up with EPSON docs.
-- Glossary page, move Open-Bus.md there.
+- ~~Glossary page, move Open-Bus.md there.~~ Tho the glossary page is on-going
 - New layout with sub-directories, see below.
 
 ### Proposed layout

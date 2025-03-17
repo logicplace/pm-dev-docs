@@ -128,8 +128,8 @@ There are 8 bits in a single byte, when laid out as a binary number (0-padded to
 The reason for this naming is due to the idea of precision. Given 20054 apples, for instace, misplacing 1 or 2 is relatively meaningless. This means the 2 in the ten-thousands place (fifth digit), is much more signifcant than the 4 in the ones place (first digit).
 
 ```
-Example:  M000 000L
-Indicies: 7654 3210
+Example: M000 000L
+Indices: 7654 3210
 M = Most significant bit
 L = Least significant bit
 ```
@@ -141,8 +141,8 @@ Given a sequence of bytes, arranged in the appropriate order (see [Endianness](#
 The reason for this naming is due to the idea of precision. Given 20054 apples, for instace, misplacing 1 or 2 is relatively meaningless. This means the 2 in the ten-thousands place (fifth digit), is much more signifcant than the 4 in the ones place (first digit).
 
 ```
-Example:  MM 00 LL
-Indicies:  2  1  0
+Example: MM 00 LL
+Indices:  2  1  0
 MM = Most significant byte
 LL = Least significant byte
 ```

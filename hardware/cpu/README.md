@@ -61,7 +61,7 @@ In order to access 24-bit addresses using registers, separate page registers are
 
 ### PC register
 
-Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](Glossary.md#significant-bits) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
+Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](/Glossary.md#significant-bits) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
 
 ### SP register
 
@@ -102,7 +102,7 @@ The overflow flag is set when the signed value overflows, that is, loops around.
 
 #### Negative flag
 
-For most operations, this is a copy of the [most significant bit](Glossary.md#significant bits), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
+For most operations, this is a copy of the [most significant bit](/Glossary.md#significant-bits), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
 
 #### Decimal mode
 
