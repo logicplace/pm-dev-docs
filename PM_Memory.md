@@ -1,4 +1,4 @@
-The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decoded, and thus nothing mirrors except cartridge memory. Externally, the cartridge bus is only 21 bits wide, so anything at or past $20000 is guaranteed to be a mirror of cartridge memory.
+The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decoded, and thus nothing mirrors except cartridge memory. Externally, the cartridge bus is only 21 bits wide, so anything at or past $200000 is guaranteed to be a mirror of cartridge memory.
 
 ## Pokémon mini Memory Map
 

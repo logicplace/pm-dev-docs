@@ -30,17 +30,18 @@ Any register not included on this list reads as [Open-Bus](Open-Bus.md "wikilink
 <tr>
 {%- endmacro -%}
 
-{% macro register(address, natural, const, link="") -%}
+{% macro register(address, natural="", rowspan=1, link="") -%}
 </tr><tr>
 <td>{{ address }}</td>
-<td>
+{% if natural -%}
+<td rowspan="{{ rowspan }}">
     {%- if link -%}
         <a href="{{ link }}" title="wikilink">{{ natural }}</a>
     {%- else -%}
         {{ natural }}
     {%- endif -%}
 </td>
-<td>{{ const }}</td>
+{%- endif %}
 {%- endmacro -%}
 
 {% macro unk_register(address, comment="") -%}
@@ -75,15 +76,14 @@ Any register not included on this list reads as [Open-Bus](Open-Bus.md "wikilink
 {{ table_start("Registers ($2000 to $20FF)") }}
 <th style="border: 2px solid;">Address</th>
 <th style="border: 2px solid;">Register</th>
-<th style="border: 2px solid;">Const Name</th>
 {% for i in range(7, -1, -1) -%}
 <th style="border: 2px solid; width:60px;">&lt;&nbsp;Bit&nbsp;{{ i }}&nbsp;&gt;</th>
 {% endfor -%}
-{{ register("$00", "System Control 1", "SYS_CTRL1") }}
+{{ register("$00", "System Control", 3) }}
 {{ td("Startup Contrast", "rwb", 6) }}
 {{ td("Cartridge I/O Enable", "rw") }}
 {{ td("LCD I/O Enable", "rw") }}
-{{ register("$01", "System Control 2", "SYS_CTRL2") }}
+{{ register("$01") }}
 {{ td("Ram vector", "rwb") }}
 {{ td("Int abort", "rwb") }}
 {{ td("Enable cart interrupts", "rwb") }}
