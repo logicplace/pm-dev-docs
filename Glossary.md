@@ -6,6 +6,10 @@ Major terms are sorted alphabetically, but register names and stuff like that ar
 
 Systems can be either Big Endian or Little Endian. The Pokémon mini is a little endian system. This refers to the byte order for multi-byte numbers. Since Pokémon mini is a 16-bit system, it stores numbers in at most 16-bits (at a time). When doing so, little endian stores the bytes as [least significant](#significant-bytes) first.
 
+## Identifier
+
+An identifier refers to any referenceable name in code. It could be the name of a variable, a function, a structure, etc.
+
 ## Open-bus
 
 Open-bus is a state in which no hardware on a data path is actively responding to a request for data. In many cases this results in bus-capacitance driving ghost data to the CPU. This means that when reading from a non-existent hardware location, the CPU will see the last data on the path (read or write). This often means that reading from these locations will result in the data result of things being based around the last instruction byte used, such as an opcode or an immediate value.
@@ -120,6 +124,26 @@ Assembly operators refer to what is typically represented by a mnemonic, such as
 * `NOP` - No operation
 * `HALT` - Shifts to HALT status
 * `SLP` - Shifts to SLEEP status
+
+## Scope
+
+In programming, scope refers to what identifiers are visible from certain perspectives. These scopes tend to be hierarchical starting with the most visible, the _global scope_. If something is defined in the global scope, then it can be seen from everywhere in the program, in theory. However, in C, the identifier must still be made known within a file to be available for use. Thus, often, declarations inside a C file outside of any function are said to be in the global scope, whether or not they're made available in a header file.
+
+A simple way to consider scope in C is that each code block, denoted by curly braces (`{}`), introduces a new scope which is a child of the scope that it's declared in.
+
+Following that logic, it's clear functions also have a scope. This scope is not visible to other functions. That is, variables declared within the function scope are only usable within that function. If you use, for example, a for loop within that function in which you declare a new variable, that varible will be in the scope of the for loop, a child of the function scope, and not be available to the rest of the function.
+
+```c
+int example() {
+    int hello = 10;
+    for (int world=0; world < hello; ++world) {
+        // Both `hello` and `world` are available to me!
+    }
+    // only `hello` is available to me!
+}
+```
+
+When `world` become unavailable after the closing for the for loop, it's said to "go out of scope".
 
 ## Significant bits
 
