@@ -47,7 +47,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 {% macro unk_register(address, comment="") -%}
 </tr><tr>
 <td>{{ address }}</td>
-<td colspan="2">Unknown{% if comment %} ({{ comment }}){% endif %}</td>
+<td>Unknown{% if comment %} ({{ comment }}){% endif %}</td>
 {%- endmacro -%}
 
 {% macro td(content, color, colspan=1) -%}
@@ -89,7 +89,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 {{ td("Enable cart interrupts", "rwb") }}
 {{ td("Power on reset", "rwb") }}
 {{ td("Cart type", "rwb", 4) }}
-{{ register("$02", "System Control 3", "SYS_CTRL3") }}
+{{ register("$02") }}
 {{ td("Cart power state", "rwb") }}
 {{ td("Cart power required", "rwb") }}
 {{ td("Suspend mode", "rwb") }}

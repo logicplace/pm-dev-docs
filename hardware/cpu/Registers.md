@@ -56,7 +56,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffc0;" colspan="4">Cart type</td>
 </tr><tr>
 <td>$02</td>
-<td rowspan="SYS_CTRL3">System Control 3</td>
+
 <td style="border: 2px solid; background-color:#00ffc0;">Cart power state</td>
 <td style="border: 2px solid; background-color:#00ffc0;">Cart power required</td>
 <td style="border: 2px solid; background-color:#00ffc0;">Suspend mode</td>
@@ -329,13 +329,13 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$44</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0c0c0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3">???</td>
 </tr><tr>
 <td>$45</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0ffc0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;">???</td>
@@ -343,11 +343,11 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#c0ff00;">???</td>
 </tr><tr>
 <td>$46</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="8">???</td>
 </tr><tr>
 <td>$47</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 </tr><tr>
@@ -393,11 +393,11 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$50</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="8">???</td>
 </tr><tr>
 <td>$51</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="6">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="2">???</td>
 </tr><tr>
@@ -419,14 +419,14 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 </tr><tr>
 <td>$54</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3">???</td>
 <td style="border: 2px solid; background-color:#c0c0c0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3">???</td>
 </tr><tr>
 <td>$55</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="5">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3">???</td>
 </tr><tr>
@@ -453,7 +453,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">IR Tx</td>
 </tr><tr>
 <td>$62</td>
-<td colspan="2">Unknown</td>
+<td>Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 </tr><tr>
@@ -528,55 +528,55 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffff;" colspan="7">Count</td>
 </tr><tr>
 <td>$8B</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8C</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8D</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8E</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8F</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F0</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F1</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F2</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F3</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F4</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F5</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F6</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F7</td>
-<td colspan="2">Unknown (returns 0)</td>
+<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$FE</td>
