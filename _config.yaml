@@ -1,0 +1,15 @@
+title: Pokémon mini Development Documentation
+repository: logicplace/pm-dev-docs
+
+permalink: pretty
+verbose: true
+plugins:
+  - jekyll-default-layout
+  - jekyll-github-metadata
+  - jekyll-optional-front-matter
+  - jekyll-paginate
+  - jekyll-readme-index
+  - jekyll-titles-from-headings
+  - jekyll-relative-links
+  - jekyll-remote-theme
+remote_theme: pages-themes/primer@v0.6.0
