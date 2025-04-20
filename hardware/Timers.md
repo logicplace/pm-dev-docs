@@ -22,7 +22,7 @@
 [Programmable timers]: #programmable-timers
 [Programmable timer configuration]: #programmable-timer-configuration
 [Programmable timer interrupts]: #programmable-timer-interrupts
-[Enabling and pausing programmable timers]: #[enabling-and-pausing-programmable-timers]
+[Enabling and pausing programmable timers]: #enabling-and-pausing-programmable-timers
 
 [sleep]: Standby.md#sleep
 
