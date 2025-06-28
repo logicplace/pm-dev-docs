@@ -25,19 +25,20 @@ The S1C88V20 operates with a handful of registers. The CPU is an amalgamation of
 
 Here, _#hh_ and _#ll_ are immediate data used for addressing operations. _00_ is a fixed zero value and blank means the option is not available. Not having a page register means there is no method of using it for indirectly addressing data.
 
-| Page | 16-bit | 8-bit Hi | 8-bit Lo | Description                   |
-|:----:|:------:|:--------:|:--------:| ----------------------------- |
-|      | `BA`   | `B`      | `A`      | Data register                 |
-| `EP` | `HL`   | `H`      | `L`      | Index or data register        |
-| `EP` |        | `BR`     | _#ll_    | Base register                 |
-| `EP` |        | _#hh_    | _#ll_    | Absolute addressing           |
-| `XP` | `IX`   |          |          | Index register                |
-| `YP` | `IY`   |          |          | Index register                |
-| `CB` | `PC`   |          |          | Code bank and program counter |
-| `NB` |        |          |          | New code bank                 |
-| _00_ | `SP`   |          |          | Stack pointer                 |
-|      |        |          | `SC`     | System condition flags        |
-|      |        |          | `CC`     | Custom condition flags        |
+| Page | 16-bit | 8-bit Hi | 8-bit Lo | Description                    |
+|:----:|:------:|:--------:|:--------:| ------------------------------ |
+|      | `BA`   | `B`      | `A`      | Data register                  |
+| `EP` | `HL`   | `H`      | `L`      | Index or data register         |
+| `EP` |        | `BR`     | _#ll_    | Base register                  |
+| `EP` |        | _#hh_    | _#ll_    | Absolute addressing            |
+| `XP` | `IX`   |          |          | Index register                 |
+| `YP` | `IY`   |          |          | Index register                 |
+| `CB` | `PC`   |          |          | Code bank and program counter  |
+| `NB` |        |          |          | New code bank                  |
+| _00_ | `SP`   |          |          | Stack pointer                  |
+|      |        |          | `SC`     | System condition flags         |
+|      |        |          | `CC`     | Custom condition flags         |
+|      | `IP`   | `XP`     | `YP`     | Index pages (only in PUSH/POP) |
 
 ### BA pair register
 
@@ -57,7 +58,7 @@ These are general-purpose registers intended for indirect addressing. They use X
 
 ### Page registers
 
-In order to access 24-bit addresses using registers, separate page registers are available. IX and IY both provide 24-bit addresses using the XP and YP registers, respectively, as their upper 8 bits. HL, BR, and absolute addressing use the Expand Page register, EP, for selecting the page. It is generally good practice to maintain EP as 00h unless otherwise necessary.
+In order to access 24-bit addresses using registers, separate page registers are available. IX and IY both provide 24-bit addresses using the XP and YP registers, respectively, as their uppermost 8 bits. HL, BR, and absolute addressing use the Expand Page register, EP, for selecting the page. It is generally good practice to maintain EP as 00h unless otherwise necessary.
 
 ### PC register
 
@@ -106,7 +107,7 @@ For most operations, this is a copy of the [most significant bit](/Glossary.md#s
 
 #### Decimal mode
 
-For operations which support this mode, it causes the operation to treat the operands as being in Binary Coded Decimal form. The exact mechanics of which are described on each supporting operator's documentation.
+For operations which support this mode, it causes the operation to treat the operands as being in Binary Coded Decimal form. The exact mechanics of which are described in each supporting operator's documentation.
 
 In this mode, only Z and C flags can be set. V and N are always reset to 0. 
 
