@@ -145,9 +145,9 @@ loc_0x0120:
 loc_0x0125:
 	DJR NZ, loc_0x0125
 	AND [BR:10h], #0EFh
-	BIT [BR:10h], #20h
+	BIT [BR:10h], #20h ; check battery level
 	JRS Z, loc_0x0132
-	CARL loc_0x0D87
+	CARL low_battery_screen
 loc_0x0132:
 	JRL flash_05CF
 ; ----------------------
@@ -879,7 +879,7 @@ flash_detect:
 	CARL flash_cmd_C0
 	CARL flash_read_ids
 	CARL flash_reset
-	CP BA, #0BFD9h
+	CP BA, #0BFD9h  ; ｿﾙ in place of PM marker
 	POP BA
 	JRS Z, loc_0x05CA
 	LD [5555h], B
@@ -918,7 +918,7 @@ loc_0x0601:
 	JRL nintendo_check
 ; ----------------------
 loc_0x060A:
-	LD IX, #19D0h
+	LD IX, #19D0h  ; address right after the v-flipped decoded tile data
 	XOR A, A
 loc_0x060E:
 	LD [IX], A
@@ -1897,7 +1897,7 @@ loc_0x0BE1:
 	JRS NZ, loc_0x0BE1
 	RET
 ; ----------------------
-load_middle_5_tilemap:
+load_middle_5_tilemap: ; middle 5 rows
 	LD IX, #1378h
 	LD L, #00h
 	AND [BR:80h], #0F7h ; disable frame copy
@@ -2070,21 +2070,21 @@ loc_0x0CF8:
 	POP HL
 	RET
 ; ----------------------
-loc_0x0D09:
+play_animation:
 	PUSH IX
 	PUSH IY
 	LD IY, #1530h
 	CARL load_tilemap
 	POP IY
 	POP IX
-	LD A, [IX]
+	LD A, [IX] ; read in the footer
 	INC IX
 	LD B, [IX]
 	SRL B
-	LD L, B
-	LD B, #00h
+	LD L, B ; store the number of bytes
+	LD B, #00h ; put hi bit of total frame count back into b
 	RL B
-	LD IX, #152Dh
+	LD IX, #152Dh ; store total frame count here
 	LD [IX], BA
 	LD [BR:27h], #40h
 loc_0x0D25:
@@ -2097,16 +2097,16 @@ loc_0x0D25:
 	PUSH L
 loc_0x0D34:
 	DEC L
-	LD B, [IY+L]
+	LD B, [IY+L] ; frame count + hi bit
 	DEC L
-	LD A, [IY+L]
+	LD A, [IY+L] ; map address offset (lo)
 	JRS NZ, loc_0x0D40
 	POP L
 	PUSH L
 loc_0x0D40:
 	SRL B
-	LD [152Fh], B
-	LD B, #00h
+	LD [152Fh], B ; store frame count here
+	LD B, #00h ; map address offset hi bit back into b
 	RL B
 	PUSH HL
 	PUSH IX
@@ -2141,10 +2141,10 @@ loc_0x0D84:
 	POP B
 	RET
 ; ----------------------
-loc_0x0D87:
-	LD IX, #img_e36
-	LD IY, #unknown_data
-	CARL loc_0x0D09
+low_battery_screen:
+	LD IX, #low_battery_animation_footer
+	LD IY, #low_battery_animation
+	CARL play_animation
 	JRS Z, loc_0x0D99
 	BIT A, #82h
 	JRS Z, loc_0x0D99
@@ -2160,9 +2160,9 @@ loc_0x0D99:
 reset3:
 	LD SC, #0C0h
 	OR [BR:71h], #04h
-	LD IX, #0E3Eh
-	LD IY, #0E38h
-	CARL loc_0x0D09
+	LD IX, insert_cart_animation_footer
+	LD IY, insert_cart_animation
+	CARL play_animation
 loc_0x0DB4:
 	JRS Z, loc_0x0DC4
 	BIT A, #82h
@@ -2215,12 +2215,12 @@ normalbyte:
 loop_next:
 	CP IY, #1000h ; if not all 0x1C0 bytes have been decoded yet, 
 	JRS NZ, loop_decode ; go back to the decode loop
-	LD IX, #1920h ; else
-	LD IY, #1978h
-loc_0x0DFE:
+	LD IX, #1920h ; start of 11th to last tile, the one right after the PM gfx
+	LD IY, #1978h ; $1978 is the first byte after the decoded data
+loc_0x0DFE: ; v-flip and append last 11 tiles
 	LD A, [IX]
 	LD L, #08h
-loc_0x0E01: ; do *something* 0x58 times
+loc_0x0E01:
 	RL A
 	RR B
 	DEC L
@@ -2237,40 +2237,88 @@ loc_0x0E01: ; do *something* 0x58 times
 nintendo_string:
 	ASCII "NINTENDO"
 ; ----------------------
-unknown_data:
+; Format is backwards, starting at the right and going left.
+; Each image of the animation is two bytes of the form:
+;   map address (lo), 0bLLLLLLLH
+;   L = length in rendered frames
+;   H = map address (hi)
+; The map address is an offset from $1650
+; The footer is two bytes of the form:
+;   length (lo), 0bNNNNNNNH
+;   N = number of bytes in the animation info
+;   H = length (hi)
+low_battery_animation:
 	DB 68h, 6Fh, 0A4h, 13h, 68h, 13h, 0A4h, 13h, 68h, 13h, 0A4h, 13h, 68h, 13h, 2Ch, 13h
 	DB 0F0h, 12h, 0B4h, 12h
+low_battery_animation_footer:
+	DB 98h, 29h
 
-img_e36:
-	DB 98h, 29h, 78h, 0Ch, 3Ch, 18h, 00h, 3Ch, 20h, 0Dh
+insert_cart_animation:
+	DB 78h, 0Ch, 3Ch, 18h, 00h, 3Ch
+insert_cart_animation_footer:
+	DB 20h, 0Dh
 
+; Simple RLE compression algorithm:
+; 0xF9LL inserts LL+1 zeroes
+; 0xFBXXLL inserts the byte 0xXX LL+1 times
+; otherwise it copies the raw byte
 imgdata:
-	DB 0F9h, 60h, 01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h, 09h, 0Ah, 00h, 1Eh, 0FBh, 1Fh
-	DB 09h, 20h, 0F9h, 3Bh, 29h, 0FBh, 2Ah, 09h, 2Bh, 0Ch, 00h, 34h, 35h, 36h, 37h, 38h
-	DB 39h, 3Ah, 3Bh, 3Ch, 0Dh, 0Ch, 00h, 3Dh, 3Eh, 3Fh, 40h, 41h, 42h, 43h, 44h, 45h
-	DB 0Dh, 0Ch, 00h, 46h, 47h, 48h, 49h, 4Ah, 4Bh, 4Ch, 4Dh, 4Eh, 0Dh, 0Ch, 00h, 4Fh
-	DB 50h, 51h, 52h, 53h, 54h, 55h, 56h, 57h, 0Dh, 0Ch, 00h, 58h, 59h, 5Ah, 5Bh, 5Ch
-	DB 5Dh, 5Eh, 5Fh, 60h, 0Dh, 0Ch, 00h, 61h, 62h, 63h, 64h, 65h, 66h, 67h, 68h, 69h
-	DB 0Dh, 0Ch, 00h, 6Ah, 6Bh, 6Ch, 6Dh, 6Eh, 6Fh, 70h, 71h, 72h, 0Dh, 0Ch, 00h, 73h
-	DB 74h, 75h, 76h, 77h, 78h, 79h, 7Ah, 7Bh, 0Dh, 0F9h, 0Fh, 12h, 13h, 14h, 15h, 0F9h
-	DB 7h, 16h, 17h, 18h, 19h, 0F9h, 7h, 1Ah, 1Bh, 1Ch, 1Dh, 0F9h, 14h, 0Eh, 0Fh, 0F9h
-	DB 8h, 12h, 13h, 14h, 15h, 0F9h, 7h, 16h, 17h, 18h, 19h, 0F9h, 7h, 1Ah, 1Bh, 1Ch
-	DB 1Dh, 0F9h, 14h, 10h, 11h, 0F9h, 08h, 12h, 13h, 14h, 15h, 0F9h, 07h, 16h, 17h, 18h
-	DB 19h, 0F9h, 07h, 1Ah, 1Bh, 1Ch, 1Dh, 0F9h, 1Fh, 22h, 23h, 23h, 24h, 0F9h, 07h, 2Dh
-	DB 2Eh, 2Eh, 2Fh, 0F9h, 2Bh, 25h, 26h, 23h, 24h, 0F9h, 07h, 30h, 31h, 2Eh, 2Fh, 0F9h
-	DB 2Bh, 25h, 27h, 26h, 24h, 0F9h, 07h, 30h, 32h, 31h, 2Fh, 0F9h, 2Bh, 25h, 27h, 27h
-	DB 28h, 0F9h, 07h, 30h, 32h, 32h, 33h, 0F9h, 65h, 7Ch, 0FEh, 82h, 92h, 0F6h, 74h, 00h
-	DB 0F0h, 0FCh, 26h, 26h, 0FCh, 0F0h, 00h, 0FEh, 0FEh, 08h, 10h, 08h, 0FEh, 0FEh, 00h, 0FEh
-	DB 0FEh, 92h, 92h, 92h, 0F9h, 03h, 0CCh, 0DEh, 92h, 0F6h, 66h, 00h, 0FEh, 0FEh, 92h, 92h
-	DB 92h, 00h, 0FEh, 0FEh, 80h, 80h, 80h, 00h, 0FEh, 0FEh, 92h, 92h, 92h, 00h, 7Ch, 0FEh
-	DB 82h, 82h, 0C6h, 44h, 00h, 02h, 02h, 0FEh, 0FEh, 02h, 02h, 0F9h, 07h, 0FEh, 7Ch, 38h
-	DB 10h, 0F9h, 05h, 0FFh, 0F9h, 05h, 0FFh, 0F9h, 04h, 0F0h, 0FBh, 08h, 0Bh, 0F0h, 00h, 00h
-	DB 80h, 0FBh, 40h, 0Bh, 80h, 0F9h, 06h, 0F8h, 04h, 82h, 0E1h, 0E1h, 31h, 31h, 0FBh, 39h
-	DB 05h, 31h, 31h, 0E1h, 0E1h, 82h, 06h, 0FAh, 04h, 0F8h, 0F9h, 08h, 0FCh, 03h, 00h, 7h
-	DB 0DFh, 0DFh, 30h, 30h, 0FBh, 70h, 05h, 30h, 30h, 1Fh, 9Fh, 87h, 00h, 03h, 0FDh, 0F9h
-	DB 09h, 07h, 08h, 13h, 13h, 2Fh, 2Fh, 23h, 23h, 0FBh, 20h, 05h, 46h, 46h, 40h, 81h
-	DB 81h, 80h, 40h, 3Fh, 0F9h, 08h, 0FEh, 0FBh, 02h, 0Dh, 0FEh, 0F9h, 03h, 02h, 22h, 32h
-	DB 3Ah, 3Ah, 32h, 22h, 02h, 0E0h, 20h, 0BCh, 84h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h
-	DB 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0FCh, 0E0h, 20h, 3Ch
-	DB 0FBh, 04h, 07h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0FBh, 04h, 0Ah, 0F4h, 0F4h, 0F4h, 04h, 0FCh
+	; Blank tilemap starting at $1530
+	DB 0F9h, 60h
+
+	; Including one zero byte from above, the GAME SELECT screen's rows 0,1,7
+	DB      01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h, 09h, 0Ah, 00h
+	DB 1Eh, 0FBh, 1Fh, 09h,                                   20h
+	DB 0F9h, 3Bh
+	DB 29h, 0FBh, 2Ah, 09h,                                   2Bh
+
+	; The GAME SELECT screen's middle 5 rows (two pages?)
+	DB 0Ch, 00h, 34h, 35h, 36h, 37h, 38h, 39h, 3Ah, 3Bh, 3Ch, 0Dh
+	DB 0Ch, 00h, 3Dh, 3Eh, 3Fh, 40h, 41h, 42h, 43h, 44h, 45h, 0Dh
+	DB 0Ch, 00h, 46h, 47h, 48h, 49h, 4Ah, 4Bh, 4Ch, 4Dh, 4Eh, 0Dh
+	DB 0Ch, 00h, 4Fh, 50h, 51h, 52h, 53h, 54h, 55h, 56h, 57h, 0Dh
+	DB 0Ch, 00h, 58h, 59h, 5Ah, 5Bh, 5Ch, 5Dh, 5Eh, 5Fh, 60h, 0Dh
+	DB 0Ch, 00h, 61h, 62h, 63h, 64h, 65h, 66h, 67h, 68h, 69h, 0Dh
+	DB 0Ch, 00h, 6Ah, 6Bh, 6Ch, 6Dh, 6Eh, 6Fh, 70h, 71h, 72h, 0Dh
+	DB 0Ch, 00h, 73h, 74h, 75h, 76h, 77h, 78h, 79h, 7Ah, 7Bh, 0Dh
+
+	; Insert cart animation maps
+	DB 0F9h, 0Fh, 12h, 13h, 14h, 15h ; Frame 1
+	DB 0F9h, 07h, 16h, 17h, 18h, 19h
+	DB 0F9h, 07h, 1Ah, 1Bh, 1Ch, 1Dh
+	DB 0F9h, 14h, 0Eh, 0Fh           ; Frame 2
+	DB 0F9h, 08h, 12h, 13h, 14h, 15h
+	DB 0F9h, 07h, 16h, 17h, 18h, 19h
+	DB 0F9h, 07h, 1Ah, 1Bh, 1Ch, 1Dh
+	DB 0F9h, 14h, 10h, 11h           ; Frame 3
+	DB 0F9h, 08h, 12h, 13h, 14h, 15h
+	DB 0F9h, 07h, 16h, 17h, 18h, 19h
+	DB 0F9h, 07h, 1Ah, 1Bh, 1Ch, 1Dh
+
+	; Low battery animation maps
+	DB 0F9h, 1Fh, 22h, 23h, 23h, 24h ; Frame 1
+	DB 0F9h, 07h, 2Dh, 2Eh, 2Eh, 2Fh
+	DB 0F9h, 2Bh, 25h, 26h, 23h, 24h ; Frame 2
+	DB 0F9h, 07h, 30h, 31h, 2Eh, 2Fh
+	DB 0F9h, 2Bh, 25h, 27h, 26h, 24h ; Frame 3
+	DB 0F9h, 07h, 30h, 32h, 31h, 2Fh
+	DB 0F9h, 2Bh, 25h, 27h, 27h, 28h ; Frame 4, 6, 8, 10
+	DB 0F9h, 07h, 30h, 32h, 32h, 33h
+	DB 0F9h, 65h                     ; Frame 5, 7, 9 (+ some 0s from below)
+
+	; Unknown
+	DB 7Ch, 0FEh, 82h, 92h, 0F6h, 74h, 00h, 0F0h, 0FCh, 26h, 26h, 0FCh, 0F0h, 00h, 0FEh, 0FEh
+	DB 08h, 10h, 08h, 0FEh, 0FEh, 00h, 0FEh, 0FEh, 92h, 92h, 92h, 0F9h, 03h, 0CCh, 0DEh, 92h
+	DB 0F6h, 66h, 00h, 0FEh, 0FEh, 92h, 92h, 92h, 00h, 0FEh, 0FEh, 80h, 80h, 80h, 00h, 0FEh
+	DB 0FEh, 92h, 92h, 92h, 00h, 7Ch, 0FEh, 82h, 82h, 0C6h, 44h, 00h, 02h, 02h, 0FEh, 0FEh
+	DB 02h, 02h, 0F9h, 07h, 0FEh, 7Ch, 38h, 10h, 0F9h, 05h, 0FFh, 0F9h, 05h, 0FFh, 0F9h, 04h
+	DB 0F0h, 0FBh, 08h, 0Bh, 0F0h, 00h, 00h, 80h, 0FBh, 40h, 0Bh, 80h, 0F9h, 06h, 0F8h, 04h
+	DB 82h, 0E1h, 0E1h, 31h, 31h, 0FBh, 39h, 05h, 31h, 31h, 0E1h, 0E1h, 82h, 06h, 0FAh, 04h
+	DB 0F8h, 0F9h, 08h, 0FCh, 03h, 00h, 7h, 0DFh, 0DFh, 30h, 30h, 0FBh, 70h, 05h, 30h, 30h
+	DB 1Fh, 9Fh, 87h, 00h, 03h, 0FDh, 0F9h, 09h, 07h, 08h, 13h, 13h, 2Fh, 2Fh, 23h, 23h
+	DB 0FBh, 20h, 05h, 46h, 46h, 40h, 81h, 81h, 80h, 40h, 3Fh, 0F9h, 08h, 0FEh, 0FBh, 02h
+	DB 0Dh, 0FEh, 0F9h, 03h, 02h, 22h, 32h, 3Ah, 3Ah, 32h, 22h, 02h, 0E0h, 20h, 0BCh, 84h
+	DB 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h
+	DB 0F4h, 0F4h, 04h, 0FCh, 0E0h, 20h, 3Ch, 0FBh, 04h, 07h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0FBh
+	DB 04h, 0Ah, 0F4h, 0F4h, 0F4h, 04h, 0FCh
 {%- endasm %}
