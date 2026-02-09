@@ -48,9 +48,9 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
     - Interrupts
     - Oscillators & Timers
     - I/O ports & protocols ?
-    - LCD Driver / PRC
+    - LCD Controller / PRC
     - Statuses (SLEEP/HALT)
-  - LCD: SED1565* (display driver)
+  - LCD: S1D15605* (display driver)
     - on this page:
       - Tech specs
         - dimensions
@@ -171,6 +171,5 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
         - Find the main loop
         - Understanding the RAM locations (and using BPs)
         - Using the debug output system
-        - Challenge: that CTF someone made, with spoilers
     - .minc format ?
 
