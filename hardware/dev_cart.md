@@ -205,6 +205,7 @@ After enabling this mode, read from certain addresses to get information about t
 | $2C     | 0x02     | Number of Erase Sector/Block sizes supported by device                                                                 |
 | $2D~$30 |0xFF011000| Sector Information: 512 (0x0200) sectors; 16 (0x0010) * 256 B = 4 KiB/sector                                           |
 | $31~$34 |0x1F000001| Block Information: 32 (0x0020) blocks; 256 (0x0100) * 256 B = 64 KiB/block                                             |
+
 \* Note that since the chip is not confirmed, all data is unconfirmed as well. The provided data is what's expected from a SST39LF/VF016 chip.
 
 The BIOS does NOT implement or use this command.
@@ -336,6 +337,7 @@ Entries with no physical address below are either RAM locations or mapper regist
 |                        | $17FFFF         | [Bank select register][]   |
 |                        | $1BFFFF         | [Bank select register][]   |
 |                        | $1FFFFF         | [Bank select register][]   |
+
 \* In [Product Identification Mode](#software-id-entry)
 
 [Remaining plays]: #remaining-plays
