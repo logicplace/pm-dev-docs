@@ -65,6 +65,9 @@ class AccentedData:
 	def __str__(self) -> str:
 		return str(self.data)
 
+	def __int__(self) -> int:
+		return int(self.data)
+
 	def __bool__(self) -> bool:
 		return bool(self.data)
 

@@ -256,9 +256,9 @@ init_io:
 	OR [BR:61h], #04h                   ; set EEPROM data bit high
 	LD [BR:61h], #20h                   ; set all ports low except IR disable(?)
 	LD [BR:60h], #32h                   ; IR disable(?), rumble, IR rx set to output
-	LD [BR:62h], B : ??
-	LD [BR:70h], B : ??
-	LD [BR:71h], B : ??
+	LD [BR:62h], B                      ; ??
+	LD [BR:70h], B                      ; ??
+	LD [BR:71h], B                      ; ??
 	RET
 ; ----------------------
 _prc_frame_copy_irq:
@@ -1285,7 +1285,7 @@ hc__wake_on_cart:                       ; ejected? inserted?
 hc__halt_sequence:
 	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
 	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
-	AND [BR:01h], ~#20h
+	AND [BR:01h], #~20h
 	CARL unpower_cart
 	CARL enter_low_speed_operation
 	LD SC, A
