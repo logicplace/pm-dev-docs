@@ -22,7 +22,7 @@ TODO: accessing higher cartridge memory on the PM2040 and its derivatives
 
 ## Internal BIOS
 
-*For more information on the BIOS, see its [main page](Bios.md)*
+*For more information on the BIOS, see its [main page](bios.md)*
 
 The CPU stores the BIOS on a 4 KiB internal mask ROM. This means that while it can be read out, it cannot be reflashed. It's mapped to $000000-$001000.
 
@@ -72,7 +72,7 @@ The first $2100 bytes are "overwritten" by the BIOS, RAM, and register mappings.
 
 | Location | Size | Required | Description                   |
 | -------- | ---- | -------- | ----------------------------- |
-| $2100    | 2    | No       | `PM` marker                   |
+| $2100    | 2    | No       | `MN` marker                   |
 | $2102    | 6    | Yes      | Reset Location                |
 | $2108    | 6    | \*       | PRC Frame Copy IRQ            |
 | $210E    | 6    | \*       | PRC Render IRQ                |
@@ -109,9 +109,9 @@ The first $2100 bytes are "overwritten" by the BIOS, RAM, and register mappings.
 * \* = This is only required if the IRQ is ever enabled.
 * ² = This is not required for freebios
 
-### PM marker
+### MN marker
 
-For all release games this is `PM` however for the dev cart (as indicated in the BIOS) this is the hex sequence `BF D9` which could be `ｿﾙ` ("soru") encoded in Shift JIS. Either way, the meaning is not known.
+For all release games this is `MN` however for the dev cart (as indicated in the BIOS) this is the hex sequence `BF D9` which is the [product identification](../dev_cart.md#chip-details) of the cart's flash chip.
 
 ### IRQs
 

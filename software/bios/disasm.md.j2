@@ -1,551 +1,587 @@
 {% asm "epson", 4 -%}
+DEFSECT ".ram", DATA AT 14E0H
+SECT ".ram"
+	RemainingPlays:         DS 1   ; 14E0h
+	KeyPad:                 DS 1   ; 14E1h
+	NumGameStructs:         DS 1   ; 14E2h
+	LoopN:                  DS 1   ; 14E3h
+	GameStructs:            DS 64  ; 14E4h array of 8-byte structures
+	NextGameStruct:         DS 2   ; 1524h
+	NextTilePos:            DS 2   ; 1526h
+	CurrentRowStart:        DS 1   ; 1528h
+	FinalNameRowStartMin48: DS 1   ; 1529h
+	FinalNameRowStart:      DS 1   ; 152Ah
+	MoveCooldown:           DS 1   ; 152Bh
+	KeyHistory:             DS 1   ; 152Ch
+	TotalAnimFrames:        DS 2   ; 152Dh
+	FramesRemaining:        DS 1   ; 152Fh "rendered frames" remaining for a frame
+	BlankTilemap:           DS 96  ; 1530h
+	GameSelectMap:          DS 96  ; 1590h
+	GameNamesMap:           DS 96  ; 15F0h
+	InsertCartMaps:         DS 180 ; 1650h
+	LowBatteryMaps:         DS 300 ; 1704h
+	TilesetBase:            DS 328 ; 1830h
+	VFlipStart              EQU      1920h
+	VFlippedTiles:          DS 88  ; 1978h
+	GameNameTiles:          DS 576 ; 19D0h
+
 DEFSECT ".bios", CODE AT 0000H
 SECT ".bios"
 
-	DW reset_vector
-	DW reset2
-	DW reset2
-	DW prc_frame_copy_irq
-	DW prc_render_irq
-	DW timer_2h_underflow_irq
-	DW timer_2l_underflow_irq
-	DW timer_1h_underflow_irq
-	DW timer_1l_underflow_irq
-	DW timer_3h_underflow_irq
-	DW timer_3_cmp_irq
-	DW timer_32hz_irq
-	DW timer_8hz_irq
-	DW timer_2hz_irq
-	DW timer_1hz_irq
-	DW ir_rx_irq
-	DW shake_irq
-	DW reset2
-	DW reset2
-	DW cart_ejected_irq
-	DW cartridge_irq
-	DW key_power_irq
-	DW key_right_irq
-	DW key_left_irq
-	DW key_down_irq
-	DW key_up_irq
-	DW key_c_irq
-	DW key_b_irq
-	DW key_a_irq
-	DW unknown_irq0
-	DW unknown_irq1
-	DW unknown_irq2
-	DW 0FFF1h
-	DW suspend_system
-	DW sleep
-	DW sleep_with_display
-	DW shutdown
-	DW unknown_eject0
-	DW default_contrast
-	DW change_contrast
-	DW apply_default_contrast
-	DW get_default_contrast
-	DW set_temp_contast
-	DW lcd_on
-	DW init_lcd
-	DW lcd_off
-	DW ena_ram_vec
-	DW dis_ram_vec
-	DW dis_irq_13
-	DW ena_irq_13
-	DW unknown_eject1
-	DW unknown_eject2
-	DW dev_card0
-	DW dev_card1
-	DW unknown_eject3
-	DW dis_cart_eject
-	DW unknown_eject4
-	DW inc_cpu_speed
-	DW recover_inc_cpu
-	DW cart_off_update0
-	DW cart_off_update1
-	DW cart_detect
-	DW read_structure
-	DW set_prc_rate
-	DW get_prc_rate
-	DW test_cart_type
-	DW dev_read_ids
-	DW dev_reset
-	DW dev_program_byte
-	DW dev_erase_sector
-	DW dev_unlock_page_register
-	DW dev_sel_bank
-	DW dev_cmd_c9
-	DW dev_prepare_readout
-	DW dev_sel_game
-	DW 0000h
-	DW ir_pulse
-	
+	; Vector table
+	DW _reset_vector                 ; 00h
+	DW _reset2                       ; 02h
+	DW _reset2                       ; 04h
+	DW _prc_frame_copy_irq           ; 06h
+	DW _prc_render_irq               ; 08h
+	DW _timer_2h_underflow_irq       ; 0Ah
+	DW _timer_2l_underflow_irq       ; 0Ch
+	DW _timer_1h_underflow_irq       ; 0Eh
+	DW _timer_1l_underflow_irq       ; 10h
+	DW _timer_3h_underflow_irq       ; 12h
+	DW _timer_3_cmp_irq              ; 14h
+	DW _timer_32hz_irq               ; 16h
+	DW _timer_8hz_irq                ; 18h
+	DW _timer_2hz_irq                ; 1Ah
+	DW _timer_1hz_irq                ; 1Ch
+	DW _ir_rx_irq                    ; 1Eh
+	DW _shake_irq                    ; 20h
+	DW _reset2                       ; 22h
+	DW _reset2                       ; 24h
+	DW _cart_eject_irq               ; 26h
+	DW _cartridge_irq                ; 28h
+	DW _key_power_irq                ; 2Ah
+	DW _key_right_irq                ; 2Ch
+	DW _key_left_irq                 ; 2Eh
+	DW _key_down_irq                 ; 30h
+	DW _key_up_irq                   ; 32h
+	DW _key_c_irq                    ; 34h
+	DW _key_b_irq                    ; 36h
+	DW _key_a_irq                    ; 38h
+	DW _unknown_irq0                 ; 3Ah
+	DW _unknown_irq1                 ; 3Ch
+	DW _unknown_irq2                 ; 3Eh
+	DW 0FFF1h                        ; 40h
+	DW _suspend_system               ; 42h
+	DW _sleep                        ; 44h
+	DW _sleep_with_display           ; 46h
+	DW _shutdown                     ; 48h
+	DW _sleep2                       ; 4Ah
+	DW _default_contrast             ; 4Ch
+	DW _change_contrast              ; 4Eh
+	DW _apply_default_contrast       ; 50h
+	DW _get_default_contrast         ; 52h
+	DW _set_temp_contrast            ; 54h
+	DW _lcd_on                       ; 56h
+	DW _init_lcd                     ; 58h
+	DW _lcd_off                      ; 5Ah
+	DW _ena_ram_vec                  ; 5Ch
+	DW _dis_ram_vec                  ; 5Eh
+	DW _disable_cart_eject_irq_if    ; 60h
+	DW _enable_cart_eject_irq_if     ; 62h
+	DW _unknown_eject1               ; 64h
+	DW _unknown_eject2               ; 66h
+	DW _dev_card0                    ; 68h
+	DW _dev_card1                    ; 6Ah
+	DW _enable_cart_eject_irq        ; 6Ch
+	DW _disable_cart_eject_irq       ; 6Eh
+	DW _unknown_eject4               ; 70h
+	DW _enter_high_speed_operation   ; 72h
+	DW _enter_low_speed_operation    ; 74h
+	DW _cart_slot_off                ; 76h
+	DW _cart_slot_on                 ; 78h
+	DW _cart_detect                  ; 7Ah
+	DW _read_structure               ; 7Ch
+	DW _set_prc_rate                 ; 7Eh
+	DW _get_prc_rate                 ; 80h
+	DW _game_id_valid                ; 82h
+	DW _flash_read_ids               ; 84h
+	DW _flash_reset                  ; 86h
+	DW _flash_program_byte           ; 88h
+	DW _flash_erase_sector           ; 8Ah
+	DW _flash_enter_bank_select_mode ; 8Ch
+	DW _flash_select_bank            ; 8Eh
+	DW _flash_allow_remapping_page_0 ; 90h
+	DW _flash_remap_ids              ; 92h
+	DW _flash_prepare_game           ; 94h
+	DW 0000h                         ; 96h
+	DW _ir_pulse                     ; 98h
+
 	hdr_nintendo EQU 21A4h
-	
-reset_vector:
-	LD EP, #00h
-	LD BR, #20h
-	LD [BR:08h], #02h
-	OR [BR:08h], #01h
-	LD [BR:00h], #7Ch
-	LD [BR:02h], #00h
-reset2:
-	LD SC, #0C0h
-	LD SP, #2000h
-	CARL initregs
-	LD [BR:80h], A
-	CARL set_fast_speed
-	LD NB, #01h
-	JRS loc_0x00BE
-loc_0x00BE:
-	LD A, [BR:52h]
-	LD [14E1h], A
-	OR [BR:00h], #03h
-	LD [BR:01h], #30h
-	OR [BR:02h], #0C0h
+
+_reset_vector:
+	LD EP, #00h                         ; address hardware registers
+	LD BR, #20h                         ; ...
+	LD [BR:08h], #02h                   ; reset seconds timer
+	OR [BR:08h], #01h                   ; start seconds timer
+	LD [BR:00h], #7Ch                   ; set default contrast to 31 (~50%)
+	LD [BR:02h], #00h                   ; initialize to 0
+_reset2:
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	LD SP, #2000h                       ; initial stack location (end of RAM)
+	CARL initregs                       ; initialize registers for BIOS's sake
+	LD [BR:80h], A                      ; disable LCD controller (A=0)
+	CARL enter_high_speed_operation     ; clock CPU with OSC3
+	LD NB, #01h                         ; set default NB
+	JRS copy_nb_to_cb
+copy_nb_to_cb:
+	LD A, [BR:52h]                      ; store initial keypad state
+	LD [KeyPad], A                      ; to $14E1
+	OR [BR:00h], #03h                   ; send Chip Enable (CE) signals
+	LD [BR:01h], #30h                   ; ??
+	OR [BR:02h], #0C0h                  ; ??
 	CARL init_io
-	LD [BR:80h], #02h
-	LD [BR:81h], #09h
-	LD IX, #1830h
-	LD [02082h], IX
-	LD [BR:84h], #00h
-	LD [BR:85h], B
-	LD [BR:86h], B
-	LD [BR:87h], B
-	LD [BR:88h], B
-	LD [BR:89h], B
-	CARL loc_0x0B08
-	CARL loc_0x0BCA
-	LD [BR:28h], #02h
-	LD SC, #80h
-	LD [BR:0FEh], #0E3h
-	LD H, #0B0h
-loop_from_B0_to_B8:
-	LD B, #60h
-	LD [BR:0FEh], H
-	LD [BR:0FEh], #10h
-	LD [BR:0FEh], #00h
+	LD [BR:80h], #02h                   ; enable tilemap (for BIOS screens)
+	LD [BR:81h], #09h                   ; set frame divider to 2 and ?
+	LD IX, #TilesetBase                 ; tileset base for the screens
+	LD [02082h], IX                     ; ...
+	LD [BR:84h], #00h                   ; ... (why not B? macro?)
+	LD [BR:85h], B                      ; init map scroll to 0
+	LD [BR:86h], B                      ; ...
+	LD [BR:87h], B                      ; init sprite set base to 0
+	LD [BR:88h], B                      ; ...
+	LD [BR:89h], B                      ; ...
+	CARL power_cart                     ; power the cartridge
+	CARL wait_8000_cycles
+	LD [BR:28h], #02h                   ; enable cart eject IRQ
+	LD SC, #80h                         ; interrupt flags to IRQ3+
+	LD [BR:0FEh], #0E3h                 ; send NOP command to LCD driver
+	LD H, #0B0h                         ; set page 0 command
+loop_from_B0_to_B8:                     ; loop through all display pages
+	LD B, #60h                          ; 96 columns (screen width)
+	LD [BR:0FEh], H                     ; send set page command
+	LD [BR:0FEh], #10h                  ; send set column 0 command
+	LD [BR:0FEh], #00h                  ; ...
 clear_96_vertical_lines:
-	LD [BR:0FFh], #00h
+	LD [BR:0FFh], #00h                  ; clear column (and increment cursor)
 	DJR NZ, clear_96_vertical_lines
-	INC H
-	CP H, #0B8h
+	INC H                               ; next page
+	CP H, #0B8h                         ; stop at last display page
 	JRS NZ, loop_from_B0_to_B8
 	CARL apply_default_contrast1
-	XOR A, A
-	CARL init_display1
-	CARL decode_picture
-	BIT [BR:53h], #02h
-	JRS Z, loc_0x0120
-	JRL reset3
-; ----------------------
-loc_0x0120:
-	OR [BR:10h], #10h
-	LD B, #32h
-loc_0x0125:
-	DJR NZ, loc_0x0125
-	AND [BR:10h], #0EFh
-	BIT [BR:10h], #20h ; check battery level
-	JRS Z, loc_0x0132
+	XOR A, A                            ; delay between setup and display on
+	CARL init_display
+	CARL decode_picture                 ; load tiles/maps into RAM
+	BIT [BR:53h], #02h                  ; check if cart is inserted
+	JRS Z, check_voltage                ; 0=cart is inserted
+	JRL insert_cart_screen              ; if no cart is inserted...
+check_voltage:
+	OR [BR:10h], #10h                   ; write 1 to SVDON
+	LD B, #32h                          ; wait 202 cycles
+cv__wait_200:
+	DJR NZ, cv__wait_200
+	AND [BR:10h], #~10h                 ; write 0 to SVDON
+	BIT [BR:10h], #20h                  ; check battery level
+	JRS Z, cv__sufficient               ; 0 = sufficient voltage supply
 	CARL low_battery_screen
-loc_0x0132:
-	JRL flash_05CF
+cv__sufficient:
+	JRL check_cart_type
 ; ----------------------
 nintendo_check:
 	LD SP, #2000h
-	LD B, #08h ; 8 letters in 'NINTENDO'
-	LD IX, #hdr_nintendo ; offset: start of 'NINTENDO' signature in game header
-	LD IY, #nintendo_string ; offset 0E1Ah: start of 'NINTENDO' field in BIOS, used for checking header
-check_loop:
-	LD A, [IX]
-	CP A, [IY] ; compare byte at IX with byte at IY
-	JRL NZ, reset3 ; if they're not the same, jump down to reset3
-	INC IX
-	INC IY ; else, increment IX and IY to point to the next part of the 'NINTENDO' string
-	DJR NZ, check_loop ; and JDBNZ back to the start of the loop
-	XOR A, A ; set A to 0
-	LD [BR:80h], A ; set PRC_MODE to 0
-	LD [BR:81h], #07h ; set PRC_RATE to 7
-	LD [BR:82h], A
-	LD [BR:83h], A ; set PRC_MAP LO and MID to 0
-	AND [BR:01h], #0EFh ; AND SYS_CTRL2 with ~0x10
-	CARS initregs ; reset registers
-	LD H, [14E1h] ; load KEY_PAD into H (loaded into 0x14E1 by reset_vector)
-	LD L, [14E0h] ; load cart type into L
-	LD IX, #1000h
-loc_0x0164:
-	LD [IX], A
-	INC IX
-	CP IX, #2000h
-	JRS NZ, loc_0x0164 ; clear RAM
-	LD IX, BA
-	LD BR, A
-	LD BA, HL
-	LD HL, IX ; clear registers
-	AND SC, #0C0h ; set flags 0-5 to 0
-	JRL 2102h ; jump to game entrypoint
+	LD B, #08h                          ; 8 letters in 'NINTENDO'
+	LD IX, #hdr_nintendo                ; offset: start of 'NINTENDO' signature in game header
+	LD IY, #nintendo_string             ; offset 0E1Ah: start of 'NINTENDO' field in BIOS, used for checking header
+nc__loop:
+	LD A, [IX]                          ; compare byte at IX with byte at IY
+	CP A, [IY]                          ; ...
+	JRL NZ, insert_cart_screen          ; if they're not the same, jump down to insert_cart_screen
+	INC IX                              ; else, increment IX and IY to point to the next part of the 'NINTENDO' string
+	INC IY                              ; ..
+	DJR NZ, nc__loop                    ; and JDBNZ back to the start of the loop
+prepare_boot:
+	XOR A, A                            ; set A to 0
+	LD [BR:80h], A                      ; set PRC_MODE to 0
+	LD [BR:81h], #07h                   ; set PRC_RATE to 7
+	LD [BR:82h], A                      ; set PRC_MAP LO and MID to 0
+	LD [BR:83h], A                      ; ...
+	AND [BR:01h], #~10h                 ; ??
+	CARS initregs                       ; reset registers
+	LD H, [KeyPad]                      ; load KEY_PAD into H (loaded into 0x14E1 by _reset_vector)
+	LD L, [RemainingPlays]              ; load cart type into L
+	LD IX, #1000h                       ; clear RAM
+pb__loop:                               ; ...
+	LD [IX], A                          ; ...
+	INC IX                              ; ...
+	CP IX, #2000h                       ; ...
+	JRS NZ, pb__loop                    ; ...
+	LD IX, BA                           ; clear registers
+	LD BR, A                            ; ...
+	LD BA, HL                           ; ...except forward info in BA
+	LD HL, IX                           ; ...
+	AND SC, #0C0h                       ; keep only interrupt flags
+	JRL 2102h                           ; jump to game entrypoint
 ; ----------------------
+; Returns:
+;   BR: $20
+;   BA, EP, XP, YP, HL, IX, IY: 0
 initregs:
-	LD BR, #20h
-	XOR A, A
-	LD B, A
-	LD EP, A
-	LD XP, A
-	LD YP, A
-	LD HL, BA
-	LD IX, BA
-	LD IY, BA ; set all registers to 0 and BR to 20
+	LD BR, #20h                         ; set BR to 20 for hardware register area
+	XOR A, A                            ; set all other general purpose registers to 0
+	LD B, A                             ; ...
+	LD EP, A                            ; ...
+	LD XP, A                            ; ...
+	LD YP, A                            ; ...
+	LD HL, BA                           ; ...
+	LD IX, BA                           ; ...
+	LD IY, BA                           ; ...
 	RET
 ; ----------------------
+; Returns:
+;   B: 0
+; Clobbers: A
 init_io:
 	LD B, #00h
-	LD [BR:10h], #08h ; set SYS_BATT to 8
-	AND [BR:19h], #0CFh ; AND TMR1_OSC with ~0xC0
-	LD [BR:20h], B ; set IRQ_PRI1 to 0
-	LD [BR:21h], #30h ; set IRQ_PRI2 to 0x30
-	LD [BR:22h], #02h ; set IRQ_PRI3 to 2
-	LD [BR:23h], B ; set IRQ_ENA1 to 0
-	LD [BR:24h], #02h ; set IRQ_ENA2 to 2
-	LD [BR:25h], B ; set IRQ_ENA3 to 0
-	LD [BR:26h], B ; set IRQ_ENA4 to 0
-	LD [BR:40h], B ; set TMR256_CTRL to 0
-	LD [BR:44h], B ; set *unknown register* to 0
-	LD [BR:50h], #0FFh ; set *unknown register* to 0xFF
-	LD [BR:51h], B ; set *unknown register* to 0
-	LD A, [BR:54h] ; load *unknown register* into A
-	AND A, #0F8h
-	OR A, #01h ; set bits 0-2 of A to 1
-	LD [BR:54h], A ; store result in *unknown register*
-	LD [BR:55h], #01h ; set *unknown register* to 1
-	OR [BR:60h], #0Ch ; set EEPROM_DATA and EEPROM_CLK directions to output
-	AND [BR:61h], #0FBh ; set EEPROM_DATA low
-	OR [BR:61h], #08h
-	OR [BR:61h], #04h
-	LD [BR:61h], #20h
-	LD [BR:60h], #32h
-	LD [BR:62h], B
-	LD [BR:70h], B
-	LD [BR:71h], B
+	LD [BR:10h], #08h                   ; set SYS_BATT to 8
+	AND [BR:19h], #~30h                 ; disable OSC1/OSC3 for timer use
+	LD [BR:20h], B                      ; set IRQ priorities to none (don't fire)
+	LD [BR:21h], #30h                   ; ...except set cartridge IRQs to 3
+	LD [BR:22h], #02h                   ; ...except set IR/shock to 2
+	LD [BR:23h], B                      ; disable IRQs
+	LD [BR:24h], #02h                   ; ...except cart eject IRQ
+	LD [BR:25h], B                      ; ...
+	LD [BR:26h], B                      ; ...
+	LD [BR:40h], B                      ; disable clock timer
+	LD [BR:44h], B                      ; ??
+	LD [BR:50h], #0FFh                  ; set keypad IRQs to falling edge detection (on press)
+	LD [BR:51h], B                      ; set cart eject and ? IRQs to rising edge (ejected)
+	LD A, [BR:54h]                      ; set input level check time for ?? to 4ms?
+	AND A, #~07h                        ; ...
+	OR A, #01h                          ; ...
+	LD [BR:54h], A                      ; ...
+	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
+	OR [BR:60h], #0Ch                   ; set EEPROM data/clock directions to output
+	AND [BR:61h], #~04h                 ; set EEPROM data bit low
+	OR [BR:61h], #08h                   ; set EEPROM clock bit high
+	OR [BR:61h], #04h                   ; set EEPROM data bit high
+	LD [BR:61h], #20h                   ; set all ports low except IR disable(?)
+	LD [BR:60h], #32h                   ; IR disable(?), rumble, IR rx set to output
+	LD [BR:62h], B : ??
+	LD [BR:70h], B : ??
+	LD [BR:71h], B : ??
 	RET
 ; ----------------------
-prc_frame_copy_irq:
+_prc_frame_copy_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h ; if cart interrupts are not enabled, 
-	CARS Z, loc_0x0257 ; do something
+	BIT [BR:01h], #20h                  ; if cart interrupts are not enabled,
+	CARS Z, jrl1_intstuff               ; do something
 	POP BR
 	POP EP
-	JRL 2108h ; jump to user irq code
+	JRL 2108h                           ; jump to software handler
 ; ----------------------
-prc_render_irq:
-	PUSH EP
-	PUSH BR
-	LD EP, #00h
-	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257 ; same thing here
-	POP BR
-	POP EP
-	JRL 210Eh
-; ----------------------
-timer_2h_underflow_irq:
+_prc_render_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257 ; and here
+	CARS Z, jrl1_intstuff               ; same thing here
 	POP BR
 	POP EP
-	JRL 2114h
+	JRL 210Eh                           ; jump to software handler
 ; ----------------------
-timer_2l_underflow_irq:
+_timer_2h_underflow_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff               ; and here
 	POP BR
 	POP EP
-	JRL 211Ah
+	JRL 2114h                           ; jump to software handler
 ; ----------------------
-timer_1h_underflow_irq:
+_timer_2l_underflow_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257 ; these all do the same thing
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2120h
+	JRL 211Ah                           ; jump to software handler
 ; ----------------------
-timer_1l_underflow_irq:
+_timer_1h_underflow_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff               ; these all do the same thing
 	POP BR
 	POP EP
-	JRL 2126h
+	JRL 2120h                           ; jump to software handler
 ; ----------------------
-timer_3h_underflow_irq:
+_timer_1l_underflow_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 212Ch
+	JRL 2126h                           ; jump to software handler
 ; ----------------------
-timer_3_cmp_irq:
+_timer_3h_underflow_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2132h
+	JRL 212Ch                           ; jump to software handler
 ; ----------------------
-loc_0x0257: ; what does this do??? interrupts call it if cart irqs aren't enabled
-	JRL intstuff2
-; ----------------------
-timer_32hz_irq:
+_timer_3_cmp_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2138h
+	JRL 2132h                           ; jump to software handler
 ; ----------------------
-timer_8hz_irq:
+jrl1_intstuff:
+	JRL intstuff
+; ----------------------
+_timer_32hz_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 213Eh
+	JRL 2138h                           ; jump to software handler
 ; ----------------------
-timer_2hz_irq:
+_timer_8hz_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2144h
+	JRL 213Eh                           ; jump to software handler
 ; ----------------------
-timer_1hz_irq:
+_timer_2hz_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 214Ah
+	JRL 2144h                           ; jump to software handler
 ; ----------------------
-ir_rx_irq:
+_timer_1hz_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2150h
+	JRL 214Ah                           ; jump to software handler
 ; ----------------------
-shake_irq:
+_ir_rx_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2156h
+	JRL 2150h                           ; jump to software handler
 ; ----------------------
-cartridge_irq:
+_shake_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, loc_0x0257
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 219Eh
+	JRL 2156h                           ; jump to software handler
 ; ----------------------
-key_right_irq:
+_cartridge_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl1_intstuff
 	POP BR
 	POP EP
-	JRL 2162h
+	JRL 219Eh                           ; jump to software handler
 ; ----------------------
-key_left_irq:
+_key_right_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2168h
+	JRL 2162h                           ; jump to software handler
 ; ----------------------
-key_down_irq:
+_key_left_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 216Eh
+	JRL 2168h                           ; jump to software handler
 ; ----------------------
-key_up_irq:
+_key_down_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2174h
+	JRL 216Eh                           ; jump to software handler
 ; ----------------------
-key_c_irq:
+_key_up_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 217Ah
+	JRL 2174h                           ; jump to software handler
 ; ----------------------
-key_b_irq:
+_key_c_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2180h
+	JRL 217Ah                           ; jump to software handler
 ; ----------------------
-key_a_irq:
+_key_b_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2186h
+	JRL 2180h                           ; jump to software handler
 ; ----------------------
-unknown_irq0:
+_key_a_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 218Ch
+	JRL 2186h                           ; jump to software handler
 ; ----------------------
-intstuff1:
-	JRL intstuff2
-; ----------------------
-unknown_irq1:
+_unknown_irq0:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2192h
+	JRL 218Ch                           ; jump to software handler
 ; ----------------------
-unknown_irq2:
+jrl2_intstuff:
+	JRL intstuff
+; ----------------------
+_unknown_irq1:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #20h
-	CARS Z, intstuff1
+	CARS Z, jrl2_intstuff
 	POP BR
 	POP EP
-	JRL 2198h
+	JRL 2192h                           ; jump to software handler
 ; ----------------------
-intstuff2:
-	BIT [BR:02h], #08h
-	JRS NZ, already_fast0
+_unknown_irq2:
+	PUSH EP
+	PUSH BR
+	LD EP, #00h
+	LD BR, #20h
+	BIT [BR:01h], #20h
+	CARS Z, jrl2_intstuff
+	POP BR
+	POP EP
+	JRL 2198h                           ; jump to software handler
+; ----------------------
+; If you intend to wake the unit from something
+; other than pressing the power key, write a JRL
+; instruction to $1FFD before sleeping!
+intstuff:
+	BIT [BR:02h], #08h                  ; if clocking CPU with OSC3,
+	JRS NZ, already_fast0               ; no need to start it up again
 	PUSH SC
-	LD SC, #0C0h
-	CARL set_fast_speed
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL enter_high_speed_operation
 	POP SC
 already_fast0:
-	BIT [BR:71h], #04h
-	JRS Z, loc_0x03A2
-	BIT [BR:02h], #40h
-	JRS Z, loc_0x03A2
+	BIT [BR:71h], #04h                  ; if cart is powered,
+	JRS Z, loc_0x03A2                   ;
+	BIT [BR:02h], #40h                  ; if ??,
+	JRS Z, loc_0x03A2                   ;
 	PUSH SC
-	LD SC, #0C0h
-	CARL loc_0x0B08
-	BIT [BR:01h], #40h
-	JRS Z, loc_0x03A1
-	CARS flash0418
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL power_cart
+	BIT [BR:01h], #40h                  ; if ??,
+	JRS Z, loc_0x03A1                   ;
+	CARS prepare_selected_game
 loc_0x03A1:
 	POP SC
 loc_0x03A2:
-	BIT [BR:01h], #80h
-	JRS Z, loc_0x03B0
-	ADD SP, #0003h
-	POP BR
-	POP EP
-	JRL 1FFDh
+	BIT [BR:01h], #80h                  ; if ??,
+	JRS Z, loc_0x03B0                   ;
+	ADD SP, #0003h                      ; remove the call to this one
+	POP BR                              ; restore BR/EP from interrupt's pushes
+	POP EP                              ; ...
+	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
 ; ----------------------
 loc_0x03B0:
 	PUSH SC
-	LD SC, #0C0h
-	CARS flash0418
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS prepare_selected_game
 	OR [BR:01h], #20h
 	POP SC
 	RET
 ; ----------------------
-key_power_irq:
+_key_power_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
@@ -553,24 +589,24 @@ key_power_irq:
 	BIT [BR:01h], #20h
 	JRS NZ, loc_0x0413
 	BIT [BR:01h], #10h
-	JRL NZ, reset2
+	JRL NZ, _reset2
 	BIT [BR:02h], #08h
 	JRS NZ, already_fast1
 	PUSH SC
-	LD SC, #0C0h
-	CARL set_fast_speed
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL enter_high_speed_operation
 	POP SC
 already_fast1:
-	BIT [BR:71h], #04h
-	JRS Z, loc_0x03F0
-	BIT [BR:02h], #40h
-	JRS Z, loc_0x03F0
+	BIT [BR:71h], #04h                  ; if cartidge is powered,
+	JRS Z, loc_0x03F0                   ; go to cart's handler
+	BIT [BR:02h], #40h                  ; if ??,
+	JRS Z, loc_0x03F0                   ; go to cart's handler
 	PUSH SC
-	LD SC, #0C0h
-	CARL loc_0x0B08
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL power_cart
 	BIT [BR:01h], #40h
 	JRS Z, loc_0x03EF
-	CARS flash0418
+	CARS prepare_selected_game
 loc_0x03EF:
 	POP SC
 loc_0x03F0:
@@ -580,12 +616,11 @@ loc_0x03F0:
 	JRS NZ, loc_0x040D
 	POP BR
 	POP EP
-	JRL 1FFDh
-; ----------------------
+	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
 loc_0x03FF:
 	PUSH SC
-	LD SC, #0C0h
-	CARS flash0418
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS prepare_selected_game
 	OR [BR:01h], #20h
 	POP SC
 	BIT [BR:02h], #20h
@@ -595,49 +630,49 @@ loc_0x040D:
 	POP BR
 	POP EP
 	RETE
-; ----------------------
 loc_0x0413:
 	POP BR
 	POP EP
 	JRL 215Ch
 ; ----------------------
-flash0418:
+; Clobbers: XP
+prepare_selected_game:
 	PUSH IP
 	PUSH BA
 	PUSH HL
-	BIT [BR:01h], #08h
-	JRS NZ, loc_0x0429
-	BIT [BR:01h], #01h
-	JRS Z, loc_0x043A
-	LD L, #00h
-	JRS loc_0x042E
-loc_0x0429:
-	LD L, [BR:01h]
-	AND L, #07h
-loc_0x042E:
-	LD XP, #07h
-	LD A, #00h
-	CARL flash_0507
-	LD A, L
-	CARL flash_053B
-loc_0x043A:
+	BIT [BR:01h], #08h                  ; if game ID is valid,
+	JRS NZ, psg__use_game_id            ; use it
+	BIT [BR:01h], #01h                  ; otherwise, if used startup action 2,
+	JRS Z, psg__return
+	LD L, #00h                          ; select game 0
+	JRS psg__prepare_banks
+psg__use_game_id:
+	LD L, [BR:01h]                      ; load game ID into L
+	AND L, #07h                         ; ...
+psg__prepare_banks:
+	LD XP, #07h                         ; set external page 1 to load bank 0
+	LD A, #00h                          ; ...
+	CARL flash_select_bank              ; ...
+	LD A, L                             ; prepare select game's bank selections
+	CARL flash_prepare_game             ; ...
+psg__return:
 	POP HL
 	POP BA
 	POP IP
 	RET
 ; ----------------------
-cart_ejected_irq:
+_cart_eject_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
 	BIT [BR:01h], #30h
-	JRL NZ, reset2
+	JRL NZ, _reset2
 	BIT [BR:02h], #08h
 	JRS NZ, already_fast2
 	PUSH SC
-	LD SC, #0C0h
-	CARL set_fast_speed
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL enter_high_speed_operation
 	POP SC
 already_fast2:
 	BIT [BR:01h], #80h
@@ -645,27 +680,32 @@ already_fast2:
 	BIT [BR:01h], #40h
 	JRS Z, loc_0x0464
 loc_0x0461:
-	JRL int_shutdown
-; ----------------------
+	JRL _shutdown
 loc_0x0464:
 	BIT [BR:71h], #04h
 	JRS Z, loc_0x0475
 	BIT [BR:02h], #40h
 	JRS Z, loc_0x0475
 	PUSH SC
-	LD SC, #0C0h
-	CARL loc_0x0B08
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL power_cart
 	POP SC
 loc_0x0475:
 	POP BR
 	POP EP
-	JRL 1FFDh
+	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
 ; ----------------------
-dev_read_ids:
+; Call _flash_remap_ids before this
+; Reads 2100+ so that the reads make it to the cart
+; making the temporary remapping necessary.
+; Returns:
+;   B: manufacturer ID
+;   A: device ID
+_flash_read_ids:
 	POP SC
 flash_read_ids:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
@@ -677,11 +717,11 @@ flash_read_ids:
 	POP EP
 	RETE
 ; ----------------------
-dev_reset:
+_flash_reset:
 	POP SC
 flash_reset:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
@@ -691,99 +731,127 @@ flash_reset:
 	POP EP
 	RETE
 ; ----------------------
-dev_program_byte:
+; Arguments
+;   XP/IX: address to write to
+;   A: byte to write
+; Returns
+;   A: -1 = write failed, 0 = success
+; Clobbers: B
+_flash_program_byte:
 	POP SC
-loc_0x04A5:
+flash_program_byte:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
-	LD HL, #5555h
-	LD [HL], #0A0h
-	LD [IX], A
-	LD H, #08h
-loc_0x04B5:
+	LD HL, #5555h                       ; final part of write unlock
+	LD [HL], #0A0h                      ; ...
+	LD [IX], A                          ; write byte
+	LD H, #08h                          ; try 7x2 reads
+fpb__wait_for_write:
 	DEC H
-	JRS NZ, loc_0x04BC
-	LD A, #0FFh
-	JRS loc_0x04C5
-loc_0x04BC:
-	LD B, [IX]
-	CP A, B
-	JRS NZ, loc_0x04B5
-	LD B, [IX]
-	CP A, B
-	JRS NZ, loc_0x04B5
-	XOR A, A
-loc_0x04C5:
+	JRS NZ, fpb__wfw__unfinished
+	LD A, #0FFh                         ; write failed
+	JRS fpb__return
+fpb__wfw__unfinished:
+	LD B, [IX]                          ; check if byte was written correctly
+	CP A, B                             ; ...
+	JRS NZ, fpb__wait_for_write
+	LD B, [IX]                          ; confirm it's not a data ghost ??
+	CP A, B                             ; ...
+	JRS NZ, fpb__wait_for_write
+	XOR A, A                            ; write success
+fpb__return:
 	POP HL
 	POP EP
 	RETE
 ; ----------------------
-dev_erase_sector:
-	LD SC, #0C0h
+; A sector is a 4 KiB section, uniformily placed.
+; IX may contain any address in the section.
+; The cleared sector is filled with 0xFF bytes.
+; Arguments
+;   XP/IX: sector to erase
+; Clobbers: BA
+_flash_erase_sector:
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
-	LD HL, #5555h
-	LD [HL], #80h
-	LD [HL], #0AAh
-	LD HL, #2AAAh
-	LD [HL], #55h
-	LD [IX], #30h
-	LD A, #0FFh
-	LD HL, #1389h
-loc_0x04E2:
+	LD HL, #5555h                       ; erase sequence
+	LD [HL], #80h                       ; ...
+	LD [HL], #0AAh                      ; ...
+	LD HL, #2AAAh                       ; ...
+	LD [HL], #55h                       ; ...
+	LD [IX], #30h                       ; specify sector to erase
+	LD A, #0FFh                         ; check for 0xFF to be written
+	LD HL, #05001                       ; loop 5000 times
+fes__wait_for_erase:
 	DEC HL
 	JRS NZ, loc_0x04E9
-	LD A, #0FFh
+	LD A, #0FFh                         ; erase failed
 	JRS loc_0x04F2
 loc_0x04E9:
-	LD B, [IX]
-	CP A, B
-	JRS NZ, loc_0x04E2
-	LD B, [IX]
-	CP A, B
-	JRS NZ, loc_0x04E2
-	XOR A, A
+	; note that for any read while erase is still going
+	; bit 7 will be 0 no matter the data at the location
+	; you're reading from
+	LD B, [IX]                          ; check if byte was erased correctly
+	CP A, B                             ; ...
+	JRS NZ, fes__wait_for_erase
+	LD B, [IX]                          ; copypasta
+	CP A, B                             ; ...
+	JRS NZ, fes__wait_for_erase
+	XOR A, A                            ; erase success
 loc_0x04F2:
 	POP HL
 	POP EP
 	RETE
 ; ----------------------
-dev_unlock_page_register:
+; Make writes to $xxFFFF are interpreted as
+; bank selects at the mapper level.
+_flash_enter_bank_select_mode:
 	POP SC
-flash_cmd_D0:
+flash_enter_bank_select_mode:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
-	LD HL, #5555h
-	LD [HL], #0D0h
+	LD HL, #5555h                       ; send a command to the mapper
+	LD [HL], #0D0h                      ; ...to unlock bank select
 	POP HL
 	POP EP
 	RETE
 ; ----------------------
-dev_sel_bank:
+; Each bank is 256 KiB which is an addressing
+; space of 0x040000. Thus the system can hold
+; 8 banks. XP=7 with A=1 should be the default
+; state while XP=7 with A=0 allows you to read
+; from the first $2100 bytes of the cartridge
+; by addressing data page 4, code page 8.
+; Arguments
+;   XP: Bank register to write to; 3+4*x
+;   A: Value to write
+_flash_select_bank:
 	POP SC
-flash_0507:
+flash_select_bank:
 	PUSH SC
-	LD SC, #0C0h
-	CARL flash_cmd_D0
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL flash_enter_bank_select_mode   ; unlock bank registers
 	PUSH IX
-	LD IX, #0FFFFh
-	LD [IX], A
+	LD IX, #0FFFFh                      ; write to bank select register
+	LD [IX], A                          ; ...
 	POP IX
-	CARL flash_reset
+	CARL flash_reset                    ; lock bank registers
 	RETE
 ; ----------------------
-dev_cmd_c9:
+; Without this, writing to 0x03FFFF bank select
+; register is probably a NOP.
+_flash_allow_remapping_page_0:
 	POP SC
-loc_0x0518:
+flash_allow_remapping_page_0:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
@@ -794,11 +862,15 @@ loc_0x0518:
 	POP EP
 	RETE
 ; ----------------------
-dev_prepare_readout:
+; Instructs the mapper to subtract $2100
+; from the input address. Though it may
+; not be generally usable in this state?
+; This is used with ID mode to read info.
+_flash_remap_ids:
 	POP SC
-flash_cmd_C0:
+flash_remap_ids:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH EP
 	PUSH HL
 	CARL flash_begin_cmd
@@ -808,51 +880,56 @@ flash_cmd_C0:
 	POP EP
 	RETE
 ; ----------------------
-dev_sel_game:
+; Prepares banks to run the game.
+; Doesn't run the game itself.
+; Arguments:
+;   A: game ID (0-based)
+; Clobbers: B
+_flash_prepare_game:
 	POP SC
-flash_053B:
+flash_prepare_game:
 	PUSH SC
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	PUSH IP
 	PUSH IX
 	PUSH IY
 	PUSH HL
-	LD L, #60h
-	MLT
-	LD IX, #1048h
-	ADD IX, HL
-	LD XP, #04h
-	LD A, [IX]
-	CP A, #08h
-	JRS NC, loc_0x0556
-	CARL loc_0x0518
-loc_0x0556:
-	SUB SP, #0008h
-	LD YP, #00h
-	LD IY, SP
-	LD L, #00h
-loc_0x0561:
-	LD A, [IX+L]
-	LD [IY+L], A
+	LD L, #60h                          ; size of game structure
+	MLT                                 ; mlt to get addr in array
+	LD IX, #1048h                       ; base address of structures + bank select array offset
+	ADD IX, HL                          ; offset
+	LD XP, #04h                         ; and read
+	LD A, [IX]                          ; ...
+	CP A, #08h                          ; if bank ID is >= 8,
+	JRS NC, fsg__skip_remap_0           ; don't disable region 0
+	CARL flash_allow_remapping_page_0
+fsg__skip_remap_0:
+	SUB SP, #0008h                      ; copy banks to heap
+	LD YP, #00h                         ; ...
+	LD IY, SP                           ; ...
+	LD L, #00h                          ; ...
+fsg__select_banks:
+	LD A, [IX+L]                        ; copy bank ID from ROM
+	LD [IY+L], A                        ; ...to heap
 	INC L
-	CP L, #08h
-	JRS NZ, loc_0x0561
-	CARL flash_cmd_D0
-	LD A, #03h
-	LD IX, #0FFFFh
-loc_0x0573:
+	CP L, #08h                          ; there's 8 of them
+	JRS NZ, fsg__select_banks
+	CARL flash_enter_bank_select_mode
+	LD A, #03h                          ; start at first bank select register
+	LD IX, #0FFFFh                      ; bank select register address
+fsg__bank_select_loop:
 	LD XP, A
-	LD B, [IY]
-	CP B, #08h
-	JRS C, loc_0x057D
-	LD B, #08h
-loc_0x057D:
+	LD B, [IY] 
+	CP B, #08h                          ; if value is >= 8,
+	JRS C, fsg__bsl__already_le8
+	LD B, #08h                          ; cap to 8 (likely disables region)
+fsg__bsl__already_le8:
 	LD [IX], B
 	INC IY
-	ADD A, #04h
-	CP A, #23h
-	JRS NZ, loc_0x0573
-	CARL flash_reset
+	ADD A, #04h                         ; increment to next bank select register
+	CP A, #23h                          ; unless we hit the end,
+	JRS NZ, fsg__bank_select_loop       ; keep going
+	CARL flash_reset                    ; lock bank select registers
 	LD SP, IY
 	POP HL
 	POP IY
@@ -860,6 +937,10 @@ loc_0x057D:
 	POP IP
 	RETE
 ; ----------------------
+; Common portion of a JEDEC SDP command sequence
+; Returns:
+;   EP: $00
+; Clobbers: HL
 flash_begin_cmd:
 	LD EP, #00h
 	LD HL, #5555h
@@ -868,333 +949,359 @@ flash_begin_cmd:
 	LD [HL], #55h
 	RET
 ; ----------------------
+; Read cart information presuming it's a SST39LF/VF016 chip
+; If it's not, perform some recovery.
+; Returns:
+;   Z: 0 = SST39LF/VF016, 1 = commercial game/other chip
+; Clobbers: BA
 flash_detect:
-	LD B, [5555h]
-	LD A, [2AAAh]
+	LD B, [5555h]                       ; backup in case the chip is something else
+	LD A, [2AAAh]                       ; ...
 	PUSH BA
 	LD A, #0FFh
-	LD [2AAAh], A
-	LD [2AAAh], A
-	CARL flash_reset
-	CARL flash_cmd_C0
-	CARL flash_read_ids
-	CARL flash_reset
-	CP BA, #0BFD9h  ; ｿﾙ in place of PM marker
+	LD [2AAAh], A                       ; NOPs to clear state ??
+	LD [2AAAh], A                       ; ...
+	CARL flash_reset                    ; make sure device is in normal state
+	CARL flash_remap_ids                ; have mapped read from $0000 when $2100 is requested
+	CARL flash_read_ids                 ; read manufacturer/device ID into BA
+	CARL flash_reset                    ; exit Software ID mode
+	CP BA, #0BFD9h                      ; check manufacturer/device ID (SST39?F016)
 	POP BA
 	JRS Z, loc_0x05CA
-	LD [5555h], B
-	LD [2AAAh], A
+	LD [5555h], B                       ; if it was an unexpected chip
+	LD [2AAAh], A                       ; try to restore the data (NOP if ROM)
 loc_0x05CA:
-	LD A, [2AAAh]
+	LD A, [2AAAh]                       ; dummy read?
 	RET
 ; ----------------------
-flash_05CF:
-	CARL flash_detect
-	JRS NZ, loc_0x0601
+check_cart_type:
+	CARL flash_detect                   ; Z=0 if using a dev cart
+	JRS NZ, cct__not_flash
 	PUSH IP
-	LD XP, #07h
-	LD A, #00h
-	CARL flash_0507
-	LD XP, #04h
-	LD IX, #1300h
-	LD A, [IX]
+	LD XP, #07h                         ; page register to write to
+	LD A, #00h                          ; bank to select
+	CARL flash_select_bank
+	LD XP, #04h                         ; read startup action from cartridge
+	LD IX, #1300h                       ; ...
+	LD A, [IX]                          ; ...
 	POP IP
 	BIT A, #02h
-	JRS NZ, loc_0x05F6
-	LD NB, #08h
-	CARL 41400h
-	LD [14E0h], A
-	JRL nintendo_check
-; ----------------------
-loc_0x05F6:
+	JRS NZ, cct__startup_action_2
+	LD NB, #08h                         ; startup action 0 and 1,
+	CARL 41400h                         ; call 0x041400 on cartridge
+	LD [RemainingPlays], A              ; which returns the remaining plays in A
+	JRL nintendo_check                  ; continue to boot
+cct__startup_action_2:
 	BIT A, #01h
-	JRS NZ, loc_0x060A
-	XOR A, A
-	CARL flash_053B
-	OR [BR:01h], #01h
-loc_0x0601:
-	LD A, #0FFh
-	LD [14E0h], A
-	JRL nintendo_check
-; ----------------------
-loc_0x060A:
-	LD IX, #19D0h  ; address right after the v-flipped decoded tile data
-	XOR A, A
-loc_0x060E:
-	LD [IX], A
-	INC IX
-	CP IX, #1C10h
-	JRS NZ, loc_0x060E
+	JRS NZ, game_select_menu
+	XOR A, A                            ; startup action 2 picks the 0th slot
+	CARL flash_prepare_game             ; ...
+	OR [BR:01h], #01h                   ; remember that we used startup action 2
+cct__not_flash:
+	LD A, #0FFh                         ; normal carts, unexpected chips, and startup action 2,
+	LD [RemainingPlays], A              ; unlimited play
+	JRL nintendo_check                  ; continue to boot
+game_select_menu:
+	LD IX, #GameNameTiles               ; address right after the v-flipped decoded tile data
+	XOR A, A                            ; 0-fill $19D0~$1C10 (exclusive)
+gsm__clear:                             ; ...
+	LD [IX], A                          ; ...
+	INC IX                              ; ...
+	CP IX, #1C10h                       ; ...
+	JRS NZ, gsm__clear                  ; ...
 	PUSH IP
-	LD A, #04h
-	LD XP, A
-	LD YP, A
-	XOR A, A
-	LD [14E2h], A
-	LD [14E3h], A
-	LD HL, #14E4h
-	LD [1524h], HL
-	LD HL, #19D0h
-	LD [1526h], HL
-	LD IY, #1050h
-loc_0x0634:
-	LD A, [IY]
-	OR A, A
-	JRL Z, loc_0x06BA
-	CP A, #0FFh
-	JRL Z, loc_0x06BA
-	CP A, #0FEh
-	JRS Z, loc_0x0688
-	LD IX, IY
-	INC IX
-	LD A, [IX]
-	BIT A, #80h
-	JRS NZ, loc_0x0657
-	XOR A, A
-	DEC IX
-	CARL loc_0x04A5
-	OR A, A
-	JRL Z, loc_0x06BA
-	POP IP
-	JRL reset3
-; ----------------------
-loc_0x0657:
-	LD L, #00h
-	LD BA, IX
-	ADD BA, #000Fh
+	LD A, #04h                          ; read from data page 4 (region 1, bank 0)
+	LD XP, A                            ; ...
+	LD YP, A                            ; ...
+	XOR A, A                            ; initialize memory
+	LD [NumGameStructs], A              ; ...
+	LD [LoopN], A                       ; ...
+	LD HL, #GameStructs                 ; ...
+	LD [NextGameStruct], HL             ; ...
+	LD HL, #GameNameTiles               ; pointer to new tiles
+	LD [NextTilePos], HL                ; ...
+	LD IY, #1050h                       ; starting at type byte for entry 0
+gsm__load_data_loop:
+	LD A, [IY]                          ; read from $041050 (first loop)
+	OR A, A                             ; if it's 0,
+	JRL Z, gsm__ldl__end                ; skip entry
+	CP A, #0FFh                         ; if it's -1,
+	JRL Z, gsm__ldl__end                ; skip entry
+	CP A, #0FEh                         ; if it's -2,
+	JRS Z, gsm__ldl__load_data          ; load data/tiles
+	LD IX, IY                           ; otherwise,
+	INC IX                              ; read next byte
+	LD A, [IX]                          ; ...
+	BIT A, #80h                         ; if MSB is 1
+	JRS NZ, gsm__ldl__loadable          ;
+	XOR A, A                            ; otherwise write 0
+	DEC IX                              ; to $041050 (first loop)
+	CARL flash_program_byte
+	OR A, A                             ; if byte was written successfully,
+	JRL Z, gsm__ldl__end                ; skip entry
+	POP IP                              ; otherwise,
+	JRL insert_cart_screen
+gsm__ldl__loadable:
+	LD L, #00h                          ; number of 1-bits
+	LD BA, IX                           ; ...from IX
+	ADD BA, #15                         ; ...for 15 bytes
 	PUSH BA
-loc_0x065F:
-	LD A, [IX]
-	LD B, #80h
-loc_0x0662:
-	BIT A, B
-	JRS Z, loc_0x0677
-	INC L
-	SRL B
-	JRS NZ, loc_0x0662
-	INC IX
-	POP BA
-	PUSH BA
-	CP BA, IX
-	JRS NZ, loc_0x0675
-	LD B, #80h
-	JRS loc_0x0677
-loc_0x0675:
-	JRS loc_0x065F
-loc_0x0677:
-	RLC B
-	CP B, #01h
-	JRS NZ, loc_0x067F
-	DEC IX
+gsm__ldl__count_1s_in_byte:
+	LD A, [IX]                          ; fetch byte
+	LD B, #80h                          ; starting mask (MSB)
+gsm__ldl__count_1_bits:
+	BIT A, B                            ; if bit is 0,
+	JRS Z, gsm__ldl__remove_bit         ; exit loop
+	INC L                               ; number of 1-bits +1
+	SRL B                               ; move to next bit
+	JRS NZ, gsm__ldl__count_1_bits
+	INC IX                              ; move to next byte
+	POP BA                              ; restore end address for check
+	PUSH BA                             ; ...
+	CP BA, IX                           ; ...
+	JRS NZ, gsm__ldl__continue_counting ; continue if we haven't hit it (exclusive)
+	LD B, #80h                          ; reset mask to MSB for check below
+	JRS gsm__ldl__remove_bit
+gsm__ldl__continue_counting:
+	JRS gsm__ldl__count_1s_in_byte      ; could've just jumped straight there...
+gsm__ldl__remove_bit:
+	RLC B                               ; if we got here from any bit but the MSB being 0,
+	CP B, #01h                          ; these would not be equal,
+	JRS NZ, loc_0x067F                  ; so we don't dec IX
+	DEC IX                              ; otherwise, dec IX back to the last 0xFF byte (IX+15)
 loc_0x067F:
-	CPL B
-	LD A, [IX]
-	AND A, B
-	LD H, A
+	CPL B                               ; mask everything but bit before the "0"
+	LD A, [IX]                          ; reload in case we decremented
+	AND A, B                            ; ...
+	LD H, A                             ; cases:
+	                                    ; 01 80   -> H = 0x00
+	                                    ; 01 FF08 -> H = 0xFE
+	                                    ; 01 FFF8 -> H = 0xF0
+	                                    ; 01 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF -> H = 0xFE
 	POP BA
 	LD B, H
-	DEC L
-	LD A, L
-loc_0x0688:
+	DEC L                               ; number of 1-bits -1
+	LD A, L                             ; ...
+gsm__ldl__load_data:
 	PUSH BA
-	LD A, [14E2h]
-	INC A
-	LD [14E2h], A
-	LD HL, [1524h]
-	LD A, [14E3h]
-	LD [HL], A
+	LD A, [NumGameStructs]              ; loading 1 more struct
+	INC A                               ; ...
+	LD [NumGameStructs], A              ; ...
+	LD HL, [NextGameStruct]             ; where we're loading the data to
+	LD A, [LoopN]                       ; $00 - index on cart
+	LD [HL], A                          ; ...
 	INC HL
 	POP BA
-	LD [HL], A
+	LD [HL], A                          ; 0xFE or number of 1-bits - 1
 	INC HL
-	LD [HL], B
+	LD [HL], B                          ; garbage byte or ?? (see above)
 	INC HL
-	LD [HL], IX
-	ADD HL, #0005h
-	LD [1524h], HL
-	LD HL, [1526h]
-	LD IX, IY
-	LD B, #48h
-	SUB IX, #0050h
-loc_0x06B2:
-	LD [HL], [IX]
-	INC HL
-	INC IX
-	DJR NZ, loc_0x06B2
-	LD [1526h], HL
-loc_0x06BA:
-	ADD IY, #0060h
-	LD A, [14E3h]
-	INC A
-	LD [14E3h], A
-	CP A, #08h
-	JRL NZ, loc_0x0634
+	LD [HL], IX                         ; $1C10 (first loop if 0xFE) or location of byte in B
+	ADD HL, #5                          ; two bytes from the above addr + 3 slop
+	LD [NextGameStruct], HL             ; store addr for next entry
+	LD HL, [NextTilePos]                ; where we're loading tile gfx to
+	LD IX, IY                           ; $041050 (first loop)
+	LD B, #72                           ; read 9 tiles (72 bytes)
+	SUB IX, #0050h                      ; $041000 (first loop)
+gsm__ldl__load_name_tiles:
+	LD [HL], [IX]                       ; load in tile
+	INC HL                              ; next
+	INC IX                              ; ...
+	DJR NZ, gsm__ldl__load_name_tiles
+	LD [NextTilePos], HL                ; store addr for next entry
+gsm__ldl__end:
+	ADD IY, #0060h                      ; $0410B0 (first loop)
+	LD A, [LoopN]                       ; increment loop count
+	INC A                               ; ...
+	LD [LoopN], A                       ; ...
+	CP A, #08h                          ; if we haven't looped 8 times,
+	JRL NZ, gsm__load_data_loop         ; keep going
 	POP IP
-	LD A, [14E2h]
-	OR A, A
-	JRS NZ, loc_0x06D6
-	JRL reset3
+	LD A, [NumGameStructs]              ; check if any data was loaded
+	OR A, A                             ; and if so,
+	JRS NZ, gsm__games_available        ; show screen
+	JRL insert_cart_screen              ; otherwise
+gsm__games_available:
+	OR [BR:01h], #08h                   ; ??
+	JRL game_select_screen
 ; ----------------------
-loc_0x06D6:
-	OR [BR:01h], #08h
-	JRL loc_0x0C0E
-; ----------------------
-loc_0x06DC:
-	SLL A
-	SLL A
-	SLL A
-	LD B, #00h
-	LD IY, #14E4h
-	ADD IY, BA
-	LD H, [IY]
+; This is jumped to not called
+; Arguments:
+;   A: game index (in RAM table)
+; Clobbers: any
+run_selected_game:
+	SLL A                               ; multiply index by 8 (size of a game struct in memory)
+	SLL A                               ; ...
+	SLL A                               ; ...
+	LD B, #00h                          ; indexing into game structs array
+	LD IY, #GameStructs                 ; ...
+	ADD IY, BA                          ; ...
+	LD H, [IY]                          ; ...read index in list on cart to H
 	INC IY
-	LD B, [IY]
-	LD [14E0h], B
-	CP B, #0FEh
-	JRS Z, loc_0x0706
+	LD B, [IY]                          ; 0xFE or number of 1-bits - 1
+	LD [RemainingPlays], B              ; ...to cart type???
+	CP B, #0FEh                         ; if it's -2,
+	JRS Z, loc_0x0706                   ; skip write out
 	INC IY
-	LD A, [IY]
+	LD A, [IY]                          ; ??
 	INC IY
-	LD IX, [IY]
+	LD IX, [IY]                         ; original location of A
 	PUSH IP
-	LD XP, #04h
-	CARL loc_0x04A5
+	LD XP, #04h                         ; write masked byte
+	CARL flash_program_byte             ; ...
 	POP IP
-	OR A, A
-	JRL NZ, reset3
+	OR A, A                             ; if it wasn't written successfully,
+	JRL NZ, insert_cart_screen          ; exit
 loc_0x0706:
 	LD B, [BR:01h]
-	LD A, H
-	OR A, B
+	LD A, H                             ; game index to load
+	OR A, B                             ; TODO: confirm if line $00C7 makes this safe every time
 	LD [BR:01h], A
 	LD A, H
-	CARL flash_053B
+	CARL flash_prepare_game
 	JRL nintendo_check
 ; ----------------------
-suspend_system:
+; Clobbers: BA
+_suspend_system:
 	PUSH EP
 	PUSH BR
-	LD SC, #0C0h
-	CARL set_io_base
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL set_br
 	OR [BR:02h], #20h
-	LD A, [BR:80h]
-	PUSH BA
-	LD B, [BR:50h]
-	LD A, [BR:21h]
-	AND A, #0Ch
-	PUSH BA
-	LD B, [BR:23h]
-	LD A, [BR:24h]
-	PUSH BA
-	LD B, [BR:25h]
-	LD A, [BR:26h]
-	PUSH BA
-loc_0x0731:
-	LD [BR:50h], #80h
-	LD [BR:54h], #01h
-	LD [BR:23h], #00h
-	LD [BR:24h], #00h
-	LD [BR:25h], #80h
-	LD [BR:26h], #00h
-	OR [BR:21h], #0Ch
-	CARL loc_0x0BCA
-	LD [BR:29h], #80h
-	LD A, #80h
-	CARL loc_0x07C0
-	CARL loc_0x0859
-	AND [BR:02h], #0DFh
-	POP BA
-	LD [BR:26h], A
-	LD [BR:25h], B
-	POP BA
-	LD [BR:23h], B
-	BIT [BR:01h], #40h
-	JRS Z, loc_0x0766
-	OR A, #02h
-loc_0x0766:
-	LD [BR:24h], A
+	; back up registers that will be changed
+	LD A, [BR:80h]                      ; back up LCD controller config
+	PUSH BA                             ; ...
+	LD B, [BR:50h]                      ; back up input polarities (except cart slot)
+	LD A, [BR:21h]                      ; back up keypad IRQ priorities
+	AND A, #0Ch                         ; ...
+	PUSH BA                             ; ...
+	LD B, [BR:23h]                      ; back up IRQ enable status
+	LD A, [BR:24h]                      ; ...
+	PUSH BA                             ; ...
+	LD B, [BR:25h]                      ; ...
+	LD A, [BR:26h]                      ; ...
+	PUSH BA                             ; ...
+	; When called directly, this needs to be a shutdown sequence
+	; See _shutdown for requirements
+do_shutdown:
+	LD [BR:50h], #80h                   ; leave power as falling edge, others to rising edge
+	LD [BR:54h], #01h                   ; set input level check time for ?? to 4ms?
+	LD [BR:23h], #00h                   ; disable IRQs
+	LD [BR:24h], #00h                   ; ...
+	LD [BR:25h], #80h                   ; ...except power key
+	LD [BR:26h], #00h                   ; ...
+	OR [BR:21h], #0Ch                   ; power key IRQ priority to 3
+	CARL wait_8000_cycles
+	LD [BR:29h], #80h                   ; clear power key IRQ
+	LD A, #80h                          ; set interrupt flags to 2 before halt
+	CARL halt_cpu_and_lcd
+	; After resuming from halt (if that's possible!)
+resume:
+	CARL lcd_on
+	AND [BR:02h], #~20h
+	; restore registers after awakening
+	POP BA                              ; restore IRQ enable status
+	LD [BR:26h], A                      ; ...
+	LD [BR:25h], B                      ; ...
+	POP BA                              ; ...
+	LD [BR:23h], B                      ; ...
+	BIT [BR:01h], #40h                  ; ??
+	JRS Z, r__trust_24
+	OR A, #02h                          ; ...also enable cart eject IRQ
+r__trust_24:
+	LD [BR:24h], A                      ; ...
 	POP A
-	LD B, [BR:21h]
-	AND B, #0F3h
-	OR A, B
-	LD [BR:21h], A
-	POP B
-	LD [BR:50h], B
-	POP BA
-	LD [BR:80h], A
+	LD B, [BR:21h]                      ; only add back keypad IRQ priorities
+	AND B, #~0Ch                        ; ...
+	OR A, B                             ; ...
+	LD [BR:21h], A                      ; ...
+	POP B                               ; restore input polarities (except cart slot)
+	LD [BR:50h], B                      ; ...
+	POP BA                              ; restore LCD controller config
+	LD [BR:80h], A                      ; ...
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-sleep:
+_sleep:
 	PUSH EP
 	PUSH BR
-	LD SC, #0C0h
-	CARL set_io_base
-	LD A, #40h
-	CARL loc_0x07C0
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL set_br
+	LD A, #40h                          ; set interrupt flags to 1 before halt
+	CARL halt_cpu_and_lcd
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-sleep_with_display:
+_sleep_with_display:
 	PUSH EP
 	PUSH BR
-	LD SC, #0C0h
-	CARL set_io_base
-	AND [BR:80h], #0F7h
-	LD A, #40h
-	CARL loc_0x07C3
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL set_br
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD A, #40h                          ; set interrupt flags to 1 before halt
+	CARL halt_cpu
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-shutdown:
-int_shutdown:
-	LD SC, #0C0h
+; Power button resets system after this.
+_shutdown:
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	LD SP, #2000h
-	CARL set_io_base
+	CARL set_br
 	CARL init_io
-loc_0x07A9:
-	LD SC, #0C0h
+shutdown:
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	LD [BR:01h], #90h
-	JRL loc_0x0731
+	JRL do_shutdown
 ; ----------------------
-unknown_eject0:
+; Same as _sleep just lines 3 and 4 swapped...
+; Official software uses _sleep rather than this.
+_sleep2:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	LD A, #40h
-	CARL loc_0x07C0
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	LD A, #40h                          ; set interrupt flags to 1 before halt
+	CARL halt_cpu_and_lcd
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-loc_0x07C0:
-	CARL loc_0x08D6
-loc_0x07C3:
+; Arguments:
+;   A copied to SC right before HALT
+halt_cpu_and_lcd:
+	CARL lcd_off
+halt_cpu:
 	BIT [BR:01h], #80h
-	JRS Z, loc_0x07CD
+	JRS Z, hc__wake_on_cart
 	BIT [BR:01h], #40h
-	JRS Z, loc_0x07D3
-loc_0x07CD:
-	OR [BR:24h], #02h
-	OR [BR:21h], #30h
-loc_0x07D3:
-	AND [BR:51h], #0FDh
-	LD [BR:55h], #01h
-	AND [BR:01h], #0DFh
-	CARL loc_0x0AF5
-	CARL loc_0x0AD9
+	JRS Z, hc__halt_sequence
+hc__wake_on_cart:                       ; ejected? inserted?
+	OR [BR:24h], #02h                   ; enable cart eject IRQ
+	OR [BR:21h], #30h                   ; set cartridge IRQs' priorities to 3
+hc__halt_sequence:
+	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
+	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
+	AND [BR:01h], ~#20h
+	CARL unpower_cart
+	CARL enter_low_speed_operation
 	LD SC, A
 	HALT
-	LD SC, #0C0h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	RET
 ; ----------------------
-default_contrast:
+; Stores and applies a contrast value which can be
+; restored with _apply_default_contrast (INT [50h]).
+; Default set by the BIOS is 31.
+; Arguments:
+;   A: new default contrast, 0~63
+; Clobbers: B
+_default_contrast:
 	POP SC
-loc_0x07EA:
+default_contrast:
 	SLL A
 	SLL A
 	PUSH EP
@@ -1205,42 +1312,54 @@ loc_0x07EA:
 	OR [HL], A
 	POP HL
 	POP EP
-	CARL loc_0x0822
-	JRS loc_0x0831
-change_contrast:
-	CARL loc_0x0822
+	CARL get_default_contrast
+	JRS set_temp_contrast
+; ----------------------
+; Step contrast up or down based on Z
+; Arguments:
+;   Z: 0 = decrement, 1 = increment
+; Returns:
+;   A: -1 = fail, 0 = success
+; Clobbers: B
+_change_contrast:
+	CARL get_default_contrast
 	POP SC
 	PUSH SC
-	JRS Z, loc_0x0812
-	CP A, #03Fh
-	JRS Z, loc_0x0815
-	INC A
-loc_0x080E:
-	CARS loc_0x07EA
-	XOR A, A
+	JRS Z, cc__try_decrement            ; decrement if Z=0
+	CP A, #03Fh                         ; if contrast is already max,
+	JRS Z, cc__fail                     ; fail out
+	INC A                               ; Z=1 so increment
+cc__set_and_return:
+	CARS default_contrast               ; store and apply
+	XOR A, A                            ; return success
 	RETE
-; ----------------------
-loc_0x0812:
-	OR A, A
-	JRS NZ, loc_0x0818
-loc_0x0815:
-	LD A, #0FFh
+cc__try_decrement:
+	OR A, A                             ; if A > 0,
+	JRS NZ, cc__decrement               ; decrement
+cc__fail:
+	LD A, #0FFh                         ; return failure (already max or min)
 	RETE
-; ----------------------
-loc_0x0818:
+cc__decrement:
 	DEC A
-	JRS loc_0x080E
-apply_default_contrast:
+	JRS cc__set_and_return
+; ----------------------
+; Returns:
+;   A: contrast
+; Clobbers: B
+_apply_default_contrast:
 	POP SC
 apply_default_contrast1:
-	CARL loc_0x0822
-	JRS loc_0x0831
-get_default_contrast:
+	CARL get_default_contrast
+	JRS set_temp_contrast
+; ----------------------
+; Returns:
+;   A: contrast
+_get_default_contrast:
 	POP SC
-loc_0x0822:
+get_default_contrast:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	LD A, [BR:00h]
 	SRL A
 	SRL A
@@ -1248,307 +1367,333 @@ loc_0x0822:
 	POP EP
 	RET
 ; ----------------------
-set_temp_contast:
+; Arguments:
+;   A: new contrast, 0~63
+; Clobbers: B
+_set_temp_contrast:
 	POP SC
-loc_0x0831:
+set_temp_contrast:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	LD B, A
-	BIT [BR:80h], #08h
-	LD A, SC
-	AND [BR:80h], #0F7h
-	LD [BR:0FEh], #81h
-	LD [BR:0FEh], B
-	LD SC, A
-	JRS Z, loc_0x084B
-	OR [BR:80h], #08h
-loc_0x084B:
+	BIT [BR:80h], #08h                  ; store whether or not LCD controller was enabled
+	LD A, SC                            ; ...
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD [BR:0FEh], #81h                  ; send contrast command
+	LD [BR:0FEh], B                     ; ...
+	LD SC, A                            ; if LCD controller was enabled,
+	JRS Z, stc__return
+	OR [BR:80h], #08h                   ; re-enable it
+stc__return:
 	POP BR
 	POP EP
 	RET
 ; ----------------------
+_lcd_on:
+	POP SC
+	PUSH EP
+	PUSH BR
+	CARL set_br
+	CARS lcd_on
+	POP BR
+	POP EP
+	RET
+; Clobbers: BA
 lcd_on:
-	POP SC
-	PUSH EP
-	PUSH BR
-	CARL set_io_base
-	CARS loc_0x0859
-	POP BR
-	POP EP
-	RET
-; ----------------------
-loc_0x0859:
 	PUSH SC
-	LD SC, #0C0h
-	BIT [BR:02h], #04h
-	JRS Z, loc_0x0866
-	OR [BR:02h], #10h
-	JRS loc_0x0869
-loc_0x0866:
-	AND [BR:02h], #0EFh
-loc_0x0869:
-	OR [BR:81h], #01h
-	XOR A, A
-	CARL init_display1
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	BIT [BR:02h], #04h                  ; ??
+	JRS Z, lcdo__reset_02_bit4
+	OR [BR:02h], #10h                   ; ??
+	JRS lcdo__return
+lcdo__reset_02_bit4:
+	AND [BR:02h], #~10h                 ; ??
+lcdo__return:
+	OR [BR:81h], #01h                   ; ??
+	XOR A, A                            ; wait between power cfg and on commands
+	CARL init_display
 	RETE
 ; ----------------------
-init_lcd:
+; Clobbers: BA
+_init_lcd:
 	POP SC
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	CARS init_display
+	CARL set_br
+	CARS init_display_without_wait
 	POP BR
 	POP EP
 	RET
 ; ----------------------
-init_display:
+; Clobbers: BA
+init_display_without_wait:
 	LD A, #0FFh
-init_display1:
-	PUSH SC
-	LD SC, #0C0h
-	BIT [BR:81h], #01h
-	JRS NZ, loc_0x0887
-	RETE
-; ----------------------
-loc_0x0887:
+; Arguments
+;   A: 0 = wait, non-zero = don't wait
+; Clobbers: B
+init_display:
+	PUSH SC                             ; back up SC
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	BIT [BR:81h], #01h                  ; ??
+	JRS NZ, id__init
+	RETE                                ; restore SC and return
+id__init:
 	PUSH HL
-	LD HL, #20FEh
-	LD B, [BR:80h]
-	AND [BR:80h], #0F7h
-	LD [HL], #0E3h
-	LD [HL], #0A4h
-	LD [HL], #0ADh
-	LD [HL], #02h
-	LD [HL], #0EEh
-	LD [HL], #40h
-	LD [HL], #0A2h
-	LD [HL], #0A0h
-	LD [HL], #0C0h
-	LD [HL], #0A6h
-	LD [HL], #02Fh
-	OR A, A
+	LD HL, #20FEh                       ; using [HL] is less bytes than [BR:ll] for all
+	LD B, [BR:80h]                      ; back up LCD controller config
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD [HL], #0E3h                      ; send NOP
+	LD [HL], #0A4h                      ; send "set all on" off
+	LD [HL], #0ADh                      ; send enable static indicator
+	LD [HL], #02h                       ; blink static indicator at half second intervals
+	LD [HL], #0EEh                      ; send RMW end
+	LD [HL], #40h                       ; send set display start line 0
+	LD [HL], #0A2h                      ; send LCD bias 1/9
+	LD [HL], #0A0h                      ; send ADC select normal
+	LD [HL], #0C0h                      ; send row direction normal
+	LD [HL], #0A6h                      ; send color invert off
+	LD [HL], #02Fh                      ; send power supply circuits all on
+	OR A, A                             ; A=0 do wait, A≠0 don't wait
 	JRS NZ, loc_0x08C5
 	PUSH IX
-	BIT [BR:02h], #08h
-	JRS NZ, loc_0x08B6
-	LD A, #01h
-	LD IX, #0592h
-	JRS loc_0x08BB
-loc_0x08B6:
-	LD A, #02h
-	LD IX, #55C4h
-loc_0x08BB:
+	BIT [BR:02h], #08h                  ; check what oscillator is clocking the CPU
+	JRS NZ, id__using_hso
+	LD A, #01h                          ; wait 5711 cycles (from start of loop)
+	LD IX, #0592h                       ; ...
+	JRS id__wait_for_warmup
+id__using_hso:
+	LD A, #02h                          ; wait 349978 cycles (from start of loop)
+	LD IX, #55C4h                       ; ...
+id__wait_for_warmup:
 	DEC IX
-	JRS NZ, loc_0x08BB
+	JRS NZ, id__wait_for_warmup
 	LD IX, #0FFFFh
-	DEC A
-	JRS NZ, loc_0x08BB
+	DEC A                               ; exit at 0, so A=1 doesn't do extra
+	JRS NZ, id__wait_for_warmup
 	POP IX
 loc_0x08C5:
-	LD [HL], #0AFh
-	LD [BR:80h], B
+	LD [HL], #0AFh                      ; send display on
+	LD [BR:80h], B                      ; restore frame copy state
 	POP HL
 	RETE
 ; ----------------------
-lcd_off:
+_lcd_off:
 	POP SC
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	CARS loc_0x08D6
+	CARL set_br
+	CARS lcd_off
 	POP BR
 	POP EP
 	RET
+lcd_off:
+	PUSH SC                             ; back up flags
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD [BR:0FEh], #0AEh                 ; send display off
+	LD [BR:0FEh], #0ACh                 ; send static indicator off
+	LD [BR:0FEh], #28h                  ; send power supply circuits all off
+	LD [BR:0FEh], #0A5h                 ; send "set all on" on (enter _sleep mode)
+	AND [BR:81h], #~01h                 ; ??
+	RETE                                ; restore flags
 ; ----------------------
-loc_0x08D6:
-	PUSH SC
-	LD SC, #0C0h
-	AND [BR:80h], #0F7h
-	LD [BR:0FEh], #0AEh
-	LD [BR:0FEh], #0ACh
-	LD [BR:0FEh], #28h
-	LD [BR:0FEh], #0A5h
-	AND [BR:81h], #0FEh
-	RETE
-; ----------------------
-ena_ram_vec:
+_ena_ram_vec:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	BIT [BR:01h], #80h
-	JRS NZ, loc_0x0901
-	OR [BR:01h], #80h
-	OR [BR:01h], #40h
-	AND [BR:01h], #0DFh
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	BIT [BR:01h], #80h                  ; if bit 7 is already set,
+	JRS NZ, loc_0x0901                  ; skip
+	OR [BR:01h], #80h                   ; otherwise set it
+	OR [BR:01h], #40h                   ; and bit 6
+	AND [BR:01h], #~20h                 ; and reset bit 5
 loc_0x0901:
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-dis_ram_vec:
+_dis_ram_vec:
 	PUSH EP
 	PUSH BR
-	CARL loc_0x0939
+	CARL skip_if_01_not_bit6
 	LD [BR:55h], #01h
-	AND [BR:51h], #0FDh
-	LD SC, #0C0h
+	AND [BR:51h], #~02h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	OR [BR:21h], #30h
-	OR [BR:24h], #02h
+	OR [BR:24h], #02h                   ; enable cart eject IRQ
 	OR [BR:01h], #20h
-	AND [BR:01h], #0BFh
-	AND [BR:01h], #7Fh
+	AND [BR:01h], #~40h
+	AND [BR:01h], #~80h
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-dis_irq_13:
+_disable_cart_eject_irq_if:
 	PUSH EP
 	PUSH BR
-	CARL loc_0x0939
-	AND [BR:24h], #0FDh
+	CARL skip_if_01_not_bit6
+	AND [BR:24h], #~02h                 ; disable cart eject IRQ
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-ena_irq_13:
+_enable_cart_eject_irq_if:
 	PUSH EP
 	PUSH BR
-	CARL loc_0x0939
-	OR [BR:24h], #02h
+	CARL skip_if_01_not_bit6
+	OR [BR:24h], #02h                   ; enable cart eject IRQ
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-loc_0x0939:
-	CARL set_io_base
-	BIT [BR:01h], #40h
-	JRS NZ, loc_0x0948
-	ADD SP, #0003h
-	POP BR
-	POP EP
-	RETE
+; MUST push EP, BR, SC (maybe from INT) before calling
+skip_if_01_not_bit6:
+	CARL set_br
+	BIT [BR:01h], #40h                  ; if bit 6 is set,
+	JRS NZ, si__return                  ; just return
+	ADD SP, #0003h                      ; otherwise return back to caller's caller
+	POP BR                              ; and give BR/EP/SC back
+	POP EP                              ; ...
+	RETE                                ; ...
 ; ----------------------
-loc_0x0948:
+si__return:
 	RET
 ; ----------------------
-unknown_eject1:
+_unknown_eject1:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	BIT [BR:01h], #80h
-	JRS NZ, loc_0x095E
-	AND [BR:24h], #0FDh
-	OR [BR:01h], #80h
-	AND [BR:01h], #0DFh
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	BIT [BR:01h], #80h                  ; if bit 7 is set,
+	JRS NZ, loc_0x095E                  ; just return
+	AND [BR:24h], #~02h                 ; otherwise, disable cart eject IRQ
+	OR [BR:01h], #80h                   ; set bit 7
+	AND [BR:01h], #~20h                 ; and reset bit 5
 loc_0x095E:
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-unknown_eject2:
+_unknown_eject2:
 	PUSH EP
 	PUSH BR
-	CARL loc_0x0A1A
-	LD [BR:55h], #01h
-	AND [BR:51h], #0FDh
-	LD SC, #0C0h
-	OR [BR:21h], #30h
-	OR [BR:24h], #02h
-	OR [BR:01h], #20h
-	AND [BR:01h], #7Fh
+	CARL skip_if_01_bit6_or_not_bit7
+	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
+	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	OR [BR:21h], #30h                   ; set cartridge IRQs' priorities to 3
+	OR [BR:24h], #02h                   ; enable cart eject IRQ
+	OR [BR:01h], #20h                   ; set bit 5
+	AND [BR:01h], #~80h                 ; reset bit 7
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-dev_card0:
+; Similar to prepare_selected_game but:
+;   Conditional execution.
+;   Does not assume cart is inserted or powered.
+;   Check startup action instead of $2001.3~0 being 0b0xx1.
+;   Ensures the game struct in ROM is valid.
+; When this returns 0, it leaves the cart powered.
+; Returns:
+;   A:
+;     0 = banks perpared
+;     1 = no cart inserted
+;     2 = error:
+;           unexpected game ID in $2001
+;           expected game ID in $2001
+;           selected game ID has no valid entry in ROM
+; Clobbers: B, XP
+_dev_card0:
 	PUSH EP
 	PUSH BR
-	LD SC, #0C0h
-	CARL loc_0x0A1A
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL skip_if_01_bit6_or_not_bit7
 	PUSH IX
 	PUSH HL
-	BIT [BR:53h], #02h
-	JRS Z, loc_0x098F
-	LD A, #01h
-	JRS loc_0x09DF
-loc_0x098F:
-	LD B, [BR:80h]
-	LD [BR:80h], #00h
-	LD A, [BR:71h]
-	PUSH BA
-	CARL loc_0x0B08
-	CARL loc_0x0BCA
-	LD [BR:28h], #02h
-	CARL loc_0x0A2F
-	JRS NZ, loc_0x09AC
-	BIT [BR:01h], #08h
-	JRS NZ, loc_0x09D8
-	JRS loc_0x09D1
-loc_0x09AC:
-	BIT [BR:01h], #08h
-	JRS Z, loc_0x09D8
-	LD A, [BR:01h]
-	AND A, #07h
-	LD L, #60h
-	MLT
-	LD IX, #1050h
-	ADD IX, HL
-	PUSH IP
-	LD XP, #04h
-	LD B, [IX]
-	POP IP
-	CP B, #00h
-	JRS Z, loc_0x09D8
-	CP B, #0FFh
-	JRS Z, loc_0x09D8
-	CARL flash_053B
-loc_0x09D1:
-	OR [BR:02h], #40h
+	BIT [BR:53h], #02h                  ; if cart is inserted,
+	JRS Z, dc0__cart_inserted           ; continue
+	LD A, #01h                          ; otherwise, return 1
+	JRS dc0__return1
+dc0__cart_inserted:
+	LD B, [BR:80h]                      ; back up LCD controller settings
+	LD [BR:80h], #00h                   ; disable LCD controller
+	LD A, [BR:71h]                      ; back up cart power/volume
+	PUSH BA                             ; ...
+	CARL power_cart
+	CARL wait_8000_cycles
+	LD [BR:28h], #02h                   ; clear cart eject IRQ
+	CARL select_boot
+	JRS NZ, dc0__verify_selected_game   ; 0 = banks were selected (or didn't need to be)
+	BIT [BR:01h], #08h                  ; we don't expect a valid game index in this case so,
+	JRS NZ, dc0__return3                ; return 2
+	JRS dc0__leave_powered
+dc0__verify_selected_game:
+	BIT [BR:01h], #08h                  ; if bits 2~0 don't contain a game index,
+	JRS Z, dc0__return3                 ; return 2
+	LD A, [BR:01h]                      ; otherwise, load the game index
+	AND A, #07h                         ; ...
+	LD L, #60h                          ; size of a game struct
+	MLT                                 ; ...
+	LD IX, #1050h                       ; read from $041050 + 96 * ?
+	ADD IX, HL                          ; ...
+	PUSH IP                             ; ...
+	LD XP, #04h                         ; ...
+	LD B, [IX]                          ; ...
+	POP IP                              ; ...
+	CP B, #00h                          ; if it's 0 (empty),
+	JRS Z, dc0__return3                 ; return 2
+	CP B, #0FFh                         ; if it's 0xff (erased),
+	JRS Z, dc0__return3                 ; return 2
+	CARL flash_prepare_game             ; otherwise select game in A
+dc0__leave_powered:
+	OR [BR:02h], #40h                   ; ??
 	POP BA
-	XOR A, A
-	JRS loc_0x09DD
-loc_0x09D8:
+	XOR A, A                            ; return 0
+	JRS dc0__return2                    ; leave cart powered
+dc0__return3:
 	POP BA
-	LD [BR:71h], A
-	LD A, #02h
-loc_0x09DD:
-	LD [BR:80h], B
-loc_0x09DF:
+	LD [BR:71h], A                      ; restore cart power/volume
+	LD A, #02h                          ; return 2
+dc0__return2:
+	LD [BR:80h], B                      ; restore LCD controller settings
+dc0__return1:
 	POP HL
 	POP IX
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-dev_card1:
+; Prepares bank selections only if cart is inserted
+; and startup action is 0/2 (or not a dev cart).
+; Powers on cart if one's inserted.
+; Clobbers: BA, XP
+_dev_card1:
 	PUSH EP
 	PUSH BR
-	LD SC, #0C0h
-	CARL loc_0x0A1A
-	LD B, [BR:80h]
-	LD [BR:80h], #00h
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARL skip_if_01_bit6_or_not_bit7
+	LD B, [BR:80h]                      ; back up LCD controller config
+	LD [BR:80h], #00h                   ; disable LCD controller
 	PUSH B
 	PUSH IX
 	PUSH HL
-	BIT [BR:53h], #02h
-	JRS Z, loc_0x09FD
-	LD A, #01h
-	JRS loc_0x0A11
-loc_0x09FD:
-	CARL loc_0x0B05
-	CARL loc_0x0A2F
-	JRS Z, loc_0x0A11
+	BIT [BR:53h], #02h                  ; if cart is inserted,
+	JRS Z, dc1__prepare_autoboot_only   ; ...
+	LD A, #01h                          ; otherwise return 1
+	JRS dc1__return
+dc1__prepare_autoboot_only:
+	CARL cart_slot_on
+	CARL select_boot
+	JRS Z, dc1__return                  ; done selecting banks, so return
 	PUSH IP
-	LD XP, #07h
-	LD A, #01h
-	CARL flash_0507
+	LD XP, #07h                         ; set external page 1 to load bank 1
+	LD A, #01h                          ; ...
+	CARL flash_select_bank              ; ...
 	POP IP
-	LD A, #0FFh
-loc_0x0A11:
+	LD A, #0FFh                         ; return -1
+dc1__return:
 	POP HL
 	POP IX
 	POP B
@@ -1557,259 +1702,271 @@ loc_0x0A11:
 	POP EP
 	RETE
 ; ----------------------
-loc_0x0A1A:
-	CARL set_io_base
-	BIT [BR:01h], #80h
-	JRS Z, loc_0x0A27
-	BIT [BR:01h], #40h
-	JRS Z, loc_0x0A2E
-loc_0x0A27:
+; MUST push EP, BR, SC (maybe from INT) before calling
+skip_if_01_bit6_or_not_bit7:
+	CARL set_br
+	BIT [BR:01h], #80h                  ; if bit 7 is 0,
+	JRS Z, si2__do_skip                 ; perform skip
+	BIT [BR:01h], #40h                  ; if bit 6 is 0,
+	JRS Z, si2__return                  ; don't skip
+si2__do_skip:
 	ADD SP, #0003h
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-loc_0x0A2E:
+si2__return:
 	RET
 ; ----------------------
-loc_0x0A2F:
+; If the startup action bit 0 is 0, prepare game 0.
+; Otherwise, do further checks.
+; Returns:
+;   Z: 0 = ready to boot, 1 = do more checks
+; Clobbers: A, XP, IX
+select_boot:
 	CARL flash_detect
-	JRS NZ, loc_0x0A4D
+	JRS NZ, sb__return_fail             ; if it's not a flash cart
 	PUSH IP
-	LD XP, #07h
-	LD A, #00h
-	CARL flash_0507
-	LD XP, #04h
-	LD IX, #1300h
-	LD A, [IX]
+	LD XP, #07h                         ; bank register
+	LD A, #00h                          ; value to write
+	CARL flash_select_bank
+	LD XP, #04h                         ; read startup action
+	LD IX, #1300h                       ; ...
+	LD A, [IX]                          ; ...
 	POP IP
-	BIT A, #01h
-	JRS NZ, loc_0x0A4E
-	XOR A, A
-	CARL flash_053B
-loc_0x0A4D:
-	XOR A, A
-loc_0x0A4E:
+	BIT A, #01h                         ; if it's 0,
+	JRS NZ, sb__return
+	XOR A, A                            ; start the first game automatically
+	CARL flash_prepare_game             ; ...
+sb__return_fail:
+	XOR A, A                            ; fail out
+sb__return:
 	RET
 ; ----------------------
-unknown_eject3:
+; Arguments:
+;   A: cart eject IRQ priority
+; Clobbers: B
+_enable_cart_eject_irq:
 	POP SC
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	SWAP A
 	AND A, #30h
 	PUSH SC
-	LD SC, #0C0h
-	LD B, [BR:21h]
-	AND B, #0CFh
-	OR A, B
-	LD [BR:21h], A
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	LD B, [BR:21h]                      ; get IRQ priorities
+	AND B, #0CFh                        ; clear cart eject's
+	OR A, B                             ; set it to value in A
+	LD [BR:21h], A                      ; ...
 	POP SC
-	LD [BR:55h], #01h
-	AND [BR:51h], #0FDh
-	CARL loc_0x0BCA
-	LD [BR:28h], #02h
-	OR [BR:24h], #02h
+	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
+	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
+	CARL wait_8000_cycles
+	LD [BR:28h], #02h                   ; clear cart eject
+	OR [BR:24h], #02h                   ; enable cart eject IRQ
 	POP BR
 	POP EP
 	RET
 ; ----------------------
-dis_cart_eject:
+_disable_cart_eject_irq:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	AND [BR:24h], #0FDh
+	CARL set_br
+	AND [BR:24h], #~02h                 ; disable cart eject IRQ
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-unknown_eject4:
+_unknown_eject4:
 	POP SC
 	PUSH EP
 	PUSH BR
 	PUSH BA
-	CARL set_io_base
-	LD A, SC
-	SRL A
-	SRL A
-	AND A, #30h
-	LD B, [BR:21h]
-	AND B, #30h
-	CP A, B
-	XOR SC, #01h
-	JRS Z, loc_0x0AA2
-	BIT [BR:28h], #02h
-	JRS Z, loc_0x0AA2
-	LD [BR:28h], #02h
+	CARL set_br
+	LD A, SC                            ; get C and Z
+	SRL A                               ; ...shift to top two bits
+	SRL A                               ; ...
+	AND A, #30h                         ; ...
+	LD B, [BR:21h]                      ; compare with clock timer IRQs' priority
+	AND B, #30h                         ; ...
+	CP A, B                             ; ...
+	XOR SC, #01h                        ; invert Z, so 0 = not equal
+	JRS Z, loc_0x0AA2                   ; return if they're not equal
+	BIT [BR:28h], #02h                  ; check if cart eject fired
+	JRS Z, loc_0x0AA2                   ; if not, return
+	LD [BR:28h], #02h                   ; if so, clear
 loc_0x0AA2:
 	POP BA
 	POP BR
 	POP EP
 	RET
 ; ----------------------
-inc_cpu_speed:
+_enter_high_speed_operation:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	CARS set_fast_speed
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS enter_high_speed_operation
 	POP BR
 	POP EP
 	RETE
-; ----------------------
-set_fast_speed:
+enter_high_speed_operation:
 	PUSH IX
-	AND [BR:02h], #0FEh
-	LD IX, #0014h
-loc_0x0AB9:
+	AND [BR:02h], #~01h                 ; write 00 (intended) to VD1C (mid operating voltage)
+	LD IX, #20                          ; wait 83 cycles
+ehso__wait_80:
 	DEC IX
-	JRS NZ, loc_0x0AB9
-	OR [BR:02h], #04h
-	LD IX, #0199h
-loc_0x0AC2:
+	JRS NZ, ehso__wait_80
+	OR [BR:02h], #04h                   ; write 1 to OSCC
+	LD IX, #409                         ; wait 1639 cycles
+ehso__wait_1636:
 	DEC IX
-	JRS NZ, loc_0x0AC2
-	OR [BR:02h], #08h
-	OR [BR:02h], #10h
+	JRS NZ, ehso__wait_1636
+	OR [BR:02h], #08h                   ; clock CPU with OSC3
+	OR [BR:02h], #10h                   ; ??
 	POP IX
 	RET
 ; ----------------------
-recover_inc_cpu:
+_enter_low_speed_operation:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	CARS loc_0x0AD9
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS enter_low_speed_operation
 	POP BR
 	POP EP
 	RETE
-; ----------------------
-loc_0x0AD9:
-	AND [BR:02h], #0EFh
-	AND [BR:02h], #0F7h
-	AND [BR:02h], #0FBh
-	OR [BR:02h], #01h
+enter_low_speed_operation:
+	AND [BR:02h], #~10h                 ; ??
+	AND [BR:02h], #~08h                 ; clock CPU with OSC1
+	AND [BR:02h], #~04h                 ; turn off OSC3
+	OR [BR:02h], #01h                   ; write 01 (intended) to VD1C (lowest operating voltage)
 	RET
 ; ----------------------
-cart_off_update0:
+_cart_slot_off:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	CARS loc_0x0AF2
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS cart_slot_off
 	POP BR
 	POP EP
 	RETE
 ; ----------------------
-loc_0x0AF2:
-	AND [BR:02h], #0BFh
-loc_0x0AF5:
-	OR [BR:71h], #04h
+cart_slot_off:
+	AND [BR:02h], #~40h
+unpower_cart:
+	OR [BR:71h], #04h                   ; turn off cart power
 	RET
 ; ----------------------
-cart_off_update1:
+_cart_slot_on:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
-	LD SC, #0C0h
-	CARS loc_0x0B05
+	CARL set_br
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	CARS cart_slot_on
 	POP BR
 	POP EP
 	RETE
-; ----------------------
-loc_0x0B05:
-	OR [BR:02h], #40h
-loc_0x0B08:
+cart_slot_on:
+	OR [BR:02h], #40h                   ; ??
+power_cart:
 	PUSH IX
 	PUSH BA
-	AND [BR:71h], #0FBh
-	OR [BR:02h], #80h
-	LD IX, #0032h
-loc_0x0B13:
+	AND [BR:71h], #~04h                 ; power the cart
+	OR [BR:02h], #80h                   ; ??
+	LD IX, #0032h                       ; wait for 203 cycles
+pc__wait_200:
 	DEC IX
-	JRS NZ, loc_0x0B13
-	LD A, [2AAAh]
-	OR [BR:02h], #80h
+	JRS NZ, pc__wait_200
+	LD A, [2AAAh]                       ; dummy read to cancel any half-input flash commands
+	OR [BR:02h], #80h                   ; ??
 	POP BA
 	POP IX
 	RET
 ; ----------------------
-cart_detect:
+; Returns
+;   Z: 1=cart is inserted
+_cart_detect:
 	POP SC
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	BIT [BR:53h], #02h
 	XOR SC, #01h
 	POP BR
 	POP EP
 	RET
 ; ----------------------
-read_structure:
-	PUSH EP
+; Arguments:
+;   IX: start address of structure
+_read_structure:
+	PUSH EP                             ; omg just use PUSH ALE
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	PUSH IP
 	PUSH IX
 	PUSH IY
 	PUSH HL
 	PUSH B
-	LD SC, #0C0h
-	LD A, [IX]
-	BIT A, #01h
-	LD A, SC
-	JRS Z, loc_0x0B4E
-	ADD IX, #000Ah
-	LD H, [IX]
-	DEC IX
-	LD L, [IX]
-	DEC IX
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	LD A, [IX]                          ; read byte $00
+	BIT A, #01h                         ; if bit 0 is 0,
+	LD A, SC                            ; (save result for later)
+	JRS Z, loc_0x0B4E                   ;
+	ADD IX, #000Ah                      ; read byte $0A
+	LD H, [IX]                          ; ...
+	DEC IX                              ; read byte $09
+	LD L, [IX]                          ; ...
+	DEC IX                              ; read byte $08
 	PUSH HL
-	LD B, [IX]
-	DEC IX
+	LD B, [IX]                          ; ...
+	DEC IX                              ; addr $07
 	JRS loc_0x0B51
 loc_0x0B4E:
-	ADD IX, #0007h
+	ADD IX, #0007h                      ; addr $07
 loc_0x0B51:
 	PUSH BA
-	LD B, [IX]
-	DEC IX
-	LD A, [IX]
-	DEC IX
-	LD H, [IX]
-	DEC IX
-	LD L, [IX]
-	DEC IX
-	LD YP, A
-	LD IY, HL
-	LD A, [IX]
-	DEC IX
-	LD H, [IX]
-	DEC IX
-	LD L, [IX]
-	LD XP, A
-	LD IX, HL
-	OR [BR:02h], #80h
-	LD [IX], #0FFh
-	OR [BR:02h], #80h
-	LD A, [IY]
-	OR [BR:02h], #80h
-	CP A, B
-	POP BA
-	PUSH SC
-	LD SC, A
-	JRS Z, loc_0x0B82
-	POP SC
-	LD L, B
-	POP BA
-	LD H, A
-	LD A, B
-	PUSH SC
-	CARS loc_0x0B8C
+	LD B, [IX]                          ; read byte $07
+	DEC IX                              ; read byte $06
+	LD A, [IX]                          ; ...
+	DEC IX                              ; read byte $05
+	LD H, [IX]                          ; ...
+	DEC IX                              ; read byte $04
+	LD L, [IX]                          ; ...
+	DEC IX                              ; addr $03
+	LD YP, A                            ; byte $06 to YP
+	LD IY, HL                           ; bytes $05~04 to IY
+	LD A, [IX]                          ; read byte $03
+	DEC IX                              ; read byte $02
+	LD H, [IX]                          ; ...
+	DEC IX                              ; read byte $01
+	LD L, [IX]                          ; ...
+	LD XP, A                            ; byte $03 to XP, why is this necessary?
+	LD IX, HL                           ; bytes $02~$01 to IX
+	OR [BR:02h], #80h                   ; ??
+	LD [IX], #0FFh                      ; write 0xFF to IX
+	OR [BR:02h], #80h                   ; ???
+	LD A, [IY]                          ; read byte into A
+	OR [BR:02h], #80h                   ; ????
+	CP A, B                             ; compare with byte $07
+	POP BA                              ; restore B=byte $08, A=state of byte $00 bit 0
+	PUSH SC                             ; store result of CP
+	LD SC, A                            ; re-check byte $00 bit 0
+	JRS Z, loc_0x0B82                   ; which allows B to definitely be byte $08
+	POP SC                              ; just popped to allow POP BA
+	LD L, B                             ; L=byte $08
+	POP BA                              ; (from $0B49) B=byte $0A, A=byte $09
+	LD H, A                             ; H=byte $09
+	LD A, B                             ; A=byte $0A
+	PUSH SC                             ; pushed back to stack unchanged
+	; subroutine should fetch [SP+3] for the result of
+	; the compare then put its result in its place
+	CARS call_a_hl
 loc_0x0B82:
-	POP BA
-	AND A, #01h
+	POP BA                              ; B=B before call, A=SC from $0B75 or $0B7F
+	AND A, #01h                         ; A=Z, result of compare with byte $07
 	POP HL
 	POP IY
 	POP IX
@@ -1818,27 +1975,37 @@ loc_0x0B82:
 	POP EP
 	RETE
 ; ----------------------
-loc_0x0B8C:
+; Used by _read_structure
+; Arguments
+;   A: code page
+;   HL: subroutine address
+;   [SP+3]: compare byte result (from SC)
+; Clobbers: any/all
+call_a_hl:
 	LD NB, A
 	JP HL
 ; ----------------------
-set_prc_rate:
+; Arguments
+;   A: rate divider
+_set_prc_rate:
 	PUSH EP
 	PUSH HL
-	AND A, #07h
-	SLL A
+	AND A, #07h                         ; limit to 3 bits
+	SLL A                               ; position
 	LD EP, #00h
 	LD HL, #2081h
-	AND [HL], #0F1h
-	OR [HL], A
+	AND [HL], #0F1h                     ; reset those bits
+	OR [HL], A                          ; insert new value
 	POP HL
 	POP EP
 	RETE
 ; ----------------------
-get_prc_rate:
+; Returns
+;   A: rate divider value
+_get_prc_rate:
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	LD A, [BR:81h]
 	AND A, #0Eh
 	SRL A
@@ -1846,390 +2013,442 @@ get_prc_rate:
 	POP EP
 	RETE
 ; ----------------------
-test_cart_type:
+; This has to do with the Game Select screen
+; Returns
+;   Z: 1=$2001 bits 2~0 are a valid game index
+_game_id_valid:
 	POP SC
 	PUSH EP
 	PUSH BR
-	CARL set_io_base
+	CARL set_br
 	BIT [BR:01h], #08h
 	POP BR
 	POP EP
 	RET
 ; ----------------------
-ir_pulse:
+; Write to IR bit, wait, then reset IR bit
+; Arguments:
+;   IY = $2061
+;   B = cycles to wait / 4
+_ir_pulse:
 	LD [IY], #02h
-loc_0x0BBF:
-	DJR NZ, loc_0x0BBF
+irp__wait:
+	DJR NZ, irp__wait
 	LD [IY], #00h
 	RETE
 ; ----------------------
-set_io_base:
+; Set [BR:ll] indexing for hardware registers.
+; Returns:
+;   EP: page for [BR:ll] (set to 0)
+;   BR: BR set to $20 for hardware register space
+set_br:
 	LD EP, #00h
 	LD BR, #20h
 	RET
 ; ----------------------
-loc_0x0BCA:
+wait_8000_cycles:                       ; including the CARL to get here
 	PUSH IX
-	LD IX, #07CBh
-loc_0x0BCE:
+	LD IX, #1995
+w8kc__loop:
 	DEC IX
-	JRS NZ, loc_0x0BCE
+	JRS NZ, w8kc__loop
 	POP IX
 	RET
 ; ----------------------
+; Arguments:
+;   H: previous inverted keypad state
+; Returns:
+;   A: newly pressed keys
+;   H: keys being pressed, new or old
+; Clobbers: B
 read_keys_buffer:
-	LD B, [BR:52h]
-	CPL B
+	LD B, [BR:52h]                      ; read current keymap state
+	CPL B                               ; invert so 1 is pressed
 	LD A, H
 	LD H, B
-	XOR A, B
-	AND A, B
+	XOR A, B                            ; 0 out any keys that were pressed last time
+	AND A, B                            ; ...
 	RET
 ; ----------------------
+; Arguments:
+;   IY: tilemap source
+; Returns:
+;   IX: $1360 (start of tilemap memory)
+; Clobbers: L
 load_tilemap:
-	LD IX, #1360h
-	LD L, #00h
-loc_0x0BE1:
-	LD B, [IY+L]
-	LD [IX+L], B
+	LD IX, #1360h                       ; tilemap base
+	LD L, #00h                          ; loop 0 to 96 (exclusive), a full 12x8 screen
+ltm__loop:
+	LD B, [IY+L]                        ; read from map starting at IY
+	LD [IX+L], B                        ; copy into IX
 	INC L
 	CP L, #60h
-	JRS NZ, loc_0x0BE1
+	JRS NZ, ltm__loop
 	RET
 ; ----------------------
-load_middle_5_tilemap: ; middle 5 rows
-	LD IX, #1378h
-	LD L, #00h
-	AND [BR:80h], #0F7h ; disable frame copy
-loc_0x0BF4:
-	LD B, [IY+L]
-	LD [IX+L], B
+; Arguments:
+;   IY: tilemap source
+; Returns:
+;   IX: $1378 (top of names list)
+; Clobbers: L
+load_middle_5_tilemap:                  ; middle 5 rows
+	LD IX, #1378h                       ; start of row 2 (0-based)
+	LD L, #00h                          ; loop from 0 to 60 (exclusive), a 12x5 subsection
+	AND [BR:80h], #~08h                 ; disable LCD controller
+lm5tm__loop:
+	LD B, [IY+L]                        ; read from map starting at IY
+	LD [IX+L], B                        ; copy into IX
 	INC L
 	CP L, #3Ch
-	JRS NZ, loc_0x0BF4
+	JRS NZ, lm5tm__loop
 	RET
 ; ----------------------
-loc_0x0BFF:
-	LD [BR:27h], #80h
-	OR [BR:80h], #08h
-loc_0x0C05:
-	BIT [BR:27h], #80h
-	JRS Z, loc_0x0C05
-	AND [BR:80h], #0F7h
+; Copy one frame while the LCD controller is disabled
+; Will disable it again by the end of the function
+copy_one_frame:
+	LD [BR:27h], #80h                   ; clear Frame Copy Complete
+	OR [BR:80h], #08h                   ; enable frame copy
+cof__wait_for_vsync:
+	BIT [BR:27h], #80h                  ; wait for Frame Copy Complete to trigger
+	JRS Z, cof__wait_for_vsync
+	AND [BR:80h], #~08h                 ; disable LCD controller
 	RET
 ; ----------------------
-loc_0x0C0E:
-	DEC A
-	LD L, #0Ch
-	MLT
-	LD [152Ah], L
-	CP L, #30h
-	JRS C, loc_0x0C1E
-	LD L, #30h
-loc_0x0C1E:
-	LD [1529h], L
-	LD IY, #1590h
+; Arguments:
+;   A: number of game structs loaded
+; Clobbers: B, HL, IX, IY
+game_select_screen:
+	DEC A                               ; get starting index of final row
+	LD L, #12                           ; ...a row is 12 tiles wide (screen width)
+	MLT                                 ; ...
+	LD [FinalNameRowStart], L           ; ...
+	CP L, #48                           ; if L < 48,
+	JRS C, gss__min_final
+	LD L, #48                           ; 48 is the start of the 5th entry, basing 0 at the first entry
+gss__min_final:
+	LD [FinalNameRowStartMin48], L
+	LD IY, #GameSelectMap               ; load the base tilemap (not the five name lines)
 	CARL load_tilemap
-	LD IX, #1528h
-	LD IY, #152Bh
+	LD IX, #CurrentRowStart
+	LD IY, #MoveCooldown
 	XOR A, A
-	LD [152Ch], A
-	LD A, [BR:52h]
-	CPL A
-	LD H, A
-	XOR A, A
-	LD L, A
-	LD [IX], A
-	CARL loc_0x0CCC
-loc_0x0C3E:
-	LD [BR:27h], #40h
-loc_0x0C41:
+	LD [KeyHistory], A                  ; no keys pressed
+	LD A, [BR:52h]                      ; take cpl of keymap (so 1=pressed)
+	CPL A                               ; ...
+	LD H, A                             ; ...into H
+	XOR A, A                            ; draw names from first name
+	LD L, A                             ; with the first name selected
+	LD [IX], A                          ; CurrentRowStart = 0
+	CARL draw_game_names
+gss__main_loop:
+	LD [BR:27h], #40h                   ; clear frame divided overflow
+gss__ml__wait_for_framediv_overflow:
 	BIT [BR:27h], #40h
-	JRS Z, loc_0x0C41
-	CARL init_display
+	JRS Z, gss__ml__wait_for_framediv_overflow
+	CARL init_display_without_wait
 	CARL apply_default_contrast1
 	CARL read_keys_buffer
 	LD B, A
-	LD A, [152Ch]
-	OR A, B
-	LD [152Ch], A
-	EX A, B
-	OR A, A
-	JRS Z, loc_0x0C61
-	LD [IY], #0Dh
-	JRS loc_0x0C6C
-loc_0x0C61:
-	LD A, H
-	AND A, B
-	JRS Z, loc_0x0C6F
-	LD B, [IY]
-	DEC B
-	LD [IY], B
-	JRS NZ, loc_0x0C6F
-	LD [IY], #05h
-loc_0x0C6C:
-	CARL loc_0x0C71
-loc_0x0C6F:
-	JRS loc_0x0C3E
-loc_0x0C71:
-	BIT A, #05h
-	JRS Z, loc_0x0C8B
-	LD H, #00h
-	LD A, #0Ch
-	DIV
-	LD A, L
-	AND [BR:80h], #0F7h
-	LD IY, #1530h
-	CARL load_tilemap
-	CARL loc_0x0BFF
-	JRL loc_0x06DC
+	LD A, [KeyHistory]                  ; update key history with newly pressed keys
+	OR A, B                             ; ...
+	LD [KeyHistory], A                  ; ...
+	EX A, B                             ; (after EX) A=new keys, B=updated key history
+	OR A, A                             ; if any new keys were pressed
+	JRS Z, gss__ml__no_new_keys
+	LD [IY], #13                        ; start cooldown at 13 frames
+	JRS gss__ml__continue
+gss__ml__no_new_keys:
+	LD A, H                             ; if we're still pressing a key we've (ever) pressed before
+	AND A, B                            ; (including any pressed this frame),
+	JRS Z, gss__ml__wait_for_keyup
+	LD B, [IY]                          ; decrement cooldown
+	DEC B                               ; ...
+	LD [IY], B                          ; ...
+	JRS NZ, gss__ml__wait_for_keyup     ; and wait until we're not
+	LD [IY], #5                         ; reset cooldown to 5 frames
+gss__ml__continue:
+	CARL gss__check_keys
+gss__ml__wait_for_keyup:
+	JRS gss__main_loop
 ; ----------------------
-loc_0x0C8B:
-	BIT A, #82h
-	JRS Z, loc_0x0C92
-	JRL loc_0x07A9
-; ----------------------
-loc_0x0C92:
-	BIT A, #08h
-	JRS Z, loc_0x0CAA
-	LD A, L
-	OR A, A
-	JRS Z, loc_0x0CCB
-	SUB A, #0Ch
-	LD L, A
-	OR A, A
-	LD A, [IX]
-	JRS Z, loc_0x0CA8
-	LD B, L
-	CP A, B
-	JRS NZ, loc_0x0CA8
-	SUB A, #0Ch
+gss__check_keys:
+	BIT A, #05h                         ; check if A or C was pressed
+	JRS Z, gss__ck__back
+	LD H, #0                            ; divide selected row tile index
+	LD A, #12                           ; ...by the screen width
+	DIV                                 ; ...to get the game index
+	LD A, L                             ; ...and store it in A
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD IY, #BlankTilemap                ; load the blank tilemap
+	CARL load_tilemap                   ; ...
+	CARL copy_one_frame                 ; draw it to screen
+	JRL run_selected_game               ; boot the game
+gss__ck__back:
+	BIT A, #82h                         ; check if power or B button was pressed
+	JRS Z, gss__ck__up
+	JRL shutdown
+gss__ck__up:
+	BIT A, #08h                         ; check if up button was pressed
+	JRS Z, gss__ck__down
+	LD A, L                             ; if selected row tile index
+	OR A, A                             ; ...is not the first row,
+	JRS Z, gss__ck__return
+	SUB A, #12                          ; then move the cursor up 1 row (12 tiles)
+	LD L, A                             ; ...
+	OR A, A                             ; if it's the first now,
+	LD A, [IX]                          ; (A = CurrentRowStart)
+	JRS Z, gss__ck__redraw2             ; then redraw
+	LD B, L                             ; if the top visible row changed,
+	CP A, B                             ; ...
+	JRS NZ, gss__ck__redraw2            ; then redraw
+	SUB A, #12                          ; otherwise, move the top up one
+	LD [IX], A                          ; ...
+gss__ck__redraw2:
+	JRS gss__ck__redraw
+gss__ck__down:
+	BIT A, #10h                         ; check if down button was pressed
+	JRS Z, gss__ck__return
+	LD A, L                             ; if the selected row
+	LD B, [FinalNameRowStart]           ; ...is not the final row,
+	CP A, B                             ; ...
+	JRS Z, gss__ck__return
+	ADD A, #12                          ; then move the cursor down 1 row (12 tiles)
+	LD L, A                             ; ...
+	CP A, B                             ; if it's now the final row,
+	LD A, [IX]                          ; (A = CurrentRowStart)
+	JRS Z, gss__ck__redraw              ; then redraw
+	ADD A, [FinalNameRowStartMin48]     ; otherwise if it's at the bottom of the list,
+	LD B, L                             ; ...
+	CP A, B                             ; ...
+	LD A, [IX]                          ; (A = CurrentRowStart)
+	JRS NZ, gss__ck__redraw
+	ADD A, #12                          ; then move the top down 1 row
 	LD [IX], A
-loc_0x0CA8:
-	JRS loc_0x0CC8
-loc_0x0CAA:
-	BIT A, #10h
-	JRS Z, loc_0x0CCB
-	LD A, L
-	LD B, [152Ah]
-	CP A, B
-	JRS Z, loc_0x0CCB
-	ADD A, #0Ch
-	LD L, A
-	CP A, B
-	LD A, [IX]
-	JRS Z, loc_0x0CC8
-	ADD A, [1529h]
-	LD B, L
-	CP A, B
-	LD A, [IX]
-	JRS NZ, loc_0x0CC8
-	ADD A, #0Ch
-	LD [IX], A
-loc_0x0CC8:
-	CARL loc_0x0CCC
-loc_0x0CCB:
+gss__ck__redraw:
+	CARL draw_game_names
+gss__ck__return:
 	RET
 ; ----------------------
-loc_0x0CCC:
+; Arguments
+;   L: selected row in tiles from absolute top of names
+;   A: top of visible names as tile index
+draw_game_names:
 	PUSH HL
 	PUSH IX
 	PUSH IY
 	LD H, L
-	LD IY, #15F0h
+	LD IY, #GameNamesMap                ; game select tilemap, names section
 	LD B, #00h
-	ADD IY, BA
-	CARL load_middle_5_tilemap
-	LD IY, #1372h
-	OR A, A
-	JRS Z, loc_0x0CE4
-	LD [IY], #21h
-	JRS loc_0x0CE6
-loc_0x0CE4:
-	LD [IY], #1Fh
-loc_0x0CE6:
+	ADD IY, BA                          ; scroll to top of screen
+	CARL load_middle_5_tilemap          ; draw names
+	LD IY, #1372h                       ; tile 18 (6,1)
+	OR A, A                             ; if a is at the top,
+	JRS Z, dgn__list_is_at_top          ; don't show an up arrow
+	LD [IY], #21h                       ; draw "up arrow with line above" tile
+	JRS dgn__check_list_bottom
+dgn__list_is_at_top:
+	LD [IY], #1Fh                       ; draw "line above without arrow" tile
+dgn__check_list_bottom:
 	LD B, A
-	ADD A, [1529h]
-	LD IY, #13BAh
-	CP A, [152Ah]
-	JRS Z, loc_0x0CF6
-	LD [IY], #2Ch
-	JRS loc_0x0CF8
-loc_0x0CF6:
-	LD [IY], #2Ah
-loc_0x0CF8:
-	LD A, H
-	SUB A, B
-	ADD A, #01h
-	LD B, #00h
-	ADD IX, BA
-	LD [IX], #0Bh
-	OR [BR:80h], #08h
+	ADD A, [FinalNameRowStartMin48]     ; add visible rows (up to 12*4=48)
+	LD IY, #13BAh                       ; tile 90 (6,7)
+	CP A, [FinalNameRowStart]           ; if that is the last row,
+	JRS Z, dgn__list_is_at_bottom       ; don't show a down arrow
+	LD [IY], #2Ch                       ; draw "down arrow with line below" tile
+	JRS dgn__draw_cursor
+dgn__list_is_at_bottom:
+	LD [IY], #2Ah                       ; draw "line below without arrow" tile
+dgn__draw_cursor:
+	LD A, H                             ; calculate position of selection arrow
+	SUB A, B                            ; ...
+	ADD A, #01h                         ; ...
+	LD B, #00h                          ; ...
+	ADD IX, BA                          ; ...
+	LD [IX], #0Bh                       ; draw selection arrow tile
+	OR [BR:80h], #08h                   ; re-enable frame copy
 	POP IY
 	POP IX
 	POP HL
 	RET
 ; ----------------------
+; Arguments:
+;   IX: start of animation footer
+;   IY: start of animation data
+; Returns:
+;   Z: 0=animation ended, 1=key pressed
+;   A: 0=animation ended, otherwise keys that were pressed
+; Clobbers: B, HL
 play_animation:
 	PUSH IX
 	PUSH IY
-	LD IY, #1530h
+	LD IY, #BlankTilemap
 	CARL load_tilemap
 	POP IY
-	POP IX
-	LD A, [IX] ; read in the footer
-	INC IX
-	LD B, [IX]
-	SRL B
-	LD L, B ; store the number of bytes
-	LD B, #00h ; put hi bit of total frame count back into b
-	RL B
-	LD IX, #152Dh ; store total frame count here
-	LD [IX], BA
-	LD [BR:27h], #40h
-loc_0x0D25:
+	POP IX                              ; read in the footer
+	LD A, [IX]                          ; length in rendered frames (lo byte)
+	INC IX                              ; size in bytes of animation info
+	LD B, [IX]                          ; and 1 hi bit for length
+	SRL B                               ; put length's hi bit in C
+	LD L, B                             ; store the size in L
+	LD B, #00h                          ; put hi bit of total frame count back into b
+	RL B                                ; ...
+	LD IX, #TotalAnimFrames             ; store total frame count
+	LD [IX], BA                         ; ...as remaining frames to render
+	LD [BR:27h], #40h                   ; clear frame divider overflow
+pa__wait_for_framediv_overflow:
 	BIT [BR:27h], #40h
-	JRS Z, loc_0x0D25
-	LD [BR:27h], #40h
-	LD A, [BR:52h]
-	CPL A
-	LD H, A
-	PUSH L
-loc_0x0D34:
+	JRS Z, pa__wait_for_framediv_overflow
+	LD [BR:27h], #40h                   ; clear frame divider overflow
+	LD A, [BR:52h]                      ; take cpl of keymap (so 1=pressed)
+	CPL A                               ; ...
+	LD H, A                             ; ...into H
+	PUSH L                              ; backup size of animation data
+pa__read_loop:
+	DEC L                               ; reading bytes right-to-left
+	LD B, [IY+L]                        ; frame count + hi bit of addr
 	DEC L
-	LD B, [IY+L] ; frame count + hi bit
-	DEC L
-	LD A, [IY+L] ; map address offset (lo)
-	JRS NZ, loc_0x0D40
-	POP L
-	PUSH L
-loc_0x0D40:
+	LD A, [IY+L]                        ; map address offset (lo)
+	JRS NZ, pa__not_done_reading
+	POP L                               ; return to first frame if we finished reading
+	PUSH L                              ; ...
+pa__not_done_reading:
 	SRL B
-	LD [152Fh], B ; store frame count here
-	LD B, #00h ; map address offset hi bit back into b
-	RL B
+	LD [FramesRemaining], B             ; store frame count here
+	LD B, #00h                          ; map address offset hi bit back into b
+	RL B                                ; ...
 	PUSH HL
 	PUSH IX
 	PUSH IY
-	LD IY, #1650h
-	ADD IY, BA
+	LD IY, #InsertCartMaps              ; load selected frame
+	ADD IY, BA                          ; offset from the base address
 	CARL load_middle_5_tilemap
-	OR [BR:80h], #08h
+	OR [BR:80h], #08h                   ; enable LCD controller
 	POP IY
 	POP IX
 	POP HL
-loc_0x0D5B:
+pa__draw_again:
+pa__wait_for_framediv_overflow2:
 	BIT [BR:27h], #40h
-	JRS Z, loc_0x0D5B
-	LD [BR:27h], #40h
-	CARL init_display
+	JRS Z, pa__wait_for_framediv_overflow2
+	LD [BR:27h], #40h                   ; clear frame divider overflow
+	CARL init_display_without_wait
 	CARL apply_default_contrast1
-	CARL read_keys_buffer
-	BIT A, #87h
-	JRS NZ, loc_0x0D84
-loc_0x0D70:
-	LD BA, [IX]
-	DEC BA
-	LD [IX], BA
-	JRS Z, loc_0x0D84
-	LD A, [152Fh]
-	DEC A
-	LD [152Fh], A
-	JRS NZ, loc_0x0D5B
-	JRS loc_0x0D34
-loc_0x0D84:
-	POP B
+	CARL read_keys_buffer               ; read keys excluding anything pressed down since before animation started
+	BIT A, #87h                         ; if power, A, B, or C is being pressed,
+	JRS NZ, pa__return                  ; break
+pa__continue_playing:
+	LD BA, [IX]                         ; decrement total rendered frames remaining
+	DEC BA                              ; ...
+	LD [IX], BA                         ; ...
+	JRS Z, pa__return                   ; break if none left
+	LD A, [FramesRemaining]             ; decrement rendered frames remaining for this image
+	DEC A                               ; ...
+	LD [FramesRemaining], A             ; ...
+	JRS NZ, pa__draw_again              ; if there's more to render, keep drawing
+	JRS pa__read_loop
+pa__return:
+	POP B                               ; first frame's source addr offset
 	RET
 ; ----------------------
+; Play low battery animation and check key presses.
+; A/C -> skip shutdown, play software anyway
+; B/Power -> shutdown early
+; Assumes XP/YP = $00
+; Clobbers: BA, HL, IX, IY
 low_battery_screen:
 	LD IX, #low_battery_animation_footer
 	LD IY, #low_battery_animation
 	CARL play_animation
-	JRS Z, loc_0x0D99
-	BIT A, #82h
-	JRS Z, loc_0x0D99
-	JRL loc_0x07A9
-; ----------------------
-loc_0x0D99:
-	AND [BR:80h], #0F7h
-	LD IY, #1530h
-	CARL load_tilemap
-	CARL loc_0x0BFF
+	JRS Z, lbs__skip_shutdown           ; if animation finished, don't shutdown
+	BIT A, #82h                         ; if A or C was pressed,
+	JRS Z, lbs__skip_shutdown           ; don't shutdown
+	JRL shutdown
+lbs__skip_shutdown:
+	AND [BR:80h], #~08h                 ; disable LCD controller
+	LD IY, #BlankTilemap                ; load blank screen for one frame
+	CARL load_tilemap                   ; ...
+	CARL copy_one_frame                 ; ...force draws it despite the shutoff
 	RET
 ; ----------------------
-reset3:
-	LD SC, #0C0h
-	OR [BR:71h], #04h
+; Play low battery animation and check key presses.
+; A/C -> check for cartridge again
+; B/Power -> shutdown early
+; Assumes XP/YP = $00
+; Clobbers: any
+insert_cart_screen:
+	LD SC, #0C0h                        ; interrupt flags to NMI-only
+	OR [BR:71h], #04h                   ; cart power off
 	LD IX, insert_cart_animation_footer
 	LD IY, insert_cart_animation
 	CARL play_animation
-loc_0x0DB4:
-	JRS Z, loc_0x0DC4
-	BIT A, #82h
-	JRS NZ, loc_0x0DC4
-	BIT [BR:53h], #02h
-	JRL Z, reset2
-	CARS loc_0x0DC7
-	JRS loc_0x0DB4
-; ----------------------
-loc_0x0DC4:
-	JRL loc_0x07A9
-; ----------------------
-loc_0x0DC7:
+ics__check_loop:
+	JRS Z, ics__shutdown                ; if animation finished, shutdown
+	BIT A, #82h                         ; if power or B key was pressed,
+	JRS NZ, ics__shutdown               ; shutdown
+	BIT [BR:53h], #02h                  ; if card was inserted,
+	JRL Z, _reset2                      ; reset to boot it
+	CARS ics__continue_playing
+	JRS ics__check_loop
+ics__shutdown:
+	JRL shutdown
+ics__continue_playing:
 	PUSH B
-	JRL loc_0x0D70
+	JRL pa__continue_playing
 ; ----------------------
-decode_picture: ; decode encoded picture from 0x0E40 to RAM 0x1530
-	LD IY, #imgdata ; source
-	LD IX, #1530h ; destination
-loop_decode:
-	LD A, [IY] ; read encoded byte
-	INC IY ; increment offset
-	CP A, #0F9h ; compare value to 0xF9
-	JRS NZ, notF9 ; if it isn't, jump to notF9
-	LD B, [IY] ; value after F9 is number of 0s to fill - 1
-	INC IY ; inc offset
-	INC B ; add 1 to find actual number of 0s
-	XOR A, A ; set A to 0
-zero_fill_loop:
-	LD [IX], A ; store 0 in destination offset
-	INC IX ; inc dest offset
-	DJR NZ, zero_fill_loop ; dec B and loop if not 0
-	JRS loop_next
-notF9:
-	CP A, #0FBh ; compare value to 0xFB
-	JRS NZ, normalbyte ; if it's not, continue as normal byte to write
-	LD A, [IY] ; otherwise, store next source byte in A
-	INC IY ; inc offset
-	LD B, [IY] ; next source byte into B
-	INC IY ; increment source offset
-	INC B ; and B
-fill_loop:
-	LD [IX], A ; store A in destination offset
-	INC IX ; increment destination
-	DJR NZ, fill_loop ; dec B and loop if not 0
-	JRS loop_next ; end of fill section
-normalbyte:
-	LD [IX], A ; store A in destination offset
-	INC IX ; increment destination offset
-loop_next:
-	CP IY, #1000h ; if not all 0x1C0 bytes have been decoded yet, 
-	JRS NZ, loop_decode ; go back to the decode loop
-	LD IX, #1920h ; start of 11th to last tile, the one right after the PM gfx
-	LD IY, #1978h ; $1978 is the first byte after the decoded data
-loc_0x0DFE: ; v-flip and append last 11 tiles
-	LD A, [IX]
-	LD L, #08h
-loc_0x0E01:
-	RL A
-	RR B
+; Decode encoded maps and graphics from imgdata to RAM
+; Clobbers: BA, L, IX, IY
+decode_picture:
+	LD IY, #imgdata                     ; source
+	LD IX, #BlankTilemap                ; destination
+dp__loop:
+	LD A, [IY]                          ; read encoded byte
+	INC IY                              ; increment offset
+	CP A, #0F9h                         ; compare value to 0xF9
+	JRS NZ, dp__checkFB                 ; if it isn't, jump
+	LD B, [IY]                          ; value after F9 is number of 0s to fill - 1
+	INC IY                              ; inc offset
+	INC B                               ; add 1 to find actual number of 0s
+	XOR A, A                            ; set A to 0
+dp__zero_fill_loop:
+	LD [IX], A                          ; store 0 in destination offset
+	INC IX                              ; inc dest offset
+	DJR NZ, dp__zero_fill_loop          ; dec B and loop if not 0
+	JRS dp__continue
+dp__checkFB:
+	CP A, #0FBh                         ; compare value to 0xFB
+	JRS NZ, dp__raw_byte                ; if it's not, continue as normal byte to write
+	LD A, [IY]                          ; otherwise, store next source byte in A
+	INC IY                              ; inc offset
+	LD B, [IY]                          ; next source byte into B
+	INC IY                              ; increment source offset
+	INC B                               ; and B
+dp__fill_loop:
+	LD [IX], A                          ; store A in destination offset
+	INC IX                              ; increment destination
+	DJR NZ, dp__fill_loop               ; dec B and loop if not 0
+	JRS dp__continue                    ; end of fill section
+dp__raw_byte:
+	LD [IX], A                          ; store A in destination offset
+	INC IX                              ; increment destination offset
+dp__continue:
+	CP IY, #1000h                       ; if not all 0x1C0 bytes have been decoded yet,
+	JRS NZ, dp__loop                    ; go back to the decode loop
+	LD IX, #VFlipStart                  ; tile gfx for top left corner of game select border
+	LD IY, #VFlippedTiles               ; the first byte after the decoded data
+	; v-flip and append last 11 tiles
+dp__vflip_loop:
+	LD A, [IX]                          ; load one byte of tile data
+	LD L, #8                            ; 8 bits
+dp__vflip_byte:
+	RL A                                ; pop top bit of tile data
+	RR B                                ; pushed onto top bit of B
 	DEC L
-	JRS NZ, loc_0x0E01
-	LD [IY], B
-	INC IX
-	INC IY
-	CP IX, #1978h
-	JRS NZ, loc_0x0DFE
+	JRS NZ, dp__vflip_byte
+	LD [IY], B                          ; store flipped data
+	INC IX                              ; next source addr
+	INC IY                              ; next destination addr
+	CP IX, #VFlippedTiles               ; since they're sequential, if IX makes it here we're done flipping
+	JRS NZ, dp__vflip_loop
 	RET
 ; ----------------------
 	DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
@@ -2267,10 +2486,10 @@ imgdata:
 	DB 0F9h, 60h
 
 	; Including one zero byte from above, the GAME SELECT screen's rows 0,1,7
-	DB      01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h, 09h, 0Ah, 00h
-	DB 1Eh, 0FBh, 1Fh, 09h,                                   20h
-	DB 0F9h, 3Bh
-	DB 29h, 0FBh, 2Ah, 09h,                                   2Bh
+	DB        01h, 02h, 03h, 04h, 05h, 06h, 07h, 08h, 09h, 0Ah, 00h
+	DB  1Eh, 0FBh, 1Fh, 09h,                                    20h
+	DB 0F9h,  3Bh
+	DB  29h, 0FBh, 2Ah, 09h,                                    2Bh
 
 	; The GAME SELECT screen's middle 5 rows (two pages?)
 	DB 0Ch, 00h, 34h, 35h, 36h, 37h, 38h, 39h, 3Ah, 3Bh, 3Ch, 0Dh
@@ -2306,19 +2525,48 @@ imgdata:
 	DB 0F9h, 07h, 30h, 32h, 32h, 33h
 	DB 0F9h, 65h                     ; Frame 5, 7, 9 (+ some 0s from below)
 
-	; Unknown
-	DB 7Ch, 0FEh, 82h, 92h, 0F6h, 74h, 00h, 0F0h, 0FCh, 26h, 26h, 0FCh, 0F0h, 00h, 0FEh, 0FEh
-	DB 08h, 10h, 08h, 0FEh, 0FEh, 00h, 0FEh, 0FEh, 92h, 92h, 92h, 0F9h, 03h, 0CCh, 0DEh, 92h
-	DB 0F6h, 66h, 00h, 0FEh, 0FEh, 92h, 92h, 92h, 00h, 0FEh, 0FEh, 80h, 80h, 80h, 00h, 0FEh
-	DB 0FEh, 92h, 92h, 92h, 00h, 7Ch, 0FEh, 82h, 82h, 0C6h, 44h, 00h, 02h, 02h, 0FEh, 0FEh
-	DB 02h, 02h, 0F9h, 07h, 0FEh, 7Ch, 38h, 10h, 0F9h, 05h, 0FFh, 0F9h, 05h, 0FFh, 0F9h, 04h
-	DB 0F0h, 0FBh, 08h, 0Bh, 0F0h, 00h, 00h, 80h, 0FBh, 40h, 0Bh, 80h, 0F9h, 06h, 0F8h, 04h
-	DB 82h, 0E1h, 0E1h, 31h, 31h, 0FBh, 39h, 05h, 31h, 31h, 0E1h, 0E1h, 82h, 06h, 0FAh, 04h
-	DB 0F8h, 0F9h, 08h, 0FCh, 03h, 00h, 7h, 0DFh, 0DFh, 30h, 30h, 0FBh, 70h, 05h, 30h, 30h
-	DB 1Fh, 9Fh, 87h, 00h, 03h, 0FDh, 0F9h, 09h, 07h, 08h, 13h, 13h, 2Fh, 2Fh, 23h, 23h
-	DB 0FBh, 20h, 05h, 46h, 46h, 40h, 81h, 81h, 80h, 40h, 3Fh, 0F9h, 08h, 0FEh, 0FBh, 02h
-	DB 0Dh, 0FEh, 0F9h, 03h, 02h, 22h, 32h, 3Ah, 3Ah, 32h, 22h, 02h, 0E0h, 20h, 0BCh, 84h
-	DB 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0F4h, 0F4h, 04h, 0F4h
-	DB 0F4h, 0F4h, 04h, 0FCh, 0E0h, 20h, 3Ch, 0FBh, 04h, 07h, 0F4h, 0F4h, 0F4h, 04h, 0F4h, 0FBh
-	DB 04h, 0Ah, 0F4h, 0F4h, 0F4h, 04h, 0FCh
+	; Tile graphics
+	;DB                                               ; tile  0: blank
+	DB                                     07Ch, 0FEh ; tile  1: start of G
+	DB 082h, 092h, 0F6h, 074h, 000h, 0F0h, 0FCh, 026h ; tile  2: GA
+	DB 026h, 0FCh, 0F0h, 000h, 0FEh, 0FEh, 008h, 010h ; tile  3: AM
+	DB 008h, 0FEh, 0FEh, 000h, 0FEh, 0FEh, 092h, 092h ; tile  4: ME
+	DB 092h, 0F9h, 003h,             0CCh, 0DEh, 092h ; tile  5: ES
+	DB 0F6h, 066h, 000h, 0FEh, 0FEh, 092h, 092h, 092h ; tile  6: SE
+	DB 000h, 0FEh, 0FEh, 080h, 080h, 080h, 000h, 0FEh ; tile  7: LE
+	DB 0FEh, 092h, 092h, 092h, 000h, 07Ch, 0FEh, 082h ; tile  8: EC
+	DB 082h, 0C6h, 044h, 000h, 002h, 002h, 0FEh, 0FEh ; tile  9: CT
+	DB 002h, 002h, 0F9h, 007h                         ; tile 10: T
+	DB             0FEh, 07Ch, 038h, 010h, 0F9h, 005h ; tile 11: select arrow
+	DB                         0FFh, 0F9h, 005h       ; tile 12: left side of border
+	DB                   0FFh, 0F9h, 004h             ; tile 13: right side of border
+	DB       0F0h, 0FBh, 008h, 00Bh                   ; tile 14: extended cartridge left
+	DB                                     0F0h, 000h ; tile 15: extended cartridge right
+	DB 000h, 080h, 0FBh, 040h, 00Bh                   ; tile 16: inserted cartridge left
+	DB                                     080h, 0F9h ; tile 17: inserted cartridge right
+	DB 006h,                               0F8h, 004h ; tile 18: PM (0,0)
+	DB 082h, 0E1h, 0E1h, 031h, 031h, 0FBh, 039h, 005h ; tile 19: PM (1,0)
+	DB                   031h, 031h, 0E1h, 0E1h, 082h ; tile 20: PM (2,0)
+	DB 006h, 0FAh, 004h, 0F8h, 0F9h, 008h             ; tile 21: PM (3,0)
+	DB                               0FCh, 003h, 000h ; tile 22: PM (0,1)
+	DB 007h, 0DFh, 0DFh, 030h, 030h, 0FBh, 070h, 005h ; tile 23: PM (1,1)
+	DB                   030h, 030h, 01Fh, 09Fh, 087h ; tile 24: PM (2,1)
+	DB 000h, 003h, 0FDh, 0F9h, 009h                   ; tile 25: PM (3,1)
+	DB                               007h, 008h, 013h ; tile 26: PM (0,2)
+	DB 013h, 02Fh, 02Fh, 023h, 023h, 0FBh, 020h, 005h ; tile 27: PM (1,2)
+	DB                   046h, 046h, 040h, 081h, 081h ; tile 28: PM (2,2)
+	DB 080h, 040h, 03Fh, 0F9h, 008h                   ; tile 29: PM (3,2)
+	DB                         0FEh, 0FBh, 002h, 00Dh ; tile 30: top left corner of border
+	;DB                                               ; tile 31: top side of border
+	DB                   0FEh, 0F9h, 003h             ; tile 32: top right corner of border
+	DB 002h, 022h, 032h, 03Ah, 03Ah, 032h, 022h, 002h ; tile 33: more games upward arrow
+	DB 0E0h, 020h, 0BCh, 084h, 0F4h, 0F4h, 004h, 0F4h ; tile 34: full battery top left
+	DB 0F4h, 0F4h, 004h, 0F4h, 0F4h, 0F4h, 004h, 0F4h ; tile 35: full battery top middle
+	DB 0F4h, 0F4h, 004h, 0F4h, 0F4h, 0F4h, 004h, 0FCh ; tile 36: full battery top right
+	DB 0E0h, 020h, 03Ch, 0FBh, 004h, 007h             ; tile 37: empty battery top left
+	DB                   0F4h, 0F4h, 0F4h, 004h, 0F4h ; tile 38: drained battery top middle
+	DB 0FBh, 004h, 00Ah                               ; tile 39: empty battery top middle
+	DB                   0F4h, 0F4h, 0F4h, 004h, 0FCh ; tile 40: drained battery top right
+	; tiles 41-51 (inclusive) are v-flipped versions
+	; of 30-40 which are generated at runtime
 {%- endasm %}

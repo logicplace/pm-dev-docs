@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
 		def get_data(start: int, length: int=0):
 			start -= 0x1530
-			for x in range(start, start+length):
+			for x in range(start, start+length if length else len(data)):
 				used_data[x] = True
 			return data[start:start+length if length else None]
 
@@ -139,8 +139,6 @@ if __name__ == "__main__":
 				loop=ceil(total_frames / frame_count))
 
 		print(f"Exported rendered tilemaps to {out_folder}")
-
-		# TODO: $1830+
 
 		with (out_folder / "used.bin").open("wb") as out:
 			out.write(b"".join(int(x).to_bytes() for x in used_data))
