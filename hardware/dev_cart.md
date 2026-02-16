@@ -34,7 +34,7 @@ Although the exact part number hasn't been confirmed, the product ID is 0xBFD9 w
 
 Considering the [sample cart](#sample-cart), we can presume it uses the SST39VF016 chip if not the SST39VN016 chip.
 
-It's a 2 MiB chip matching the addressable limit of the PM. The mapper separates this space into 8 configurable banks of 256 KiB filling offering 4 data pages (or 8 code banks) per external bank/page (what the mapper considers a page).
+It's a 2 MiB chip matching the addressable limit of the PM. The mapper separates this space into 8 configurable banks of 256 KiB offering 4 data pages (or 8 code banks) per external bank/page (what the mapper considers a page).
 
 ### Commands
 
@@ -180,31 +180,31 @@ The raw command sequence is:
 
 After enabling this mode, read from certain addresses to get information about the chip:
 
-| Address | Data*    | Description |
-| ------- | -------- | ----------- |
-| $10~$12 | 0x515259 | Query Unique ASCII string `QRY` |
-| $13~$14 | 0x0107   | Primary OEM command set |
-| $15~$16 | 0x0000   | Address for Primary Extended Table |
-| $17~$18 | 0x0000   | Alternate OEM command set (0 = none exists) |
-| $19~$1A | 0x0000   | Address for Alternate OEM extended Table (0 = none exits) |
-| $1B     | 0x27     | VDD Min (Program/Erase) DQ7-DQ4: Volts, DQ3-DQ0: 100 millivolts |
-| $1C     | 0x36     | VDD Max (Program/Erase) DQ7-DQ4: Volts, DQ3-DQ0: 100 millivolts |
-| $1D     | 0x00     | VPP min. (00H = no VPP pin) |
-| $1E     | 0x00     | VPP max. (00H = no VPP pin) |
-| $1F     | 0x04     | Typical time out for [Byte-Program](#program-byte) 2ᴺ µs (2⁴ = 16 µs) |
-| $20     | 0x00     | Typical time out for min. size buffer program 2ᴺ µs (0 = not supported) |
-| $21     | 0x04     | Typical time out for individual [Sector](#erase-sector)/[Block-Erase](#erase-block) 2ᴺ ms (2⁴ = 16 ms) |
-| $22     | 0x06     | Typical time out for [Chip-Erase](#erase-chip) 2ᴺ ms (2⁶ = 64 ms) |
-| $23     | 0x01     | Maximum time out for [Byte-Program](#program-byte) 2ᴺ times typical (2¹ x 2⁴ = 32 µs) |
-| $24     | 0x00     | Maximum time out for buffer program 2ᴺ times typical (0 = not supported) |
+| Address | Data\*   | Description                                                                                                            |
+| ------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| $10~$12 | 0x515259 | Query Unique ASCII string `QRY`                                                                                        |
+| $13~$14 | 0x0107   | Primary OEM command set                                                                                                |
+| $15~$16 | 0x0000   | Address for Primary Extended Table                                                                                     |
+| $17~$18 | 0x0000   | Alternate OEM command set (0 = none exists)                                                                            |
+| $19~$1A | 0x0000   | Address for Alternate OEM extended Table (0 = none exits)                                                              |
+| $1B     | 0x27     | VDD Min (Program/Erase) DQ7-DQ4: Volts, DQ3-DQ0: 100 millivolts                                                        |
+| $1C     | 0x36     | VDD Max (Program/Erase) DQ7-DQ4: Volts, DQ3-DQ0: 100 millivolts                                                        |
+| $1D     | 0x00     | VPP min. (00H = no VPP pin)                                                                                            |
+| $1E     | 0x00     | VPP max. (00H = no VPP pin)                                                                                            |
+| $1F     | 0x04     | Typical time out for [Byte-Program](#program-byte) 2ᴺ µs (2⁴ = 16 µs)                                                  |
+| $20     | 0x00     | Typical time out for min. size buffer program 2ᴺ µs (0 = not supported)                                                |
+| $21     | 0x04     | Typical time out for individual [Sector](#erase-sector)/[Block-Erase](#erase-block) 2ᴺ ms (2⁴ = 16 ms)                 |
+| $22     | 0x06     | Typical time out for [Chip-Erase](#erase-chip) 2ᴺ ms (2⁶ = 64 ms)                                                      |
+| $23     | 0x01     | Maximum time out for [Byte-Program](#program-byte) 2ᴺ times typical (2¹ x 2⁴ = 32 µs)                                  |
+| $24     | 0x00     | Maximum time out for buffer program 2ᴺ times typical (0 = not supported)                                               |
 | $25     | 0x01     | Maximum time out for individual [Sector](#erase-sector)/[Block-Erase](#erase-block) 2ᴺ times typical (2¹ x 2⁴ = 32 ms) |
-| $26     | 0x01     | Maximum time out for [Chip-Erase](#erase-chip) 2ᴺ times typical (2¹ x 2⁶ = 128 ms) |
-| $27     | 0x15     | Device size = 2ᴺ Bytes (15H = 21; 2²¹ = 2 MiB) |
-| $28~$29 | 0x0000   | Flash Device Interface description; 0000H = x8-only asynchronous interface |
-| $2A~$2B | 0x0000   | Maximum number of byte in multi-byte write = 2ᴺ (00H = not supported) |
-| $2C     | 0x02     | Number of Erase Sector/Block sizes supported by device |
-| $2D~$30 |0xFF011000| Sector Information: 512 (0x0200) sectors; 16 (0x0010) * 256 B = 4 KiB/sector |
-| $31~$34 |0x1F000001| Block Information: 32 (0x0020) blocks; 256 (0x0100) * 256 B = 64 KiB/block |
+| $26     | 0x01     | Maximum time out for [Chip-Erase](#erase-chip) 2ᴺ times typical (2¹ x 2⁶ = 128 ms)                                     |
+| $27     | 0x15     | Device size = 2ᴺ Bytes (15H = 21; 2²¹ = 2 MiB)                                                                         |
+| $28~$29 | 0x0000   | Flash Device Interface description; 0000H = x8-only asynchronous interface                                             |
+| $2A~$2B | 0x0000   | Maximum number of byte in multi-byte write = 2ᴺ (00H = not supported)                                                  |
+| $2C     | 0x02     | Number of Erase Sector/Block sizes supported by device                                                                 |
+| $2D~$30 |0xFF011000| Sector Information: 512 (0x0200) sectors; 16 (0x0010) * 256 B = 4 KiB/sector                                           |
+| $31~$34 |0x1F000001| Block Information: 32 (0x0020) blocks; 256 (0x0100) * 256 B = 64 KiB/block                                             |
 \* Note that since the chip is not confirmed, all data is unconfirmed as well. The provided data is what's expected from a SST39LF/VF016 chip.
 
 The BIOS does NOT implement or use this command.
@@ -315,27 +315,27 @@ This section covers all the memory locations the BIOS accesses in order to perfo
 
 Entries with no physical address below are either RAM locations or mapper registers.
 
-| Physical address space | Logical address | Description |
-| ---------------------- | --------------- | -----------
-|                        | $0014E0         | [Remaining plays][] |
-|                        | $0014E2~$00152C | [Game Select variables][] |
-|                        | $0014E4         | [Game structs (RAM)][] |
-|                        | $0019D0~$001C10 | [Game name tiles][] |
-|                        | $2001           | [$2001][]
+| Physical address space | Logical address | Description                |
+| ---------------------- | --------------- | -------------------------- |
+|                        | $0014E0         | [Remaining plays][]        |
+|                        | $0014E2~$00152C | [Game Select variables][]  |
+|                        | $0014E4         | [Game structs (RAM)][]     |
+|                        | $0019D0~$001C10 | [Game name tiles][]        |
+|                        | $2001           | [$2001][]                  |
 | $0000~$0001\*          | $002100~$002101 | [Product identification][] |
-|                        | $002AAA         | [JEDEC SDP address][] |
-|                        | $005555         | [JEDEC SDP address][] |
-|                        | $03FFFF         | [Bank select register][] |
-| $1000~$12FF            | $041000~$0412FF | [Game structs][] |
-| $1300                  | $041300         | [Startup action][] |
-| $1400+                 | $041400+        | [Startup routine][] |
-|                        | $07FFFF         | [Bank select register][] |
-|                        | $0BFFFF         | [Bank select register][] |
-|                        | $0FFFFF         | [Bank select register][] |
-|                        | $13FFFF         | [Bank select register][] |
-|                        | $17FFFF         | [Bank select register][] |
-|                        | $1BFFFF         | [Bank select register][] |
-|                        | $1FFFFF         | [Bank select register][] |
+|                        | $002AAA         | [JEDEC SDP address][]      |
+|                        | $005555         | [JEDEC SDP address][]      |
+|                        | $03FFFF         | [Bank select register][]   |
+| $1000~$12FF            | $041000~$0412FF | [Game structs][]           |
+| $1300                  | $041300         | [Startup action][]         |
+| $1400+                 | $041400+        | [Startup routine][]        |
+|                        | $07FFFF         | [Bank select register][]   |
+|                        | $0BFFFF         | [Bank select register][]   |
+|                        | $0FFFFF         | [Bank select register][]   |
+|                        | $13FFFF         | [Bank select register][]   |
+|                        | $17FFFF         | [Bank select register][]   |
+|                        | $1BFFFF         | [Bank select register][]   |
+|                        | $1FFFFF         | [Bank select register][]   |
 \* In [Product Identification Mode](#software-id-entry)
 
 [Remaining plays]: #remaining-plays
