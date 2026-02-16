@@ -57,7 +57,7 @@ class AccentedData:
 			else self.data
 		)
 		return (
-			f'{html.escape(self.prefix)}'
+			f'{html.escape(self.prefix.replace("\t", "    "))}'
 			f'{pfx}{html.escape(data)}{sfx}'
 			f'{html.escape(self.suffix)}'
 		)

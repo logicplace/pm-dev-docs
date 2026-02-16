@@ -807,7 +807,7 @@ loc_0x04F2:
 	POP EP
 	RETE
 ; ----------------------
-; Make writes to $xxFFFF are interpreted as
+; Makes writes to $xxFFFF be interpreted as
 ; bank selects at the mapper level.
 _flash_enter_bank_select_mode:
 	POP SC
@@ -937,7 +937,7 @@ fsg__bsl__already_le8:
 	POP IP
 	RETE
 ; ----------------------
-; Common portion of a JEDEC SDP command sequence
+; Common portion of a JEDEC SDP command sequence.
 ; Returns:
 ;   EP: $00
 ; Clobbers: HL

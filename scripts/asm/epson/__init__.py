@@ -9,16 +9,16 @@ from .ops import OPS
 # Combine any lines which end in \ first.
 EPSON_S1C88_LINE = re.compile(
 	r'''
-	^\s*([a-z_][a-z0-9_]*\s*:)?
+	^([ \t]*[a-z_][a-z0-9_]*[ \t]*:)?
 	(?:
-		(\s*)      # indentation (or space after label)
-		([^;\s]+)  # operator, directive, macro name
+		([ \t]*)      # indentation (or space after label)
+		([^; \t]+)  # operator, directive, macro name
 		(?:
-			(\s+)    # space required before the first arg
+			([ \t]+)    # space required before the first arg
 			([^;]+)  # args
 		)?
 	)?
-	(\s*)(;.*)?
+	([ \t]*)(;.*)?
 	''',
 	re.VERBOSE | re.IGNORECASE
 )
@@ -171,11 +171,19 @@ def process_epson(code, *, position=0, digits=6) -> Renderer:
 			if mo_line:
 				label, sp, op, sp2, args, sp3, comment = mo_line.groups()
 				if label:
+					if label[0] in " \t":
+						len_with_indent = len(label)
+						nlabel = label.lstrip()
+						pfx = label[:len_with_indent - len(nlabel)]
+						label = nlabel
+					else:
+						pfx = ""
 					spp = SPACE.search(label)
 					split_at = spp.start if spp else -1
 					name = label[:split_at]
 					result["label"] = AccentedData(
 						name,
+						prefix=pfx,
 						suffix=label[split_at:] + (not args and not comment and sp3 or ""),
 						classname="symbol"
 					)
