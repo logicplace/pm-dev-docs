@@ -1,111 +1,111 @@
 {% asm "epson", 4 -%}
 DEFSECT ".ram", DATA AT 14E0H
 SECT ".ram"
-	RemainingPlays:         DS 1   ; 14E0h
-	KeyPad:                 DS 1   ; 14E1h
-	NumGameStructs:         DS 1   ; 14E2h
-	LoopN:                  DS 1   ; 14E3h
-	GameStructs:            DS 64  ; 14E4h array of 8-byte structures
-	NextGameStruct:         DS 2   ; 1524h
-	NextTilePos:            DS 2   ; 1526h
-	CurrentRowStart:        DS 1   ; 1528h
-	FinalNameRowStartMin48: DS 1   ; 1529h
-	FinalNameRowStart:      DS 1   ; 152Ah
-	MoveCooldown:           DS 1   ; 152Bh
-	KeyHistory:             DS 1   ; 152Ch
-	TotalAnimFrames:        DS 2   ; 152Dh
-	FramesRemaining:        DS 1   ; 152Fh "rendered frames" remaining for a frame
-	BlankTilemap:           DS 96  ; 1530h
-	GameSelectMap:          DS 96  ; 1590h
-	GameNamesMap:           DS 96  ; 15F0h
-	InsertCartMaps:         DS 180 ; 1650h
-	LowBatteryMaps:         DS 300 ; 1704h
-	TilesetBase:            DS 328 ; 1830h
-	VFlipStart              EQU      1920h
-	VFlippedTiles:          DS 88  ; 1978h
-	GameNameTiles:          DS 576 ; 19D0h
+	RemainingPlays:         DS 1
+	KeyPad:                 DS 1
+	NumGameStructs:         DS 1
+	LoopN:                  DS 1
+	GameStructs:            DS 64  ; array of 8-byte structures
+	NextGameStruct:         DS 2
+	NextTilePos:            DS 2
+	CurrentRowStart:        DS 1
+	FinalNameRowStartMin48: DS 1
+	FinalNameRowStart:      DS 1
+	MoveCooldown:           DS 1
+	KeyHistory:             DS 1
+	TotalAnimFrames:        DS 2
+	FramesRemaining:        DS 1   ; "rendered frames" remaining for a frame
+	BlankTilemap:           DS 96
+	GameSelectMap:          DS 96
+	GameNamesMap:           DS 96
+	InsertCartMaps:         DS 180
+	LowBatteryMaps:         DS 300
+	TilesetBase:            DS 328
+	VFlipStart  EQU  1920h
+	VFlippedTiles:          DS 88
+	GameNameTiles:          DS 576
 
 DEFSECT ".bios", CODE AT 0000H
 SECT ".bios"
 
 	; Vector table
-	DW _reset_vector                 ; 00h
-	DW _reset2                       ; 02h
-	DW _reset2                       ; 04h
-	DW _prc_frame_copy_irq           ; 06h
-	DW _prc_render_irq               ; 08h
-	DW _timer_2h_underflow_irq       ; 0Ah
-	DW _timer_2l_underflow_irq       ; 0Ch
-	DW _timer_1h_underflow_irq       ; 0Eh
-	DW _timer_1l_underflow_irq       ; 10h
-	DW _timer_3h_underflow_irq       ; 12h
-	DW _timer_3_cmp_irq              ; 14h
-	DW _timer_32hz_irq               ; 16h
-	DW _timer_8hz_irq                ; 18h
-	DW _timer_2hz_irq                ; 1Ah
-	DW _timer_1hz_irq                ; 1Ch
-	DW _ir_rx_irq                    ; 1Eh
-	DW _shake_irq                    ; 20h
-	DW _reset2                       ; 22h
-	DW _reset2                       ; 24h
-	DW _cart_eject_irq               ; 26h
-	DW _cartridge_irq                ; 28h
-	DW _key_power_irq                ; 2Ah
-	DW _key_right_irq                ; 2Ch
-	DW _key_left_irq                 ; 2Eh
-	DW _key_down_irq                 ; 30h
-	DW _key_up_irq                   ; 32h
-	DW _key_c_irq                    ; 34h
-	DW _key_b_irq                    ; 36h
-	DW _key_a_irq                    ; 38h
-	DW _unknown_irq0                 ; 3Ah
-	DW _unknown_irq1                 ; 3Ch
-	DW _unknown_irq2                 ; 3Eh
-	DW 0FFF1h                        ; 40h
-	DW _suspend_system               ; 42h
-	DW _sleep                        ; 44h
-	DW _sleep_with_display           ; 46h
-	DW _shutdown                     ; 48h
-	DW _sleep2                       ; 4Ah
-	DW _default_contrast             ; 4Ch
-	DW _change_contrast              ; 4Eh
-	DW _apply_default_contrast       ; 50h
-	DW _get_default_contrast         ; 52h
-	DW _set_temp_contrast            ; 54h
-	DW _lcd_on                       ; 56h
-	DW _init_lcd                     ; 58h
-	DW _lcd_off                      ; 5Ah
-	DW _ena_ram_vec                  ; 5Ch
-	DW _dis_ram_vec                  ; 5Eh
-	DW _disable_cart_eject_irq_if    ; 60h
-	DW _enable_cart_eject_irq_if     ; 62h
-	DW _unknown_eject1               ; 64h
-	DW _unknown_eject2               ; 66h
-	DW _dev_card0                    ; 68h
-	DW _dev_card1                    ; 6Ah
-	DW _enable_cart_eject_irq        ; 6Ch
-	DW _disable_cart_eject_irq       ; 6Eh
-	DW _unknown_eject4               ; 70h
-	DW _enter_high_speed_operation   ; 72h
-	DW _enter_low_speed_operation    ; 74h
-	DW _cart_slot_off                ; 76h
-	DW _cart_slot_on                 ; 78h
-	DW _cart_detect                  ; 7Ah
-	DW _read_structure               ; 7Ch
-	DW _set_prc_rate                 ; 7Eh
-	DW _get_prc_rate                 ; 80h
-	DW _game_id_valid                ; 82h
-	DW _flash_read_ids               ; 84h
-	DW _flash_reset                  ; 86h
-	DW _flash_program_byte           ; 88h
-	DW _flash_erase_sector           ; 8Ah
-	DW _flash_enter_bank_select_mode ; 8Ch
-	DW _flash_select_bank            ; 8Eh
-	DW _flash_allow_remapping_page_0 ; 90h
-	DW _flash_remap_ids              ; 92h
-	DW _flash_prepare_game           ; 94h
-	DW 0000h                         ; 96h
-	DW _ir_pulse                     ; 98h
+	DW _reset_vector
+	DW _reset2
+	DW _reset2
+	DW _prc_frame_copy_irq
+	DW _prc_render_irq
+	DW _timer_2h_underflow_irq
+	DW _timer_2l_underflow_irq
+	DW _timer_1h_underflow_irq
+	DW _timer_1l_underflow_irq
+	DW _timer_3h_underflow_irq
+	DW _timer_3_cmp_irq
+	DW _timer_32hz_irq
+	DW _timer_8hz_irq
+	DW _timer_2hz_irq
+	DW _timer_1hz_irq
+	DW _ir_rx_irq
+	DW _shake_irq
+	DW _reset2
+	DW _reset2
+	DW _cart_eject_irq
+	DW _cartridge_irq
+	DW _key_power_irq
+	DW _key_right_irq
+	DW _key_left_irq
+	DW _key_down_irq
+	DW _key_up_irq
+	DW _key_c_irq
+	DW _key_b_irq
+	DW _key_a_irq
+	DW _unknown_irq0
+	DW _unknown_irq1
+	DW _unknown_irq2
+	DW 0FFF1h
+	DW _suspend_system
+	DW _sleep
+	DW _sleep_with_display
+	DW _shutdown
+	DW _sleep2
+	DW _default_contrast
+	DW _change_contrast
+	DW _apply_default_contrast
+	DW _get_default_contrast
+	DW _set_temp_contrast
+	DW _lcd_on
+	DW _init_lcd
+	DW _lcd_off
+	DW _ena_ram_vec
+	DW _dis_ram_vec
+	DW _disable_cart_eject_irq_if
+	DW _enable_cart_eject_irq_if
+	DW _unknown_eject1
+	DW _unknown_eject2
+	DW _dev_card0
+	DW _dev_card1
+	DW _enable_cart_eject_irq
+	DW _disable_cart_eject_irq
+	DW _unknown_eject4
+	DW _enter_high_speed_operation
+	DW _enter_low_speed_operation
+	DW _cart_slot_off
+	DW _cart_slot_on
+	DW _cart_detect
+	DW _read_structure
+	DW _set_prc_rate
+	DW _get_prc_rate
+	DW _game_id_valid
+	DW _flash_read_ids
+	DW _flash_reset
+	DW _flash_program_byte
+	DW _flash_erase_sector
+	DW _flash_enter_bank_select_mode
+	DW _flash_select_bank
+	DW _flash_allow_remapping_page_0
+	DW _flash_remap_ids
+	DW _flash_prepare_game
+	DW 0000h
+	DW _ir_pulse
 
 	hdr_nintendo EQU 21A4h
 

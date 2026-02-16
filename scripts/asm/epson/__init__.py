@@ -232,7 +232,7 @@ def process_epson(code, *, position=0, digits=6) -> Renderer:
 						elif lower == "defsect":
 							for a in args:
 								data = str(a.data).lower()
-								if data.startswith("code at "):
+								if data.startswith("code at ") or data.startswith("data at "):
 									data = data[8:]
 									defsects[get_str(args[0])] = int(data[:-1], 16) if data.endswith("h") else int(data)
 									break
