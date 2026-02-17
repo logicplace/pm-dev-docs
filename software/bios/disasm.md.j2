@@ -75,7 +75,7 @@ SECT ".bios"
 	DW _get_default_contrast
 	DW _set_temp_contrast
 	DW _lcd_on
-	DW _init_lcd
+	DW _reset_lcd
 	DW _lcd_off
 	DW _ena_ram_vec
 	DW _dis_ram_vec
@@ -87,7 +87,7 @@ SECT ".bios"
 	DW _dev_card1
 	DW _enable_cart_eject_irq
 	DW _disable_cart_eject_irq
-	DW _unknown_eject4
+	DW _check_ejected
 	DW _enter_high_speed_operation
 	DW _enter_low_speed_operation
 	DW _cart_slot_off
@@ -122,19 +122,19 @@ _reset2:
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	LD SP, #2000h                       ; initial stack location (end of RAM)
 	CARL initregs                       ; initialize registers for BIOS's sake
-	LD [BR:80h], A                      ; disable LCD controller (A=0)
+	LD [BR:80h], A                      ; disable LCD controller (A = 0)
 	CARL enter_high_speed_operation     ; clock CPU with OSC3
 	LD NB, #01h                         ; set default NB
 	JRS copy_nb_to_cb
 copy_nb_to_cb:
 	LD A, [BR:52h]                      ; store initial keypad state
-	LD [KeyPad], A                      ; to $14E1
+	LD [KeyPad], A                      ; ...to $14E1
 	OR [BR:00h], #03h                   ; send Chip Enable (CE) signals
-	LD [BR:01h], #30h                   ; ??
+	LD [BR:01h], #30h                   ; set console is awake and ??
 	OR [BR:02h], #0C0h                  ; ??
 	CARL init_io
 	LD [BR:80h], #02h                   ; enable tilemap (for BIOS screens)
-	LD [BR:81h], #09h                   ; set frame divider to 2 and ?
+	LD [BR:81h], #09h                   ; set frame divider to 2 and allow init_display to work
 	LD IX, #TilesetBase                 ; tileset base for the screens
 	LD [02082h], IX                     ; ...
 	LD [BR:84h], #00h                   ; ... (why not B? macro?)
@@ -160,12 +160,12 @@ clear_96_vertical_lines:
 	INC H                               ; next page
 	CP H, #0B8h                         ; stop at last display page
 	JRS NZ, loop_from_B0_to_B8
-	CARL apply_default_contrast1
-	XOR A, A                            ; delay between setup and display on
+	CARL apply_default_contrast
+	XOR A, A                            ; wait between setup and display on
 	CARL init_display
 	CARL decode_picture                 ; load tiles/maps into RAM
 	BIT [BR:53h], #02h                  ; check if cart is inserted
-	JRS Z, check_voltage                ; 0=cart is inserted
+	JRS Z, check_voltage                ; 0 = cart is inserted
 	JRL insert_cart_screen              ; if no cart is inserted...
 check_voltage:
 	OR [BR:10h], #10h                   ; write 1 to SVDON
@@ -193,14 +193,14 @@ nc__loop:
 	DJR NZ, nc__loop                    ; and JDBNZ back to the start of the loop
 prepare_boot:
 	XOR A, A                            ; set A to 0
-	LD [BR:80h], A                      ; set PRC_MODE to 0
-	LD [BR:81h], #07h                   ; set PRC_RATE to 7
-	LD [BR:82h], A                      ; set PRC_MAP LO and MID to 0
+	LD [BR:80h], A                      ; disable LCD controller
+	LD [BR:81h], #07h                   ; set frame divider to 12
+	LD [BR:82h], A                      ; set tileset base to 0
 	LD [BR:83h], A                      ; ...
 	AND [BR:01h], #~10h                 ; ??
 	CARS initregs                       ; reset registers
-	LD H, [KeyPad]                      ; load KEY_PAD into H (loaded into 0x14E1 by _reset_vector)
-	LD L, [RemainingPlays]              ; load cart type into L
+	LD H, [KeyPad]                      ; load initial keypad into H (loaded into 0x14E1 by _reset_vector)
+	LD L, [RemainingPlays]              ; < 0 = unlimited
 	LD IX, #1000h                       ; clear RAM
 pb__loop:                               ; ...
 	LD [IX], A                          ; ...
@@ -237,7 +237,7 @@ init_io:
 	LD [BR:10h], #08h                   ; set SYS_BATT to 8
 	AND [BR:19h], #~30h                 ; disable OSC1/OSC3 for timer use
 	LD [BR:20h], B                      ; set IRQ priorities to none (don't fire)
-	LD [BR:21h], #30h                   ; ...except set cartridge IRQs to 3
+	LD [BR:21h], #30h                   ; ...except set cartridge IRQs' to 3
 	LD [BR:22h], #02h                   ; ...except set IR/shock to 2
 	LD [BR:23h], B                      ; disable IRQs
 	LD [BR:24h], #02h                   ; ...except cart eject IRQ
@@ -268,8 +268,8 @@ _prc_frame_copy_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h                  ; if cart interrupts are not enabled,
-	CARS Z, jrl1_intstuff               ; do something
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2108h                           ; jump to software handler
@@ -279,8 +279,8 @@ _prc_render_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff               ; same thing here
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 210Eh                           ; jump to software handler
@@ -290,8 +290,8 @@ _timer_2h_underflow_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff               ; and here
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2114h                           ; jump to software handler
@@ -301,8 +301,8 @@ _timer_2l_underflow_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 211Ah                           ; jump to software handler
@@ -312,8 +312,8 @@ _timer_1h_underflow_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff               ; these all do the same thing
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2120h                           ; jump to software handler
@@ -323,8 +323,8 @@ _timer_1l_underflow_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2126h                           ; jump to software handler
@@ -334,8 +334,8 @@ _timer_3h_underflow_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 212Ch                           ; jump to software handler
@@ -345,22 +345,22 @@ _timer_3_cmp_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2132h                           ; jump to software handler
 ; ----------------------
-jrl1_intstuff:
-	JRL intstuff
+jrl1_wake_from_irq:
+	JRL wake_from_irq
 ; ----------------------
 _timer_32hz_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2138h                           ; jump to software handler
@@ -370,8 +370,8 @@ _timer_8hz_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 213Eh                           ; jump to software handler
@@ -381,8 +381,8 @@ _timer_2hz_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2144h                           ; jump to software handler
@@ -392,8 +392,8 @@ _timer_1hz_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 214Ah                           ; jump to software handler
@@ -403,8 +403,8 @@ _ir_rx_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2150h                           ; jump to software handler
@@ -414,8 +414,8 @@ _shake_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2156h                           ; jump to software handler
@@ -425,8 +425,8 @@ _cartridge_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl1_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl1_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 219Eh                           ; jump to software handler
@@ -436,8 +436,8 @@ _key_right_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2162h                           ; jump to software handler
@@ -447,8 +447,8 @@ _key_left_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2168h                           ; jump to software handler
@@ -458,8 +458,8 @@ _key_down_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 216Eh                           ; jump to software handler
@@ -469,8 +469,8 @@ _key_up_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2174h                           ; jump to software handler
@@ -480,8 +480,8 @@ _key_c_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 217Ah                           ; jump to software handler
@@ -491,8 +491,8 @@ _key_b_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2180h                           ; jump to software handler
@@ -502,8 +502,8 @@ _key_a_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2186h                           ; jump to software handler
@@ -513,22 +513,22 @@ _unknown_irq0:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 218Ch                           ; jump to software handler
 ; ----------------------
-jrl2_intstuff:
-	JRL intstuff
+jrl2_wake_from_irq:
+	JRL wake_from_irq
 ; ----------------------
 _unknown_irq1:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2192h                           ; jump to software handler
@@ -538,48 +538,47 @@ _unknown_irq2:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	CARS Z, jrl2_intstuff
+	BIT [BR:01h], #20h                  ; if console is asleep,
+	CARS Z, jrl2_wake_from_irq          ; wake it up
 	POP BR
 	POP EP
 	JRL 2198h                           ; jump to software handler
 ; ----------------------
-; If you intend to wake the unit from something
-; other than pressing the power key, write a JRL
-; instruction to $1FFD before sleeping!
-intstuff:
+; If you intend to wake the unit from something other than pressing the
+; power key, write a JRL/RET instruction to $1FFD before sleeping!
+; Or otherwise ensure $2001 is 0b0x0x0xx1 where x can be any.
+wake_from_irq:
 	BIT [BR:02h], #08h                  ; if clocking CPU with OSC3,
-	JRS NZ, already_fast0               ; no need to start it up again
+	JRS NZ, wfi__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL enter_high_speed_operation
 	POP SC
-already_fast0:
+wfi__already_fast:
 	BIT [BR:71h], #04h                  ; if cart is powered,
-	JRS Z, loc_0x03A2                   ;
+	JRS Z, wfi__check_01_bit7           ;
 	BIT [BR:02h], #40h                  ; if ??,
-	JRS Z, loc_0x03A2                   ;
+	JRS Z, wfi__check_01_bit7           ;
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL power_cart
 	BIT [BR:01h], #40h                  ; if ??,
-	JRS Z, loc_0x03A1                   ;
+	JRS Z, wfi__dont_prepare_yet        ;
 	CARS prepare_selected_game
-loc_0x03A1:
+wfi__dont_prepare_yet:
 	POP SC
-loc_0x03A2:
+wfi__check_01_bit7:
 	BIT [BR:01h], #80h                  ; if ??,
-	JRS Z, loc_0x03B0                   ;
+	JRS Z, wfi__prepare_and_return      ;
 	ADD SP, #0003h                      ; remove the call to this one
 	POP BR                              ; restore BR/EP from interrupt's pushes
 	POP EP                              ; ...
 	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
-; ----------------------
-loc_0x03B0:
+wfi__prepare_and_return:
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARS prepare_selected_game
-	OR [BR:01h], #20h
+	OR [BR:01h], #20h                   ; set console as awake
 	POP SC
 	RET
 ; ----------------------
@@ -588,54 +587,54 @@ _key_power_irq:
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #20h
-	JRS NZ, loc_0x0413
-	BIT [BR:01h], #10h
-	JRL NZ, _reset2
-	BIT [BR:02h], #08h
-	JRS NZ, already_fast1
+	BIT [BR:01h], #20h                  ; if console is awake,
+	JRS NZ, kpi__software               ; jump straight to software handler
+	BIT [BR:01h], #10h                  ; if ??,
+	JRL NZ, _reset2                     ; reset console
+	BIT [BR:02h], #08h                  ; if clocking CPU with OSC3,
+	JRS NZ, kpi__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL enter_high_speed_operation
 	POP SC
-already_fast1:
+kpi__already_fast:
 	BIT [BR:71h], #04h                  ; if cartidge is powered,
-	JRS Z, loc_0x03F0                   ; go to cart's handler
+	JRS Z, loc_0x03F0                   ; no need to power again
 	BIT [BR:02h], #40h                  ; if ??,
-	JRS Z, loc_0x03F0                   ; go to cart's handler
+	JRS Z, loc_0x03F0                   ;
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL power_cart
-	BIT [BR:01h], #40h
-	JRS Z, loc_0x03EF
+	BIT [BR:01h], #40h                  ; if ??,
+	JRS Z, kpi__dont_prepare_yet        ; pop SC from above then loc_0x03F0
 	CARS prepare_selected_game
-loc_0x03EF:
+kpi__dont_prepare_yet:
 	POP SC
 loc_0x03F0:
-	BIT [BR:01h], #80h
-	JRS Z, loc_0x03FF
-	BIT [BR:02h], #20h
-	JRS NZ, loc_0x040D
+	BIT [BR:01h], #80h                  ; if ??,
+	JRS Z, kpi__prepare_banks           ; 
+	BIT [BR:02h], #20h                  ; if ??,
+	JRS NZ, kpi__return                 ; return (don't go to software)
 	POP BR
 	POP EP
 	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
-loc_0x03FF:
+kpi__prepare_banks:
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARS prepare_selected_game
-	OR [BR:01h], #20h
+	OR [BR:01h], #20h                   ; set console as awake
 	POP SC
-	BIT [BR:02h], #20h
-	JRS Z, loc_0x0413
-loc_0x040D:
-	LD [BR:29h], #80h
+	BIT [BR:02h], #20h                  ; if ??,
+	JRS Z, kpi__software                ; jump to software handler
+kpi__return:
+	LD [BR:29h], #80h                   ; clear power key
 	POP BR
 	POP EP
 	RETE
-loc_0x0413:
+kpi__software:
 	POP BR
 	POP EP
-	JRL 215Ch
+	JRL 215Ch                           ; jump to software handler
 ; ----------------------
 ; Clobbers: XP
 prepare_selected_game:
@@ -663,36 +662,39 @@ psg__return:
 	POP IP
 	RET
 ; ----------------------
+; This can be called from cart ejection or insertion.
+; It's dependent on the polarity, set in $2051.
+; The BIOS only ever sets it to eject, but software can change it.
 _cart_eject_irq:
 	PUSH EP
 	PUSH BR
 	LD EP, #00h
 	LD BR, #20h
-	BIT [BR:01h], #30h
-	JRL NZ, _reset2
-	BIT [BR:02h], #08h
-	JRS NZ, already_fast2
+	BIT [BR:01h], #30h                  ; if console is awake or ??,
+	JRL NZ, _reset2                     ; reset console
+	BIT [BR:02h], #08h                  ; if clocking CPU with OSC3,                  
+	JRS NZ, cei__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL enter_high_speed_operation
 	POP SC
-already_fast2:
-	BIT [BR:01h], #80h
-	JRS Z, loc_0x0461
-	BIT [BR:01h], #40h
-	JRS Z, loc_0x0464
-loc_0x0461:
+cei__already_fast:
+	BIT [BR:01h], #80h                  ; if ??,
+	JRS Z, cei__shutdown                ; shutdown console
+	BIT [BR:01h], #40h                  ; if ??,
+	JRS Z, cei__dont_shutdown           ; don't shutdown console
+cei__shutdown:
 	JRL _shutdown
-loc_0x0464:
-	BIT [BR:71h], #04h
-	JRS Z, loc_0x0475
-	BIT [BR:02h], #40h
-	JRS Z, loc_0x0475
+cei__dont_shutdown:
+	BIT [BR:71h], #04h                  ; if cartidge is powered,
+	JRS Z, cei__jump_to_ram             ; no need to power again
+	BIT [BR:02h], #40h                  ; if ??,
+	JRS Z, cei__jump_to_ram             ;
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL power_cart
 	POP SC
-loc_0x0475:
+cei__jump_to_ram:
 	POP BR
 	POP EP
 	JRL 1FFDh                           ; jump to RAM, hope it's another JRL!
@@ -790,10 +792,10 @@ _flash_erase_sector:
 	LD HL, #05001                       ; loop 5000 times
 fes__wait_for_erase:
 	DEC HL
-	JRS NZ, loc_0x04E9
+	JRS NZ, fes__wfe__top
 	LD A, #0FFh                         ; erase failed
-	JRS loc_0x04F2
-loc_0x04E9:
+	JRS fes__return
+fes__wfe__top:
 	; note that for any read while erase is still going
 	; bit 7 will be 0 no matter the data at the location
 	; you're reading from
@@ -804,7 +806,7 @@ loc_0x04E9:
 	CP A, B                             ; ...
 	JRS NZ, fes__wait_for_erase
 	XOR A, A                            ; erase success
-loc_0x04F2:
+fes__return:
 	POP HL
 	POP EP
 	RETE
@@ -825,12 +827,11 @@ flash_enter_bank_select_mode:
 	POP EP
 	RETE
 ; ----------------------
-; Each bank is 256 KiB which is an addressing
-; space of 0x040000. Thus the system can hold
-; 8 banks. XP=7 with A=1 should be the default
-; state while XP=7 with A=0 allows you to read
-; from the first $2100 bytes of the cartridge
-; by addressing data page 4, code page 8.
+; Each bank is 256 KiB which is an addressing space of 0x040000.
+; Thus the system can hold 8 banks. XP=7 with A=1 should be the
+; default state while XP=7 with A=0 allows you to read from the
+; first $2100 bytes of the cartridge by addressing data page 4,
+; code page 8.
 ; Arguments
 ;   XP: Bank register to write to; 3+4*x
 ;   A: Value to write
@@ -848,7 +849,7 @@ flash_select_bank:
 	RETE
 ; ----------------------
 ; Without this, writing to 0x03FFFF bank select
-; register is probably a NOP.
+; register is (probably) a NOP.
 _flash_allow_remapping_page_0:
 	POP SC
 flash_allow_remapping_page_0:
@@ -864,9 +865,8 @@ flash_allow_remapping_page_0:
 	POP EP
 	RETE
 ; ----------------------
-; Instructs the mapper to subtract $2100
-; from the input address. Though it may
-; not be generally usable in this state?
+; Instructs the mapper to subtract $2100 from the input address.
+; Though it may not be generally usable in this state?
 ; This is used with ID mode to read info.
 _flash_remap_ids:
 	POP SC
@@ -969,10 +969,10 @@ flash_detect:
 	CARL flash_reset                    ; exit Software ID mode
 	CP BA, #0BFD9h                      ; check manufacturer/device ID (SST39?F016)
 	POP BA
-	JRS Z, loc_0x05CA
+	JRS Z, fd__return
 	LD [5555h], B                       ; if it was an unexpected chip
 	LD [2AAAh], A                       ; try to restore the data (NOP if ROM)
-loc_0x05CA:
+fd__return:
 	LD A, [2AAAh]                       ; dummy read?
 	RET
 ; ----------------------
@@ -990,12 +990,12 @@ check_cart_type:
 	BIT A, #02h
 	JRS NZ, cct__startup_action_2
 	LD NB, #08h                         ; startup action 0 and 1,
-	CARL 41400h                         ; call 0x041400 on cartridge
+	CARL 41400h                         ; call 0x001400 (physical) on cartridge
 	LD [RemainingPlays], A              ; which returns the remaining plays in A
 	JRL nintendo_check                  ; continue to boot
 cct__startup_action_2:
-	BIT A, #01h
-	JRS NZ, game_select_menu
+	BIT A, #01h                         ; if startup action is 3,
+	JRS NZ, game_select_menu            ; goto selection menu
 	XOR A, A                            ; startup action 2 picks the 0th slot
 	CARL flash_prepare_game             ; ...
 	OR [BR:01h], #01h                   ; remember that we used startup action 2
@@ -1069,9 +1069,9 @@ gsm__ldl__continue_counting:
 gsm__ldl__remove_bit:
 	RLC B                               ; if we got here from any bit but the MSB being 0,
 	CP B, #01h                          ; these would not be equal,
-	JRS NZ, loc_0x067F                  ; so we don't dec IX
+	JRS NZ, gsm__ldl__no_dec            ; so we don't dec IX
 	DEC IX                              ; otherwise, dec IX back to the last 0xFF byte (IX+15)
-loc_0x067F:
+gsm__ldl__no_dec:
 	CPL B                               ; mask everything but bit before the "0"
 	LD A, [IX]                          ; reload in case we decremented
 	AND A, B                            ; ...
@@ -1082,7 +1082,7 @@ loc_0x067F:
 	                                    ; 01 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF -> H = 0xFE
 	POP BA
 	LD B, H
-	DEC L                               ; number of 1-bits -1
+	DEC L                               ; next number for plays remaining
 	LD A, L                             ; ...
 gsm__ldl__load_data:
 	PUSH BA
@@ -1094,11 +1094,11 @@ gsm__ldl__load_data:
 	LD [HL], A                          ; ...
 	INC HL
 	POP BA
-	LD [HL], A                          ; 0xFE or number of 1-bits - 1
+	LD [HL], A                          ; 0xFE or remaining play count
 	INC HL
-	LD [HL], B                          ; garbage byte or ?? (see above)
+	LD [HL], B                          ; new count byte (or garbage)
 	INC HL
-	LD [HL], IX                         ; $1C10 (first loop if 0xFE) or location of byte in B
+	LD [HL], IX                         ; location of last count byte (or garbage)
 	ADD HL, #5                          ; two bytes from the above addr + 3 slop
 	LD [NextGameStruct], HL             ; store addr for next entry
 	LD HL, [NextTilePos]                ; where we're loading tile gfx to
@@ -1124,7 +1124,7 @@ gsm__ldl__end:
 	JRS NZ, gsm__games_available        ; show screen
 	JRL insert_cart_screen              ; otherwise
 gsm__games_available:
-	OR [BR:01h], #08h                   ; ??
+	OR [BR:01h], #08h                   ; set game ID is valid
 	JRL game_select_screen
 ; ----------------------
 ; This is jumped to not called
@@ -1140,25 +1140,25 @@ run_selected_game:
 	ADD IY, BA                          ; ...
 	LD H, [IY]                          ; ...read index in list on cart to H
 	INC IY
-	LD B, [IY]                          ; 0xFE or number of 1-bits - 1
-	LD [RemainingPlays], B              ; ...to cart type???
+	LD B, [IY]                          ; 0xFE or remaining plays
+	LD [RemainingPlays], B              ; ...
 	CP B, #0FEh                         ; if it's -2,
-	JRS Z, loc_0x0706                   ; skip write out
+	JRS Z, rsg__skip_write              ; skip writing 
 	INC IY
-	LD A, [IY]                          ; ??
+	LD A, [IY]                          ; new remaining count byte
 	INC IY
 	LD IX, [IY]                         ; original location of A
 	PUSH IP
-	LD XP, #04h                         ; write masked byte
+	LD XP, #04h                         ; write new byte
 	CARL flash_program_byte             ; ...
 	POP IP
 	OR A, A                             ; if it wasn't written successfully,
 	JRL NZ, insert_cart_screen          ; exit
-loc_0x0706:
+rsg__skip_write:
 	LD B, [BR:01h]
 	LD A, H                             ; game index to load
 	OR A, B                             ; TODO: confirm if line $00C7 makes this safe every time
-	LD [BR:01h], A
+	LD [BR:01h], A                      ; ...
 	LD A, H
 	CARL flash_prepare_game
 	JRL nintendo_check
@@ -1169,7 +1169,7 @@ _suspend_system:
 	PUSH BR
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	CARL set_br
-	OR [BR:02h], #20h
+	OR [BR:02h], #20h                   ; ??
 	; back up registers that will be changed
 	LD A, [BR:80h]                      ; back up LCD controller config
 	PUSH BA                             ; ...
@@ -1198,9 +1198,11 @@ do_shutdown:
 	LD A, #80h                          ; set interrupt flags to 2 before halt
 	CARL halt_cpu_and_lcd
 	; After resuming from halt (if that's possible!)
+	; The IRQ that wakes the console will run before
+	; resuming from halt, which may result in a restart.
 resume:
 	CARL lcd_on
-	AND [BR:02h], #~20h
+	AND [BR:02h], #~20h                 ; ??
 	; restore registers after awakening
 	POP BA                              ; restore IRQ enable status
 	LD [BR:26h], A                      ; ...
@@ -1256,7 +1258,7 @@ _shutdown:
 	CARL init_io
 shutdown:
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	LD [BR:01h], #90h
+	LD [BR:01h], #90h                   ; ??
 	JRL do_shutdown
 ; ----------------------
 ; Same as _sleep just lines 3 and 4 swapped...
@@ -1278,16 +1280,16 @@ halt_cpu_and_lcd:
 	CARL lcd_off
 halt_cpu:
 	BIT [BR:01h], #80h
-	JRS Z, hc__wake_on_cart
+	JRS Z, hc__wake_on_cart_eject
 	BIT [BR:01h], #40h
-	JRS Z, hc__halt_sequence
-hc__wake_on_cart:                       ; ejected? inserted?
+	JRS Z, hc__halt_sequence            ; only 0b10xxxxxx skips wake_on_cart_eject
+hc__wake_on_cart_eject:
 	OR [BR:24h], #02h                   ; enable cart eject IRQ
 	OR [BR:21h], #30h                   ; set cartridge IRQs' priorities to 3
 hc__halt_sequence:
 	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
 	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
-	AND [BR:01h], #~20h
+	AND [BR:01h], #~20h                 ; set console as asleep
 	CARL unpower_cart
 	CARL enter_low_speed_operation
 	LD SC, A
@@ -1304,14 +1306,14 @@ hc__halt_sequence:
 _default_contrast:
 	POP SC
 default_contrast:
-	SLL A
-	SLL A
+	SLL A                               ; shift into position
+	SLL A                               ; ...
 	PUSH EP
 	PUSH HL
 	LD EP, #00h
 	LD HL, #2000h
-	AND [HL], #03h
-	OR [HL], A
+	AND [HL], #03h                      ; clear default contrast
+	OR [HL], A                          ; set it
 	POP HL
 	POP EP
 	CARL get_default_contrast
@@ -1350,7 +1352,7 @@ cc__decrement:
 ; Clobbers: B
 _apply_default_contrast:
 	POP SC
-apply_default_contrast1:
+apply_default_contrast:
 	CARL get_default_contrast
 	JRS set_temp_contrast
 ; ----------------------
@@ -1405,20 +1407,22 @@ _lcd_on:
 lcd_on:
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	BIT [BR:02h], #04h                  ; ??
-	JRS Z, lcdo__reset_02_bit4
+	BIT [BR:02h], #04h                  ; if OSC3 is on,
+	JRS Z, lcdo__reset_02_bit4          ;
 	OR [BR:02h], #10h                   ; ??
 	JRS lcdo__return
 lcdo__reset_02_bit4:
 	AND [BR:02h], #~10h                 ; ??
 lcdo__return:
-	OR [BR:81h], #01h                   ; ??
-	XOR A, A                            ; wait between power cfg and on commands
+	OR [BR:81h], #01h                   ; actually initialize display
+	XOR A, A                            ; wait between setup and display on
 	CARL init_display
 	RETE
 ; ----------------------
+; Manually resets the LCD state.
+; Can only be run while the LCD is on.
 ; Clobbers: BA
-_init_lcd:
+_reset_lcd:
 	POP SC
 	PUSH EP
 	PUSH BR
@@ -1437,9 +1441,9 @@ init_display_without_wait:
 init_display:
 	PUSH SC                             ; back up SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	BIT [BR:81h], #01h                  ; ??
-	JRS NZ, id__init
-	RETE                                ; restore SC and return
+	BIT [BR:81h], #01h                  ; if LCD was not shut off,
+	JRS NZ, id__init                    ; continue to init
+	RETE                                ; otherwise, restore SC and return
 id__init:
 	PUSH HL
 	LD HL, #20FEh                       ; using [HL] is less bytes than [BR:ll] for all
@@ -1457,7 +1461,7 @@ id__init:
 	LD [HL], #0A6h                      ; send color invert off
 	LD [HL], #02Fh                      ; send power supply circuits all on
 	OR A, A                             ; A=0 do wait, A≠0 don't wait
-	JRS NZ, loc_0x08C5
+	JRS NZ, id__on_and_return
 	PUSH IX
 	BIT [BR:02h], #08h                  ; check what oscillator is clocking the CPU
 	JRS NZ, id__using_hso
@@ -1474,7 +1478,7 @@ id__wait_for_warmup:
 	DEC A                               ; exit at 0, so A=1 doesn't do extra
 	JRS NZ, id__wait_for_warmup
 	POP IX
-loc_0x08C5:
+id__on_and_return:
 	LD [HL], #0AFh                      ; send display on
 	LD [BR:80h], B                      ; restore frame copy state
 	POP HL
@@ -1497,7 +1501,7 @@ lcd_off:
 	LD [BR:0FEh], #0ACh                 ; send static indicator off
 	LD [BR:0FEh], #28h                  ; send power supply circuits all off
 	LD [BR:0FEh], #0A5h                 ; send "set all on" on (enter _sleep mode)
-	AND [BR:81h], #~01h                 ; ??
+	AND [BR:81h], #~01h                 ; prevent init_display from working
 	RETE                                ; restore flags
 ; ----------------------
 _ena_ram_vec:
@@ -1509,7 +1513,7 @@ _ena_ram_vec:
 	JRS NZ, loc_0x0901                  ; skip
 	OR [BR:01h], #80h                   ; otherwise set it
 	OR [BR:01h], #40h                   ; and bit 6
-	AND [BR:01h], #~20h                 ; and reset bit 5
+	AND [BR:01h], #~20h                 ; set console as asleep
 loc_0x0901:
 	POP BR
 	POP EP
@@ -1519,14 +1523,14 @@ _dis_ram_vec:
 	PUSH EP
 	PUSH BR
 	CARL skip_if_01_not_bit6
-	LD [BR:55h], #01h
-	AND [BR:51h], #~02h
+	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
+	AND [BR:51h], #~02h                 ; set cart eject IRQ to rising edge (ejected)
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	OR [BR:21h], #30h
+	OR [BR:21h], #30h                   ; set cartridge IRQs' priority to IRQ3
 	OR [BR:24h], #02h                   ; enable cart eject IRQ
-	OR [BR:01h], #20h
-	AND [BR:01h], #~40h
-	AND [BR:01h], #~80h
+	OR [BR:01h], #20h                   ; set console as awake
+	AND [BR:01h], #~40h                 ; clear bit 6
+	AND [BR:01h], #~80h                 ; and bit 7
 	POP BR
 	POP EP
 	RETE
@@ -1558,7 +1562,6 @@ skip_if_01_not_bit6:
 	POP BR                              ; and give BR/EP/SC back
 	POP EP                              ; ...
 	RETE                                ; ...
-; ----------------------
 si__return:
 	RET
 ; ----------------------
@@ -1571,7 +1574,7 @@ _unknown_eject1:
 	JRS NZ, loc_0x095E                  ; just return
 	AND [BR:24h], #~02h                 ; otherwise, disable cart eject IRQ
 	OR [BR:01h], #80h                   ; set bit 7
-	AND [BR:01h], #~20h                 ; and reset bit 5
+	AND [BR:01h], #~20h                 ; set console as asleep
 loc_0x095E:
 	POP BR
 	POP EP
@@ -1586,7 +1589,7 @@ _unknown_eject2:
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	OR [BR:21h], #30h                   ; set cartridge IRQs' priorities to 3
 	OR [BR:24h], #02h                   ; enable cart eject IRQ
-	OR [BR:01h], #20h                   ; set bit 5
+	OR [BR:01h], #20h                   ; set console as awake
 	AND [BR:01h], #~80h                 ; reset bit 7
 	POP BR
 	POP EP
@@ -1716,9 +1719,8 @@ si2__do_skip:
 	POP BR
 	POP EP
 	RETE
-; ----------------------
 si2__return:
-	RET
+	RET                                 ; only 0b10xxxxxx returns
 ; ----------------------
 ; If the startup action bit 0 is 0, prepare game 0.
 ; Otherwise, do further checks.
@@ -1727,7 +1729,7 @@ si2__return:
 ; Clobbers: A, XP, IX
 select_boot:
 	CARL flash_detect
-	JRS NZ, sb__return_fail             ; if it's not a flash cart
+	JRS NZ, sb__return_fail             ; fail if it's not a flash cart
 	PUSH IP
 	LD XP, #07h                         ; bank register
 	LD A, #00h                          ; value to write
@@ -1753,8 +1755,8 @@ _enable_cart_eject_irq:
 	PUSH EP
 	PUSH BR
 	CARL set_br
-	SWAP A
-	AND A, #30h
+	SWAP A                              ; same as A <<= 4
+	AND A, #30h                         ; limit to 0~3
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	LD B, [BR:21h]                      ; get IRQ priorities
@@ -1780,25 +1782,29 @@ _disable_cart_eject_irq:
 	POP EP
 	RETE
 ; ----------------------
-_unknown_eject4:
+; Arguments:
+;   I1~I0: compared with cart IRQs' priority
+; Returns:
+;   Z: 1=priority equal (not >) and IRQ fired
+_check_ejected:
 	POP SC
 	PUSH EP
 	PUSH BR
 	PUSH BA
 	CARL set_br
-	LD A, SC                            ; get C and Z
-	SRL A                               ; ...shift to top two bits
+	LD A, SC                            ; get interrupt flags
+	SRL A                               ; ...shift into place
 	SRL A                               ; ...
 	AND A, #30h                         ; ...
-	LD B, [BR:21h]                      ; compare with clock timer IRQs' priority
+	LD B, [BR:21h]                      ; compare with cart IRQs' priority
 	AND B, #30h                         ; ...
 	CP A, B                             ; ...
 	XOR SC, #01h                        ; invert Z, so 0 = not equal
-	JRS Z, loc_0x0AA2                   ; return if they're not equal
+	JRS Z, ce__return                   ; return if they're not equal
 	BIT [BR:28h], #02h                  ; check if cart eject fired
-	JRS Z, loc_0x0AA2                   ; if not, return
+	JRS Z, ce__return                   ; if not, return
 	LD [BR:28h], #02h                   ; if so, clear
-loc_0x0AA2:
+ce__return:
 	POP BA
 	POP BR
 	POP EP
@@ -1855,9 +1861,8 @@ _cart_slot_off:
 	POP BR
 	POP EP
 	RETE
-; ----------------------
 cart_slot_off:
-	AND [BR:02h], #~40h
+	AND [BR:02h], #~40h                 ; ??
 unpower_cart:
 	OR [BR:71h], #04h                   ; turn off cart power
 	RET
@@ -1953,22 +1958,22 @@ loc_0x0B51:
 	LD A, [IY]                          ; read byte into A
 	OR [BR:02h], #80h                   ; ????
 	CP A, B                             ; compare with byte $07
-	POP BA                              ; restore B=byte $08, A=state of byte $00 bit 0
+	POP BA                              ; restore: B = byte $08, A = state of byte $00 bit 0
 	PUSH SC                             ; store result of CP
 	LD SC, A                            ; re-check byte $00 bit 0
 	JRS Z, loc_0x0B82                   ; which allows B to definitely be byte $08
 	POP SC                              ; just popped to allow POP BA
-	LD L, B                             ; L=byte $08
-	POP BA                              ; (from $0B49) B=byte $0A, A=byte $09
-	LD H, A                             ; H=byte $09
-	LD A, B                             ; A=byte $0A
+	LD L, B                             ; L = byte $08
+	POP BA                              ; (from $0B49) B = byte $0A, A = byte $09
+	LD H, A                             ; H = byte $09
+	LD A, B                             ; A = byte $0A
 	PUSH SC                             ; pushed back to stack unchanged
 	; subroutine should fetch [SP+3] for the result of
 	; the compare then put its result in its place
 	CARS call_a_hl
 loc_0x0B82:
-	POP BA                              ; B=B before call, A=SC from $0B75 or $0B7F
-	AND A, #01h                         ; A=Z, result of compare with byte $07
+	POP BA                              ; B = B before call, A = SC from $0B75 or $0B7F
+	AND A, #01h                         ; A = Z, result of compare with byte $07
 	POP HL
 	POP IY
 	POP IX
@@ -2109,7 +2114,7 @@ lm5tm__loop:
 ; Will disable it again by the end of the function
 copy_one_frame:
 	LD [BR:27h], #80h                   ; clear Frame Copy Complete
-	OR [BR:80h], #08h                   ; enable frame copy
+	OR [BR:80h], #08h                   ; enable LCD controller
 cof__wait_for_vsync:
 	BIT [BR:27h], #80h                  ; wait for Frame Copy Complete to trigger
 	JRS Z, cof__wait_for_vsync
@@ -2148,13 +2153,13 @@ gss__ml__wait_for_framediv_overflow:
 	BIT [BR:27h], #40h
 	JRS Z, gss__ml__wait_for_framediv_overflow
 	CARL init_display_without_wait
-	CARL apply_default_contrast1
+	CARL apply_default_contrast
 	CARL read_keys_buffer
 	LD B, A
 	LD A, [KeyHistory]                  ; update key history with newly pressed keys
 	OR A, B                             ; ...
 	LD [KeyHistory], A                  ; ...
-	EX A, B                             ; (after EX) A=new keys, B=updated key history
+	EX A, B                             ; (after EX) A = new keys, B = updated key history
 	OR A, A                             ; if any new keys were pressed
 	JRS Z, gss__ml__no_new_keys
 	LD [IY], #13                        ; start cooldown at 13 frames
@@ -2334,7 +2339,7 @@ pa__wait_for_framediv_overflow2:
 	JRS Z, pa__wait_for_framediv_overflow2
 	LD [BR:27h], #40h                   ; clear frame divider overflow
 	CARL init_display_without_wait
-	CARL apply_default_contrast1
+	CARL apply_default_contrast
 	CARL read_keys_buffer               ; read keys excluding anything pressed down since before animation started
 	BIT A, #87h                         ; if power, A, B, or C is being pressed,
 	JRS NZ, pa__return                  ; break
@@ -2353,8 +2358,8 @@ pa__return:
 	RET
 ; ----------------------
 ; Play low battery animation and check key presses.
-; A/C -> skip shutdown, play software anyway
-; B/Power -> shutdown early
+; A/C -> skip shutdown, play software anyway.
+; B/Power -> shutdown early.
 ; Assumes XP/YP = $00
 ; Clobbers: BA, HL, IX, IY
 low_battery_screen:
@@ -2373,8 +2378,8 @@ lbs__skip_shutdown:
 	RET
 ; ----------------------
 ; Play low battery animation and check key presses.
-; A/C -> check for cartridge again
-; B/Power -> shutdown early
+; A/C -> check for cartridge again.
+; B/Power -> shutdown early.
 ; Assumes XP/YP = $00
 ; Clobbers: any
 insert_cart_screen:
