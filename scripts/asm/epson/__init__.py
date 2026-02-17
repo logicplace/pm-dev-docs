@@ -9,16 +9,16 @@ from .ops import OPS
 # Combine any lines which end in \ first.
 EPSON_S1C88_LINE = re.compile(
 	r'''
-	^([ \t]*[a-z_][a-z0-9_]*[ \t]*:)?
+	^(\s*[a-z_][a-z0-9_]*\s*:)?
 	(?:
-		([ \t]*)      # indentation (or space after label)
-		([^; \t]+)  # operator, directive, macro name
+		(\s*)        # indentation (or space after label)
+		([^;\s]+)    # operator, directive, macro name
 		(?:
-			([ \t]+)    # space required before the first arg
+			(\s+)    # space required before the first arg
 			([^;]+)  # args
 		)?
 	)?
-	([ \t]*)(;.*)?
+	(\s*)(;.*)?
 	''',
 	re.VERBOSE | re.IGNORECASE
 )
@@ -68,11 +68,10 @@ EPSON_FLAG_CONDITIONS = {
 	"nf0", "nf1", "nf2", "nf3",
 }
 
-EPSON_LITERAL = {
-	"code", "data", "short", "tiny", "fit",
+EPSON_DEFSECT_ARGS = {
+	"code", "data", "short", "tiny", #"fit",
 	"clear", "noclear", "init", "overlay",
 	"romdata", "max", "join",
-	*EPSON_FLAG_CONDITIONS
 }
 
 
@@ -102,7 +101,7 @@ def identify_arg_class(arg: str):
 		lower = arg.lower()
 		if lower in EPSON_REGISTER:
 			return "variable.language"
-		if lower in EPSON_LITERAL:
+		if lower in EPSON_FLAG_CONDITIONS:
 			return "literal"
 		if EPSON_S1C88_LABEL.fullmatch(lower):
 			return "variable"
@@ -238,12 +237,38 @@ def process_epson(code, *, position=0, digits=6) -> Renderer:
 						if lower == "endm":
 							in_macro = ""
 						elif lower == "defsect":
-							for a in args:
-								data = str(a.data).lower()
-								if data.startswith("code at ") or data.startswith("data at "):
-									data = data[8:]
-									defsects[get_str(args[0])] = int(data[:-1], 16) if data.endswith("h") else int(data)
-									break
+							sect = get_str(args[0])
+							if len(args) > 1:
+								# "AT addr" is space separated from other args
+								# so separate it from the last arg
+								an1 = SPACE.split(str(args[-1].data))
+								if len(an1) > 3 and an1[-3].lower() == "at":
+									f = args.pop()
+									f.data = "".join(an1[-3:])
+									sfx = ""
+									if not an1[-4].strip():
+										d, sfx = "".join(an1[:-4]), an1[-4]
+									else:
+										d, sfx = "".join(an1[:-3]), ""
+									args.append(AccentedData(d, f.prefix, sfx))
+									f.prefix = ""
+									args.append(f)
+							for i, a in enumerate(args[1:], 1):
+								data = SPACE.sub(str(a.data).lower(), " ").strip()
+								print(data)
+								if data.startswith("at ") or data.startswith("at "):
+									at, at_s, addr, *addr_s = SPACE.split(str(a.data))
+									at = AccentedData(at, suffix=at_s)
+									addr = AccentedData(addr, suffix="".join(addr_s), classname="number")
+									defsects[sect] = int(addr)
+									args[i] = ConcatAccentedData(at, addr)
+								elif data.startswith("fit "):
+									f, f_s, size, *size_s = SPACE.split(str(a.data))
+									f = AccentedData(f, suffix=f_s, classname="literal")
+									size = AccentedData(size, suffix="".join(size_s), classname="number")
+									args[i] = ConcatAccentedData(f, sz)
+								elif data in EPSON_DEFSECT_ARGS:
+									a.classname = "literal"
 						elif lower == "sect":
 							sect = get_str(args[0])
 							if sect in defsects:

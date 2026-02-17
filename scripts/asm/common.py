@@ -36,37 +36,50 @@ class AccentedData:
 	suffix: str = ""
 	classname: str = ""
 
-	def render(self) -> str:
+	def _render(self, data: str, anchor: str = "") -> str:
 		pfx = ""
 		if self.classname:
 			classname = f' class="{_class(self.classname)}"'
 			if self.classname in CLASSNAME_TO_COLOR:
 				classname += f' color="{CLASSNAME_TO_COLOR[self.classname]}"'
 
-			if self.classname in ("symbol", "variable", "title.function"):
-				pfx, sfx = f'<a href="#{_id(str(self.data))}"{classname}>', "</a>"
+			if anchor:
+				pfx, sfx = f'<a href="#{anchor}"{classname}>', "</a>"
 		else:
 			classname = ""
 
 		if not pfx:
 			pfx, sfx = f'<span{classname}>', "</span>"
 
+		return (
+			f'{html.escape(self.prefix.replace("\t", "    "))}'
+			f'{pfx}{data}{sfx}'
+			f'{html.escape(self.suffix)}'
+		)
+
+	def render(self) -> str:
 		data = (
 			self.data.render()
 			if isinstance(self.data, AccentedData)
-			else self.data
+			else html.escape(self.data)
 		)
-		return (
-			f'{html.escape(self.prefix.replace("\t", "    "))}'
-			f'{pfx}{html.escape(data)}{sfx}'
-			f'{html.escape(self.suffix)}'
-		)
+		anchor = ""
+		if self.classname in ("symbol", "variable", "title.function"):
+			anchor = _id(str(self.data))
+		return self._render(data, anchor)
 
 	def __str__(self) -> str:
 		return str(self.data)
 
 	def __int__(self) -> int:
-		return int(self.data)
+		sdata = str(self.data).lstrip("#").lower()
+		if sdata.endswith("b"):
+			return int(sdata[:-1], 2)
+		if sdata[-1] in "oq":
+			return int(sdata[:-1], 8)
+		if sdata.endswith("h"):
+			return int(sdata[:-1], 16)
+		return int(sdata.rstrip("d"))
 
 	def __bool__(self) -> bool:
 		return bool(self.data)
@@ -80,6 +93,31 @@ class EmptyRender(AccentedData):
 
 	def __bool__(self):
 		return False
+
+class ConcatAccentedData(AccentedData):
+	data: list[str|AccentedData]
+
+	def __init__(self, *data: str|AccentedData) -> None:
+		self.data = list(data)
+
+	def render(self) -> str:
+		data = "".join([
+			d.render()
+			if isinstance(d, AccentedData)
+			else html.escape(d)
+			for d in self.data
+		])
+		return self._render(data)
+
+	def __str__(self) -> str:
+		return str("".join(map(str, self.data)))
+
+	def __int__(self) -> int:
+		return int(str(self))
+
+	def __bool__(self) -> bool:
+		return bool(self.data)
+
 
 @dataclass
 class Line:
