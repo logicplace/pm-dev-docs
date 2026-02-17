@@ -1,3 +1,5 @@
+# BIOS disassembly
+
 <pre><code class="language-s1c88 hljs"><span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-meta" color="#005cc5">DEFSECT</span> <span class="hljs-string" color="#032f62">&quot;.ram&quot;</span>, <span>DATA AT 14E0H</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-meta" color="#005cc5">SECT</span> <span class="hljs-string" color="#032f62">&quot;.ram&quot;</span></span>
 <a name="user-content-14E0" href="#user-content-14E0" color="#6e7781" class="line-number">$14E0</a>  <span class="line-content" id="user-content-RemainingPlays">    <a href="#user-content-RemainingPlays" class="hljs-symbol" color="#e36209">RemainingPlays</a>:         <span class="hljs-meta" color="#005cc5">DS</span> <span class="hljs-number" color="#005cc5">1</span></span>
