@@ -255,7 +255,6 @@ def process_epson(code, *, position=0, digits=6) -> Renderer:
 									args.append(f)
 							for i, a in enumerate(args[1:], 1):
 								data = SPACE.sub(str(a.data).lower(), " ").strip()
-								print(data)
 								if data.startswith("at ") or data.startswith("at "):
 									at, at_s, addr, *addr_s = SPACE.split(str(a.data))
 									at = AccentedData(at, suffix=at_s)
