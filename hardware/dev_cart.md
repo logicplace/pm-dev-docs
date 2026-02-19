@@ -51,6 +51,10 @@ The BIOS implements routines to access most of the chip commands as well as 3 ma
 | [Reset][]             |    -     |   \*   |  F0h   |        |        |        |        |        |        |        |        |        |        |
 | also [Reset][]        |   86h    | $5555  |  AAh   | $2AAA  |  55h   | $5555  |  F0h   |        |        |        |        |        |        |
 
+For other interrupts which are related but don't mirror chip command sequences, see:
+* [Select individual bank](./cpu/bios.md#select-individual-bank)
+* [Prepare game](./cpu/bios.md#prepare-game)
+
 [Program byte]: #program-byte
 [Erase sector]: #erase-sector
 [Erase block]: #erase-block

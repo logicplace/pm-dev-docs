@@ -1393,6 +1393,7 @@
 <a name="user-content-084C" href="#user-content-084C" color="#6e7781" class="line-number">$084C</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">POP</span> <span class="hljs-variable language_" color="#d73a49">EP</span></span>
 <a name="user-content-084D" href="#user-content-084D" color="#6e7781" class="line-number">$084D</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">RET</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content" id="user-content-_lcd_on"><span class="hljs-comment" color="#6a737d">; ----------------------</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Clobbers: BA</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><a href="#user-content-_lcd_on" class="hljs-symbol" color="#e36209">_lcd_on</a>:</span>
 <a name="user-content-084E" href="#user-content-084E" color="#6e7781" class="line-number">$084E</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">POP</span> <span class="hljs-variable language_" color="#d73a49">SC</span></span>
 <a name="user-content-084F" href="#user-content-084F" color="#6e7781" class="line-number">$084F</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">PUSH</span> <span class="hljs-variable language_" color="#d73a49">EP</span></span>
@@ -1672,7 +1673,12 @@
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Prepares bank selections only if cart is inserted</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; and startup action is 0/2 (or not a dev cart).</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Powers on cart if one&#x27;s inserted.</span></span>
-<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Clobbers: BA, XP</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Returns:</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;   A:</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;     -1 = select_boot didn&#x27;t prepare anything</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;     0 = banks perpared</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;     1 = no cart inserted</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Clobbers: B, XP</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><a href="#user-content-_dev_card1" class="hljs-symbol" color="#e36209">_dev_card1</a>:</span>
 <a name="user-content-09E4" href="#user-content-09E4" color="#6e7781" class="line-number">$09E4</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">PUSH</span> <span class="hljs-variable language_" color="#d73a49">EP</span></span>
 <a name="user-content-09E5" href="#user-content-09E5" color="#6e7781" class="line-number">$09E5</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">PUSH</span> <span class="hljs-variable language_" color="#d73a49">BR</span></span>
@@ -1893,7 +1899,7 @@
 <a name="user-content-0B1F" href="#user-content-0B1F" color="#6e7781" class="line-number">$0B1F</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">RET</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content" id="user-content-_cart_detect"><span class="hljs-comment" color="#6a737d">; ----------------------</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">; Returns</span></span>
-<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;   Z: 1=cart is inserted</span></span>
+<span color="#6e7781" class="line-number">     </span>  <span class="line-content"><span class="hljs-comment" color="#6a737d">;   Z: 0=cart is inserted</span></span>
 <span color="#6e7781" class="line-number">     </span>  <span class="line-content"><a href="#user-content-_cart_detect" class="hljs-symbol" color="#e36209">_cart_detect</a>:</span>
 <a name="user-content-0B20" href="#user-content-0B20" color="#6e7781" class="line-number">$0B20</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">POP</span> <span class="hljs-variable language_" color="#d73a49">SC</span></span>
 <a name="user-content-0B21" href="#user-content-0B21" color="#6e7781" class="line-number">$0B21</a>  <span class="line-content">    <span class="hljs-keyword" color="#d73a49">PUSH</span> <span class="hljs-variable language_" color="#d73a49">EP</span></span>

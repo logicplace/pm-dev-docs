@@ -70,8 +70,8 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 | ---------- | ----- | --------------------------------------------- |
 | [40h][]    | $FFF1 | Software-defined interrupt                    |
 | [42h][]    | $0713 | Suspend system                                |
-| [44h][]    | $077C | Sleep ??                                      |
-| [46h][]    | $078B | Sleep with display on ??                      |
+| [44h][]    | $077C | Sleep                                         |
+| [46h][]    | $078B | Sleep with display on                         |
 | [48h][]    | $079D | Shutdown system                               |
 | [4Ah][]    | $07B1 | same as 44h                                   |
 | [4Ch][]    | $07E9 | Set default LCD contrast                      |
@@ -80,27 +80,27 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 | [52h][]    | $0821 | Get default contrast                          |
 | [54h][]    | $0830 | Set temporary LCD contrast                    |
 | [56h][]    | $084E | Turn LCD on                                   |
-| [58h][]    | $0871 | Initialize LCD                                |
+| [58h][]    | $0871 | Reset LCD                                     |
 | [5Ah][]    | $08CB | Turn LCD off                                  |
-| [5Ch][]    | $08EC | Enable RAM vector                             |
-| [5Eh][]    | $0904 | Disable RAM vector                            |
+| [5Ch][]    | $08EC | ~~Enable RAM vector~~                         |
+| [5Eh][]    | $0904 | ~~Disable RAM vector~~                        |
 | [60h][]    | $0923 | Disable cart eject IRQ+                       |
 | [62h][]    | $092E | Enable cart eject IRQ+                        |
 | [64h][]    | $0949 | Disable cart eject IRQ++                      |
 | [66h][]    | $0961 | Enable cart eject IRQ++                       |
 | [68h][]    | $097D | Flash cart: turn on and prepare selected game |
 | [6Ah][]    | $09E4 | Flash cart: turn on and prepare autoboot game |
-| [6Ch][]    | $0A4F | Enabled cart eject IRQ and set priority       |
+| [6Ch][]    | $0A4F | Enable cart eject IRQ and set priority        |
 | [6Eh][]    | $0A76 | Disable cart eject IRQ                        |
-| [70h][]    | $0A81 | ??? weird                                     |
-| [72h][]    | $0AA6 | Clock CPU with OSC3                           |
+| [70h][]    | $0A81 | Check cart eject fired, weirdly               |
+| [72h][]    | $0AA6 | Clock CPU with OSC3 (high speed operation)    |
 | [74h][]    | $0ACD | Clock CPU with OSC1 (low power mode)          |
 | [76h][]    | $0AE6 | Power off cart slot                           |
 | [78h][]    | $0AF9 | Power on cart slot                            |
-| [7Ah][]    | $0B20 | Check cart inserted                           |
+| [7Ah][]    | $0B20 | Check cart is inserted                        |
 | [7Ch][]    | $0B2E | Execute test case ??                          |
-| [7Eh][]    | $0B8F | Set PRC rate                                  |
-| [80h][]    | $0BA3 | Get PRC rate                                  |
+| [7Eh][]    | $0B8F | Set frame rate divider                        |
+| [80h][]    | $0BA3 | Get frame rate divider                        |
 | [82h][]    | $0BB1 | Test $2001 bits 2~0 are a game struct ID      |
 | [84h][]    | $047A | Flash cart: read product IDs                  |
 | [86h][]    | $0493 | Flash cart: reset                             |
@@ -111,10 +111,589 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 | [90h][]    | $0517 | Flash cart: allow remapping page 0            |
 | [92h][]    | $0529 | Flash cart: remap for reading product IDs     |
 | [94h][]    | $053A | Select game by game struct ID                 |
-| [96h][]    | $0000 | -                                             |
+| [96h][]    | $0000 | (not an interrupt)                            |
 | [98h][]    | $0BBD | IR pulse                                      |
 
-TODO: individual sections (pages?) on each software int
+[40h]: #software-defined-interrupt
+[42h]: #suspend-system
+[44h]: #sleep
+[46h]: #sleep-with-display-on
+[48h]: #shutdown-system
+[4Ah]: #sleep
+[4Ch]: #set-default-lcd-contrast
+[4Eh]: #step--apply-default-contrast
+[50h]: #apply-default-lcd-contrast
+[52h]: #get-default-contrast
+[54h]: #set-temporary-lcd-contrast
+[56h]: #turn-lcd-on
+[58h]: #reset-lcd
+[5Ah]: #turn-lcd-off
+[5Ch]: #5ch
+[5Eh]: #5eh
+[60h]: #60h
+[62h]: #62h
+[64h]: #64h
+[66h]: #66h
+[68h]: #68h
+[6Ah]: #6ah
+[6Ch]: #enable-cart-eject-irq-and-set-priority
+[6Eh]: #disable-cart-eject-irq
+[70h]: #check-cart-eject-fired
+[72h]: #enter-high-speed-operation
+[74h]: #enter-low-speed-operation
+[76h]: #power-off-cart-slot
+[78h]: #power-on-cart-slot
+[7Ah]: #check-cart-is-inserted
+[7Ch]: #7ch
+[7Eh]: #set-frame-rate-divider
+[80h]: #get-frame-rate-divider
+[82h]: 
+[84h]: 
+[86h]: 
+[88h]: 
+[8Ah]: 
+[8Ch]: 
+[8Eh]: 
+[90h]: 
+[92h]: 
+[94h]: 
+[96h]: 
+[98h]: 
+<!-- Game pages -->
+[Lunch Time]: ../../software/official/lunch_time.md
+[Party]: ../../software/official/party.md
+[Pichu Bros]: ../../software/official/pichu_bros.md
+[Pinball]: ../../software/official/pinball.md
+[Puzzle]: ../../software/official/puzzle.md
+[Puzzle 2]: ../../software/official/puzzle2.md
+[Race]: ../../software/official/race.md
+[Shock Tetris]: ../../software/official/tetris.md
+[Sodateyasan]: ../../software/official/sodate.md
+[Togepi's Adventure]: ../../software/official/togepi.md
+[Zany Cards]: ../../software/official/cards.md
+<!-- TODO: specific links for registers -->
+[$2000]: Registers.md
+[$2001]: Registers.md
+[cart eject]: interrupts.md#cart-eject
+
+TODO: Checks for official use is currently superficial, just whether or not the specific INT operation exists. Each *should* be tested to see if it's actually used, and to describe when and why. Some uses are just part of MINLIB and not actually code that's reached. When discovered, those can be removed from here.
+
+### Software-defined interrupt
+
+You can define a routine at `$00FFF1` which you can call from anywhere via `INT [40h]` without needing to change NB.
+
+No official software uses this.
+
+### Suspend system
+
+Called via `INT [42h]`
+
+This version backs up the state of the LCD controller, IRQ enable status, IRQ priority and polarity for keypad, enables power key for waking, disables all other IRQs, then halts the system.
+
+When resuming from this state, it will restore everything it backed up and turn the LCD on itself. However, the contents of `BA` are lost.
+
+This is the safest/easiest form of resuming the game where you left off when the console is powered back on.
+
+Official software which uses this:
+
+* [Lunch Time][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Pinball][]: TODO: why/when
+* [Race][]: TODO: why/when
+* [Shock Tetris][]: TODO: why/when
+* [Sodateyasan][]: TODO: why/when
+* [Togepi's Adventure][]: TODO: why/when
+* [Zany Cards][]: TODO: why/when
+
+### Sleep
+
+Called via `INT [44h]` (official usage) or `INT [4Ah]` (no one uses this).
+
+Halts the CPU and LCD without any of the other overhead. It sets the interrupt flags to IRQ2+ so any IRQs you leave enabled without setting their priority to 1 will be able to wake the console, potentially crashing the console if you haven't configured these properly. See [here](./interrupts.md#waking-up) for more details.
+
+Official software which uses this:
+
+* [Sodateyasan][]: TODO: why/when
+
+### Sleep with display on
+
+Called via `INT [46h]`
+
+Similar to [44h][] but turns off frame copy while leaving the display on. This allows you to freeze the screen to some message while the device is halted.
+
+No official software uses this.
+
+### Shutdown system
+
+Called via `INT [48h]`
+
+Powers down the system as much as possible (but still allowing the RTC to keep time) and halts it. When the power button is pressed next, the system will restart (soft reset).
+
+All official software uses this:
+
+* [Lunch Time][]: TODO: why/when
+* [Party][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Pinball][]: TODO: why/when
+* [Puzzle][]: TODO: why/when
+* [Puzzle 2][]: TODO: why/when
+* [Race][]: TODO: why/when
+* [Shock Tetris][]: TODO: why/when
+* [Sodateyasan][]: TODO: why/when
+* [Togepi's Adventure][]: TODO: why/when
+* [Zany Cards][]: power button (TODO: when?)
+
+### Set default LCD contrast
+
+Called via:
+
+```s1c88
+LD A, #(new default contrast)
+INT [4Ch]
+; contents of B lost
+```
+
+This sets the [default contrast][$2000] then applies it. `A` can be 0~63 (inclusive) where 0 is fully white and 63 is fully black. The default contrast set by the bios is 31 (50%). The LCD panel itself normally defaults to 32.
+
+When accessing LCD commands like this, it's a good idea to disable interrupts (other than ones leading to a system shutdown).
+
+Official software which uses this:
+
+* [Party][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Pinball][]: TODO: why/when
+* [Puzzle][]: TODO: why/when
+* [Puzzle 2][]: TODO: why/when
+* [Shock Tetris][]: TODO: why/when
+* [Zany Cards][]: TODO: why/when
+
+### Step & apply default contrast
+
+Called via:
+
+```s1c88
+; To decrement
+OR SC, #1
+INT [4Eh]
+; contents of B lost
+OR A, A
+JRS Z, success
+
+; To increment
+XOR A, A
+INT [4Eh]
+; contents of B lost
+OR A, A
+JRS Z, success
+```
+
+This decrements or increments the default contrast by 1 then applies it.
+
+When accessing LCD commands like this, it's a good idea to disable interrupts (other than ones leading to a system shutdown).
+
+While official software (such as [Shock Tetris][]) do step the contrast by 1, no software does so via this software interrupt.
+
+### Apply default LCD contrast
+
+Called via `INT [50h]`
+
+This restores default contrast from [$2000][]. Contents of `B` are lost.
+
+When accessing LCD commands like this, it's a good idea to disable interrupts (other than ones leading to a system shutdown).
+
+No official software uses this.
+
+### Get default contrast
+
+Called via:
+
+```
+INT [52h]
+; default contrast is now in A
+```
+
+No official software uses this. Instead, [MINLIB][] provides a method for this (TODO: link?) which respects the different location of the default contrast on a development rig.
+
+### Set temporary LCD contrast
+
+Called via:
+
+```s1c88
+LD A, #(new contrast)
+INT [54h]
+; contents of B lost
+```
+
+We call this "temporary" because [50h][] is able to restore the default, which this doesn't edit. `A` can be 0~63 (inclusive) where 0 is fully white and 63 is fully black. The default contrast set by the bios is 31 (50%). The LCD panel itself normally defaults to 32.
+
+When accessing LCD commands like this, it's a good idea to disable interrupts (other than ones leading to a system shutdown).
+
+Official software which uses this:
+
+* [Lunch Time][]: TODO: why/when
+* [Party][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Pinball][]: TODO: why/when
+* [Race][]: TODO: why/when
+* [Shock Tetris][]: when setting the contrast in options
+* [Sodateyasan][]: TODO: why/when
+* [Togepi's Adventure][]: TODO: why/when
+* [Zany Cards][]: TODO: why/when
+
+### Turn LCD on
+
+Called via `INT [56h]`
+
+Turns the LCD on safely. Disables/restores interrupts around doing so. The contents of `BA` are lost.
+
+There is some code in here which is currently unclear, please contribute if you figure it out!
+
+Official software which uses this:
+
+* [Sodateyasan][]: after waking from [44h][]
+
+### Reset LCD
+
+In previous documentation, this was known as "initialize LCD".
+
+Called via `INT [58h]`
+
+Restores the LCD to its default state. Only works if the [LCD is on][56h], NOP otherwise. The contents of `BA` are lost.
+
+No official software uses this.
+
+### Turn LCD off
+
+Called via `INT [5Ah]`
+
+Turns the LCD off safely. This also turns off frame copy, which you will need to re-enable manually after [turning the LCD on][56h].
+
+No official software uses this.
+
+### 5Ch
+
+These will be renamed. "RAM vector" is not really accurate. In previous documentation, this was known as "enable RAM vector".
+
+Called via `INT [5Ch]`
+
+If bit 7 of [$2001][] is unset, sets bits 7~6 and resets bit 5, which sets the console as "asleep", which will cause IRQs to follow the [wake up](./interrupts.md#waking-up) pathway.
+
+It's possible this is useful for hotswapping cartridges, but would need some setup before the `INT` operation.
+
+No official software uses this.
+
+### 5Eh
+
+These will be renamed. "RAM vector" is not really accurate. In previous documentation, this was known as "disable RAM vector".
+
+Called via `INT [5Eh]`
+
+If bit 6 of [$2001][] is unset, prepares [cart eject][], resets bits 7~6, and sets bit 5, which will cause IRQs to stop following [wake up](./interrupts.md#waking-up) pathway
+
+No official software uses this.
+
+### 60h
+
+These will be renamed. In previous documentation, this was known as "disable cart eject IRQ 13 (with abort)" or "dis_irq_13" where $13 is the previously used index for the [cart eject][] IRQ.
+
+Called via `INT [60h]`
+
+TODO:
+
+No official software uses this.
+
+### 62h
+
+These will be renamed. In previous documentation, this was known as "enable cart eject IRQ 13 (with abort)" or "ena_irq_13" where $13 is the previously used index for the [cart eject][] IRQ.
+
+Called via `INT [62h]`
+
+TODO:
+
+No official software uses this.
+
+### 64h
+
+These will be renamed.
+
+Called via `INT [64h]`
+
+TODO:
+
+No official software uses this.
+
+### 66h
+
+These will be renamed.
+
+Called via `INT [66h]`
+
+TODO:
+
+No official software uses this.
+
+### 68h
+
+These will be renamed.
+
+Called via:
+
+```s1c88
+INT [68h]
+OR A, A
+JRS Z, success
+; contents of B/XP lost
+```
+
+Turns on the cartidge power (if one is inserted) and prepares the [selected game][$2001] from the multi-cart. In the event of an error, the cartridge slot is unpowered (if it was previously unpowered).
+
+`A` returns the result of this routine. 0 for success, 1 for no cart inserted, or 2 for some other error.
+
+The purpose of this code is currently unclear, please contribute if you figure it out!
+
+No official software uses this.
+
+### 6Ah
+
+These will be renamed.
+
+Called via:
+
+```s1c88
+INT [6Ah]
+OR A, A
+JRS Z, success
+; contents of B/XP lost
+```
+
+Similar to [68h][] but with less checks. Cart power stays on even if there's an error.
+
+`A` returns the result of this routine. 0 for success, 1 for no cart inserted, or -1 if the [startup action](../dev_cart.md#startup-action) is 0 or 2 (or this isn't a dev cart at all).
+
+No official software uses this.
+
+### Enable cart eject IRQ and set priority
+
+Called via:
+
+```s1c88
+LD A, #(cart eject IRQ priority)
+INT [6Ch]
+; contents of B lost
+```
+
+No official software uses this.
+
+### Disable cart eject IRQ
+
+Called via `INT [6Eh]`
+
+No official software uses this.
+
+### Check cart eject fired
+
+Called via:
+
+```s1c88
+INT [70h]
+OR A, A
+JRS Z, fired
+```
+
+This checks if the current interrupt priority in [I1~I0](./README.md#interrupt-flags) is *equal to* the cart eject priority (TODO: link?), and if so returns whether or not it fired (and clears it). This is not how IRQ priority normally works: it normally checks that the priority is strictly greater than the interrupt flags.
+
+No official software uses this. Not sure anything should...
+
+### Enter high speed operation
+
+Called via `INT [72h]`
+
+This causes the PM to enter high speed operation mode, clocking the CPU off of OSC3 instead of OSC1. This is the default state when exiting the BIOS, so it only ever needs to be called if [74h][] is ever used.
+
+No official software uses this.
+
+### Enter low speed operation
+
+Called via `INT [74h]`
+
+This causes the PM to enter low speed operation mode, clocking the CPU off of OSC1 instead of OSC3. This saves power but limits the capabilities of the PM.
+
+TODO: discussion of limitations
+
+No official software uses this.
+
+### Power off cart slot
+
+Called via `INT [76h]`
+
+Also resets bit 6 of [$2002]. TODO: why?
+
+No official software uses this.
+
+### Power on cart slot
+
+Called via `INT [78h]`
+
+Also sets bits 7~6 of [$2002]. TODO: why?
+
+No official software uses this.
+
+### Check cart is inserted
+
+Called via:
+
+```s1c88
+INT [7Ah]
+OR A, A
+JRS Z, inserted
+```
+
+No official software uses this.
+
+### 7Ch
+
+### Set frame rate divider
+
+In previous documentation, this was known as "set PRC rate".
+
+Called via:
+
+```s1c88
+LD A, #(frame rate divider index)
+INT [7Eh]
+```
+
+While the frame rate divider can have a value of 0~7 it's not the divisor itself, it corresponds like this:
+
+| Index | Divider | FPS |
+| ----- | -------:| ---:|
+| 0     | 3       | 24  |
+| 1     | 6       | 12  |
+| 2     | 9       | 8   |
+| 3     | 12      | 6   |
+| 4     | 2       | 36  |
+| 5     | 4       | 18  |
+| 6     | 6       | 12  |
+| 7     | 8       | 9   |
+
+All official software uses this:
+
+* [Lunch Time][]: TODO: why/when
+* [Party][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Pinball][]: TODO: why/when
+* [Puzzle][]: TODO: why/when
+* [Puzzle 2][]: TODO: why/when
+* [Race][]: TODO: why/when
+* [Shock Tetris][]: TODO: why/when
+* [Sodateyasan][]: TODO: why/when
+* [Togepi's Adventure][]: TODO: why/when
+* [Zany Cards][]: TODO: why/when
+
+### Get frame rate divider
+
+In previous documentation, this was known as "get PRC rate".
+
+Called via:
+
+```s1c88
+INT [80h]
+; frame rate divider index in A
+```
+
+See [above][7Eh] for the table converting an index to an actual divisor.
+
+Official software which uses this:
+
+* [Party][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Puzzle][]: TODO: why/when
+* [Puzzle 2][]: TODO: why/when
+
+### Valid multi-cart game index
+
+In previous documentation, this was known as "test cart type".
+
+Called via:
+
+```s1c88
+INT [82h]
+JRS NZ, multicart
+```
+
+If this returns Z=0, it means bits 2~0 of [$2001][] represent a valid game ID in an [official multi-cart](../dev_cart.md) set up. Z=1 doesn't mean it's not an official multi-cart set up, it could mean that it didn't use the game select screen *or* that it's a release game/unsupported flash cart/etc.
+
+No official software uses this.
+
+### Flash cart commands
+
+* [84h](../dev_cart.md#software-id-entry)
+* [86h](../dev_cart.md#reset)
+* [88h](../dev_cart.md#program-byte)
+* [8Ah](../dev_cart.md#erase-sector)
+* [8Ch](../dev_cart.md#enter-bank-select-mode)
+* [8Eh][]
+* [90h](../dev_cart.md#enable-remapping-page-0)
+* [92h](../dev_cart.md#remap-ids)
+* [94h][]
+
+#### Select individual bank
+
+Called via:
+
+```s1c88
+LD XP, #(final data page in external page)
+LD A, #(bank ID)
+INT [8Eh]
+```
+
+Use this to map a single bank. If you need to map multiple, use [enter bank select mode](../dev_cart.md#enter-bank-select-mode) instead. To configure page 0, [unlock that capability](../dev_cart.md#enable-remapping-page-0) first.
+
+See [here](../dev_cart.md#enter-bank-select-mode) for the table mapping external page index to internal pages.
+
+The BIOS uses this several times to remap bank 0 to page 1, making bytes $0000~$2100 (exclusive) accessible for reading and code execution. Of course, it also uses this to undo that mapping.
+
+No other official software uses this.
+
+#### Prepare game
+
+Called via:
+
+```s1c88
+LD A, #(game ID in ROM's struct array)
+INT [94h]
+; contents of B lost
+```
+
+The BIOS uses this to prepare any game stored in this multi-rom format, even when not using the game select screen.
+
+No other official software uses this.
+
+### 96h
+
+This is not a software interrupt, but a value which is checked by MINLIB to conditionalize execution in some instances. In the official BIOS the value here is 0x0000.
+
+TODO: where/how is it checked, what does it change
+
+### IR pulse
+
+Called via:
+
+```s1c88
+LD YP, #00h
+LD IY, #2061h
+LD B, #(pulse time)
+INT [98h]
+; contents of B lost
+```
+
+The pulse time is in CPU cycles * 4. Official software only uses `#04h` for this value, meaning it pulses for 16 CPU cycles then uses a NOP slide for an off pulse. For more, see the [IR](../ir.md) page.
+
+Official software which uses this:
+
+* [Lunch Time][]: TODO: why/when
+* [Pichu Bros][]: TODO: why/when
+* [Shock Tetris][]: TODO: why/when
 
 ## Initialization
 

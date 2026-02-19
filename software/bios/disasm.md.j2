@@ -1394,6 +1394,7 @@ stc__return:
 	POP EP
 	RET
 ; ----------------------
+; Clobbers: BA
 _lcd_on:
 	POP SC
 	PUSH EP
@@ -1673,7 +1674,12 @@ dc0__return1:
 ; Prepares bank selections only if cart is inserted
 ; and startup action is 0/2 (or not a dev cart).
 ; Powers on cart if one's inserted.
-; Clobbers: BA, XP
+; Returns:
+;   A:
+;     -1 = select_boot didn't prepare anything
+;     0 = banks perpared
+;     1 = no cart inserted
+; Clobbers: B, XP
 _dev_card1:
 	PUSH EP
 	PUSH BR
@@ -1894,7 +1900,7 @@ pc__wait_200:
 	RET
 ; ----------------------
 ; Returns
-;   Z: 1=cart is inserted
+;   Z: 0=cart is inserted
 _cart_detect:
 	POP SC
 	PUSH EP
