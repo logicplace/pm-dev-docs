@@ -280,7 +280,7 @@ With pm.h, the factor flags are all in IRQ_ACT1, the enable flags in IRQ_ENA1, a
 | PTM2-3 | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
 | PTM4-5 | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
 
-For more information about how interrupts work, see [Interrupts](cpu/Interrupts.md).
+For more information about how interrupts work, see [Interrupts](cpu/interrupts.md).
 
 ### Enabling and pausing programmable timers
 
