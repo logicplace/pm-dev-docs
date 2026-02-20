@@ -2,7 +2,7 @@
 
 The Pokémon mini is a hand held created by Nintendo R\&D3 around 1999. It is based around the Epson S1C88 Core (then Timex/Seiko), and it derives most peripherals from this system.
 
-The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared with the LCD Controller) and a 21-bit cartridge bus. The entire system is controlled by writing to 256 hardware registers, most of which are [Open-Bus](../Glossary.md#open-bus).
+The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared with the LCD Controller) and a 21-bit cartridge bus. The entire system is controlled by writing to 256 hardware registers, most of which are [Open-Bus](../glossary.md#open-bus).
 
 - [CPU: S1C88V20](cpu/README.md)
   - [Instruction Set](cpu/S1C88_InstructionSet.md)

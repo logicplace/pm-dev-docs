@@ -17,7 +17,7 @@ Firstly let's start with the entry-point's file, `main.c`. Let's take a look at 
 #include "hello_tiles.h"
 ```
 
-This section is including header files (denoted by the `.h` extension, which is part of the filename) from elsewhere into this file's [scope](/Glossary.md#scope). This is done through the `#include` _preprocessor directive_. That is, an instruction given to the C preprocessor, a system which executes prior to compilation. You can think of this directive as copying and pasting the entire contents of the header file into this file, right where the include line is written.
+This section is including header files (denoted by the `.h` extension, which is part of the filename) from elsewhere into this file's [scope](/glossary.md#scope). This is done through the `#include` _preprocessor directive_. That is, an instruction given to the C preprocessor, a system which executes prior to compilation. You can think of this directive as copying and pasting the entire contents of the header file into this file, right where the include line is written.
 
 If you haven't guessed, preprocessor directives are always prefixed by `#` and there are more of them! But this is the only one used in this tutorial.
 

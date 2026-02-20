@@ -2,13 +2,13 @@
 
 The Pokémon mini maps $2000 \~ $20FF as hardware control registers. This area is reserved for hardware related functions such as video, audio, general purpose timers, hardware I/O, and system control.
 
-Much of this address space is mapped as [Open-Bus](/Glossary.md#open-bus "wikilink"), leading us to believe that this area is not used for any purpose. Other areas respond to requests but their purpose is yet undetermined.
+Much of this address space is mapped as [Open-Bus](/glossary.md#open-bus "wikilink"), leading us to believe that this area is not used for any purpose. Other areas respond to requests but their purpose is yet undetermined.
 
 Registers tend to be controlled on a bit level, so for the sanity purposes, they will be broken down to this level. At any point they are shown spanning multiple columns, that indicates that it is a multi-bit value and should be treated as if they were a number.
 
 The bits themselves come in four flavors: Read-only, Write-Only, Read-Write, and S-R Strobe. Write-Only registers typically return a zero value, and are generally only used for things such as resetting timers. S-R Strobes are used for clearing interrupt events, writting a logical '1' to any bit that is set will result in a bit being cleared, where as '0' leaves them unchanged. Unused bits always return '0'.
 
-Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus "wikilink") and will be excluded unless a function has otherwise been determined.
+Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus "wikilink") and will be excluded unless a function has otherwise been determined.
 
 ## Register Mapping
 
