@@ -10,7 +10,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
     - [The Hardware Registers](cpu/Registers.md)
   - [Internal BIOS](cpu/bios.md)
   - [Interrupts](cpu/interrupts.md)
-  - [Oscillators & Timers](Timers.md)
+  - [Oscillators & Timers](timers.md)
   - [I/O](cpu/io.md)
   - [Audio / Sound](cpu/sound.md)
   - [LCD Controller](cpu/lcd_controller.md)
@@ -30,7 +30,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
 
 Little-endian 8-bit model 3 S1C88V20 (aka E0C88V20) clocked 4.00 MHz. This is a S1C88 family chip, potentially customized for Nintendo (as there is no public documentation for the V20).
 
-It has both 8-bit and 16-bit register as well as 8-bit page registers for extended addressing.
+It has both 8-bit and 16-bit registers as well as 8-bit page registers for extended addressing.
 
 External bus with 21 bits for address & 8 bits for data.
 
@@ -66,7 +66,7 @@ Can read back timer values (since sound is assigned to Timer 3).
 
 For commercial games, hold the C button while booting up to start muted. <!-- software comment but eh? -->
 
-## [Timers](Timers.md)
+## [Timers](timers.md)
 
 There are two oscillators and several timers/counters in the system. Additionally, the LCD controller has its own frame counter which is synced with the LCD.
 

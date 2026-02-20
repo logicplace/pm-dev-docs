@@ -1,6 +1,6 @@
 ## Register Overview
 
-The Pokémon mini maps $2000 \~ $20FF as hardware control registers. This area is reserved for hardware related functions such as video, audio, general purpose timers, hardware I/O and system control.
+The Pokémon mini maps $2000 \~ $20FF as hardware control registers. This area is reserved for hardware related functions such as video, audio, general purpose timers, hardware I/O, and system control.
 
 Much of this address space is mapped as [Open-Bus](/Glossary.md#open-bus "wikilink"), leading us to believe that this area is not used for any purpose. Other areas respond to requests but their purpose is yet undetermined.
 
@@ -11,6 +11,64 @@ The bits themselves come in four flavors: Read-only, Write-Only, Read-Write, and
 Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus "wikilink") and will be excluded unless a function has otherwise been determined.
 
 ## Register Mapping
+
+* $2001:
+  * bit 7:
+    * skips handling of INTs _unknown_eject2, _dev_card0, & _dev_card1 when 0
+    * skips handling of INTs _ena_ram_vec & _unknown_eject1 when 1
+    * avoids wakeup bug when 0
+    * calls _shutdown for _cart_ejected_irq when 0 if bits 1-0 are 00
+    * enables cart eject IRQ during shutdown/sleep when 0
+    * set during _shutdown
+    * set by _ena_ram_vec if bit 7 (self) is 0
+    * reset by _dis_ram_vec if bit 6 is 1
+    * set by _unknown_eject1 if bit 7 (self) is 0
+    * reset by _unknown_eject2 if bit 6 is 0 and bit 7 (self) is 1
+  * bit 6:
+    * skips handling of INTs _dis_ram_vec, _dis_irq_13, & _ena_irq_13 when 0
+    * skips handling of INTs _unknown_eject2, _dev_card0, & _dev_card1 when 1
+    * skips calling flash0418 during wakes when 0
+    * calls _shutdown for _cart_ejected_irq when 1 if bit 7 is 1 and bits 1-0 are 00
+    * enables cart eject IRQ during resume when 1
+    * enables cart eject IRQ during shutdown/sleep when 1
+    * set by _ena_ram_vec if bit 7 is 0
+    * reset by _dis_ram_vec if bit 6 (self) 1
+  * bit 5: indicates system isn't asleep? 0=asleep
+    * during power button IRQ, jumps immediately to cart handler when 1
+    * during _cart_ejected_irq, jumps to reset2 when 1
+    * when 0, causes most IRQs to divert to wakeup sequence (intstuff2)
+    * set during startup
+    * set right before dying during the other IRQs' wake handling
+    * set during wakeup from _suspend_system
+    * reset by _ena_ram_vec if bit 7 is 0
+    * set by _dis_ram_vec if bit 6 is 1
+    * reset by _unknown_eject1 if bit 7 is 0
+    * set by _unknown_eject2 if bit 6 is 0 and bit 7 is 1
+  * bit 4:
+    * goto reset2 during power button IRQ when 1 if bit 5 is 0
+    * goto reset2 during _cart_ejected_irq when 1
+    * set during startup
+    * reset before jumping to cart
+    * set during _shutdown
+  * bit 3: 
+    * tested in _test_cart_type
+    * tested in flash0418
+    * tested in _dev_card0
+    * presumably indicates that 2~0 is a valid game index
+  * bit 2~0:
+    * read as game index in flash0418
+    * read as game index in _dev_card0
+    * bit 0 set in cct__startup_action_2
+* $2002:
+  * bit 7: written to like a strobe? could be EBR
+  * bit 6:
+    * jumps to power button vector on cart during IRQ if $2001's were 0s
+  * bit 5: 
+  * bit 4: 
+  * bit 3: clocking with OSC3 ?
+  * bit 2: 
+  * bit 1: 
+  * bit 0: 
 
 <table style="text-align: center;">
 <caption><strong>Register Map Legend</strong></caption>
@@ -90,14 +148,14 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;" colspan="4">Battery ADC threshold value</td>
 </tr><tr>
 <td>$18</td>
-<td rowspan="TMR1_SCALE"><a href="Timers.md" title="wikilink">Timer 1 Prescalars</a></td>
+<td rowspan="TMR1_SCALE"><a href="timers.md" title="wikilink">Timer 1 Prescalars</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Lo Scalar</td>
 </tr><tr>
 <td>$19</td>
-<td rowspan="TMR1_ENA_OSC<br />TMR1_OSC"><a href="Timers.md" title="wikilink">Timers Osc. Enable<br />Timer 1 Osc. Select</a></td>
+<td rowspan="TMR1_ENA_OSC<br />TMR1_OSC"><a href="timers.md" title="wikilink">Timers Osc. Enable<br />Timer 1 Osc. Select</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Osc. 1</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Osc. 2</td>
@@ -106,27 +164,27 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">2nd Osc. (Lo)</td>
 </tr><tr>
 <td>$1A</td>
-<td rowspan="TMR2_SCALE"><a href="Timers.md" title="wikilink">Timer 2 Prescalars</a></td>
+<td rowspan="TMR2_SCALE"><a href="timers.md" title="wikilink">Timer 2 Prescalars</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Lo Scalar</td>
 </tr><tr>
 <td>$1B</td>
-<td rowspan="TMR2_OSC"><a href="Timers.md" title="wikilink">Timer 2 Osc. Select</a></td>
+<td rowspan="TMR2_OSC"><a href="timers.md" title="wikilink">Timer 2 Osc. Select</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">2nd Osc. (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;">2nd Osc. (Lo)</td>
 </tr><tr>
 <td>$1C</td>
-<td rowspan="TMR3_SCALE"><a href="Timers.md" title="wikilink">Timer 3 Prescalars</a></td>
+<td rowspan="TMR3_SCALE"><a href="timers.md" title="wikilink">Timer 3 Prescalars</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3">Lo Scalar</td>
 </tr><tr>
 <td>$1D</td>
-<td rowspan="TMR3_OSC"><a href="Timers.md" title="wikilink">Timer 3 Osc. Select</a></td>
+<td rowspan="TMR3_OSC"><a href="timers.md" title="wikilink">Timer 3 Osc. Select</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">2nd Osc. (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;">2nd Osc. (Lo)</td>
@@ -237,7 +295,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ $1F</td>
 </tr><tr>
 <td>$30</td>
-<td rowspan="TMR1_CTRL_L"><a href="Timers.md" title="wikilink">Timer 1 Control (Lo)</a></td>
+<td rowspan="TMR1_CTRL_L"><a href="timers.md" title="wikilink">Timer 1 Control (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
@@ -246,7 +304,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$31</td>
-<td rowspan="TMR1_CTRL_H"><a href="Timers.md" title="wikilink">Timer 1 Control (Hi)</a></td>
+<td rowspan="TMR1_CTRL_H"><a href="timers.md" title="wikilink">Timer 1 Control (Hi)</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable</td>
@@ -254,31 +312,31 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$32</td>
-<td rowspan="TMR1_PRE_L"><a href="Timers.md" title="wikilink">Timer 1 Preset (Lo)</a></td>
+<td rowspan="TMR1_PRE_L"><a href="timers.md" title="wikilink">Timer 1 Preset (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$33</td>
-<td rowspan="TMR1_PRE_H"><a href="Timers.md" title="wikilink">Timer 1 Preset (Hi)</a></td>
+<td rowspan="TMR1_PRE_H"><a href="timers.md" title="wikilink">Timer 1 Preset (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$34</td>
-<td rowspan="TMR1_PVT_L"><a href="Timers.md" title="wikilink">Timer 1 Pivot (Lo)</a></td>
+<td rowspan="TMR1_PVT_L"><a href="timers.md" title="wikilink">Timer 1 Pivot (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$35</td>
-<td rowspan="TMR1_PVT_H"><a href="Timers.md" title="wikilink">Timer 1 Pivot (Hi)</a></td>
+<td rowspan="TMR1_PVT_H"><a href="timers.md" title="wikilink">Timer 1 Pivot (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$36</td>
-<td rowspan="TMR1_CNT_L"><a href="Timers.md" title="wikilink">Timer 1 Count (Lo)</a></td>
+<td rowspan="TMR1_CNT_L"><a href="timers.md" title="wikilink">Timer 1 Count (Lo)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$37</td>
-<td rowspan="TMR1_CNT_H"><a href="Timers.md" title="wikilink">Timer 1 Count (Hi)</a></td>
+<td rowspan="TMR1_CNT_H"><a href="timers.md" title="wikilink">Timer 1 Count (Hi)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$38</td>
-<td rowspan="TMR2_CTRL_L"><a href="Timers.md" title="wikilink">Timer 2 Control (Lo)</a></td>
+<td rowspan="TMR2_CTRL_L"><a href="timers.md" title="wikilink">Timer 2 Control (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
@@ -287,7 +345,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$39</td>
-<td rowspan="TMR2_CTRL_H"><a href="Timers.md" title="wikilink">Timer 2 Control (Hi)</a></td>
+<td rowspan="TMR2_CTRL_H"><a href="timers.md" title="wikilink">Timer 2 Control (Hi)</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable</td>
@@ -295,27 +353,27 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$3A</td>
-<td rowspan="TMR2_PRE_L"><a href="Timers.md" title="wikilink">Timer 2 Preset (Lo)</a></td>
+<td rowspan="TMR2_PRE_L"><a href="timers.md" title="wikilink">Timer 2 Preset (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$3B</td>
-<td rowspan="TMR2_PRE_H"><a href="Timers.md" title="wikilink">Timer 2 Preset (Hi)</a></td>
+<td rowspan="TMR2_PRE_H"><a href="timers.md" title="wikilink">Timer 2 Preset (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$3C</td>
-<td rowspan="TMR2_PVT_L"><a href="Timers.md" title="wikilink">Timer 2 Pivot (Lo)</a></td>
+<td rowspan="TMR2_PVT_L"><a href="timers.md" title="wikilink">Timer 2 Pivot (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$3D</td>
-<td rowspan="TMR2_PVT_H"><a href="Timers.md" title="wikilink">Timer 2 Pivot (Hi)</a></td>
+<td rowspan="TMR2_PVT_H"><a href="timers.md" title="wikilink">Timer 2 Pivot (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$3E</td>
-<td rowspan="TMR2_CNT_L"><a href="Timers.md" title="wikilink">Timer 2 Count (Lo)</a></td>
+<td rowspan="TMR2_CNT_L"><a href="timers.md" title="wikilink">Timer 2 Count (Lo)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$3F</td>
-<td rowspan="TMR2_CNT_H"><a href="Timers.md" title="wikilink">Timer 2 Count (Hi)</a></td>
+<td rowspan="TMR2_CNT_H"><a href="timers.md" title="wikilink">Timer 2 Count (Hi)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$40</td>
@@ -352,7 +410,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 </tr><tr>
 <td>$48</td>
-<td rowspan="TMR3_CTRL_L"><a href="Timers.md" title="wikilink">Timer 3 Control (Lo)</a></td>
+<td rowspan="TMR3_CTRL_L"><a href="timers.md" title="wikilink">Timer 3 Control (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;">16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
@@ -361,7 +419,7 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$49</td>
-<td rowspan="TMR3_CTRL_H"><a href="Timers.md" title="wikilink">Timer 3 Control (Hi)</a></td>
+<td rowspan="TMR3_CTRL_H"><a href="timers.md" title="wikilink">Timer 3 Control (Hi)</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable</td>
@@ -369,27 +427,27 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">???</td>
 </tr><tr>
 <td>$4A</td>
-<td rowspan="TMR3_PRE_L"><a href="Timers.md" title="wikilink">Timer 3 Preset (Lo)</a></td>
+<td rowspan="TMR3_PRE_L"><a href="timers.md" title="wikilink">Timer 3 Preset (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$4B</td>
-<td rowspan="TMR3_PRE_H"><a href="Timers.md" title="wikilink">Timer 3 Preset (Hi)</a></td>
+<td rowspan="TMR3_PRE_H"><a href="timers.md" title="wikilink">Timer 3 Preset (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Preset</td>
 </tr><tr>
 <td>$4C</td>
-<td rowspan="TMR3_PVT_L"><a href="Timers.md" title="wikilink">Timer 3 Pivot (Lo)</a></td>
+<td rowspan="TMR3_PVT_L"><a href="timers.md" title="wikilink">Timer 3 Pivot (Lo)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$4D</td>
-<td rowspan="TMR3_PVT_H"><a href="Timers.md" title="wikilink">Timer 3 Pivot (Hi)</a></td>
+<td rowspan="TMR3_PVT_H"><a href="timers.md" title="wikilink">Timer 3 Pivot (Hi)</a></td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">Pivot</td>
 </tr><tr>
 <td>$4E</td>
-<td rowspan="TMR3_CNT_L"><a href="Timers.md" title="wikilink">Timer 3 Count (Lo)</a></td>
+<td rowspan="TMR3_CNT_L"><a href="timers.md" title="wikilink">Timer 3 Count (Lo)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$4F</td>
-<td rowspan="TMR3_CNT_H"><a href="Timers.md" title="wikilink">Timer 3 Count (Hi)</a></td>
+<td rowspan="TMR3_CNT_H"><a href="timers.md" title="wikilink">Timer 3 Count (Hi)</a></td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">Count</td>
 </tr><tr>
 <td>$50</td>
