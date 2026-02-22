@@ -1,6 +1,6 @@
 # S1C88V20 Core
 
-The S1C88V20 is an 8-bit microcontroller with 16-bit operations (designed by Timex, now Epson), part of the S1C88 processor family. The processor provides numerous addressing modes with a 24-bit addressing bus. In the PM's case, only 21 bits are mapped externally.
+The S1C88V20 is an 8-bit microcontroller (<abbr title="Microcontroller Unit">MCU</abbr>) with 16-bit operations (designed by Timex, now Epson), part of the S1C88 processor family. The processor provides numerous addressing modes with a 24-bit addressing bus. In the PM's case, only 21 bits are mapped externally.
 
 [Epson S1C88 Core manual](http://www.epsondevice.com/webapp/docs_ic/DownloadServlet?id=ID001149)
 
@@ -12,8 +12,8 @@ The CPU is clocked at 4.00 MHz, although the processor operates on a 4 cycle dat
 - [The Memory Map](Memory.md)
   - [The Hardware Registers](Registers.md)
 - [Internal BIOS](BIOS.md)
-- [Interrupts](Interrupts.md)
-- [Oscillators & Timers](../Timers.md)
+- [Interrupts](interrupts.md)
+- [Oscillators & Timers](../timers.md)
 - [I/O](IO.md)
 - [Audio / Sound](Sound.md)
 - [LCD Controller](LCD_Controller.md)
@@ -62,7 +62,7 @@ In order to access 24-bit addresses using registers, separate page registers are
 
 ### PC register
 
-Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](/Glossary.md#significant-bits) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
+Since the program cursor is only 16 bits, it uses a special "delayed" register to account for the upper 8 bits of program access space. When PC has its [most significant bit](/glossary.md#significant-bits) set, the register CB takes the place of the upper 8 bits, extending PC out to 23 bits in total. To prevent bank switch problems, CB is "delayed" by the means of register NB. After each branch instruction, the value of NB is copied to register CB implicitly, allowing for full 23 bit jumps without special programming tricks or special functions.
 
 ### SP register
 
@@ -81,7 +81,7 @@ The stack pointer, as the name implies, points to the top of the stack. It may p
 | 6   | I0 | Interrupt bit 0   |    |             |
 | 7   | I1 | Interrupt bit 1   |    |             |
 
-While the SC register can, in some cases, be treated as a general purpose 8-bit register, the exception register however is not directly accessible by any conventional means. It is also to be noted that the exception trapping needs to be "enabled" by some means we've not discovered yet.
+While the SC register can, in some cases, be accessed similar to a general purpose 8-bit register, the CC register can not directly accessed by any conventional means. The CC register flags are also not connected to anything on the PM and likely not exposed enough to even be used by hardware mods.
 
 Division by zero causes the physical system to hard lock, but it is available in Pokémon Channel's emulator.
 
@@ -103,7 +103,7 @@ The overflow flag is set when the signed value overflows, that is, loops around.
 
 #### Negative flag
 
-For most operations, this is a copy of the [most significant bit](/Glossary.md#significant-bits), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
+For most operations, this is a copy of the [most significant bit](/glossary.md#significant-bits), which represents whether or not a signed value is negative. As expected, 0 is positive and 1 is negative.
 
 #### Decimal mode
 
@@ -123,4 +123,4 @@ These two bits describe the minimum priority level for interrupts to fire. Essen
 
 After an interrupt fires, this flag will represent the priority of the fired interrupt and must be changed for it to fire again.
 
-For more information, see the [Interrupts](Interrupts.md) page.
+For more information, see the [Interrupts](irqs.md) page.
