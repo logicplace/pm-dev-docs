@@ -62,7 +62,7 @@ Some IRQs are unhandled and end up resetting the console without going into soft
 
 *For the full list of hardware interrupts, see [here](interrupts.md)*
 
-Althought they're all interrupts, we make a distinction between hardware interrupts and software interrupts. Hardware interrupts are interrupts triggered in response to requests from the hardware (IRQs) whereas software interrupts are only triggered from software via the `INT` operation.
+Although they're all interrupts, we make a distinction between hardware interrupts and software interrupts. Hardware interrupts are interrupts triggered in response to requests from the hardware (IRQs) whereas software interrupts are only triggered from software via the `INT` operation.
 
 The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt flag](./README.md#interrupt-flags)'s setting. Since there's no need to ever do this, they're on their own page which can also talk about the hardware connectivity. Conversely, software interrupts are the correct way to execute BIOS-level procedures, which we discuss below.
 
@@ -147,18 +147,18 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 [7Ch]: #7ch
 [7Eh]: #set-frame-rate-divider
 [80h]: #get-frame-rate-divider
-[82h]: 
-[84h]: 
-[86h]: 
-[88h]: 
-[8Ah]: 
-[8Ch]: 
-[8Eh]: 
-[90h]: 
-[92h]: 
-[94h]: 
-[96h]: 
-[98h]: 
+[82h]: #valid-multi-cart-game-index
+[84h]: #flash-cart-commands
+[86h]: #flash-cart-commands
+[88h]: #flash-cart-commands
+[8Ah]: #flash-cart-commands
+[8Ch]: #flash-cart-commands
+[8Eh]: #select-individual-bank
+[90h]: #flash-cart-commands
+[92h]: #flash-cart-commands
+[94h]: #prepare-game
+[96h]: #96h
+[98h]: #ir-pulse
 <!-- Game pages -->
 [Lunch Time]: ../../software/official/lunch_time.md
 [Party]: ../../software/official/party.md
