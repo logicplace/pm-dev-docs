@@ -125,6 +125,22 @@ Assembly operators refer to what is typically represented by a mnemonic, such as
 * `HALT` - Shifts to HALT status
 * `SLP` - Shifts to SLEEP status
 
+## Overflow
+
+When a register (or some other container) has a fixed size, the results of mathematical operations using it as the destination must be truncated to fit the size.
+
+For example:
+
+```c
+uint8_t add(uint8_t a, uint8_t b) {
+    return a + b;
+}
+
+uint8_t result = add(0xFF, 1);
+```
+
+The result would normally be 0x100 but that can't fit in a uint8_t since it's 9 bits. This causes result to instead contain 0x00. This occurrence is called an *overflow* because the value goes *over* the maximum, flowing back around to the minimum.
+
 ## Scope
 
 In programming, scope refers to what identifiers are visible from certain perspectives. These scopes tend to be hierarchical starting with the most visible, the _global scope_. If something is defined in the global scope, then it can be seen from everywhere in the program, in theory. However, in C, the identifier must still be made known within a file to be available for use. Thus, often, declarations inside a C file outside of any function are said to be in the global scope, whether or not they're made available in a header file.
@@ -170,3 +186,21 @@ Indices:  2  1  0
 MM = Most significant byte
 LL = Least significant byte
 ```
+
+## Underflow
+
+When a register (or some other container) has a fixed size, the results of mathematical operations using it as the destination must be truncated to fit the size.
+
+For example:
+
+```c
+int8_t sub(int8_t a, int8_t b) {
+    return a - b;
+}
+
+int8_t result = sub(-128, 1);
+```
+
+The result would normally be -129 but that can fit in a int8_t since it's below the minimum, -128 (0x80). This causes result to instead contain 0x7F. This occurrence is called an *underflow* because the value goes *under* the minimum, flowing back around to the maximum.
+
+This term is also relevant to unsigned integers wrapping backwards from, for example, 0x00 to 0xFF.
