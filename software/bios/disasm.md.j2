@@ -1,5 +1,7 @@
 # BIOS disassembly
 
+Download a Python translation [here](bios.py).
+
 {% asm "epson", 4 -%}
 DEFSECT ".ram", DATA AT 14E0H
 SECT ".ram"
@@ -257,7 +259,7 @@ init_io:
 	OR [BR:61h], #08h                   ; set EEPROM clock bit high
 	OR [BR:61h], #04h                   ; set EEPROM data bit high
 	LD [BR:61h], #20h                   ; set all ports low except IR disable(?)
-	LD [BR:60h], #32h                   ; IR disable(?), rumble, IR rx set to output
+	LD [BR:60h], #32h                   ; IR disable(?), rumble, IR TXD set to output
 	LD [BR:62h], B                      ; ??
 	LD [BR:70h], B                      ; ??
 	LD [BR:71h], B                      ; ??
@@ -1501,7 +1503,7 @@ lcd_off:
 	LD [BR:0FEh], #0AEh                 ; send display off
 	LD [BR:0FEh], #0ACh                 ; send static indicator off
 	LD [BR:0FEh], #28h                  ; send power supply circuits all off
-	LD [BR:0FEh], #0A5h                 ; send "set all on" on (enter _sleep mode)
+	LD [BR:0FEh], #0A5h                 ; send "set all on" on (enter sleep mode)
 	AND [BR:81h], #~01h                 ; prevent init_display from working
 	RETE                                ; restore flags
 ; ----------------------
@@ -1610,6 +1612,7 @@ _unknown_eject2:
 ;           unexpected game ID in $2001
 ;           expected game ID in $2001
 ;           selected game ID has no valid entry in ROM
+;     unchanged if skipped
 ; Clobbers: B, XP
 _dev_card0:
 	PUSH EP
@@ -1642,7 +1645,7 @@ dc0__verify_selected_game:
 	AND A, #07h                         ; ...
 	LD L, #60h                          ; size of a game struct
 	MLT                                 ; ...
-	LD IX, #1050h                       ; read from $041050 + 96 * ?
+	LD IX, #1050h                       ; read from $041050 + 96 * game id
 	ADD IX, HL                          ; ...
 	PUSH IP                             ; ...
 	LD XP, #04h                         ; ...
@@ -1679,6 +1682,7 @@ dc0__return1:
 ;     -1 = select_boot didn't prepare anything
 ;     0 = banks perpared
 ;     1 = no cart inserted
+;     unchanged if skipped
 ; Clobbers: B, XP
 _dev_card1:
 	PUSH EP
@@ -1913,7 +1917,7 @@ _cart_detect:
 	RET
 ; ----------------------
 ; Arguments:
-;   IX: start address of structure
+;   XP:IX: start address of structure
 _read_structure:
 	PUSH EP                             ; omg just use PUSH ALE
 	PUSH BR
@@ -2383,7 +2387,7 @@ lbs__skip_shutdown:
 	CARL copy_one_frame                 ; ...force draws it despite the shutoff
 	RET
 ; ----------------------
-; Play low battery animation and check key presses.
+; Play insert cartridge animation and check key presses.
 ; A/C -> check for cartridge again.
 ; B/Power -> shutdown early.
 ; Assumes XP/YP = $00
@@ -2391,8 +2395,8 @@ lbs__skip_shutdown:
 insert_cart_screen:
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
 	OR [BR:71h], #04h                   ; cart power off
-	LD IX, insert_cart_animation_footer
-	LD IY, insert_cart_animation
+	LD IX, #insert_cart_animation_footer
+	LD IY, #insert_cart_animation
 	CARL play_animation
 ics__check_loop:
 	JRS Z, ics__shutdown                ; if animation finished, shutdown
