@@ -835,7 +835,7 @@ def _cart_eject_irq():
 	if cpu.osc == OSC1:
 		with suppress_interrupts():
 			enter_high_speed_operation()
-	if not unknown.r01_7 or unknown.r02_6:
+	if not unknown.r01_7 or unknown.r01_6:
 		return _shutdown()
 	if not cartridge.powered and unknown.r02_6:
 		with suppress_interrupts():
