@@ -33,20 +33,29 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {% macro register(address, pmh="", natural="", rowspan=1, link="") -%}
 </tr><tr>
 <td>{{ address }}</td>
-{%- if pmh -%}
+{%- if pmh or natural -%}
 <td rowspan="{{ rowspan }}">
-    <a href="{{ (link or address[1:]) + '.md' }}">{{ pmh }}</a>
-    {%- if natural -%}
-        <br/>{{ natural }}
+    {%- if pmh -%}
+        <a href="{{ (link or address[1:]) + '.md' }}">{{ pmh }}</a>
+        {%- if natural -%}
+            <br/>{{ natural }}
+        {%- endif -%}
+    {%- elif natural -%}
+        {{ natural }}
     {%- endif -%}
 </td>
 {%- endif -%}
 {%- endmacro -%}
 
-{% macro unk_register(address, comment="") -%}
+{% macro unk_register(address, comment="", rowspan=1) -%}
 </tr><tr>
 <td>{{ address }}</td>
-<td>Unknown{% if comment %} ({{ comment }}){% endif %}</td>
+<td rowspan="{{ rowspan }}">Unknown{% if comment %} ({{ comment }}){% endif %}</td>
+{%- endmacro -%}
+
+{% macro unk_reg_cont(address) -%}
+</tr><tr>
+<td>{{ address }}</td>
 {%- endmacro -%}
 
 {% macro td(name, content, color, colspan=1) -%}
@@ -271,7 +280,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("PTRUN2", "Enable", "rw") }}
 {{ td("PSET2", "Reset", "wo") }}
 {{ td("CKSEL2", "", "rw") }}
-{{ register("$39", "TMR2_CTRL_H", "PTM_B Control (Hi)") }}
+{{ register("$39", "TMR2_CTRL_H", "PTM_B Control (Hi)", 1, "38") }}
 {{ unused(4) }}
 {{ td("PTOUT3", "", "rw") }}
 {{ td("PTRUN3", "Enable", "rw") }}
@@ -317,7 +326,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("PTRUN4", "Enable", "rw") }}
 {{ td("PSET4", "Reset", "wo") }}
 {{ td("CKSEL4", "", "rw") }}
-{{ register("$49", "TMR3_CTRL_H", "PTM_C Control (Hi)") }}
+{{ register("$49", "TMR3_CTRL_H", "PTM_C Control (Hi)", 1, "48") }}
 {{ unused(4) }}
 {{ td("PTOUT5", "", "rw") }}
 {{ td("PTRUN5", "Enable", "rw") }}
@@ -409,7 +418,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("", "Frame counter", "ro", 4) }}
 {{ td("CKCN", "Rate divider", "rw", 3) }}
 {{ td("", "Initable", "rw") }}
-{{ register("$82", "PRC_MAP", "PRC Map Tile Base") }}
+{{ register("$82", "PRC_MAP", "PRC Map Tile Base", 3) }}
 {{ td("", "Map Tile Base (low)", "rw", 5) }}
 {{ unused(3) }}
 {{ register("$83") }}
@@ -423,7 +432,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$86", "PRC_SCROLL_X", "PRC Map Horizontal Scroll") }}
 {{ unused(1) }}
 {{ td("", "Map Scroll X", "rw", 7) }}
-{{ register("$87", "PRC_SPR", "PRC Sprite Tile Base") }}
+{{ register("$87", "PRC_SPR", "PRC Sprite Tile Base", 3) }}
 {{ td("", "Sprite Tile Base (low)", "rw", 2) }}
 {{ unused(6) }}
 {{ register("$88") }}
@@ -434,31 +443,31 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$8A", "PRC_CNT", "LCD Line Counter") }}
 {{ unused(1) }}
 {{ td("", "Count", "ro", 7) }}
-{{ unk_register("$8B", "returns 0") }}
+{{ unk_register("$8B", "returns 0", 13) }}
 {{ unused(8) }}
-{{ unk_register("$8C", "returns 0") }}
+{{ unk_reg_cont("$8C") }}
 {{ unused(8) }}
-{{ unk_register("$8D", "returns 0") }}
+{{ unk_reg_cont("$8D") }}
 {{ unused(8) }}
-{{ unk_register("$8E", "returns 0") }}
+{{ unk_reg_cont("$8E") }}
 {{ unused(8) }}
-{{ unk_register("$8F", "returns 0") }}
+{{ unk_reg_cont("$8F") }}
 {{ unused(8) }}
-{{ unk_register("$F0", "returns 0") }}
+{{ unk_reg_cont("$F0") }}
 {{ unused(8) }}
-{{ unk_register("$F1", "returns 0") }}
+{{ unk_reg_cont("$F1") }}
 {{ unused(8) }}
-{{ unk_register("$F2", "returns 0") }}
+{{ unk_reg_cont("$F2") }}
 {{ unused(8) }}
-{{ unk_register("$F3", "returns 0") }}
+{{ unk_reg_cont("$F3") }}
 {{ unused(8) }}
-{{ unk_register("$F4", "returns 0") }}
+{{ unk_reg_cont("$F4") }}
 {{ unused(8) }}
-{{ unk_register("$F5", "returns 0") }}
+{{ unk_reg_cont("$F5") }}
 {{ unused(8) }}
-{{ unk_register("$F6", "returns 0") }}
+{{ unk_reg_cont("$F6") }}
 {{ unused(8) }}
-{{ unk_register("$F7", "returns 0") }}
+{{ unk_reg_cont("$F7") }}
 {{ unused(8) }}
 {{ register("$FE", "LCD_CTRL", "LCD Raw Control Byte") }}
 {{ td("", "LCD Control I/O", "rw", 8) }}

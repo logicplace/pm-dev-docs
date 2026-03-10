@@ -41,8 +41,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <th style="border: 2px solid; width:60px;">&lt;&nbsp;Bit&nbsp;1&nbsp;&gt;</th>
 <th style="border: 2px solid; width:60px;">&lt;&nbsp;Bit&nbsp;0&nbsp;&gt;</th>
 </tr><tr>
-<td>$00</td><td rowspan="3">
-    <a href="00.md">SYS_CTRL</a><br/>System Control</td>
+<td>$00</td><td rowspan="3"><a href="00.md">SYS_CTRL</a><br/>System Control</td>
 <td style="border: 2px solid; background-color:#00ffc0;" colspan="6"><a href="contrast.md">contrast</a><br/>Startup Contrast</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CE1.md">CE1</a><br/>Cartridge I/O Enable</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CE0.md">CE0</a><br/>LCD I/O Enable</td>
@@ -63,14 +62,12 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;"><a href="OSCC.md">OSCC</a><br/>OSC3 on</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="VDC.md">VDC</a><br/>System voltage</td>
 </tr><tr>
-<td>$08</td><td rowspan="1">
-    <a href="08.md">SEC_CTRL</a><br/>Second Counter Control</td>
+<td>$08</td><td rowspan="1"><a href="08.md">SEC_CTRL</a><br/>Second Counter Control</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#ffff00;"><a href="STRST.md">STRST</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="STRUN.md">STRUN</a><br/>Enable</td>
 </tr><tr>
-<td>$09</td><td rowspan="3">
-    <a href="09.md">SEC_CNT</a><br/>Second Counter</td>
+<td>$09</td><td rowspan="3"><a href="09.md">SEC_CNT</a><br/>Second Counter</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="STD.md">STD</a><br/>Counter (low)</td>
 </tr><tr>
 <td>$0A</td>
@@ -79,22 +76,19 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td>$0B</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="STD.md">STD</a><br/>Counter (high)</td>
 </tr><tr>
-<td>$10</td><td rowspan="1">
-    <a href="10.md">SYS_BATT</a><br/>Battery Sensor</td>
+<td>$10</td><td rowspan="1"><a href="10.md">SYS_BATT</a><br/>Battery Sensor</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="SVDDT.md">SVDDT</a><br/>Low Battery</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="SVDON.md">SVDON</a><br/>Battery ADC control</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="4"><a href="SVDS.md">SVDS</a><br/>Battery ADC threshold value</td>
 </tr><tr>
-<td>$18</td><td rowspan="1">
-    <a href="18.md">TMR1_SCALE</a><br/>PTM_A Prescalars</td>
+<td>$18</td><td rowspan="1"><a href="18.md">TMR1_SCALE</a><br/>PTM_A Prescalars</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT1.md">PRPRT1</a><br/>Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST1.md">PST1</a><br/>Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT0.md">PRPRT0</a><br/>Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST0.md">PST0</a><br/>Lo Scalar</td>
 </tr><tr>
-<td>$19</td><td rowspan="1">
-    <a href="18.md">TMR1_OSC</a><br/>PTM_A Osc. Select</td>
+<td>$19</td><td rowspan="1"><a href="18.md">TMR1_OSC</a><br/>PTM_A Osc. Select</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable OSC3?</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable OSC1?</td>
@@ -102,34 +96,29 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF1.md">PRTF1</a><br/>2nd Osc. (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF0.md">PRTF0</a><br/>2nd Osc. (Lo)</td>
 </tr><tr>
-<td>$1A</td><td rowspan="1">
-    <a href="1A.md">TMR2_SCALE</a><br/>PTM_B Prescalars</td>
+<td>$1A</td><td rowspan="1"><a href="1A.md">TMR2_SCALE</a><br/>PTM_B Prescalars</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT3.md">PRPRT3</a><br/>Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST3.md">PST3</a><br/>Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT2.md">PRPRT2</a><br/>Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST2.md">PST2</a><br/>Lo Scalar</td>
 </tr><tr>
-<td>$1B</td><td rowspan="1">
-    <a href="1A.md">TMR2_OSC</a><br/>PTM_B Osc. Select</td>
+<td>$1B</td><td rowspan="1"><a href="1A.md">TMR2_OSC</a><br/>PTM_B Osc. Select</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF3.md">PRTF3</a><br/>2nd Osc. (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF2.md">PRTF2</a><br/>2nd Osc. (Lo)</td>
 </tr><tr>
-<td>$1C</td><td rowspan="1">
-    <a href="1C.md">TMR3_SCALE</a><br/>PTM_C Prescalars</td>
+<td>$1C</td><td rowspan="1"><a href="1C.md">TMR3_SCALE</a><br/>PTM_C Prescalars</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT5.md">PRPRT5</a><br/>Enable Hi</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST5.md">PST5</a><br/>Hi Scalar</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRPRT4.md">PRPRT4</a><br/>Enable Lo</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="PST4.md">PST4</a><br/>Lo Scalar</td>
 </tr><tr>
-<td>$1D</td><td rowspan="1">
-    <a href="1C.md">TMR3_OSC</a><br/>PTM_C Osc. Select</td>
+<td>$1D</td><td rowspan="1"><a href="1C.md">TMR3_OSC</a><br/>PTM_C Osc. Select</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF5.md">PRTF5</a><br/>2nd Osc. (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PRTF4.md">PRTF4</a><br/>2nd Osc. (Lo)</td>
 </tr><tr>
-<td>$20</td><td rowspan="3">
-    <a href="20.md">IRQ_PRI</a><br/>IRQ Priority</td>
+<td>$20</td><td rowspan="3"><a href="20.md">IRQ_PRI</a><br/>IRQ Priority</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="PLCD.md">PLCD</a><br/>IRQ 06h ~ 08h</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="PPTB.md">PPTB</a><br/>IRQ 0Ah ~ 0Ch</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="PPTA.md">PPTA</a><br/>IRQ 0Eh ~ 10h</td>
@@ -145,8 +134,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="PP0.md">PP0</a><br/>IRQ 1Eh~20h</td>
 </tr><tr>
-<td>$23</td><td rowspan="4">
-    <a href="23.md">IRQ_ENA</a><br/>IRQ Enable</td>
+<td>$23</td><td rowspan="4"><a href="23.md">IRQ_ENA</a><br/>IRQ Enable</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="ELCD.md">ELCD</a><br/>IRQ 06h</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="ELCFR.md">ELCFR</a><br/>IRQ 08h</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="ETU3.md">ETU3</a><br/>IRQ 0Ah</td>
@@ -185,8 +173,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">IRQ 3Ch</td>
 <td style="border: 2px solid; background-color:#80ff80;">IRQ 3Eh</td>
 </tr><tr>
-<td>$27</td><td rowspan="4">
-    <a href="27.md">IRQ_ACT</a><br/>IRQ Factor</td>
+<td>$27</td><td rowspan="4"><a href="27.md">IRQ_ACT</a><br/>IRQ Factor</td>
 <td style="border: 2px solid; background-color:#ffcc00;"><a href="FLCD.md">FLCD</a><br/>IRQ 06h</td>
 <td style="border: 2px solid; background-color:#ffcc00;"><a href="EFCFR.md">EFCFR</a><br/>IRQ 08h</td>
 <td style="border: 2px solid; background-color:#ffcc00;"><a href="FTU3.md">FTU3</a><br/>IRQ 0Ah</td>
@@ -225,8 +212,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ 3Ch</td>
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ 3Eh</td>
 </tr><tr>
-<td>$30</td><td rowspan="1">
-    <a href="30.md">TMR1_CTRL_L</a><br/>PTM_A Control (Lo)</td>
+<td>$30</td><td rowspan="1"><a href="30.md">TMR1_CTRL_L</a><br/>PTM_A Control (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="MODE16_A.md">MODE16_A</a><br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT0.md">PTOUT0</a></td>
@@ -234,40 +220,32 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET0.md">PSET0</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL0.md">CKSEL0</a></td>
 </tr><tr>
-<td>$31</td><td rowspan="1">
-    <a href="30.md">TMR1_CTRL_H</a><br/>PTM_A Control (Hi)</td>
+<td>$31</td><td rowspan="1"><a href="30.md">TMR1_CTRL_H</a><br/>PTM_A Control (Hi)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT1.md">PTOUT1</a></td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTRUN1.md">PTRUN1</a><br/>Enable</td>
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET1.md">PSET1</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL1.md">CKSEL1</a></td>
 </tr><tr>
-<td>$32</td><td rowspan="1">
-    <a href="32.md">TMR1_PRE_L</a><br/>PTM_A Preset (Lo)</td>
+<td>$32</td><td rowspan="1"><a href="32.md">TMR1_PRE_L</a><br/>PTM_A Preset (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR0.md">RDR0</a><br/>Preset</td>
 </tr><tr>
-<td>$33</td><td rowspan="1">
-    <a href="32.md">TMR1_PRE_H</a><br/>PTM_A Preset (Hi)</td>
+<td>$33</td><td rowspan="1"><a href="32.md">TMR1_PRE_H</a><br/>PTM_A Preset (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR1.md">RDR1</a><br/>Preset</td>
 </tr><tr>
-<td>$34</td><td rowspan="1">
-    <a href="34.md">TMR1_PVT_L</a><br/>PTM_A Compare (Lo)</td>
+<td>$34</td><td rowspan="1"><a href="34.md">TMR1_PVT_L</a><br/>PTM_A Compare (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR0.md">CDR0</a><br/>Compare data</td>
 </tr><tr>
-<td>$35</td><td rowspan="1">
-    <a href="34.md">TMR1_PVT_H</a><br/>PTM_A Compare (Hi)</td>
+<td>$35</td><td rowspan="1"><a href="34.md">TMR1_PVT_H</a><br/>PTM_A Compare (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR1.md">CDR1</a><br/>Compare data</td>
 </tr><tr>
-<td>$36</td><td rowspan="1">
-    <a href="36.md">TMR1_CNT_L</a><br/>PTM_A Count (Lo)</td>
+<td>$36</td><td rowspan="1"><a href="36.md">TMR1_CNT_L</a><br/>PTM_A Count (Lo)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM0.md">PTM0</a><br/>Count</td>
 </tr><tr>
-<td>$37</td><td rowspan="1">
-    <a href="36.md">TMR1_CNT_H</a><br/>PTM_A Count (Hi)</td>
+<td>$37</td><td rowspan="1"><a href="36.md">TMR1_CNT_H</a><br/>PTM_A Count (Hi)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM1.md">PTM1</a><br/>Count</td>
 </tr><tr>
-<td>$38</td><td rowspan="1">
-    <a href="38.md">TMR2_CTRL_L</a><br/>PTM_B Control (Lo)</td>
+<td>$38</td><td rowspan="1"><a href="38.md">TMR2_CTRL_L</a><br/>PTM_B Control (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="MODE16_B.md">MODE16_B</a><br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT2.md">PTOUT2</a></td>
@@ -275,56 +253,47 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET2.md">PSET2</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL2.md">CKSEL2</a></td>
 </tr><tr>
-<td>$39</td><td rowspan="1">
-    <a href="39.md">TMR2_CTRL_H</a><br/>PTM_B Control (Hi)</td>
+<td>$39</td><td rowspan="1"><a href="38.md">TMR2_CTRL_H</a><br/>PTM_B Control (Hi)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT3.md">PTOUT3</a></td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTRUN3.md">PTRUN3</a><br/>Enable</td>
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET3.md">PSET3</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL3.md">CKSEL3</a></td>
 </tr><tr>
-<td>$3A</td><td rowspan="1">
-    <a href="3A.md">TMR2_PRE_L</a><br/>PTM_B Preset (Lo)</td>
+<td>$3A</td><td rowspan="1"><a href="3A.md">TMR2_PRE_L</a><br/>PTM_B Preset (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR2.md">RDR2</a><br/>Preset</td>
 </tr><tr>
-<td>$3B</td><td rowspan="1">
-    <a href="3A.md">TMR2_PRE_H</a><br/>PTM_B Preset (Hi)</td>
+<td>$3B</td><td rowspan="1"><a href="3A.md">TMR2_PRE_H</a><br/>PTM_B Preset (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR3.md">RDR3</a><br/>Preset</td>
 </tr><tr>
-<td>$3C</td><td rowspan="1">
-    <a href="3C.md">TMR2_PVT_L</a><br/>PTM_B Compare (Lo)</td>
+<td>$3C</td><td rowspan="1"><a href="3C.md">TMR2_PVT_L</a><br/>PTM_B Compare (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR2.md">CDR2</a><br/>Compare data</td>
 </tr><tr>
-<td>$3D</td><td rowspan="1">
-    <a href="3C.md">TMR2_PVT_H</a><br/>PTM_B Compare (Hi)</td>
+<td>$3D</td><td rowspan="1"><a href="3C.md">TMR2_PVT_H</a><br/>PTM_B Compare (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR3.md">CDR3</a><br/>Compare data</td>
 </tr><tr>
-<td>$3E</td><td rowspan="1">
-    <a href="3E.md">TMR2_CNT_L</a><br/>PTM_B Count (Lo)</td>
+<td>$3E</td><td rowspan="1"><a href="3E.md">TMR2_CNT_L</a><br/>PTM_B Count (Lo)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM2.md">PTM2</a><br/>Count</td>
 </tr><tr>
-<td>$3F</td><td rowspan="1">
-    <a href="3E.md">TMR2_CNT_H</a><br/>PTM_B Count (Hi)</td>
+<td>$3F</td><td rowspan="1"><a href="3E.md">TMR2_CNT_H</a><br/>PTM_B Count (Hi)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM3.md">PTM3</a><br/>Count</td>
 </tr><tr>
-<td>$40</td><td rowspan="1">
-    <a href="40.md">TMR256_CTRL</a><br/>Clock Timer Control</td>
+<td>$40</td><td rowspan="1"><a href="40.md">TMR256_CTRL</a><br/>Clock Timer Control</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#ffff00;"><a href="TMRST.md">TMRST</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="TMRUN.md">TMRUN</a><br/>Enable</td>
 </tr><tr>
-<td>$41</td><td rowspan="1">
-    <a href="41.md">TMR256_CNT</a><br/>Clock Timer Counter</td>
+<td>$41</td><td rowspan="1"><a href="41.md">TMR256_CNT</a><br/>Clock Timer Counter</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="TMD.md">TMD</a><br/>Count</td>
 </tr><tr>
 <td>$44</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0c0c0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3">???</td>
 </tr><tr>
 <td>$45</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0ffc0;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;">???</td>
@@ -332,16 +301,15 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#c0ff00;">???</td>
 </tr><tr>
 <td>$46</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="8">???</td>
 </tr><tr>
 <td>$47</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 </tr><tr>
-<td>$48</td><td rowspan="1">
-    <a href="48.md">TMR3_CTRL_L</a><br/>PTM_C Control (Lo)</td>
+<td>$48</td><td rowspan="1"><a href="48.md">TMR3_CTRL_L</a><br/>PTM_C Control (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="MODE16_C.md">MODE16_C</a><br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT4.md">PTOUT4</a></td>
@@ -349,39 +317,32 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET4.md">PSET4</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL4.md">CKSEL4</a></td>
 </tr><tr>
-<td>$49</td><td rowspan="1">
-    <a href="49.md">TMR3_CTRL_H</a><br/>PTM_C Control (Hi)</td>
+<td>$49</td><td rowspan="1"><a href="48.md">TMR3_CTRL_H</a><br/>PTM_C Control (Hi)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="4">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTOUT5.md">PTOUT5</a></td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="PTRUN5.md">PTRUN5</a><br/>Enable</td>
 <td style="border: 2px solid; background-color:#ffff00;"><a href="PSET5.md">PSET5</a><br/>Reset</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="CKSEL5.md">CKSEL5</a></td>
 </tr><tr>
-<td>$4A</td><td rowspan="1">
-    <a href="4A.md">TMR3_PRE_L</a><br/>PTM_C Preset (Lo)</td>
+<td>$4A</td><td rowspan="1"><a href="4A.md">TMR3_PRE_L</a><br/>PTM_C Preset (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR4.md">RDR4</a><br/>Preset</td>
 </tr><tr>
-<td>$4B</td><td rowspan="1">
-    <a href="4A.md">TMR3_PRE_H</a><br/>PTM_C Preset (Hi)</td>
+<td>$4B</td><td rowspan="1"><a href="4A.md">TMR3_PRE_H</a><br/>PTM_C Preset (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="RDR5.md">RDR5</a><br/>Preset</td>
 </tr><tr>
-<td>$4C</td><td rowspan="1">
-    <a href="4C.md">TMR3_PVT_L</a><br/>PTM_C Compare (Lo)</td>
+<td>$4C</td><td rowspan="1"><a href="4C.md">TMR3_PVT_L</a><br/>PTM_C Compare (Lo)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR4.md">CDR4</a><br/>Compare data</td>
 </tr><tr>
-<td>$4D</td><td rowspan="1">
-    <a href="4C.md">TMR3_PVT_H</a><br/>PTM_C Compare (Hi)</td>
+<td>$4D</td><td rowspan="1"><a href="4C.md">TMR3_PVT_H</a><br/>PTM_C Compare (Hi)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8"><a href="CDR5.md">CDR5</a><br/>Compare data</td>
 </tr><tr>
-<td>$4E</td><td rowspan="1">
-    <a href="4E.md">TMR3_CNT_L</a><br/>PTM_C Count (Lo)</td>
+<td>$4E</td><td rowspan="1"><a href="4E.md">TMR3_CNT_L</a><br/>PTM_C Count (Lo)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM4.md">PTM4</a><br/>Count</td>
 </tr><tr>
-<td>$4F</td><td rowspan="1">
-    <a href="4E.md">TMR3_CNT_H</a><br/>PTM_C Count (Hi)</td>
+<td>$4F</td><td rowspan="1"><a href="4E.md">TMR3_CNT_H</a><br/>PTM_C Count (Hi)</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8"><a href="PTM5.md">PTM5</a><br/>Count</td>
 </tr><tr>
-<td>$50</td>
+<td>$50</td><td rowspan="1">Keypad IRQ edge</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP07.md">KCP07</a><br/>Power</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP06.md">KCP06</a><br/>Right</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP05.md">KCP05</a><br/>Left</td>
@@ -391,13 +352,12 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP01.md">KCP01</a><br/>B</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP00.md">KCP00</a><br/>A</td>
 </tr><tr>
-<td>$51</td>
+<td>$51</td><td rowspan="1">Cartridge IRQ edge</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP11.md">KCP11</a><br/>Eject</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="KCP10.md">KCP10</a><br/>Cartridge?</td>
 </tr><tr>
-<td>$52</td><td rowspan="1">
-    <a href="52.md">KEY_PAD</a><br/>Keypad Status (Active 0)</td>
+<td>$52</td><td rowspan="1"><a href="52.md">KEY_PAD</a><br/>Keypad Status (Active 0)</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K07D.md">K07D</a><br/>Power</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K06D.md">K06D</a><br/>Right</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K05D.md">K05D</a><br/>Left</td>
@@ -407,26 +367,24 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K01D.md">K01D</a><br/>B</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K00D.md">K00D</a><br/>A</td>
 </tr><tr>
-<td>$53</td><td rowspan="1">
-    <a href="53.md">Cart Bus</a><br/>CART_BUS</td>
+<td>$53</td><td rowspan="1"><a href="53.md">Cart Bus</a><br/>CART_BUS</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K11D.md">K11D</a><br/>CARD_N</td>
 <td style="border: 2px solid; background-color:#00ffff;"><a href="K10D.md">K10D</a></td>
 </tr><tr>
 <td>$54</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3"><a href="CTK0H.md">CTK0H</a><br/>Unused?</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3"><a href="CTK0L.md">CTK0L</a><br/>Keypad debounce rate?</td>
 </tr><tr>
 <td>$55</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="5">&nbsp;</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="3"><a href="CTK0L.md">CTK0L</a><br/>Cartridge debounce rate?</td>
 </tr><tr>
-<td>$60</td><td rowspan="1">
-    <a href="60.md">IO_DIR</a><br/>I/O Direction Select</td>
+<td>$60</td><td rowspan="1"><a href="60.md">IO_DIR</a><br/>I/O Direction Select</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="IOC07.md">IOC07</a><br/>???</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="IOC06.md">IOC06</a><br/>Shock</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="IOC05.md">IOC05</a><br/>IR Disable</td>
@@ -436,8 +394,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;"><a href="IOC01.md">IOC01</a><br/>IR Rx</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="IOC00.md">IOC00</a><br/>IR Tx</td>
 </tr><tr>
-<td>$61</td><td rowspan="PM_I_O_Port.md">
-    <a href="61.md">I/O Data Register</a><br/>IO_DATA</td>
+<td>$61</td><td rowspan="PM_I_O_Port.md"><a href="61.md">I/O Data Register</a><br/>IO_DATA</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="P07.md">P07</a><br/>???</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="P06.md">P06</a><br/>Shock</td>
 <td style="border: 2px solid; background-color:#80ff80;"><a href="P05.md">P05</a><br/>IR Disable</td>
@@ -448,24 +405,21 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;"><a href="P00.md">P00</a><br/>IR Tx</td>
 </tr><tr>
 <td>$62</td>
-<td>Unknown</td>
+<td rowspan="1">Unknown</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 <td style="border: 2px solid; background-color:#c0c0c0;" colspan="4">???</td>
 </tr><tr>
-<td>$70</td><td rowspan="1">
-    <a href="70.md">AUD_CTRL</a><br/>Audio Control</td>
+<td>$70</td><td rowspan="1"><a href="70.md">AUD_CTRL</a><br/>Audio Control</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="5">&nbsp;</td>
 <td style="border: 2px solid; background-color:#c0ff00;">???</td>
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="2">Mutes audio if not 0!?</td>
 </tr><tr>
-<td>$71</td><td rowspan="1">
-    <a href="71.md">AUD_VOL</a><br/>Audio Volume</td>
+<td>$71</td><td rowspan="1"><a href="71.md">AUD_VOL</a><br/>Audio Volume</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="5">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">Cart Power (1=Off; 0=On)</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2">Volume</td>
 </tr><tr>
-<td>$80</td><td rowspan="1">
-    <a href="80.md">PRC_MODE</a><br/>LCD Controller Settings</td>
+<td>$80</td><td rowspan="1"><a href="80.md">PRC_MODE</a><br/>LCD Controller Settings</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2">Map Size</td>
 <td style="border: 2px solid; background-color:#80ff80;">Enable Render</td>
@@ -473,14 +427,12 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">Enable Map</td>
 <td style="border: 2px solid; background-color:#80ff80;">Invert Map</td>
 </tr><tr>
-<td>$81</td><td rowspan="1">
-    <a href="81.md">PRC_RATE</a><br/>LCD Rate Control</td>
+<td>$81</td><td rowspan="1"><a href="81.md">PRC_RATE</a><br/>LCD Rate Control</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="4">Frame counter</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="3"><a href="CKCN.md">CKCN</a><br/>Rate divider</td>
 <td style="border: 2px solid; background-color:#80ff80;">Initable</td>
 </tr><tr>
-<td>$82</td><td rowspan="1">
-    <a href="82.md">PRC_MAP</a><br/>PRC Map Tile Base</td>
+<td>$82</td><td rowspan="3"><a href="82.md">PRC_MAP</a><br/>PRC Map Tile Base</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="5">Map Tile Base (low)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 </tr><tr>
@@ -491,18 +443,15 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="5">Map Tile Base (high)</td>
 </tr><tr>
-<td>$85</td><td rowspan="1">
-    <a href="85.md">PRC_SCROLL_Y</a><br/>PRC Map Vertical Scroll</td>
+<td>$85</td><td rowspan="1"><a href="85.md">PRC_SCROLL_Y</a><br/>PRC Map Vertical Scroll</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="7">Map Scroll Y</td>
 </tr><tr>
-<td>$86</td><td rowspan="1">
-    <a href="86.md">PRC_SCROLL_X</a><br/>PRC Map Horizontal Scroll</td>
+<td>$86</td><td rowspan="1"><a href="86.md">PRC_SCROLL_X</a><br/>PRC Map Horizontal Scroll</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="7">Map Scroll X</td>
 </tr><tr>
-<td>$87</td><td rowspan="1">
-    <a href="87.md">PRC_SPR</a><br/>PRC Sprite Tile Base</td>
+<td>$87</td><td rowspan="3"><a href="87.md">PRC_SPR</a><br/>PRC Sprite Tile Base</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2">Sprite Tile Base (low)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 </tr><tr>
@@ -513,69 +462,54 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="5">Sprite Tile Base (high)</td>
 </tr><tr>
-<td>$8A</td><td rowspan="1">
-    <a href="8A.md">PRC_CNT</a><br/>LCD Line Counter</td>
+<td>$8A</td><td rowspan="1"><a href="8A.md">PRC_CNT</a><br/>LCD Line Counter</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
 <td style="border: 2px solid; background-color:#00ffff;" colspan="7">Count</td>
 </tr><tr>
 <td>$8B</td>
-<td>Unknown (returns 0)</td>
+<td rowspan="13">Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8C</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8D</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8E</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$8F</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F0</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F1</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F2</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F3</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F4</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F5</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F6</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
 <td>$F7</td>
-<td>Unknown (returns 0)</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="8">&nbsp;</td>
 </tr><tr>
-<td>$FE</td><td rowspan="1">
-    <a href="FE.md">LCD_CTRL</a><br/>LCD Raw Control Byte</td>
+<td>$FE</td><td rowspan="1"><a href="FE.md">LCD_CTRL</a><br/>LCD Raw Control Byte</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">LCD Control I/O</td>
 </tr><tr>
-<td>$FF</td><td rowspan="1">
-    <a href="FE.md">LCD_DATA</a><br/>LCD Raw Data Byte</td>
+<td>$FF</td><td rowspan="1"><a href="FE.md">LCD_DATA</a><br/>LCD Raw Data Byte</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="8">LCD Data I/O</td>
 </tr>
 </table>
