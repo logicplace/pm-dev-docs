@@ -79,7 +79,7 @@ Each interrupt's section lists which official games define a non-dummy handler f
 | [0Eh][]    | $0213  | $2120    | $20.3~2  | $23.3  | $27.3  | [PTM1 underflow][gpt]              |
 | [10h][]    | $0224  | $2126    | $20.3~2  | $23.2  | $27.2  | [PTM0 underflow (8-bit only)][gpt] |
 | [12h][]    | $0235  | $212C    | $20.1~0  | $23.1  | $27.1  | [PTM5 underflow][gpt3]             |
-| [14h][]    | $0246  | $2132    | $20.1~0  | $23.0  | $27.0  | [PTM4-5 compare match][gpt3]                         |
+| [14h][]    | $0246  | $2132    | $20.1~0  | $23.0  | $27.0  | [PTM_C compare match][gpt3]                         |
 | [16h][]    | $025A  | $2138    | $21.7~6  | $24.5  | $28.5  | [32Hz (from Clock Timer)][clk]               |
 | [18h][]    | $026B  | $213E    | $21.7~6  | $24.4  | $28.4  | [8Hz (from Clock Timer)][clk]                |
 | [1Ah][]    | $027C  | $2144    | $21.7~6  | $24.3  | $28.3  | [2Hz (from Clock Timer)][clk]                |
@@ -205,7 +205,7 @@ Official games which use this interrupt:
 * [Sodateyasan][]: TODO: why
 * [Togepi's Adventure][]: TODO: why
 
-### PTM2-3 priority group
+### PTM_B priority group
 
 These use the priority specified in $2020 bits 5~4.
 
@@ -241,7 +241,7 @@ Fires when the PTM2 counter ($203E) [underflows][] *only* in 8-bit mode.
 
 Official games which use this interrupt:
 
-### PTM0-1 priority group
+### PTM_A priority group
 
 These use the priority specified in $2020 bits 3~2.
 
@@ -276,7 +276,7 @@ Official games which use this interrupt:
 * [Sodateyasan][]: TODO: why
 * [Togepi's Adventure][]: TODO: why
 
-### PTM4-5 priority group
+### PTM_C priority group
 
 These use the priority specified in $2020 bits 1~0.
 
@@ -302,13 +302,13 @@ Official games which use this interrupt:
 * [Sodateyasan][]: TODO: why
 * [Togepi's Adventure][]: TODO: why
 
-#### PTM4-5 compare match
+#### PTM_C compare match
 
 * Enable flag: $2023 bit 0
 * Factor flag: $2027 bit 0
 * Jumps to: $002132
 
-In 16-bit mode, fires when PTM4-5 counters ($204F~$204E) matches the compare data registers ($204D~$204C). If <abbr title="compare data register">CDR</abbr> = 0, no audio signal will be output on match (TODO: verify for PM).
+In 16-bit mode, fires when PTM_C counters ($204F~$204E) matches the compare data registers ($204D~$204C). If <abbr title="compare data register">CDR</abbr> = 0, no audio signal will be output on match (TODO: verify for PM).
 
 In 8-bit mode, fires when PTM5 counter ($204F) matches its compare data register ($204D) (TODO: confirm).
 
