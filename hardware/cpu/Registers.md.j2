@@ -1,14 +1,14 @@
 ## Register Overview
 
-The Pokémon mini maps $2000 \~ $20FF as hardware control registers. This area is reserved for hardware related functions such as video, audio, general purpose timers, hardware I/O and system control.
+The Pokémon mini maps $2000 \~ $20FF as hardware control registers. This area is reserved for hardware related functions such as video, audio, general purpose timers, hardware I/O, and system control.
 
-Much of this address space is mapped as [Open-Bus](/Glossary.md#open-bus "wikilink"), leading us to believe that this area is not used for any purpose. Other areas respond to requests but their purpose is yet undetermined.
+Much of this address space is mapped as [Open-Bus](/glossary.md#open-bus "wikilink"), leading us to believe that this area is not used for any purpose. Other areas respond to requests but their purpose is yet undetermined.
 
 Registers tend to be controlled on a bit level, so for the sanity purposes, they will be broken down to this level. At any point they are shown spanning multiple columns, that indicates that it is a multi-bit value and should be treated as if they were a number.
 
 The bits themselves come in four flavors: Read-only, Write-Only, Read-Write, and S-R Strobe. Write-Only registers typically return a zero value, and are generally only used for things such as resetting timers. S-R Strobes are used for clearing interrupt events, writting a logical '1' to any bit that is set will result in a bit being cleared, where as '0' leaves them unchanged. Unused bits always return '0'.
 
-Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus "wikilink") and will be excluded unless a function has otherwise been determined.
+Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus "wikilink") and will be excluded unless a function has otherwise been determined.
 
 ## Register Mapping
 
@@ -111,33 +111,33 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 {{ td("Low Battery", "ro") }}
 {{ td("Battery ADC control", "rw") }}
 {{ td("Battery ADC threshold value", "rw", 4) }}
-{{ register("$18", "Timer 1 Prescalars", "TMR1_SCALE", "Timers.md") }}
+{{ register("$18", "Timer 1 Prescalars", "TMR1_SCALE", "timers.md") }}
 {{ td("Enable Hi", "rw") }}
 {{ td("Hi Scalar", "rw", 3) }}
 {{ td("Enable Lo", "rw") }}
 {{ td("Lo Scalar", "rw", 3) }}
-{{ register("$19", "Timers Osc. Enable<br />Timer 1 Osc. Select", "TMR1_ENA_OSC<br />TMR1_OSC", "Timers.md") }}
+{{ register("$19", "Timers Osc. Enable<br />Timer 1 Osc. Select", "TMR1_ENA_OSC<br />TMR1_OSC", "timers.md") }}
 {{ td("&nbsp;", "x", 2) }}
 {{ td("Enable Osc. 1", "rw") }}
 {{ td("Enable Osc. 2", "rw") }}
 {{ td("&nbsp;", "x", 2) }}
 {{ td("2nd Osc. (Hi)", "rw") }}
 {{ td("2nd Osc. (Lo)", "rw") }}
-{{ register("$1A", "Timer 2 Prescalars", "TMR2_SCALE", "Timers.md") }}
+{{ register("$1A", "Timer 2 Prescalars", "TMR2_SCALE", "timers.md") }}
 {{ td("Enable Hi", "rw") }}
 {{ td("Hi Scalar", "rw", 3) }}
 {{ td("Enable Lo", "rw") }}
 {{ td("Lo Scalar", "rw", 3) }}
-{{ register("$1B", "Timer 2 Osc. Select", "TMR2_OSC", "Timers.md") }}
+{{ register("$1B", "Timer 2 Osc. Select", "TMR2_OSC", "timers.md") }}
 {{ td("&nbsp;", "x", 6) }}
 {{ td("2nd Osc. (Hi)", "rw") }}
 {{ td("2nd Osc. (Lo)", "rw") }}
-{{ register("$1C", "Timer 3 Prescalars", "TMR3_SCALE", "Timers.md") }}
+{{ register("$1C", "Timer 3 Prescalars", "TMR3_SCALE", "timers.md") }}
 {{ td("Enable Hi", "rw") }}
 {{ td("Hi Scalar", "rw", 3) }}
 {{ td("Enable Lo", "rw") }}
 {{ td("Lo Scalar", "rw", 3) }}
-{{ register("$1D", "Timer 3 Osc. Select", "TMR3_OSC", "Timers.md") }}
+{{ register("$1D", "Timer 3 Osc. Select", "TMR3_OSC", "timers.md") }}
 {{ td("&nbsp;", "x", 6) }}
 {{ td("2nd Osc. (Hi)", "rw") }}
 {{ td("2nd Osc. (Lo)", "rw") }}
@@ -224,55 +224,55 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 {{ td("IRQ $1D", "sr") }}
 {{ td("IRQ $1E", "sr") }}
 {{ td("IRQ $1F", "sr") }}
-{{ register("$30", "Timer 1 Control (Lo)", "TMR1_CTRL_L", "Timers.md") }}
+{{ register("$30", "Timer 1 Control (Lo)", "TMR1_CTRL_L", "timers.md") }}
 {{ td("16-bit Mode", "rw") }}
 {{ td("&nbsp;", "x", 3) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$31", "Timer 1 Control (Hi)", "TMR1_CTRL_H", "Timers.md") }}
+{{ register("$31", "Timer 1 Control (Hi)", "TMR1_CTRL_H", "timers.md") }}
 {{ td("&nbsp;", "x", 4) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$32", "Timer 1 Preset (Lo)", "TMR1_PRE_L", "Timers.md") }}
+{{ register("$32", "Timer 1 Preset (Lo)", "TMR1_PRE_L", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$33", "Timer 1 Preset (Hi)", "TMR1_PRE_H", "Timers.md") }}
+{{ register("$33", "Timer 1 Preset (Hi)", "TMR1_PRE_H", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$34", "Timer 1 Pivot (Lo)", "TMR1_PVT_L", "Timers.md") }}
+{{ register("$34", "Timer 1 Pivot (Lo)", "TMR1_PVT_L", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$35", "Timer 1 Pivot (Hi)", "TMR1_PVT_H", "Timers.md") }}
+{{ register("$35", "Timer 1 Pivot (Hi)", "TMR1_PVT_H", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$36", "Timer 1 Count (Lo)", "TMR1_CNT_L", "Timers.md") }}
+{{ register("$36", "Timer 1 Count (Lo)", "TMR1_CNT_L", "timers.md") }}
 {{ td("Count", "ro", 8) }}
-{{ register("$37", "Timer 1 Count (Hi)", "TMR1_CNT_H", "Timers.md") }}
+{{ register("$37", "Timer 1 Count (Hi)", "TMR1_CNT_H", "timers.md") }}
 {{ td("Count", "ro", 8) }}
-{{ register("$38", "Timer 2 Control (Lo)", "TMR2_CTRL_L", "Timers.md") }}
+{{ register("$38", "Timer 2 Control (Lo)", "TMR2_CTRL_L", "timers.md") }}
 {{ td("16-bit Mode", "rw") }}
 {{ td("&nbsp;", "x", 3) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$39", "Timer 2 Control (Hi)", "TMR2_CTRL_H", "Timers.md") }}
+{{ register("$39", "Timer 2 Control (Hi)", "TMR2_CTRL_H", "timers.md") }}
 {{ td("&nbsp;", "x", 4) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$3A", "Timer 2 Preset (Lo)", "TMR2_PRE_L", "Timers.md") }}
+{{ register("$3A", "Timer 2 Preset (Lo)", "TMR2_PRE_L", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$3B", "Timer 2 Preset (Hi)", "TMR2_PRE_H", "Timers.md") }}
+{{ register("$3B", "Timer 2 Preset (Hi)", "TMR2_PRE_H", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$3C", "Timer 2 Pivot (Lo)", "TMR2_PVT_L", "Timers.md") }}
+{{ register("$3C", "Timer 2 Pivot (Lo)", "TMR2_PVT_L", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$3D", "Timer 2 Pivot (Hi)", "TMR2_PVT_H", "Timers.md") }}
+{{ register("$3D", "Timer 2 Pivot (Hi)", "TMR2_PVT_H", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$3E", "Timer 2 Count (Lo)", "TMR2_CNT_L", "Timers.md") }}
+{{ register("$3E", "Timer 2 Count (Lo)", "TMR2_CNT_L", "timers.md") }}
 {{ td("Count", "ro", 8) }}
-{{ register("$3F", "Timer 2 Count (Hi)", "TMR2_CNT_H", "Timers.md") }}
+{{ register("$3F", "Timer 2 Count (Hi)", "TMR2_CNT_H", "timers.md") }}
 {{ td("Count", "ro", 8) }}
 {{ register("$40", "256Hz Timer Control", "TMR256_CTRL", "256Hz_Timer.md") }}
 {{ td("&nbsp;", "x", 6) }}
@@ -295,30 +295,30 @@ Any register not included on this list reads as [Open-Bus](/Glossary.md#open-bus
 {{ unk_register("$47") }}
 {{ td("???", "unk-x", 4) }}
 {{ td("???", "unk-rw", 4) }}
-{{ register("$48", "Timer 3 Control (Lo)", "TMR3_CTRL_L", "Timers.md") }}
+{{ register("$48", "Timer 3 Control (Lo)", "TMR3_CTRL_L", "timers.md") }}
 {{ td("16-bit Mode", "rw") }}
 {{ td("&nbsp;", "x", 3) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$49", "Timer 3 Control (Hi)", "TMR3_CTRL_H", "Timers.md") }}
+{{ register("$49", "Timer 3 Control (Hi)", "TMR3_CTRL_H", "timers.md") }}
 {{ td("&nbsp;", "x", 4) }}
 {{ td("???", "rw") }}
 {{ td("Enable", "rw") }}
 {{ td("Reset", "wo") }}
 {{ td("???", "rw") }}
-{{ register("$4A", "Timer 3 Preset (Lo)", "TMR3_PRE_L", "Timers.md") }}
+{{ register("$4A", "Timer 3 Preset (Lo)", "TMR3_PRE_L", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$4B", "Timer 3 Preset (Hi)", "TMR3_PRE_H", "Timers.md") }}
+{{ register("$4B", "Timer 3 Preset (Hi)", "TMR3_PRE_H", "timers.md") }}
 {{ td("Preset", "rw", 8) }}
-{{ register("$4C", "Timer 3 Pivot (Lo)", "TMR3_PVT_L", "Timers.md") }}
+{{ register("$4C", "Timer 3 Pivot (Lo)", "TMR3_PVT_L", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$4D", "Timer 3 Pivot (Hi)", "TMR3_PVT_H", "Timers.md") }}
+{{ register("$4D", "Timer 3 Pivot (Hi)", "TMR3_PVT_H", "timers.md") }}
 {{ td("Pivot", "rw", 8) }}
-{{ register("$4E", "Timer 3 Count (Lo)", "TMR3_CNT_L", "Timers.md") }}
+{{ register("$4E", "Timer 3 Count (Lo)", "TMR3_CNT_L", "timers.md") }}
 {{ td("Count", "ro", 8) }}
-{{ register("$4F", "Timer 3 Count (Hi)", "TMR3_CNT_H", "Timers.md") }}
+{{ register("$4F", "Timer 3 Count (Hi)", "TMR3_CNT_H", "timers.md") }}
 {{ td("Count", "ro", 8) }}
 {{ unk_register("$50") }}
 {{ td("???", "unk-rw", 8) }}

@@ -12,64 +12,6 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 
 ## Register Mapping
 
-* $2001:
-  * bit 7:
-    * skips handling of INTs _unknown_eject2, _dev_card0, & _dev_card1 when 0
-    * skips handling of INTs _ena_ram_vec & _unknown_eject1 when 1
-    * avoids wakeup bug when 0
-    * calls _shutdown for _cart_ejected_irq when 0 if bits 1-0 are 00
-    * enables cart eject IRQ during shutdown/sleep when 0
-    * set during _shutdown
-    * set by _ena_ram_vec if bit 7 (self) is 0
-    * reset by _dis_ram_vec if bit 6 is 1
-    * set by _unknown_eject1 if bit 7 (self) is 0
-    * reset by _unknown_eject2 if bit 6 is 0 and bit 7 (self) is 1
-  * bit 6:
-    * skips handling of INTs _dis_ram_vec, _dis_irq_13, & _ena_irq_13 when 0
-    * skips handling of INTs _unknown_eject2, _dev_card0, & _dev_card1 when 1
-    * skips calling flash0418 during wakes when 0
-    * calls _shutdown for _cart_ejected_irq when 1 if bit 7 is 1 and bits 1-0 are 00
-    * enables cart eject IRQ during resume when 1
-    * enables cart eject IRQ during shutdown/sleep when 1
-    * set by _ena_ram_vec if bit 7 is 0
-    * reset by _dis_ram_vec if bit 6 (self) 1
-  * bit 5: indicates system isn't asleep? 0=asleep
-    * during power button IRQ, jumps immediately to cart handler when 1
-    * during _cart_ejected_irq, jumps to reset2 when 1
-    * when 0, causes most IRQs to divert to wakeup sequence (intstuff2)
-    * set during startup
-    * set right before dying during the other IRQs' wake handling
-    * set during wakeup from _suspend_system
-    * reset by _ena_ram_vec if bit 7 is 0
-    * set by _dis_ram_vec if bit 6 is 1
-    * reset by _unknown_eject1 if bit 7 is 0
-    * set by _unknown_eject2 if bit 6 is 0 and bit 7 is 1
-  * bit 4:
-    * goto reset2 during power button IRQ when 1 if bit 5 is 0
-    * goto reset2 during _cart_ejected_irq when 1
-    * set during startup
-    * reset before jumping to cart
-    * set during _shutdown
-  * bit 3: 
-    * tested in _test_cart_type
-    * tested in flash0418
-    * tested in _dev_card0
-    * presumably indicates that 2~0 is a valid game index
-  * bit 2~0:
-    * read as game index in flash0418
-    * read as game index in _dev_card0
-    * bit 0 set in cct__startup_action_2
-* $2002:
-  * bit 7: written to like a strobe? could be EBR
-  * bit 6:
-    * jumps to power button vector on cart during IRQ if $2001's were 0s
-  * bit 5: 
-  * bit 4: 
-  * bit 3: clocking with OSC3 ?
-  * bit 2: 
-  * bit 1: 
-  * bit 0: 
-
 <table style="text-align: center;">
 <caption><strong>Register Map Legend</strong></caption>
 <tr>
