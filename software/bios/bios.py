@@ -1121,7 +1121,7 @@ def halt_cpu(interrupt_flags):
 	if not unknown.r01_7 or unknown.r01_6:
 		cartridge.ejected.enabled = True
 		cartridge.irq_priority = 3
-	cartridge.detect_edge = RISING
+	cartridge.detect_edge = RISING  # ejected
 	cartridge.ctk = 1
 	console.awake = False
 	unpower_cart()
