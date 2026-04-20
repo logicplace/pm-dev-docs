@@ -570,7 +570,7 @@ def _reset2():
 	
 	# Check voltage
 	svd.on = 1
-	time.sleep(0.0001)  # 202 cycles
+	time.sleep(0.0002)  # 202 cycles
 	svd.on = 0
 	if svd.voltage_low:
 		low_battery_screen()
@@ -1198,9 +1198,9 @@ def init_display(wait: bool):
 		lcd.send_set_power(7)
 		if wait:
 			if cpu.osc == OSC1:
-				time.sleep(...)  # wait 5711 cycles
+				time.sleep(0.1743)  # wait 5711 cycles
 			else:
-				time.sleep(...)  # wait 349978 cycles
+				time.sleep(0.3500)  # wait 349978 cycles
 		lcd.send_on()
 		lcd.render = render
 
@@ -1354,9 +1354,9 @@ def _enter_normal_operation():
 
 def enter_normal_operation():
 	cpu.vdc = 0
-	time.sleep(...)  # 83 cycles
+	time.sleep(0.0025)  # 83 cycles
 	cpu.osc3_enabled = True
-	time.sleep(...) # 1639 cycles
+	time.sleep(0.0500) # 1639 cycles
 	cpu.osc = OSC3
 	unknown.r02_4 = 1
 
@@ -1392,7 +1392,7 @@ def cart_slot_on():
 def power_cart():
 	cartridge.powered = True
 	unknown.r02_7 = 1
-	time.sleep(...)  # 203 cycles
+	time.sleep(0.0002)  # 203 cycles
 	_ = MEM[0x2AAA]
 	unknown.r02_7 = 1
 
@@ -1435,7 +1435,7 @@ def _ir_pulse(iy: int, wait: int):
 	# interrupt doesn't require IY be $2061
 	assert iy == 0x2061
 	io.ir_txd.data = 1
-	time.sleep(...)  # wait * 4 cycles
+	time.sleep(wait * 4 / 1e6)  # wait * 4 cycles
 
 @contextmanager
 def set_br():
@@ -1447,7 +1447,7 @@ def set_br():
 
 def wait_8000_cycles():
 	""" wait 8000 cycles including the CARL to get here """
-	time.sleep(...)
+	time.sleep(0.008)
 
 def read_keys_buffer(h: int):
 	"""
