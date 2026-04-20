@@ -140,7 +140,7 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 [6Eh]: #disable-cart-eject-irq
 [70h]: #check-cart-eject-fired
 [72h]: #enter-normal-operation
-[74h]: #enter-low-speed-operation
+[74h]: #enter-low-power-operation
 [76h]: #power-off-cart-slot
 [78h]: #power-on-cart-slot
 [7Ah]: #check-cart-is-inserted
@@ -512,11 +512,11 @@ This causes the PM to enter normal operation mode, clocking the CPU off of OSC3 
 
 No official software uses this.
 
-### Enter low speed operation
+### Enter low power operation
 
 Called via `INT [74h]`
 
-This causes the PM to enter low speed operation mode, clocking the CPU off of OSC1 instead of OSC3. This saves power but limits the capabilities of the PM.
+This causes the PM to enter low power operation mode, clocking the CPU off of OSC1 instead of OSC3. This saves power but limits the capabilities of the PM.
 
 TODO: discussion of limitations
 
