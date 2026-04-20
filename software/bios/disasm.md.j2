@@ -90,8 +90,8 @@ SECT ".bios"
 	DW _enable_cart_eject_irq
 	DW _disable_cart_eject_irq
 	DW _check_ejected
-	DW _enter_high_speed_operation
-	DW _enter_low_speed_operation
+	DW _enter_normal_operation
+	DW _enter_low_power_operation
 	DW _cart_slot_off
 	DW _cart_slot_on
 	DW _cart_detect
@@ -125,7 +125,7 @@ _reset2:
 	LD SP, #2000h                       ; initial stack location (end of RAM)
 	CARL initregs                       ; initialize registers for BIOS's sake
 	LD [BR:80h], A                      ; disable LCD controller (A = 0)
-	CARL enter_high_speed_operation     ; clock CPU with OSC3
+	CARL enter_normal_operation     ; clock CPU with OSC3
 	LD NB, #01h                         ; set default NB
 	JRS copy_nb_to_cb
 copy_nb_to_cb:
@@ -554,7 +554,7 @@ wake_from_irq:
 	JRS NZ, wfi__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	CARL enter_high_speed_operation
+	CARL enter_normal_operation
 	POP SC
 wfi__already_fast:
 	BIT [BR:71h], #04h                  ; if cart is powered,
@@ -597,7 +597,7 @@ _key_power_irq:
 	JRS NZ, kpi__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	CARL enter_high_speed_operation
+	CARL enter_normal_operation
 	POP SC
 kpi__already_fast:
 	BIT [BR:71h], #04h                  ; if cartidge is powered,
@@ -678,7 +678,7 @@ _cart_eject_irq:
 	JRS NZ, cei__already_fast           ; no need to start it up again
 	PUSH SC
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	CARL enter_high_speed_operation
+	CARL enter_normal_operation
 	POP SC
 cei__already_fast:
 	BIT [BR:01h], #80h                  ; if ??,
@@ -1293,7 +1293,7 @@ hc__halt_sequence:
 	LD [BR:55h], #01h                   ; set input level check time for ?? to 4ms?
 	AND [BR:01h], #~20h                 ; set console as asleep
 	CARL unpower_cart
-	CARL enter_low_speed_operation
+	CARL enter_low_power_operation
 	LD SC, A
 	HALT
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
@@ -1820,42 +1820,42 @@ ce__return:
 	POP EP
 	RET
 ; ----------------------
-_enter_high_speed_operation:
+_enter_normal_operation:
 	PUSH EP
 	PUSH BR
 	CARL set_br
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	CARS enter_high_speed_operation
+	CARS enter_normal_operation
 	POP BR
 	POP EP
 	RETE
-enter_high_speed_operation:
+enter_normal_operation:
 	PUSH IX
 	AND [BR:02h], #~01h                 ; write 00 (intended) to VD1C (mid operating voltage)
 	LD IX, #20                          ; wait 83 cycles
-ehso__wait_80:
+eno__wait_80:
 	DEC IX
-	JRS NZ, ehso__wait_80
+	JRS NZ, eno__wait_80
 	OR [BR:02h], #04h                   ; write 1 to OSCC
 	LD IX, #409                         ; wait 1639 cycles
-ehso__wait_1636:
+eno__wait_1636:
 	DEC IX
-	JRS NZ, ehso__wait_1636
+	JRS NZ, eno__wait_1636
 	OR [BR:02h], #08h                   ; clock CPU with OSC3
 	OR [BR:02h], #10h                   ; ??
 	POP IX
 	RET
 ; ----------------------
-_enter_low_speed_operation:
+_enter_low_power_operation:
 	PUSH EP
 	PUSH BR
 	CARL set_br
 	LD SC, #0C0h                        ; interrupt flags to NMI-only
-	CARS enter_low_speed_operation
+	CARS enter_low_power_operation
 	POP BR
 	POP EP
 	RETE
-enter_low_speed_operation:
+enter_low_power_operation:
 	AND [BR:02h], #~10h                 ; ??
 	AND [BR:02h], #~08h                 ; clock CPU with OSC1
 	AND [BR:02h], #~04h                 ; turn off OSC3

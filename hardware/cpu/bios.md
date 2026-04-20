@@ -93,7 +93,7 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 | [6Ch][]    | $0A4F | Enable cart eject IRQ and set priority        |
 | [6Eh][]    | $0A76 | Disable cart eject IRQ                        |
 | [70h][]    | $0A81 | Check cart eject fired, weirdly               |
-| [72h][]    | $0AA6 | Clock CPU with OSC3 (high speed operation)    |
+| [72h][]    | $0AA6 | Clock CPU with OSC3 (normal operation)    |
 | [74h][]    | $0ACD | Clock CPU with OSC1 (low power mode)          |
 | [76h][]    | $0AE6 | Power off cart slot                           |
 | [78h][]    | $0AF9 | Power on cart slot                            |
@@ -139,7 +139,7 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 [6Ch]: #enable-cart-eject-irq-and-set-priority
 [6Eh]: #disable-cart-eject-irq
 [70h]: #check-cart-eject-fired
-[72h]: #enter-high-speed-operation
+[72h]: #enter-normal-operation
 [74h]: #enter-low-speed-operation
 [76h]: #power-off-cart-slot
 [78h]: #power-on-cart-slot
@@ -504,11 +504,11 @@ This checks if the current interrupt priority in [I1~I0](./README.md#interrupt-f
 
 No official software uses this. Not sure anything should...
 
-### Enter high speed operation
+### Enter normal operation
 
 Called via `INT [72h]`
 
-This causes the PM to enter high speed operation mode, clocking the CPU off of OSC3 instead of OSC1. This is the default state when exiting the BIOS, so it only ever needs to be called if [74h][] is ever used.
+This causes the PM to enter normal operation mode, clocking the CPU off of OSC3 instead of OSC1. This is the default state when exiting the BIOS, so it only ever needs to be called if [74h][] is ever used.
 
 No official software uses this.
 

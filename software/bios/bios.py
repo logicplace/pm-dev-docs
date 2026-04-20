@@ -535,6 +535,7 @@ def _reset2():
 		cpu.SP = 0x2000  # initial stack location
 		initregs()
 		lcd.render_config = 0
+		enter_normal_operation()
 		#NB = CB = 0x01
 		# Start booting up and configuring hardware
 		ram.key_pad = keypad.all
@@ -569,7 +570,7 @@ def _reset2():
 	
 	# Check voltage
 	svd.on = 1
-	time.sleep(0.0005)  # 202 cycles, TODO: calculate for real
+	time.sleep(0.0001)  # 202 cycles
 	svd.on = 0
 	if svd.voltage_low:
 		low_battery_screen()
@@ -776,7 +777,7 @@ def _unknown_irq2():
 def wake_from_irq():
 	if cpu.osc == OSC1:
 		with suppress_interrupts():
-			enter_high_speed_operation()
+			enter_normal_operation()
 	if not cartridge.powered and unknown.r02_6:
 		with suppress_interrupts():
 			power_cart()
@@ -800,7 +801,7 @@ def _key_power_irq():
 		# same as in wake_from_irq
 		if cpu.osc == OSC1:
 			with suppress_interrupts():
-				enter_high_speed_operation()
+				enter_normal_operation()
 		if not cartridge.powered and unknown.r02_6:
 			with suppress_interrupts():
 				power_cart()
@@ -834,7 +835,7 @@ def _cart_eject_irq():
 		return _reset2()
 	if cpu.osc == OSC1:
 		with suppress_interrupts():
-			enter_high_speed_operation()
+			enter_normal_operation()
 	if not unknown.r01_7 or unknown.r01_6:
 		return _shutdown()
 	if not cartridge.powered and unknown.r02_6:
@@ -1125,7 +1126,7 @@ def halt_cpu(interrupt_flags):
 	cartridge.ctk = 1
 	console.awake = False
 	unpower_cart()
-	enter_low_speed_operation()
+	enter_low_power_operation()
 	cpu.SC = interrupt_flags << 6
 	halt()
 	cpu.SC = 3 << 6  # NMI-only
@@ -1347,11 +1348,11 @@ def _check_ejected():
 				return True
 	return False
 
-def _enter_high_speed_operation():
+def _enter_normal_operation():
 	with set_br(), suppress_interrupts():
-		enter_high_speed_operation()
+		enter_normal_operation()
 
-def enter_high_speed_operation():
+def enter_normal_operation():
 	cpu.vdc = 0
 	time.sleep(...)  # 83 cycles
 	cpu.osc3_enabled = True
@@ -1359,11 +1360,11 @@ def enter_high_speed_operation():
 	cpu.osc = OSC3
 	unknown.r02_4 = 1
 
-def _enter_low_speed_operation():
+def _enter_low_power_operation():
 	with set_br(), suppress_interrupts():
-		enter_low_speed_operation()
+		enter_low_power_operation()
 
-def enter_low_speed_operation():
+def enter_low_power_operation():
 	unknown.r02_4 = 0
 	cpu.osc = OSC1
 	cpu.osc3_enabled = False
