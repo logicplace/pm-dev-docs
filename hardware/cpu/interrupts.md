@@ -65,7 +65,7 @@ Although they're all interrupts, we make a distinction between hardware interrup
 
 Listed below are only the hardware interrupts, together with their vector address (in the official BIOS), stub address in software, and associated registers.
 
-Each interrupt's section lists which official games define a non-dummy handler for that interrupt, but official games may also poll the factor flag without enabling the interrupt! These uses are not listed here, but on the [factor flags page](./registers/factor_flags.md).
+Each interrupt's section lists which commercial games define a non-dummy handler for that interrupt, but commercial games may also poll the factor flag without enabling the interrupt! These uses are not listed here, but on the [factor flags page](./registers/factor_flags.md).
 
 | `INT [kk]` | Vector | Software | Priority | Enable | Factor | Description                                  |
 | ---------- | ------ | -------- | -------- | ------ | ------ | -------------------------------------------- |
@@ -180,7 +180,7 @@ These use the priority specified in $2020 bits 7~6.
 
 Fires when the [LCD controller][lcdc] finishes sending a frame to the LCD driver.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Lunch Time][]: TODO: why
 * [Party][]: TODO: why
@@ -196,7 +196,7 @@ Official games which use this interrupt:
 
 Every refresh (1Hz) of the LCD, the frame counter ($2081 bits 7~4) increments by 1. When this [overflows][], this IRQ fires.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Pinball][]: TODO: why
 * [Puzzle][]: TODO: why
@@ -217,7 +217,7 @@ These use the priority specified in $2020 bits 5~4.
 
 Fires when the PTM3 counter ($203F) [underflows][], both in 8-bit mode and 16-bit mode.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Lunch Time][]: TODO: why
 * [Party][]: TODO: why
@@ -239,7 +239,7 @@ Official games which use this interrupt:
 
 Fires when the PTM2 counter ($203E) [underflows][] *only* in 8-bit mode.
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 ### PTM_A priority group
 
@@ -253,7 +253,7 @@ These use the priority specified in $2020 bits 3~2.
 
 Fires when the PTM1 counter ($2037) [underflows][], both in 8-bit mode and 16-bit mode.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Party][]: TODO: why
 * [Pichu Bros][]: TODO: why
@@ -267,7 +267,7 @@ Official games which use this interrupt:
 
 Fires when the PTM0 counter ($2036) [underflows][] *only* in 8-bit mode.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Party][]: TODO: why
 * [Puzzle][]: TODO: why
@@ -290,7 +290,7 @@ There is no underflow interupt for PTM4.
 
 Fires when the PTM5 counter ($204F) [underflows][], both in 8-bit mode and 16-bit mode.
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Lunch Time][]: TODO: why
 * [Party][]: TODO: why
@@ -314,7 +314,7 @@ In 8-bit mode, fires when PTM5 counter ($204F) matches its compare data register
 
 For more information on using these registers for audio, see [here](./sound.md). This interrupt typically isn't used for producing audio, itself.
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 ### Clock timer priority group
 
@@ -334,7 +334,7 @@ The entire value [overflows][] once per second (hence 1 Hz), making this timer a
 * Factor flag: $2028 bit 5
 * Jumps to: $002138
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Lunch Time][]: TODO: why
 * [Party][]: TODO: why
@@ -354,7 +354,7 @@ Official games which use this interrupt:
 * Factor flag: $2028 bit 4
 * Jumps to: $00213E
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### 2Hz
 
@@ -362,7 +362,7 @@ Official games which use this interrupt:
 * Factor flag: $2028 bit 3
 * Jumps to: $002144
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### 1Hz
 
@@ -370,7 +370,7 @@ Official games which use this interrupt:
 * Factor flag: $2028 bit 2
 * Jumps to: $00214A
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 ### I/O priority group
 
@@ -382,7 +382,7 @@ These use the priority specified in $2022 bits 1~0.
 * Factor flag: $202A bit 7
 * Jumps to: $002150
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Lunch Time][]: TODO: why
 * [Party][]: TODO: why
@@ -396,7 +396,7 @@ Official games which use this interrupt:
 * Factor flag: $202A bit 6
 * Jumps to: $002156
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Race][]: TODO: why
 * [Sodateyasan][]: TODO: why
@@ -411,7 +411,7 @@ These use the priority specified in $2021 bits 5~4.
 * Enable flag: $2024 bit 1
 * Factor flag: $2028 bit 1
 
-The polarity of this interrupt is configurable. If $2051 bit 1 is set to 0 (the default) then this detects the cartridge being ejected. If it's set to 1, then this detects the cartridge being inserted.
+The polarity of this interrupt is configurable. If $2051 bit 1 is set to 0 (the default), then this detects the cartridge being ejected. If it's set to 1, then this detects the cartridge being inserted.
 
 Despite being able to be configured for detecting insertion, it doesn't have an option for jumping to a software handler, however it can [jump to RAM](#waking-up) so that can be configured to do so.
 
@@ -423,7 +423,7 @@ Despite being able to be configured for detecting insertion, it doesn't have an 
 
 This is an interrupt the cartridge can send (TODO: how?). No official cartridge is equipped for this.
 
-Official games which use this interrupt:
+No commercial games use this interrupt. Some NOP/00 this, some have dummy handlers.
 
 ### Keypad priority group
 
@@ -435,7 +435,9 @@ These use the priority specified in $2021 bits 3~2.
 * Factor flag: $2029 bit 7
 * Jumps to: $00215C
 
-Official games which use this interrupt:
+The BIOS does a lot more in reponse to this interrupt than other key press interrupts. It also re-enables the interrupt in certain situations so it's a good idea to define a handler even if you never intend to use this for your game.
+
+commercial games which use this interrupt:
 
 * [Party][]: TODO: why
 * [Pichu Bros][]: TODO: why
@@ -447,7 +449,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 6
 * Jumps to: $002162
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### Left key
 
@@ -455,7 +457,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 5
 * Jumps to: $002168
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### Down key
 
@@ -463,7 +465,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 4
 * Jumps to: $00216E
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### Up key
 
@@ -471,7 +473,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 3
 * Jumps to: $002174
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### C key
 
@@ -479,7 +481,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 2
 * Jumps to: $00217A
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 #### B key
 
@@ -487,7 +489,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 1
 * Jumps to: $002180
 
-Official games which use this interrupt:
+commercial games which use this interrupt:
 
 * [Sodateyasan][]: TODO: why
 
@@ -497,7 +499,7 @@ Official games which use this interrupt:
 * Factor flag: $2029 bit 0
 * Jumps to: $002186
 
-Official games which use this interrupt:
+No commercial games use this interrupt.
 
 ### Unknown
 
@@ -507,7 +509,7 @@ The priority bits are unconfirmed as the method to trigger these interrupts is u
 * Factor flag: $202A bit 2~0
 * Jumps to: $00218C, $002192, $002198
 
-No official games use these interrupts. Some NOP/00 these, some have dummy handlers.
+No commercial games use these interrupts. Some NOP/00 these, some have dummy handlers.
 
 ## Waking up
 
