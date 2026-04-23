@@ -17,7 +17,7 @@ TODO: accessing higher cartridge memory on the PM2040 and its derivatives
 [Hardware Registers]: #hardware-registers
 [Cartridge Memory]: #cartridge-memory
 
-[LCD Controller]: LCD_Controller.md
+[LCD Controller]: lcd_controller.md
 [MINLIB]: ../../software/minlib.md
 
 ## Internal BIOS
@@ -48,9 +48,9 @@ The map size also affects available memory. For the 24x16 map size, selected by 
 | $1420 | $14DF | 192 bytes  | [Tile Map][] (mode 3)  |
 | $14E0 | $1FFF | 2848 bytes | General Purpose Memory |
 
-[Frame Buffer]: [LCD_Controller.md#frame-copy-stage]
-[Sprite Attributes]: [LCD_Controller.md#sprite-rendering-stage]
-[Tile Map]: [LCD_Controller.md#map-rendering-stage]
+[Frame Buffer]: [lcd_controller.md#frame-copy-stage]
+[Sprite Attributes]: [lcd_controller.md#sprite-rendering-stage]
+[Tile Map]: [lcd_controller.md#map-rendering-stage]
 
 Typically a game has copy, sprites, and map enabled and doesn't use a MAPSIZ of 3. This would have general purpose memory start at $1420. Because it starts at $14E0 with the maximal allocation for the LCD Controller, the official EPSON locator will allocate your declared variables after $14E0, though you can access the other space directly or by using the `_at` attribute in C during the declaration (TODO: check whether the locator complains and whether or not there's a way to get around that, maybe volatile).
 
@@ -58,7 +58,7 @@ With pm.h, you can disable everything by simply doing `PRC_MODE = 0` though this
 
 ## Hardware Registers
 
-*For a full list of hardware registers, see its [main page](Registers.md)*
+*For a full list of hardware registers, see its [main page](registers)*
 
 The hardware registers are mapped to $002000-$0020FF. Typically they're access by setting the BR register to $20 and using operations which work on `[BR:ll]` where *ll* is the lower byte, which indicates the register to access. However, those operations only work on one byte at a time, so two access both bytes of two byte registers, you need to use, for example, `[$2030]` for TMR1_CTRL.
 
