@@ -164,7 +164,7 @@ class LCD(RegisterMapper):
 	render_sprites = Register.bit(0x2080, 2)
 	render_map = Register.bit(0x2080, 1)
 	map_size = Register(0x2080, 4, 3 << 4)
-	invert_map = Register.bit()
+	invert_map = Register.bit(0x2080, 0)
 	frame_counter = Register.sized(0x2081, 4, 4)
 	rate_divider = Register.sized(0x2081, 1, 3)
 	initialized = Register.bit(0x2081, 0)
@@ -647,7 +647,7 @@ def init_io():
 		io.shock.direction = \
 		io.eeprom_clock.direction = \
 		io.eeprom_data.direction = \
-		io.ir_rxd = INPUT
+		io.ir_rxd.direction = INPUT
 	unknown.r62 = 0
 	unknown.r70 = 0
 	audio.mute = 0
@@ -1222,7 +1222,7 @@ def _ena_ram_vec():
 		if not unknown.r01_7:
 			unknown.r01_7 = 1
 			unknown.r01_6 = 1
-			console.awake = 0
+			console.awake = False
 
 def _dis_ram_vec():
 	# TODO: rename
