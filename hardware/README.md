@@ -6,7 +6,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
 
 - [CPU: S1C88V20](cpu/README.md)
   - [Instruction Set](cpu/S1C88_InstructionSet.md)
-  - [The Memory Map](cpu/Memory.md)
+  - [The Memory Map](cpu/memory.md)
     - [The Hardware Registers](cpu/Registers.md)
   - [Internal BIOS](cpu/bios.md)
   - [Interrupts](cpu/interrupts.md)
@@ -34,14 +34,14 @@ It has both 8-bit and 16-bit registers as well as 8-bit page registers for exten
 
 External bus with 21 bits for address & 8 bits for data.
 
-## [Memory](cpu/Memory.md)
+## [Memory](cpu/memory.md)
 
 - [*BIOS*](cpu/bios.md): 4096 bytes, read-only.
 - [*Hardware Registers*](cpu/Registers.md): Used to control Pokémon mini system.
-- [*Internal RAM*](cpu/Memory.md#ram): 4096 bytes, read/write access.
+- [*Internal RAM*](cpu/memory.md#ram): 4096 bytes, read/write access.
   Note: some RAM space may be required by the LCD controller and the bottom is used for the stack.
 - [*Internal EEPROM*](eeprom.md): 8192 bytes, read/write access via the I2C interface, used to store game saves.
-- [*Cartridge ROM*](cpu/Memory.md#cartridge-memory): Up to 2 MiB addressable (16 megabits). Official carts have 512 KiB mask ROM.
+- [*Cartridge ROM*](cpu/memory.md#cartridge-memory): Up to 2 MiB addressable (16 megabits). Official carts have 512 KiB mask ROM.
 
 ## [Video](lcd)
 

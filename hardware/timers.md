@@ -24,7 +24,7 @@
 [Programmable timer interrupts]: #programmable-timer-interrupts
 [Enabling and pausing programmable timers]: #enabling-and-pausing-programmable-timers
 
-[sleep]: Standby.md#sleep
+[SLEEP]: standby.md#SLEEP
 
 ## Oscillators
 
@@ -32,7 +32,7 @@ There are two oscillators on the board (external to the CPU) named OSC1 and OSC3
 
 ### OSC1
 
-This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. There is no way to disable this oscillator outside of putting the system into [sleep][] mode.
+This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. There is no way to disable this oscillator outside of putting the system into [SLEEP][] mode.
 
 This oscillator is labeled `Y1` on the circuit board and it does have text but it may not be visible; it's an engraved text `KDS` followed by a number representing the final digit of the year it was printed in then a letter representing the month (A for January up to M for December). It's not a surface-mount component, but is glued down.
 
@@ -58,7 +58,7 @@ In previous documentation and code, this oscillator was once known in the commun
 
 ### OSC3
 
-This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for the general purpose timers. It can be disabled by writing a 0 to the OSCC register and is also disabled when the system enters [sleep][] mode.
+This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for the general purpose timers. It can be disabled by writing a 0 to the OSCC register and is also disabled when the system enters [SLEEP][] mode.
 
 This oscillator is labeled `Y2` on the circuit board and has text printed on the top which looks like a curved M in a box followed by `4.00` and then a single-character serial such as `L` or `J`. It is a surface-mount component.
 
@@ -151,7 +151,7 @@ In previous documentation and code, this timer was once known in the community a
 
 The Pokémon mini offers 3 pairs of general purpose programmable timers. Each set can independently be used either as a single 16-bit timer or split into two 8-bit channels with their own interrupts. These timers count down at a configurable rate.
 
-Each of the 6 8-bit timers can individually be configured to use either OSC1 or OSC3 as its source clock. When using a pair as a 16-bit timer, it uses the clock source of the first member of the pair (for example, PTM0) and the interupt of the second member (for example, PTM1).
+Each of the 6 8-bit timers can individually be configured to use either OSC1 or OSC3 as its source clock. When using a pair as a 16-bit timer, it uses the clock source of the first member of the pair (for example, PTM0) and the interrupt of the second member (for example, PTM1).
 
 In previous documentation, these timers were known as the "general purpose timers", which is still an acceptable name, but this documentation will use "programmable timers" or PTs.
 
@@ -181,9 +181,9 @@ When choosing which timer to use for some purpose, you must choose whether to us
 
 | Register | pm.h        | Timer L | Timer H | Timer 16 |
 | -------- | ----------- | ------- | ------- | -------- |
-| MODE16_A | TMR1_CTRL_L | PTM0    | PTM1    | PTM_A   |
-| MODE16_B | TMR2_CTRL_L | PTM2    | PTM3    | PTM_B   |
-| MODE16_C | TMR3_CTRL_L | PTM4    | PTM5    | PTM_C   |
+| MODE16_A | TMR1_CTRL_L | PTM0    | PTM1    | PTM_A    |
+| MODE16_B | TMR2_CTRL_L | PTM2    | PTM3    | PTM_B    |
+| MODE16_C | TMR3_CTRL_L | PTM4    | PTM5    | PTM_C    |
 
 To set MODE16 with pm.h, use, for example, `TMR1_CTRL_L |= 0x80;`
 To unset MODE16 with pm.h, use, for example, `TMR1_CTRL_L &= ~0x80;`
