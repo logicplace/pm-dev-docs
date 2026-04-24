@@ -541,6 +541,7 @@ def _reset2():
 		ram.key_pad = keypad.all
 		cartridge.chip_enabled = \
 			lcd.chip_enabled = True
+		console.awake = unknown.r01_4 = 1
 		unknown.r02_7 = unknown.r02_6 = 1
 		init_io()
 		lcd.render_map = True
