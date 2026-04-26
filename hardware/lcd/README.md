@@ -64,30 +64,30 @@ LCD_CTRL and LCD_DATA both write and read over the D0-D7 lines, it determines wh
 
 Listed below are the commands, written to CTRL.
 
-| Cmd #     | Command            | Command Code    | Hex range |
-|----------:| ------------------ | --------------- | --------- |
-| [1][]     | Display ON/OFF     | 1 0 1 0 1 1 1 x | $AE - $AF |
-| [2][]     | Display start line | 0 1 a a a a a a | $40 - $7F |
-| [3][]     | Set Page           | 1 0 1 1 a a a a | $B0 - $BF |
-| [4a][4]   | Set Column HI      | 0 0 0 1 h h h h | $10 - $1F |
-| [4b][4]   | Set Column LO      | 0 0 0 0 l l l l | $00 - $0F |
-| [8][]     | ADC select         | 1 0 1 0 0 0 0 x | $A0 - $A1 |
-| [9][]     | Invert             | 1 0 1 0 0 1 1 x | $A6 - $A7 |
-| [10][]    | All on             | 1 0 1 0 0 1 0 x | $A4 - $A5 |
-| [11][]    | LCD bias           | 1 0 1 0 0 0 1 x | $A2 - $A3 |
-| [12][]    | Start RMW          | 1 1 1 0 0 0 0 0 | $E0       |
-| [13][12]  | End RMW            | 1 1 1 0 1 1 1 0 | $EE       |
-| [14][]    | Reset              | 1 1 1 0 0 0 1 0 | $E2       |
-| [15][]    | Row direction      | 1 1 0 0 x - - - | $C0 - $CF |
-| [16][]    | Power control      | 0 0 1 0 1 m m m | $28 - $2F |
-| [17][]    | V5 resistor ratio  | 0 0 1 0 0 r r r | $20 - $27 |
-| [18a][18] | Contrast           | 1 0 0 0 0 0 0 1 | $81       |
-| [18b][18] | Contrast           | - - v v v v v v | $00 - $FF |
-| [19a][19] | Static indicator   | 1 0 1 0 1 1 0 x | $AC - $AD |
-| [19b][19] | Static indicator   | - - - - - - m m | $00 - $FF |
-| [20][]    | Power saver        |                 |           |
-| [21][]    | NOP                | 1 1 1 0 0 0 1 1 | $E3       |
-| [22][]    | Test               | 1 1 1 1 - - - - | $F0 - $FF |
+| Cmd #     | Command            | Command Code      | Hex range |
+|----------:| ------------------ | ----------------- | --------- |
+| [1][]     | Display ON/OFF     | `1 0 1 0 1 1 1 x` | $AE - $AF |
+| [2][]     | Display start line | `0 1 a a a a a a` | $40 - $7F |
+| [3][]     | Set Page           | `1 0 1 1 a a a a` | $B0 - $BF |
+| [4a][4]   | Set Column HI      | `0 0 0 1 h h h h` | $10 - $1F |
+| [4b][4]   | Set Column LO      | `0 0 0 0 l l l l` | $00 - $0F |
+| [8][]     | ADC select         | `1 0 1 0 0 0 0 x` | $A0 - $A1 |
+| [9][]     | Invert             | `1 0 1 0 0 1 1 x` | $A6 - $A7 |
+| [10][]    | All on             | `1 0 1 0 0 1 0 x` | $A4 - $A5 |
+| [11][]    | LCD bias           | `1 0 1 0 0 0 1 x` | $A2 - $A3 |
+| [12][]    | Start RMW          | `1 1 1 0 0 0 0 0` | $E0       |
+| [13][12]  | End RMW            | `1 1 1 0 1 1 1 0` | $EE       |
+| [14][]    | Reset              | `1 1 1 0 0 0 1 0` | $E2       |
+| [15][]    | Row direction      | `1 1 0 0 x - - -` | $C0 - $CF |
+| [16][]    | Power control      | `0 0 1 0 1 m m m` | $28 - $2F |
+| [17][]    | V5 resistor ratio  | `0 0 1 0 0 r r r` | $20 - $27 |
+| [18a][18] | Contrast           | `1 0 0 0 0 0 0 1` | $81       |
+| [18b][18] | Contrast           | `- - v v v v v v` | $00 - $FF |
+| [19a][19] | Static indicator   | `1 0 1 0 1 1 0 x` | $AC - $AD |
+| [19b][19] | Static indicator   | `- - - - - - m m` | $00 - $FF |
+| [20][]    | Power saver        | `               ` |           |
+| [21][]    | NOP                | `1 1 1 0 0 0 1 1` | $E3       |
+| [22][]    | Test               | `1 1 1 1 - - - -` | $F0 - $FF |
 
 [1]: cmd/1.md
 [2]: cmd/2.md
@@ -159,9 +159,9 @@ The returned byte contains status information in the upper nibble:
 
 ## FPC board connector pinout
 
-TODO: orientation
+Pins 1 and 29 are labeled on the board. In normal reading direction, 1 is on the left. The connector on the board is label [CN3](../board.md#cn3).
 
-1. VRS
+1. VR
 2. V5
 3. V4
 4. V3
