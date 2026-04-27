@@ -1,30 +1,18 @@
 # Timers & Oscillators
 
-- [Oscillators][]
+- [Oscillators](#oscillators)
   - [OSC1][]
-    - [OSC1 specs][]
   - [OSC3][]
-    - [OSC3 specs][]
-- [Seconds Timer][]
-- [Clock Timer][]
-- [Programmable timers][]
-  - [Programmable timer configuration][]
-  - [Programmable timer interrupts][]
-  - [Enabling and pausing programmable timers][]
+- [Seconds Timer](#seconds-timer)
+- [Clock Timer](#clock-timer)
+- [Programmable timers](#programmable-timers)
+  - [Programmable timer configuration](#programmable-timer-configuration)
+  - [Programmable timer interrupts](#programmable-timer-interrupts)
+  - [Enabling and pausing programmable timers](#enabling-and-pausing-programmable-timers)
 
-[Oscillators]: #oscillators
 [OSC1]: #osc1
-[OSC1 specs]: #osc1-specs
 [OSC3]: #osc3
-[OSC3 specs]: #osc3-specs
-[Seconds Timer]: #seconds-timer
-[Clock Timer]: #clock-timer
-[Programmable timers]: #programmable-timers
-[Programmable timer configuration]: #programmable-timer-configuration
-[Programmable timer interrupts]: #programmable-timer-interrupts
-[Enabling and pausing programmable timers]: #enabling-and-pausing-programmable-timers
-
-[SLEEP]: standby.md#SLEEP
+[SLEEP]: ../standby.md#SLEEP
 
 ## Oscillators
 
@@ -32,57 +20,19 @@ There are two oscillators on the board (external to the CPU) named OSC1 and OSC3
 
 ### OSC1
 
-This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. There is no way to disable this oscillator outside of putting the system into [SLEEP][] mode.
+*For specs see [here](../board.md#y1)*
 
-This oscillator is labeled `Y1` on the circuit board and it does have text but it may not be visible; it's an engraved text `KDS` followed by a number representing the final digit of the year it was printed in then a letter representing the month (A for January up to M for December). It's not a surface-mount component, but is glued down.
+This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. There is no way to disable this oscillator outside of putting the system into [SLEEP][] mode.
 
 In previous documentation and code, this oscillator was once known in the community as "oscillator 2".
 
-#### OSC1 specs
-
-* Part number: [DT-26](https://www.kds.info/product/dt-26/) ([datasheet](https://datasheet.lcsc.com/lcsc/1811121541_KDS-Daishinku-DT-26-32.768K-6pF-20PPM_C127496.pdf))
-  * D - Daishinku Corp (company name)
-  * T - Tuning fork crystal resonator
-  * 2 - 2 mm diameter
-  * 6 - 6 mm height
-* Load Capacitance: unconfirmed
-* Drive Level: 1.0μW (2.0μW max.)
-* Frequency Tolerance: ±20 ppm max. (at 25℃)
-* Series Resistance: unconfirmed
-* Turnover Temperature: +25℃±5℃
-* Parabolic Coefficient: -0.04 ppm/℃² max.
-* Operating Temperature Range: -10 to +60℃
-* Storage Temperature Range: -20 to +70℃
-* Shunt Capacitance: 1.1pF typ.
-* Aging: ±5 ppm/year
-
 ### OSC3
 
-This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for the general purpose timers. It can be disabled by writing a 0 to the OSCC register and is also disabled when the system enters [SLEEP][] mode.
+*For specs see [here](../board.md#y2)*
 
-This oscillator is labeled `Y2` on the circuit board and has text printed on the top which looks like a curved M in a box followed by `4.00` and then a single-character serial such as `L` or `J`. It is a surface-mount component.
-
-Disabling this oscillator when not needed can save power. To turn it off call `int [74h]` and to turn it back on call `int [72h]`. This will cause the CPU to run slower, however.
+This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for most of the system. It can be disabled by writing a 0 to the OSCC register and is also disabled when the system enters [SLEEP][] mode.
 
 In previous documentation and code, this oscillator was once known in the community as "oscillator 1".
-
-#### OSC3 specs
-
-These specs are unfortunately from the 2009 datasheet, when ideally we would like a 2001 datasheet.
-
-* Part number: [EFOS4004E5](https://www.digikey.com/en/products/detail/panasonic-electronic-components/EFO-S4004E5/160457) ([datasheet](https://media.digikey.com/pdf/Data%20Sheets/Panasonic%20Capacitors%20PDFs/EFO_3Array.pdf))
-  * EFO - Ceramic resonator
-  * S - 2 to 13 MHz type with built-in capacitors and 3 terminals
-  * 4004 - 4.00 MHz nominal oscillation frequency
-  * E - Embossed taping style packaging
-  * 5 - ±0.5% frequency tolerance
-* Built-in Capacitors: 33 pF
-* Oscillation frequency drift: ±0.2% overall stability
-  * -20°C ≈ -0.1
-  * 20°C ≈ 0.0
-  * 40°C ≈ 0.02
-  * 60°C ≈ 0.0
-  * 80°C ≈ -0.04
 
 ## Seconds Timer
 
