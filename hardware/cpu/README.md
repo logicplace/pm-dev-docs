@@ -13,11 +13,17 @@ The CPU is clocked at 4.00 MHz, although the processor operates on a 4 cycle dat
   - [The Hardware Registers](registers)
 - [Internal BIOS](bios.md)
 - [Interrupts](interrupts.md)
-- [Oscillators & Timers](../timers.md)
+- [Oscillators & Timers](timers.md)
 - [I/O](io.md)
 - [Audio / Sound](sound.md)
 - [LCD Controller](lcd_controller.md)
 - [Standby modes](standby.md)
+
+## S1C88V20 specs
+
+The official technical manual for this chip hasn't been found. If you have it or have a way to get it, please share it with us! Much of this information should be taken as "to the best of our knowledge".
+
+This is a glob topped processor likely sold attached to the board.
 
 ## Registers
 

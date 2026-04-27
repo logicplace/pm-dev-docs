@@ -105,9 +105,9 @@ Each interrupt's section lists which commercial games define a non-dummy handler
 \* Getting here can be interrupted if the system is an [official flash cart](../dev_cart.md) or the system has a [low battery](./bios.md#low-battery-check).
 
 [lcdc]: ./lcd_controller.md
-[gpt]: ../timers.md#programmable-timers
-[gpt3]: ../timers.md#ptm4-5
-[clk]: ../timers.md#clock-timer
+[gpt]: ./timers.md#programmable-timers
+[gpt3]: ./timers.md#ptm4-5
+[clk]: ./timers.md#clock-timer
 [ir]: ../ir.md
 [shock]: ./io.md#shock
 [00h]: #reset

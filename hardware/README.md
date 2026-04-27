@@ -10,7 +10,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
     - [The Hardware Registers](cpu/Registers.md)
   - [Internal BIOS](cpu/bios.md)
   - [Interrupts](cpu/interrupts.md)
-  - [Oscillators & Timers](timers.md)
+  - [Oscillators & Timers](cpu/timers.md)
   - [I/O](cpu/io.md)
   - [Audio / Sound](cpu/sound.md)
   - [LCD Controller](cpu/lcd_controller.md)
@@ -37,7 +37,7 @@ External bus with 21 bits for address & 8 bits for data.
 ## [Memory](cpu/memory.md)
 
 - [*BIOS*](cpu/bios.md): 4096 bytes, read-only.
-- [*Hardware Registers*](cpu/Registers.md): Used to control Pokémon mini system.
+- [*Hardware Registers*](cpu/registers): Used to control Pokémon mini system.
 - [*Internal RAM*](cpu/memory.md#ram): 4096 bytes, read/write access.
   Note: some RAM space may be required by the LCD controller and the bottom is used for the stack.
 - [*Internal EEPROM*](eeprom.md): 8192 bytes, read/write access via the I2C interface, used to store game saves.
@@ -66,7 +66,7 @@ Can read back timer values (since sound is assigned to Timer 3).
 
 For commercial games, hold the C button while booting up to start muted. <!-- software comment but eh? -->
 
-## [Timers](timers.md)
+## [Timers](cpu/timers.md)
 
 There are two oscillators and several timers/counters in the system. Additionally, the LCD controller has its own frame counter which is synced with the LCD.
 
