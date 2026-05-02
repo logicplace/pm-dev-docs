@@ -1,6 +1,6 @@
 # Circuit board
 
-![Orignal schematic](https://github.com/Mattias-Software/pokemon_mini_schematic/blob/main/original_schm.png)
+![Orignal schematic](https://raw.githubusercontent.com/Mattias-Software/pokemon_mini_schematic/refs/heads/main/original_schm.png)
 
 *Original schematic by Tauwasser*
 
