@@ -15,7 +15,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
   - [Audio / Sound](cpu/sound.md)
   - [LCD Controller](cpu/lcd_controller.md)
   - [Standby modes](cpu/standby.md)
-- [LCD: S1D15xxx](lcd)
+- [LCD: S1D15605](lcd)
 - [EEPROM: 24xx64 alike](eeprom.md)
 - [IR Transceiver](ir.md)
 - [Piezo Speaker](speaker.md)

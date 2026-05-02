@@ -19,7 +19,7 @@ Taped to the plastic front with clear, double-sided 3 mm wide tape in a hollow r
 
 The reflector is taped to the board with approx. 28mm (l) x 4mm (w) x 3.6mm (h) black foam tape
 
-## S1D15xxx LCD driver
+## S1D15605 LCD driver
 
 [S1D15000 Series Technical Manual](https://www.crystalfontz.com/controllers/uploaded/Epson%20S1D15605_SED1565_577706%20Tech%20Manual%20v1.1.pdf)
 
