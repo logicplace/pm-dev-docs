@@ -20,6 +20,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
 - [IR Transceiver](ir.md)
 - [Piezo Speaker](speaker.md)
 - [Cartridges and port](cartridge.md)
+- [Pokémon mini Circuit Board](board.md)
 - [Pokémon mini Shell](shell.md)
 - [Flash Cartridges](flash_carts)
   - [DITTO mini](flash_carts/ditto.md)

@@ -4,17 +4,18 @@ from pathlib import Path
 import jinja2
 
 from asm import AssemblerHighlightExtension
+from ext_md import ExtendedMarkdownExtension
 
 base_path: Path = Path(__file__).parent.parent
 env = jinja2.Environment(
 	loader=jinja2.FileSystemLoader(base_path),
-	extensions=[AssemblerHighlightExtension],
+	extensions=[AssemblerHighlightExtension, ExtendedMarkdownExtension],
 )
 
 def main():
 	fn: str
 	for fn in glob.glob("**/*.md.j2", root_dir=base_path, recursive=True):
-		# Remoive the .j2 for the target
+		# Remove the .j2 for the target
 		target = (base_path / fn).with_suffix("")
 		with target.open("wt", encoding="utf8") as f:
 			name = fn.replace("\\", "/")

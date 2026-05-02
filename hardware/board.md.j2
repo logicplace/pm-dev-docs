@@ -1,0 +1,1024 @@
+# Circuit board
+
+![Orignal schematic](https://github.com/Mattias-Software/pokemon_mini_schematic/blob/main/original_schm.png)
+
+*Original schematic by Tauwasser*
+
+For KiCad files for a newer version see [here](https://github.com/Mattias-Software/pokemon_mini_schematic/tree/main/schematic/kicad_files)
+
+For an interactive tracing tool see [here](https://pm.remysharp.com/)
+
+{% macro a(n, pfx="") -%}
+	<a id="user-content-{{pfx}}{{n | lower}}">{{n}}</a>
+{%- endmacro -%}
+{% macro f(n) %}{{ a(n, "fpc-") }}{% endmacro -%}
+{% macro c(n) %}{{ a(n, "cart-") }}{% endmacro -%}
+{% macro s(n) %}{{ a(n, "cpu-") }}{% endmacro -%}
+
+The console has a main board and also a daughter board which contains the voltage step-up circuit. Largely, the daughter board is not labeled. It connects to the LCD via a <abbr title="Flexible Printed Circuit">FPC</abbr>, to the cartidge via the custom 33-pin connector, to the buzzer via two wires, and to the rumble motor via a pad which its terminals press against when the unit is closed.
+
+The board has a marking located above the [POWER][] contact which reads `HGC0110-330010-xx` where xx can be 01 or 02 which indicates the board revision. There is a marking to the bottom right of [PAD1][] reading `Ax` where x is some number, 8 on my JP 01 board but 4 on my US 01 board.
+
+Printed above [CN3][] (move the black part into the locked position to see) is: √̅ᴛ 7 ▲ [94V-0](https://en.wikipedia.org/wiki/UL_94) followed by a 4-digit number written in a 7-segment font. Nearby-ish (closer on 02 revision) is the <abbr title="Underwriters Laboratory">UL</abbr> Recognized mark.
+
+[F1]: #f1
+[L1]: #l1
+[PAD1]: #pad1
+[PAD2]: #pad2
+[S1]: #s1
+[U1]: #u1
+[U2]: #u2
+[U3]: #u3
+[U4]: #u4
+[U5]: #u5
+
+## Using this document
+
+We describe locations as either front (F) (screen-side) or back (B) (cart-side) and use the following abbreviations: top-left (TL), top-right (TR), middle-left (ML), middle-right (MR), bottom-left (BL), and bottom-right (BR).
+
+When looking at the cart side, "left" is the negative end of the battery terminal and "top" is the side the cartridge enters. In this orientation the 1.5V on the battery image can be read correctly.
+
+When looking at the screen side, "left" is where the LEFT contact is and "top" is where the IR blaster is. In this orientation all the button contact labels can be read correctly.
+
+![board sections image](../assets/img/board_sections.png)
+
+For terminals on a component, they're described based on the orientation of the text on the silk-screen. Known components' pins may be named.
+
+Every label on the board is listed below but there may not be anything interesting to say about the component. To see all its connections, check the schematics instead.
+
+## Differences between board 01 and 02
+
+The board has a revision marker printed above the [POWER][] contact, at the end of the string.
+
+The boards are largely the same but with some minor differences:
+
+* [C21][] has been moved slightly to the left in 02
+* [C9][] is unpopulated in 02 and has been placed to the left of [R8][], which has been rotated 90⁰ counter-clockwise
+* [U5][] has been rotated 90⁰ clockwise and moved up slightly in 02
+* [R41][] and [R42][] have been added under [U5][] in 02, and do not exist at all in 01
+* [R34][], [R38][], and [R39][] have been repositioned to accommodate R41/R42
+* [R12][] has been rotated 90⁰ clockwise in 02
+
+## Legend
+
+The A# (e.g. A4) printed under PAD1 is not a component label, but the purpose is unclear. The 0# (e.g. 02) printed next to the negative battery terminal is a copy of the final component of the identifier printed above the power contact (e.g. HC0110-330010-**02**). These examples are from the images above; in contrast my Japanese Wooper Blue unit has A8 and 01.
+
+* C - Capacitor
+* CN - Connector
+* D - Diode
+  * A - Anode (of diode 1)
+  * C - cathode of diode 1 & anode of diode 2
+  * K - Cathode (of diode 2)
+* F - Fuse
+* L - Coil
+* PAD - Pad
+* Q - Transistor
+  * B - Base
+  * C - Collector
+  * E - Emitter
+  * D - Drain
+  * G - Ground
+  * S - Source
+* R - Resistor
+* RV - Variable Resistor
+* S - Shield
+* SW - Switch
+* TP - Test Point
+* U - Unit: voltage regulator, EEPROM, IC, IrDA, voltage detector
+* Y - Oscillator
+
+## Capacitors
+
+All capacitors on the main board, except for three of them, are surface mounted (SMD) multilayer ceramic capacitors (MLCC).
+
+C1, C4, and C5 are all SMD cylindrical aluminum electrolytic capacitors with a capacitance of 100 <abbr title="microfarad">μF</abbr>. They're 6.3mm diameter and ~4.5 mm tall.
+
+
+
+{% md {"symbols": "~"} %}
+| Label        | Populated? | Location                       | Capacitance | Description                       |
+| ------------ | ---------- | --------------------------     | ----------- | --------------------------------- |
+| {{a("C1")}}  | yes        | B MR                           | 100 μF      | electrolytic                      |
+| {{a("C2")}}  | yes        | B MR, left of [C1][]+          | ?           | ceramic                           |
+| {{a("C3")}}  | yes        | F ML, right of [C4][]          | ?           | ceramic                           |
+| {{a("C4")}}  | yes        | F ML                           | 100 μF      | electrolytic                      |
+| {{a("C5")}}  | yes        | B ML                           | 100 μF      | electrolytic                      |
+| {{a("C6")}}  | yes        | F UL, below [Q2][]             | ?           | ceramic                           |
+| {{a("C7")}}  | yes        | B ML, TL of [U1][]             | ?           | ceramic                           |
+| {{a("C8")}}  | yes        | B BR, BR of [U1][]             | ?           | ceramic                           |
+| {{a("C9")}}  | 01-only    | F UR, above [U5][]             | ?           | ceramic                           |
+| {{a("C10")}} | yes        | F MR, above [R34][]            | ?           | ceramic                           |
+| {{a("C11")}} | yes        | F ML, left of [TP3][]          | ?           | ceramic                           |
+| {{a("C12")}} | yes        | F ML, right of [R2][]          | ?           | ceramic                           |
+| {{a("C13")}} | no         | F ML, left of [R9][]           | 30 pF (rec) | named C~G2~ in S1C88 TMs          |
+| {{a("C14")}} | no         | F MR, right of [Y2][]          | 30 pF (rec) | named C~D2~ in S1C88 TMs          |
+| {{a("C15")}} | yes        | F MR, right of [Y1][]          | ?           | ceramic, named C~G1~ in S1C88 TMs |
+| {{a("C16")}} | yes        | B BL, between [R7][] & [R11][] | ?           | ceramic                           |
+| {{a("C17")}} | yes        | F UR, right of [R18][]         | ?           | ceramic                           |
+| {{a("C18")}} | yes        | F UR, right of [C17][]         | ?           | ceramic                           |
+| {{a("C19")}} | yes        | B BR, above [U2][]             | ?           | ceramic                           |
+| {{a("C20")}} | yes        | F UR, below [C21][]            | ?           | ceramic                           |
+| {{a("C21")}} | yes        | F UR, BR of [C25][]            | ?           | ceramic                           |
+| {{a("C22")}} | yes        | F UR, right of [C23][]         | ?           | ceramic                           |
+| {{a("C23")}} | yes        | F UR, right of [C18][]         | ?           | ceramic                           |
+| {{a("C24")}} | yes        | F ML, above [C4][]             | 1 μF        | ceramic                           |
+| {{a("C25")}} | yes        | F UR, below [C23][]            | 1 μF        | ceramic                           |
+| {{a("C26")}} | yes        | F MR, above [D3][]             | 1 μF        | ceramic                           |
+| {{a("C27")}} | yes        | F MR, BR of [CN3][]            | 1 μF        | ceramic                           |
+| {{a("C28")}} | yes        | F UL, below [L1][]             | ?           | ceramic                           |
+| {{a("C29")}} | yes        | B ML, right of [PAD2][]        | ?           | ceramic                           |
+| {{a("C30")}} | yes        | B ML, BL of [U1][]             | ?           | ceramic                           |
+| {{a("C31")}} | yes        | B MR, right of [CN4][]         | ?           | ceramic                           |
+| {{a("C32")}} | yes        | B MR, under [C31][]            | ?           | ceramic                           |
+| {{a("C33")}} | yes        | F ML, left of [C13][]          | ?           | ceramic                           |
+| {{a("C34")}} | no         | F UR, below [U5][]             | ?           | -                                 |
+
+*;~...~:<span style="font-size:smaller">...</span>
+{% endmd %}
+
+
+[C1]: #user-content-c1
+[C2]: #user-content-c2
+[C3]: #user-content-c3
+[C4]: #user-content-c4
+[C5]: #user-content-c5
+[C6]: #user-content-c6
+[C7]: #user-content-c7
+[C8]: #user-content-c8
+[C9]: #user-content-c9
+[C10]: #user-content-c10
+[C11]: #user-content-c11
+[C12]: #user-content-c12
+[C13]: #user-content-c13
+[C14]: #user-content-c14
+[C15]: #user-content-c15
+[C16]: #user-content-c16
+[C17]: #user-content-c17
+[C18]: #user-content-c18
+[C19]: #user-content-c19
+[C20]: #user-content-c20
+[C21]: #user-content-c21
+[C22]: #user-content-c22
+[C23]: #user-content-c23
+[C24]: #user-content-c24
+[C25]: #user-content-c25
+[C26]: #user-content-c26
+[C27]: #user-content-c27
+[C28]: #user-content-c28
+[C29]: #user-content-c29
+[C30]: #user-content-c30
+[C31]: #user-content-c31
+[C32]: #user-content-c32
+[C33]: #user-content-c33
+[C34]: #user-content-c34
+
+## Connectors
+
+[CN3]: #cn3
+[CN4]: #cn4
+
+### CN3
+
+Connector slot for the FPC to the LCD, pins 1 (left) and 29 (right) are labeled.
+
+* White portion:
+  * Length: 18.7 (base & tips of catch), 18 mm (top of catch), 17.5 (body)
+  * Depth: 3.6 mm
+  * Height: ?
+* Black portion:
+  * Length: 20.1 mm (top), 19.1 mm (bottom), 14.8 mm (inside of bottom), 2.6 mm (edges)
+  * Depth: 1.2 mm (top), ? (bottom), 4.8 mm (top + hooks)
+  * Height: 1.9 mm (edges), 1 mm (middle)
+* Pitch: 0.5 mm
+
+#### Pins
+
+Pin names are taken from the S1D15605 docs.
+
+I/O listed from the perspective of the LCD. PS = Power Supply.
+
+{% md {"symbols": "~^"} %}
+| Pin #       | Name  | I/O | Description                                            |
+|:-----------:| ----- |:---:| ------------------------------------------------------ |
+| {{f("1")}}  | V~R~  |  I  | Output voltage regulator terminal                      |
+| {{f("2")}}  | V~5~  | PS  | Liquid crystal drive power supply level 5              |
+| {{f("3")}}  | V~4~  | PS  | Liquid crystal drive power supply level 4              |
+| {{f("4")}}  | V~3~  | PS  | Liquid crystal drive power supply level 3              |
+| {{f("5")}}  | V~2~  | PS  | Liquid crystal drive power supply level 2              |
+| {{f("6")}}  | V~1~  | PS  | Liquid crystal drive power supply level 1              |
+| {{f("7")}}  | CAP2- |  O  | DC/DC voltage converter[^1]                            |
+| {{f("8")}}  | CAP2+ |  O  | DC/DC voltage converter[^1]                            |
+| {{f("9")}}  | CAP1- |  O  | DC/DC voltage converter[^1]                            |
+| {{f("10")}} | CAP1+ |  O  | DC/DC voltage converter[^1]                            |
+| {{f("11")}} | CAP3- |  O  | DC/DC voltage converter[^1]                            |
+| {{f("12")}} | VOUT  | I/O | DC/DC voltage converter[^1]                            |
+| {{f("13")}} | V~SS~ | PS  | Ground (GND)                                           |
+| {{f("14")}} | V~DD~ | PS  | Shared with MPU power supply terminal V~CC~            |
+| {{f("15")}} | D7    | I/O | Data bit 7                                             |
+| {{f("16")}} | D6    | I/O | Data bit 6                                             |
+| {{f("17")}} | D5    | I/O | Data bit 5                                             |
+| {{f("18")}} | D4    | I/O | Data bit 4                                             |
+| {{f("19")}} | D3    | I/O | Data bit 3                                             |
+| {{f("20")}} | D2    | I/O | Data bit 2                                             |
+| {{f("21")}} | D1    | I/O | Data bit 1                                             |
+| {{f("22")}} | D0    | I/O | Data bit 0                                             |
+| {{f("23")}} | !RD!  |  I  | 0 = MPU is reading from D7~0                           |
+| {{f("24")}} | !WR!  |  I  | 0 = MPU is writing to D7~0                             |
+| {{f("25")}} | !A0!  |  I  | 0 = status/control, 1 = display data                   |
+| {{f("26")}} | !RES! |  I  | Reset. When LOW, the settings are initialized          |
+| {{f("27")}} | !CS!  |  I  | Chip Select. When LOW, the data/command I/O is enabled |
+| {{f("28")}} | CL    |I[^2]| The display clock input terminal                       |
+| {{f("29")}} | FR    |O[^2]| The liquid crystal alternating current signal          |
+
+[^1]: CAP pins connect to the corresponding pin through a capacitor. See schematic for details.
+[^2]: Direction configured by the PM's hardware.
+
+*;~...~:<span style="font-size:smaller">...</span>
+*;!...!:<u style="text-decoration:overline">...</u>
+{% endmd %}
+
+[LVR]: #user-content-fpc-1
+[LV5]: #user-content-fpc-2
+[LV4]: #user-content-fpc-3
+[LV3]: #user-content-fpc-4
+[LV2]: #user-content-fpc-5
+[LV1]: #user-content-fpc-6
+[LC2-]: #user-content-fpc-7
+[LC2+]: #user-content-fpc-8
+[LC1-]: #user-content-fpc-9
+[LC1+]: #user-content-fpc-10
+[LC3-]: #user-content-fpc-11
+[LVO]: #user-content-fpc-12
+[LVS]: #user-content-fpc-13
+[LVD]: #user-content-fpc-14
+[LD7]: #user-content-fpc-15
+[LD6]: #user-content-fpc-16
+[LD5]: #user-content-fpc-17
+[LD4]: #user-content-fpc-18
+[LD3]: #user-content-fpc-19
+[LD2]: #user-content-fpc-20
+[LD1]: #user-content-fpc-21
+[LD0]: #user-content-fpc-22
+[LRD]: #user-content-fpc-23
+[LWR]: #user-content-fpc-24
+[LA0]: #user-content-fpc-25
+[LRES]: #user-content-fpc-26
+[LCS]: #user-content-fpc-27
+[LCL]: #user-content-fpc-28
+[LFR]: #user-content-fpc-29
+
+### CN4
+
+Cartridge slot connector, pins 33 (left) and 1 (right) are labeled.
+
+* Length: 33.8 mm (base), 30.5
+* Depth: 14.6 mm, 15.2 mm including pins (not the length at the base), 4.6 mm (basin of side slit to base)
+* Height: ~5.9 mm (total), ? (top), 1.4 mm (base)
+* Pitch: 0.7 mm
+
+#### Pins
+
+Pin names are largely from the community.
+
+I/O listed from the perspective of the CPU. PS = Power Supply.
+
+{% md {"symbols": "~"} %}
+| Pin #       | Card pin     | Name   | I/O | Description                                                |
+|:-----------:|:------------:| -----  |:---:| ---------------------------------------------------------- |
+| {{c("1")}}  | {{a("B1")}}  | V~DD~  | PS  | Stepped down from V~CC~                                    |
+| {{c("2")}}  | {{a("A1")}}  | V~DD~  | PS  | Stepped down from V~CC~                                    |
+| {{c("3")}}  | {{a("B2")}}  | A20    |  O  | Address bit 20                                             |
+| {{c("4")}}  | {{a("A2")}}  | A9     |  O  | Address bit 9 when LALE=high, 19 when HALE=high            |
+| {{c("5")}}  | {{a("B3")}}  | A8     |  O  | Address bit 8 when LALE=high, 18 when HALE=high            |
+| {{c("6")}}  | {{a("A3")}}  | A7     |  O  | Address bit 7 when LALE=high, 17 when HALE=high            |
+| {{c("7")}}  | {{a("B4")}}  | A6     |  O  | Address bit 6 when LALE=high, 16 when HALE=high            |
+| {{c("8")}}  | {{a("A4")}}  | A5     |  O  | Address bit 5 when LALE=high, 15 when HALE=high            |
+| {{c("9")}}  | {{a("B5")}}  | A4     |  O  | Address bit 4 when LALE=high, 14 when HALE=high            |
+| {{c("10")}} | {{a("A5")}}  | A3     |  O  | Address bit 3 when LALE=high, 13 when HALE=high            |
+| {{c("11")}} | {{a("B6")}}  | A2     |  O  | Address bit 2 when LALE=high, 12 when HALE=high            |
+| {{c("12")}} | {{a("A6")}}  | A1     |  O  | Address bit 1 when LALE=high, 11 when HALE=high            |
+| {{c("13")}} | {{a("B7")}}  | A0     |  O  | Address bit 0 when LALE=high, 10 when HALE=high            |
+| {{c("14")}} | {{a("A7")}}  | V~DD~  | PS  | Stepped down from V~CC~                                    |
+| {{c("15")}} | {{a("B8")}}  | HALE   |  O  | High address bits are latched when HALE is high            |
+| {{c("16")}} | {{a("A8")}}  | V~DD~  | PS  | No pad on cartridge                                        |
+| {{c("17")}} | {{a("B9")}}  | LALE   |  O  | Low address bits are latched when LALE is high             |
+| {{c("18")}} | {{a("A9")}}  | GND    | PS  | Ground                                                     |
+| {{c("19")}} | {{a("B10")}} | D0     | I/O | Data bit 0                                                 |
+| {{c("20")}} | {{a("A10")}} | D1     | I/O | Data bit 1                                                 |
+| {{c("21")}} | {{a("B11")}} | D2     | I/O | Data bit 2                                                 |
+| {{c("22")}} | {{a("A11")}} | D3     | I/O | Data bit 3                                                 |
+| {{c("23")}} | {{a("B12")}} | D4     | I/O | Data bit 4                                                 |
+| {{c("24")}} | {{a("A12")}} | D5     | I/O | Data bit 5                                                 |
+| {{c("25")}} | {{a("B13")}} | D6     | I/O | Data bit 6                                                 |
+| {{c("26")}} | {{a("A13")}} | D7     | I/O | Data bit 7                                                 |
+| {{c("27")}} | {{a("B14")}} | OE     |  O  | Output Enable. Reading data when OE is high                |
+| {{c("28")}} | {{a("A14")}} | IRQ    |  I  | Causes [Cartridge IRQ][] when IRQ is high                  |
+| {{c("29")}} | {{a("B15")}} | WE     |  O  | Write Enable                                               |
+| {{c("30")}} | {{a("A15")}} | CS     |  O  | Chip Select                                                |
+| {{c("31")}} | {{a("B16")}} | CARD_N |  I  | Card detect. Active-low. Connected to GND in the cartridge |
+| {{c("32")}} | {{a("A16")}} | GND    | PS  | Ground                                                     |
+| {{c("33")}} | {{a("B17")}} | GND    | PS  | Ground                                                     |
+
+*;~...~:<span style="font-size:smaller">...</span>
+*;!...!:<u style="text-decoration:overline">...</u>
+
+[Cartridge IRQ]: ./cpu/interrupts.md#cartridge-irq
+{% endmd %}
+
+[B1]: #user-content-b1
+[A1]: #user-content-a1
+[B2]: #user-content-b2
+[A2]: #user-content-a2
+[B3]: #user-content-b3
+[A3]: #user-content-a3
+[B4]: #user-content-b4
+[A4]: #user-content-a4
+[B5]: #user-content-b5
+[A5]: #user-content-a5
+[B6]: #user-content-b6
+[A6]: #user-content-a6
+[B7]: #user-content-b7
+[A7]: #user-content-a7
+[B8]: #user-content-b8
+[A8]: #user-content-a8
+[B9]: #user-content-b9
+[A9]: #user-content-a9
+[B10]: #user-content-b10
+[A10]: #user-content-a10
+[B11]: #user-content-b11
+[A11]: #user-content-a11
+[B12]: #user-content-b12
+[A12]: #user-content-a12
+[B13]: #user-content-b13
+[A13]: #user-content-a13
+[B14]: #user-content-b14
+[A14]: #user-content-a14
+[B15]: #user-content-b15
+[A15]: #user-content-a15
+[B16]: #user-content-b16
+[A16]: #user-content-a16
+[B17]: #user-content-b17
+
+## Contacts
+
+The keypad uses contacts under a likely silicone membrane with a carbon coating on the bottom bridging them to ground. The C button is [SW1][] rather than one of these.
+
+[A]: #a
+[B]: #a
+[POWER]: #power
+[RESET]: #reset
+[UP]: #up
+[LEFT]: #left
+[RIGHT]: #right
+[DOWN]: #down
+
+### A
+
+The TL and BR contact points are GND while the other connects to the [CPU][U3] and [TP1][].
+
+### B
+
+The TL and BR contact points are GND while the other connects to the [CPU][U3].
+
+### POWER
+
+The TL and BR contact points are GND while the other two connect to the [CPU][U3] and [TP2][].
+
+### RESET
+
+The TL and BR contact points are GND while the other two connect to the [CPU][U3].
+
+### UP
+
+The right contact point is GND while the other connects to the [CPU][U3].
+
+### LEFT
+
+The top contact point is GND while the other connects to the [CPU][U3].
+
+### RIGHT
+
+The bottom contact point is GND while the other connects to the [CPU][U3].
+
+### DOWN
+
+The left contact point is GND while the other connects to the [CPU][U3].
+
+## Diodes
+
+[D1]: #d1
+[D2]: #d2
+[D3]: #d3
+[D4]: #d4
+[D5]: #d5
+[D6]: #d6
+
+### D1
+
+Located screen-side, below [C4][]. Anode top.
+
+### D2
+
+Located screen-side, right of [R5][]. Anode left.
+
+### D3
+
+A SOT23 diode, possibly [1SS226](https://toshiba.semicon-storage.com/us/semiconductor/product/diodes/detail.1SS226.html) (TODO: confirm). Same chip as [D4][]
+
+Located screen-side, middle-right. 3-pin AKC (pins labeled).
+
+### D4
+
+Same chip as [D3][]
+
+Located cart-side, above [C5][]. 3-pin AKC (pins labeled).
+
+### D5
+
+Located screen-side, bottom-right. Anode top.
+
+### D6
+
+Located screen-side, bottom-right. Anode top.
+
+## F1
+
+Fuse 1. Located cart-side, bottom-right of C2.
+
+## L1
+
+why
+
+## PAD1
+
+The left contact (labeled 2) is GND. This pad connects the rumble motor mounted in the back of the case to the system.
+
+* Each contact is 2 mm x 3.2 mm with a total width of ~4.5 mm
+
+### Motor
+
+A 2-pin spring contact ERM vibration motor contained in a light gray silicone sleeve which can be slipped off with some trouble, inserted into the case back without glue.
+
+* Height: 15.7 (total), 12.3 (cylinder with exit bump), 11.4 (cylinder)
+* Diameter of cylinder: 4 mm
+* Diameter of shaft: 0.7 mm
+* Weight: 5.4 mm long, 3.4 mm at deepest, 2.8 mm tall
+* Length of base: 5 mm
+* Length of pins: ~5 mm
+* Pitch (of motor): 1.5 mm
+* Silicone sleeve: 11.6 mm tall, 4.9 mm wide, 5.5 mm depth, 0.5 mm at thinnest to 1.8 mm at thickest
+
+## PAD2
+
+Pin 1 connects [BZ][] through a red wire to the inner circle (top electrode) of the speaker. Pin 2 connects [BZ-][] through a black wire to the outer circle (metal plate).
+
+### Speaker
+
+~20 mm diameter piezo buzzer with ~15 mm inner diameter (incl. ring). It's glued to the back casing. Thickness unknown.
+
+## Transistors
+
+[Q1]: #q1
+[Q2]: #q2
+[Q3]: #q3
+
+### Q1
+
+A SOT89-3 transistor, possibly 2SJ361 (TODO: confirm).
+
+This detects the <u style="text-decoration:overline">CART_POW_EN</u> signal and steps down the V<sub>CC</sub> to input into the cartridge bus.
+
+### Q2
+
+A SOT89-3 transistor, possibly 2SA1419 (TODO: confirm).
+
+This powers the rumble motor when [Q3][] closes.
+
+### Q3
+
+A SOT323 transistor, possibly 2SC4155 (TODO: confirm).
+
+This detects the RUMBLE signal, connecting [Q2][] to GND.
+
+## Resistors
+
+R41 and R42 pads do not exist on the 01 board.
+
+R9 is named `Rf` in the S1C88 technical manuals.
+
+| Label        | Populated? | Location                         | Resistance |
+| ------------ | ---------- | -------------------------------- | ---------- |
+| {{a("R1")}}  | yes        | F TL, between [Q3][] & [Q1][]    | 1 kΩ       |
+| {{a("R2")}}  | no         | F ML, above [RV1][]              | ?          |
+| {{a("R3")}}  | yes        | F TL, BL of [Q1][]               | 100 Ω      |
+| {{a("R4")}}  | yes        | F TL, BL of [Q3][]               | 10 kΩ      |
+| {{a("R5")}}  | yes        | F TL, right of [R4][]            | 100 kΩ     |
+| {{a("R6")}}  | yes        | B BR, right of [R10][]           | 200 Ω      |
+| {{a("R7")}}  | yes        | B BL, left of [C16][]            | 33 Ω       |
+| {{a("R8")}}  | yes        | F TR, below [C20][]              | 68 kΩ      |
+| {{a("R9")}}  | yes        | F ML, left of [Y2][]             | 1 MΩ       |
+| {{a("R10")}} | yes        | B BR, below [U1][]               | 10 kΩ      |
+| {{a("R11")}} | no         | B BL, below [U1][]               | ?          |
+| {{a("R12")}} | yes        | B TL                             | 1 kΩ       |
+| {{a("R13")}} | yes        | B ML, BL of [D4][]               | 100 Ω      |
+| {{a("R14")}} | yes        | F MR, below [D3][]               | 100 Ω      |
+| {{a("R15")}} | yes        | F MR, below [R34][]              | 500 kΩ     |
+| {{a("R16")}} | yes        | B BR, TL of [U2][]               | 1 kΩ       |
+| {{a("R17")}} | yes        | B BR, below [U2][]               | 10 kΩ      |
+| {{a("R18")}} | yes        | F TR, BR of [U4][]               | 33 Ω       |
+| {{a("R19")}} | yes        | F TL, below [R20][]              | 100 kΩ     |
+| {{a("R20")}} | yes        | F TL, below [U4][]               | 11 Ω       |
+| {{a("R21")}} | yes        | F TL, below [R25][]              | 270 kΩ     |
+| {{a("R22")}} | yes        | F TL, below [R21][]              | 1.3 MΩ     |
+| {{a("R23")}} | yes        | F ML, BR of [Q1][]               | 33 Ω       |
+| {{a("R24")}} | yes        | F ML, below [R23][]              | 33 Ω       |
+| {{a("R25")}} | yes        | F TL, below [R26][]              | 33 Ω       |
+| {{a("R26")}} | yes        | F TL, below [R27][]              | 33 Ω       |
+| {{a("R27")}} | yes        | F TL, below [R28][]              | 33 Ω       |
+| {{a("R28")}} | yes        | F TL, below [R4][]               | 33 Ω       |
+| {{a("R29")}} | yes        | F TL, below [D2][]               | 33 Ω       |
+| {{a("R30")}} | yes        | F TL, below [R29][]              | 33 Ω       |
+| {{a("R31")}} | yes        | F MR, left of [R32][]            | 33 Ω       |
+| {{a("R32")}} | yes        | F MR, BL of [C27][]              | 33 Ω       |
+| {{a("R33")}} | yes        | F ML, right of [TP3][]           | 33 Ω       |
+| {{a("R34")}} | yes        | F MR, BR (01)/below (02) [C10][] | 33 Ω       |
+| {{a("R35")}} | yes        | F ML, right of [R33][]           | 33 Ω       |
+| {{a("R36")}} | yes        | F ML, right of [R35][]           | 33 Ω       |
+| {{a("R37")}} | yes        | F ML, right of [R40][]           | 33 Ω       |
+| {{a("R38")}} | yes        | F MR, right of [R39][]           | 100 kΩ     |
+| {{a("R39")}} | no         | F MR, right of [C10][]           | ?          |
+| {{a("R40")}} | yes        | F ML, right of [R36][]           | 500 kΩ     |
+| {{a("R41")}} | 02-only    | F MR, right of [R42][]           | ?          |
+| {{a("R42")}} | 02-only    | F MR, right of [C27][]           | 0 Ω        |
+
+[R1]: #user-content-r1
+[R2]: #user-content-r2
+[R3]: #user-content-r3
+[R4]: #user-content-r4
+[R5]: #user-content-r5
+[R6]: #user-content-r6
+[R7]: #user-content-r7
+[R8]: #user-content-r8
+[R9]: #user-content-r9
+[R10]: #user-content-r10
+[R11]: #user-content-r11
+[R12]: #user-content-r12
+[R13]: #user-content-r13
+[R14]: #user-content-r14
+[R15]: #user-content-r15
+[R16]: #user-content-r16
+[R17]: #user-content-r17
+[R18]: #user-content-r18
+[R19]: #user-content-r19
+[R20]: #user-content-r20
+[R21]: #user-content-r21
+[R22]: #user-content-r22
+[R23]: #user-content-r23
+[R24]: #user-content-r24
+[R25]: #user-content-r25
+[R26]: #user-content-r26
+[R27]: #user-content-r27
+[R28]: #user-content-r28
+[R29]: #user-content-r29
+[R30]: #user-content-r30
+[R31]: #user-content-r31
+[R32]: #user-content-r32
+[R33]: #user-content-r33
+[R34]: #user-content-r34
+[R35]: #user-content-r35
+[R36]: #user-content-r36
+[R37]: #user-content-r37
+[R38]: #user-content-r38
+[R39]: #user-content-r39
+[R40]: #user-content-r40
+[R41]: #user-content-r41
+[R42]: #user-content-r42
+[RV1]: #rv1
+
+### RV1
+
+Located screen-side, middle left, right of [C3][].
+
+## S1
+
+The cartridge slot shield. Located cart-side, top. Has a long indented line with round caps in the center (but slightly below middle) of the bottom rectangle. The top has unevenly rounded edges and has two semi-circles indented along the top edge, placed 9.5 mm from either side.
+
+* Length: 34.5 mm (base), ~33.2 mm (top), ~27.3 mm (indent)
+* Depth: ~8.2 mm (base), ~6.7 mm (bottom)
+* Height: ~1.6 mm (bottom), < 0.9 mm (top, this is where it rises to off the board)
+
+## Switches
+
+[SW1]: #sw1
+[SW2]: #sw2
+
+### SW1
+
+A 2-pin right-angle push button switch with grounded shield. Located cart-side, top left.
+
+The top pin is GND and the bottom connects to the [CPU][U3].
+
+* Without shield: 6 mm square, 3 mm "height" at shortest point, feet add ~0.6 mm
+* Shield: ~0.3 mm thick, 8.1 mm long, 3.6 mm "height" (side), 3.5 mm height not including through-hole pins
+* Button: 1.3 mm "height", 3 mm diameter
+
+### SW2
+
+A 2-pin enclosed reed switch (TODO: confirm type). Located cart-side, bottom left.
+
+The pins are labeled, pin 1 is signal and pin 2 is GND.
+
+* Has a strange shape that's hard to measure...
+* Height: 8 mm (total), 6.1 mm (up to base of top groove)
+* Contained in 8.9 mm square
+* Width between vertical grooves along sides: 8.3 mm
+* Diameter of groove on top: ~7.6 mm
+* Diameter of widest point on top: ~10.1 mm
+* Pitch: ~7 mm (active pins), ~6 mm (shield pins)
+
+## Test points
+
+[TP1]: #tp1
+[TP2]: #tp2
+[TP3]: #tp3
+[TP4]: #tp4
+[TP5]: #tp5
+
+### TP1
+
+Tests the [A][] contact. Located cart-side, bottom left.
+
+### TP2
+
+Tests the [POWER][] contact. Located cart-side, bottom left. Next to it reads `(PON#)` possibly meaning "power on"
+
+### TP3
+
+Tests if cartridge can be detected. Located screen-side, middle left. A label reading `(CARD_N)` has an arrow pointing to it; this is the name of the line it's testing.
+
+### TP4
+
+Tests the IrDA's TXD line. Located screen-side, top center.
+
+### TP5
+
+Tests the IrDA's RXD line. Located screen-side, top center.
+
+## U1
+
+The voltage step-up converter daughter board. Located cart-side, center.
+
+The board itself is 23 x 10 mm, likely ~1 mm thick.
+
+Basically no component is labeled and no schematic has been made so all I can document is the package types.
+
+* Four SOT416 chips
+* One SOT23-5 chip
+* Two SOT23 chips
+* One SOT363 chip
+* ALPS: a 6 mm x 6 mm 2-pin chip that looks circular from the top
+
+### Pins
+
+The pins are not labeled, so instead we use the numbers and names from Tauwasser's schematic.
+
+I/O listed from the perspective of U1. PS = Power Supply.
+
+| Pin # | Name | I/O | Location      | Description                      |
+|:-----:| ---- |:---:| ------------- | -------------------------------- |
+|   1   | VIN  | PSI | bottom right  | Battery power in                 |
+|   2   | VOUT | PSO | top right     | V<sub>CC</sub> out               |
+|   3   | ?    |  I  | top left      | Connects to POW_? pin of [U3][]  |
+|   4   | GND  | PS  | bottom left   | Ground                           |
+|   5   | ?    |  I  | bottom center | Connects to [POWER][] contact    |
+
+## U2
+
+A 24xx64-alike TSSOP-8 package EEPROM. Located cart-side, bottom right.
+
+Pins 1-4 (left) and 7 (right) are wired to GND.
+
+I/O listed from the perspective of the EEPROM. PS = Power Supply.
+
+| Pin # | Name | I/O | Description        |
+|:-----:| ---- |:---:| ------------------ |
+|   1   | A0   |  I  | Address bit 0      |
+|   2   | A1   |  I  | Address bit 1      |
+|   3   | A2   |  I  | Address bit 2      |
+|   4   | GND  | PS  | Ground             |
+|   5   | SDA  | I/O | Serial data I/O    |
+|   6   | SCL  |  I  | Serial clock input |
+|   7   | WP   |  I  | Write protect      |
+|   8   | VCC  | PS  | Power supply       |
+
+Other I2C devices, such as a [DS1621 digital thermometer](https://web.archive.org/web/20080412185344/http://lupin.shizzle.it/?p=55), can be wired to the SDA/SCL lines of the EEPROM chip to add them to the bus.
+
+## U3
+
+The [S1C88V20](cpu) with glob top. Locate screen-side, middle center.
+
+The name for this chip comes from Epson's S1C88 tooling, which contains a memory layout of this name as well as debugger modules of this name.
+
+* Part number: S1C88V20B??????
+  * S1 - Seiko Epson, previously E0
+  * C - Model name: microcomputer
+  * 88V20 - Model number
+  * B - Shape: Assembled on board
+  * ???? - Specifications (unknown)
+  * ?? - Packing specification (unknown)
+* Core CPU: S1C88 (MODEL3) CMOS 8-bit core CPU
+* OSC1 Oscillation circuit: Crystal oscillation circuit (mask option) 32.768 kHz
+* OSC3 Oscillation circuit: Crystal/Ceramic oscillation circuit (mask option) 4.0 MHz (allowable range unknown)
+  * The internals of the chip when using this mask option should also allow applying an external clock signal to (probably) the left [Y2][] pin, after removing [R9][]
+* Internal ROM capacity: 4 KiB
+* Internal RAM capacity: 4 KiB
+* Bus line:
+  * Address bus: 11 bits + 2 latching bits
+  * Data bus: 8 bits
+  * CE/<u style="text-decoration:overline">CE</u> signal: 2 bits
+  * WR/<u style="text-decoration:overline">WR</u> signal: 2 bit
+  * RD/<u style="text-decoration:overline">RD</u> signal: 2 bit
+* Input port: 10 bits
+  * User input: 8 bits
+  * Cartridge input: 2 bits
+  * Configurable de-jitter
+* Output port: 22
+  * Address bus: 13 bits
+  * Cartridge specific: 3 bits
+  * LCD specific: 4 bits
+  * Buzzer: 2 bits
+* I/O port: 8~18 bits
+  * General purpose: 8 bits
+  * Data (unconfigurable): 8 bits
+  * LCD (fixed by circuitry): 2 bits (unconfirmed)
+* 16-bit programmable timer: 3 channels
+  * Usable as 16 bits x 3 channels or 8 bits x 6 channels
+  * Each is individually selectible as 16 bits
+* Clock timer: 1 channel
+  * Generating 1 sec signal with 32 kHz oscillation
+* Seconds timer:
+  * Manages real time clock
+* LCD controller:
+  * B&W dot-matrix display driven by an external driver ([S1D15605](lcd))
+  * Scroll function available
+  * 16x16 sprites available: 24
+* Watchdog timer: probably exists but is not configurable and we cannot confirm whether or not it's used
+* Supply voltage detection (SVD): ? value programmable
+* Priority encoded interrupt engine
+  * Hardware interrupts (total: 32)
+    * External Interrupt:
+      * Input interrupt: 10
+    * Internal Interrupt:
+      * 16-bit programmable timer interrupt: 6
+      * Clock timer interrupt: 4
+      * I/O port interrupt: 2
+      * LCD controller interrupt: 2
+    * NMI: 3
+    * Unknown: 5
+  * Software interrupts: up to 96 (45 implemented in Pokémon mini BIOS)
+* Supply voltage: 3.0V (range per operating frequency unknown)
+* Current consumption: ?
+* Supply form: 64-pin CoB glob top
+
+### Pins
+
+The pins are not labeled, so instead we use the numbers and names (largely) from Tauwasser's schematic. A few names come from other official specifications, CARD_N and most of the keypad are labeled on the board elsewhere.
+
+I/O listed from the perspective of the CPU. PS = Power Supply.
+
+{% md %}
+| Pin #       | Name          | I/O | Description                            |
+|:-----------:| ------------- |:---:| -------------------------------------- |
+| {{s("1")}}  | VCC           | PS  | VCC (3v)                               |
+| {{s("2")}}  | OSC3          |  I  | Connects to [Y2][]                     |
+| {{s("3")}}  | OSC4          |  O  | Connects to [Y2][]                     |
+| {{s("4")}}  | CAP           |  ?  | Connects to [C33][]                    |
+| {{s("5")}}  | GND           | PS  | Ground                                 |
+| {{s("6")}}  | OSC1          |  I  | Connects to [Y1][]                     |
+| {{s("7")}}  | OSC2          |  O  | Connects to [Y1][]                     |
+| {{s("8")}}  | CAP           |  ?  | Connects to [C16][]                    |
+| {{s("9")}}  | POW_?         |  O  | Connects to [U1][]                     |
+| {{s("10")}} | VCC           |  ?  | VCC (3v)                               |
+| {{s("11")}} | !RESET!       |  I  | [RESET][] contact input                |
+| {{s("12")}} | OPT           |  ?  | ?                                      |
+| {{s("13")}} | !POWER!       |  I  | [POWER][] contact input                |
+| {{s("14")}} | !RIGHT!       |  I  | [RIGHT][] contact input                |
+| {{s("15")}} | !LEFT!        |  I  | [LEFT][] contact input                 |
+| {{s("16")}} | !DOWN!        |  I  | [DOWN][] contact input                 |
+| {{s("17")}} | !UP!          |  I  | [UP][] contact input                   |
+| {{s("18")}} | !C!           |  I  | [SW1][] input                          |
+| {{s("19")}} | !B!           |  I  | [B][] contact input                    |
+| {{s("20")}} | !A!           |  I  | [A][] contact input                    |
+| {{s("21")}} | !CARD_POW_EN! |  O  | Enable power to the cartridge          |
+| {{s("22")}} | BZ-           |  O  | Inverted [buzzer](#speaker) signal     |
+| {{s("23")}} | BZ            |  O  | [Buzzer](#speaker) signal              |
+| {{s("24")}} | GPIO6         | I/O | [!SHOCK!][SW2]                         |
+| {{s("25")}} | GPIO5         | I/O | Powers down [U4][] when high           |
+| {{s("26")}} | GPIO4         | I/O | Enables [rumble motor](#motor)         |
+| {{s("27")}} | GPIO3         | I/O | Connects to [U2][]'s SCL               |
+| {{s("28")}} | GPIO2         | I/O | Connects to [U2][]'s SDA               |
+| {{s("29")}} | GPIO1         | I/O | Connects to [U4][]'s TXD               |
+| {{s("30")}} | GPIO0         | I/O | Connects to [U4][]'s RXD               |
+| {{s("31")}} | LCD_FR        | I/? | Connects to [CN3][LFR]'s FR            |
+| {{s("32")}} | LCD_CL        | ?/O | Connects to [CN3][LCL]'s CL            |
+| {{s("33")}} | VCC           |  ?  | VCC (3v)                               |
+| {{s("34")}} | GND           |  ?  | Ground                                 |
+| {{s("35")}} | !LCD_CS!      |  O  | Select LCD for bus communication       |
+| {{s("36")}} | !LCD_WR!      |  O  | Connects to [CN3][LWR]'s !WR!          |
+| {{s("37")}} | !LCD_RD!      |  O  | Connects to [CN3][LRD]'s !RD!          |
+| {{s("38")}} | LCD_A0        |  O  | Connects to [CN3][LA0]'s !A0!          |
+| {{s("39")}} | D7            | I/O | Data bit 7 for [CN3][LD7] & [CN4][A13] |
+| {{s("40")}} | D6            | I/O | Data bit 6 for [CN3][LD6] & [CN4][B13] |
+| {{s("41")}} | D5            | I/O | Data bit 5 for [CN3][LD5] & [CN4][A12] |
+| {{s("42")}} | D4            | I/O | Data bit 4 for [CN3][LD4] & [CN4][B12] |
+| {{s("43")}} | D3            | I/O | Data bit 3 for [CN3][LD3] & [CN4][A11] |
+| {{s("44")}} | D2            | I/O | Data bit 2 for [CN3][LD2] & [CN4][B11] |
+| {{s("45")}} | D1            | I/O | Data bit 1 for [CN3][LD1] & [CN4][A10] |
+| {{s("46")}} | D0            | I/O | Data bit 0 for [CN3][LD0] & [CN4][B10] |
+| {{s("47")}} | HALE          |  O  | High address latch enable ([CN4][B8])  |
+| {{s("48")}} | LALE          |  O  | Low address latch enable ([CN4][B9])   |
+| {{s("49")}} | A0            |  O  | Address bit 0/10 ([CN4][B7])           |
+| {{s("50")}} | A1            |  O  | Address bit 1/11 ([CN4][A6])           |
+| {{s("51")}} | A2            |  O  | Address bit 2/12 ([CN4][B6])           |
+| {{s("52")}} | A3            |  O  | Address bit 3/13 ([CN4][A5])           |
+| {{s("53")}} | A4            |  O  | Address bit 4/14 ([CN4][B5])           |
+| {{s("54")}} | A5            |  O  | Address bit 5/15 ([CN4][A4])           |
+| {{s("55")}} | A6            |  O  | Address bit 6/16 ([CN4][B4])           |
+| {{s("56")}} | A7            |  O  | Address bit 7/17 ([CN4][A3])           |
+| {{s("57")}} | A8            |  O  | Address bit 8/18 ([CN4][B3])           |
+| {{s("58")}} | A9            |  O  | Address bit 9/19 ([CN4][A2])           |
+| {{s("59")}} | A20           |  O  | Address bit 20 ([CN4][B2])             |
+| {{s("60")}} | OE            |  O  | [CN4][B14]'s data Output Enable        |
+| {{s("61")}} | WE            |  O  | [CN4][B15]'s Write Enable              |
+| {{s("62")}} | CS            |  O  | Select cartridge for bus communication |
+| {{s("63")}} | !CARD!        |  I  | [Cartridge detect][B16] input          |
+| {{s("64")}} | CN4-28        |  I  | [Cartridge IRQ][A14] input             |
+
+*;!...!:<u style="text-decoration:overline">...</u>
+{% endmd %}
+
+[BZ-]: #user-content-cpu-22
+[BZ]: #user-content-cpu-23
+[OSC1]: #user-content-cpu-6
+[OSC2]: #user-content-cpu-7
+[OSC3]: #user-content-cpu-2
+[OSC4]: #user-content-cpu-3
+
+## U4
+
+The [IrDA blaster](ir.md). As of yet unidentified. Located screen-side, top center.
+
+* Including the shield but not pins: 10 mm long x 3.2 mm deep x ~3.7 mm high
+* Depth of "peg" on the top: 2.6 mm
+* Depth from back to tip of bulb: 3 mm
+* Bulb diameter: ~3.3 mm
+* Pitch: ~0.8 mm
+
+[![IR blaster front](../assets/img/ir_blaster_front_th.png)](../assets/img/ir_blaster_front.png)
+[![IR blaster back](../assets/img/ir_blaster_back_th.png)](../assets/img/ir_blaster_back.png)
+
+It's surrounded by a ~0.5mm thick rubber tape, exposing only the LEDs. The tape is essentially a rectangle with two corners cut out to allow it to bend around the casing.
+
+![tape with dimensions](../assets/img/ir_tape.png)
+
+### Pins
+
+The pins are not labeled but are known based on the standardized pinout.
+
+I/O listed from the perspective of the IR blaster. PS = Power Supply.
+
+{% md {"symbols": "~"} %}
+| Pin # | Name   | I/O | Description        |
+|:-----:| ------ |:---:| ------------------ |
+|   1   | GND    | PS  | Ground             |
+|   2   | NC     |  -  | Not connected      |
+|   3   | V~CC~  | PS  | V~CC~              |
+|   4   | GND    | PS  | Ground             |
+|   5   | PWDOWN |  I  | Power-down control |
+|   6   | RXD    |  O  | Receive data       |
+|   7   | TXD    |  I  | Transmit data      |
+|   8   | LEDA   | PS  | LED anode          |
+
+*;~...~:<span style="font-size:smaller">...</span>
+{% endmd %}
+
+## U5
+
+4-pin voltage detector in a SC-82AB package. As of yet unidentified. Has a line on the left indicating the side with pin 1 followed by the text EDN (on my Japanese unit). Located screen side, top right, slightly BR of [CN3][].
+
+The pin numbers here follow the designations for the SC-82AB package type where the wider pin (bottom right on 01, bottom left on 02) is pin 2. It's possible that NC is a disconnected <abbr title="Chip Enable">CE</abbr> pin as that's common enough on these components, but it's untested.
+
+{% md {"symbols": "~"} %}
+| Pin # | Name   | Description              |
+|:-----:| ------ | ------------------------ |
+|   1   | V~OUT~ | Connected to !SYS_RESET! |
+|   2   | V~IN~  | V~CC~                    |
+|   3   | NC     | Not connected            |
+|   4   | GND    | Ground                   |
+
+*;~...~:<span style="font-size:smaller">...</span>
+*;!...!:<u style="text-decoration:overline">...</u>
+{% endmd %}
+
+## Oscillators
+
+[Y1]: #y1
+[Y2]: #y2
+
+### Y1
+
+This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. This is named `X'tal1` in the S1C88 technical manuals.
+
+It does have a marking but it may not be visible; it's an engraved text `KDS` followed by a number representing the final digit of the year it was printed in then a letter representing the month (A for January up to M for December (it skips I)). It's not a surface-mount component, but is glued down.
+
+* Part number: [DT-26](https://www.kds.info/product/dt-26/) ([datasheet](https://datasheet.lcsc.com/lcsc/1811121541_KDS-Daishinku-DT-26-32.768K-6pF-20PPM_C127496.pdf))
+  * D - Daishinku Corp (company name)
+  * T - Tuning fork crystal resonator
+  * 2 - 2 mm diameter
+  * 6 - 6 mm height
+* Load Capacitance: unconfirmed
+* Drive Level: 1.0μW (2.0μW max.)
+* Frequency Tolerance: ±20 ppm max. (at 25℃)
+* Series Resistance: unconfirmed
+* Turnover Temperature: +25℃±5℃
+* Parabolic Coefficient: -0.04 ppm/℃² max.
+* Operating Temperature Range: -10 to +60℃
+* Storage Temperature Range: -20 to +70℃
+* Shunt Capacitance: 1.1pF typ.
+* Aging: ±5 ppm/year
+
+#### Pins
+
+This component is non-polarized so the pins don't have names or numbers as it can go either way. Here we list them relative to the board.
+
+| Pin    | Connection |
+| ------ | ---------- |
+| Top    | [OSC2][]   |
+| Bottom | [OSC1][]   |
+
+### Y2
+
+This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for the general purpose timers, communicating with the system bus and I/O, and clocking the CPU during normal operation. Because it's using a ceramic oscillator for Y2 this is either named `Ceramic` or `CR` in the S1C88 technical manuals.
+
+This oscillator has text printed on the top which looks like a curved M in a box followed by `4.00` and then a single-character serial such as `L` or `J`. It is a surface-mount component.
+
+These specs are unfortunately from the 2009 datasheet, when ideally we would like a 2001 datasheet.
+
+* Part number: [EFOS4004E5](https://www.digikey.com/en/products/detail/panasonic-electronic-components/EFO-S4004E5/160457) ([datasheet](https://media.digikey.com/pdf/Data%20Sheets/Panasonic%20Capacitors%20PDFs/EFO_3Array.pdf))
+  * EFO - Ceramic resonator
+  * S - 2 to 13 MHz type with built-in capacitors and 3 terminals
+  * 4004 - 4.00 MHz nominal oscillation frequency
+  * E - Embossed taping style packaging
+  * 5 - ±0.5% frequency tolerance
+* Built-in Capacitors: 33 pF
+* Oscillation frequency drift: ±0.2% overall stability
+  * -20°C ≈ -0.1
+  * 20°C ≈ 0.0
+  * 40°C ≈ 0.02
+  * 60°C ≈ 0.0
+  * 80°C ≈ -0.04
+
+#### Pins
+
+This component is non-polarized so the pins don't have names or numbers as it can go either way. Here we list them relative to the board.
+
+| Pin    | Connection |
+| ------ | ---------- |
+| Left   | [OSC3][]   |
+| Middle | GND        |
+| Right  | [OSC4][]   |
+
+## My JP console markings
+
+* HGC0110-330010-01 on keypad area
+* A8 to the bottom right of PAD1
+* 11021 stamped in black above CN3
+* 0140 next to 94V-0 rating
+* B 7 written in pencil on the cartridge connector
+* Rumble motor: AJ0681 Ac
+* C1/C5: black fill down left side with three lines of text: 1 8 / 100 / 6V where the V is pushed up slightly due to being at the right edge of the face (oriented 90⁰ clockwise)
+* C4: black fill down left side with three lines of text: 100 1MC 1R9 (oriented 90⁰ clockwise)
+* D1: has the same thick line as D5/D6 but text looks scratched off
+* D2: looks like it may have had some text but it's no longer legible
+* D3/D4: C3:t where the colon is two stacked ovals and overall slightly taller than the text (text over 2-pin side)
+* D5/D6: 5; with a thick horizontal line over top (upside down)
+* F1: G
+* Q1: top text of RY, engraved circle in the center, bottom text of 1G4 (rightside up)
+* Q2: top text of AE, engraved circle or logo (unclear) in the center, bottom text of R<u style="text-decoration:overline">W</u> (rightside up)
+* Q3: H·R (rightside up)
+* R20: 110 (upside down)
+* U1:
+  * ALPS: two lines of text: 560 YH-
+  * TL 3-pin: PP (text over 2-pin side)
+  * TL 5-pin: D01G (rightside up)
+  * TR 3-pin: 33G <u style="text-decoration:overline">∩</u> (text over 2-pin side)
+  * ML 6-pin: SS (sideways, pin 1 dot located BR)
+  * MR 3-pin: 6.O (text over 1-pin side)
+    * I'm assuming this is the other way, O.9 but there's no superscript period.
+  * BL/BR 3-pin: CG (text over 2-pin side)
+  * bigger BL 3-pin: 303 (upside down)
+* U2: three lines of text: 4641 / 21G2 / ⬤ 17 (same orientation as U2 text)
+* U4: two lines engraved on the back, under the tape 0431 1JD5 (rightside up)
+* U5: EDN with a veritcal line on the left (rightside up)
+* Y1: KDS1D (printed Apr. 2001) (upside down)
+* Y2: 4.00J (rightside up)
