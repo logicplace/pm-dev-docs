@@ -499,7 +499,7 @@ OR A, A
 JRS Z, fired
 ```
 
-This checks if the current interrupt priority in [I1~I0](./README.md#interrupt-flags) is *equal to* the cart eject priority (TODO: link?), and if so returns whether or not it fired (and clears it). This is not how IRQ priority normally works: it normally checks that the priority is strictly greater than the interrupt flags.
+This checks if the current interrupt priority in [I1~I0](./README.md#interrupt-flags) is *equal to* the [cart eject priority](./registers/irq.md#pk1), and if so returns whether or not it fired (and clears it). This is not how IRQ priority normally works: it normally checks that the priority is strictly greater than the interrupt flags.
 
 No official software uses this. Not sure anything should...
 
@@ -696,7 +696,7 @@ Official software which uses this:
 
 ## Initialization
 
-The BIOS can initialize from two points which we call a soft reset and a hard reset. A soft reset is when you wake up the console from sleeping. It goes to sleep when you push the power button while running a game, and reawakens if you push the power button again. A hard reset is when you remove the battery, reinsert, and then press the power button. TODO: what does the reset button do
+The BIOS can initialize from two points which we call a soft reset and a hard reset. A soft reset is when you wake up the console from sleeping. It goes to sleep when you push the power button while running a game, and reawakens if you push the power button again. A hard reset is when you remove the battery and reinsert it. TODO: what does the reset button do
 
 1. [Hard reset exclusive initialization][]
 2. [Initialize registers, CPU, peripherals][]

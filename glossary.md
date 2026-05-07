@@ -141,6 +141,18 @@ uint8_t result = add(0xFF, 1);
 
 The result would normally be 0x100 but that can't fit in a uint8_t since it's 9 bits. This causes result to instead contain 0x00. This occurrence is called an *overflow* because the value goes *over* the maximum, flowing back around to the minimum.
 
+## Register
+
+There are both [CPU registers](./hardware/cpu/README.md#registers) and [hardware registers](./hardware/cpu/registers).
+
+CPU registers refer to a handful of named memory stored within the CPU which are actively used for controlling CPU behavior or performing [operations](#assembly-operator).
+
+Hardware registers refer to mapped memory spaces (for PM, the $20xx region) which essentially act as configuration or methods of interfacing with other hardware or subsystems on the device.
+
+### Reserved R/W register
+
+Reserved read/write register is a term from the Epson technical manuals which refers to a, typically still named, register which does not have a functional use on a specific chip in the S1C88 family but does have a use on some other chip in the family. Most of the manuals use this term, but some use "general-purpose R/W register" in its place.
+
 ## Scope
 
 In programming, scope refers to what identifiers are visible from certain perspectives. These scopes tend to be hierarchical starting with the most visible, the _global scope_. If something is defined in the global scope, then it can be seen from everywhere in the program, in theory. However, in C, the identifier must still be made known within a file to be available for use. Thus, often, declarations inside a C file outside of any function are said to be in the global scope, whether or not they're made available in a header file.

@@ -21,7 +21,7 @@ All 29 of the maskable interrupts can be disabled in 3 ways:
 2. Its [priority](#interrupt-priority) can be set to 0, disabling its whole group.
 3. Its enabled bit is 0.
 
-The enabled bits are stored in $2023~$2026 (TODO: link) and will be associated in the list below.
+The enabled bits are stored in [$2023~$2026](./registers/README.md#user-content-23) and will be associated in the list below.
 
 ## Masking
 

@@ -1,0 +1,510 @@
+# S1C88649
+
+Adapted from the [S1C88649 Technical Manual](https://global.epson.com/products_and_drivers/semicon/pdf/id001041.pdf)
+
+## I/O Memory Map
+
+Value meanings for multi-bit values are largely not reproduced in this table.
+
+* BSMD1~BSMD0 shouldn't be set in either mode, defaults to 00 in MCU and 11 in MPU
+
+{% md %}
+| Address | Bit | Name   |    Function                                  || 1            | 0             | SR  | R/W |
+| ------- |:---:|:------ | -------------------------------------------- ||:------------:|:-------------:|:---:|:---:|
+| $00FF00 | D7  | BSMD1  | Bus mode (CPU mode)                          ||              |               | \*  | R/W |
+|         | D6  | BSMD0  |_^                                           _||              |               | \*  | R/W |
+|         | D5  | CEMD1  | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D4  | CEMD0  |_^                                           _|| 1            | 0             |  1  | R/W |
+|         | D3  | CE3    | !CE! signal output Enable/Disable            || !CE3! enable | !CE3! disable |  0  | R/W |
+|         | D2  | CE2    |                                              || !CE2! enable | !CE2! disable |  0  | R/W |
+|         | D1  | CE1    |                                              || !CE1! enable | !CE1! disable |  0  | R/W |
+|_^      _| D0  | CE0    |_^                                           _|| !CE0! enable | !CE0! disable | \*  | R/W |
+| $00FF01 | D7  | SPP7   | Stack pointer address                        || 1            | 0             |  0  | R/W |
+|         | D6  | SPP6   |                                              || 1            | 0             |  0  | R/W |
+|         | D5  | SPP5   |                                              || 1            | 0             |  0  | R/W |
+|         | D4  | SPP4   |                                              || 1            | 0             |  0  | R/W |
+|         | D3  | SPP3   |                                              || 1            | 0             |  0  | R/W |
+|         | D2  | SPP2   |                                              || 1            | 0             |  0  | R/W |
+|         | D1  | SPP1   |                                              || 1            | 0             |  0  | R/W |
+|_^      _| D0  | SPP0   |_^                                           _|| 1            | 0             |  0  | R/W |
+| $00FF02 | D7  | EBR    | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | WT2    | Wait control register                        || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | WT1    |                                              ||              |               |     |     |
+|         | D4  | WT0    |_^                                           _||_            _|_             _|_   _|_   _|
+|         | D3  | CLKCHG | CPU operating clock switch                   || OSC3         | OSC1          |  0  | R/W |
+|         | D2  | OSCC   | OSC3 oscillation On/Off control              || On           | Off           |  0  | R/W |
+|         | D1  | VDC1   | R/W register                                 || 1            | 0             |  0  | R/W |
+|_^      _| D0  | VDC0   | R/W register                                 || 1            | 0             |  0  | R/W |
+| $00FF10 | D7  | HLMOD  | Heavy load protection mode                   || On           | Off           |  0  | R/W |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | LCCLK  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D3  | LCFRM  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D2  | DTFNT  | LCD dot font selection                       || 5 x 5 dots   | 5 x 8 dots    |  0  | R/W |
+|         | D1  | LDUTY  | LCD drive duty selection                     || 1/16 duty    | 1/32 duty     |  0  | R/W |
+|_^      _| D0  | SGOUT  | R/W register                                 || 1            | 0             |  0  | R/W |
+| $00FF11 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | DSPAR  | LCD display memory area selection            || Disp. area 1 | Disp. area 0  |  0  | R/W |
+|         | D5  | LCDC1  | LCD display control                          || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D4  | LCDC0  |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | LC3    | LCD contrast adjustment                      || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D2  | LC2    |                                              ||              |               |  0  | R/W |
+|         | D1  | LC1    |                                              ||              |               |  0  | R/W |
+|_^      _| D0  | LC0    |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF12 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | SVDDT  | SVD detection data                           || Low          | Normal        |  0  |  R  |
+|         | D4  | SVDON  | SVD circuit On/Off                           || On           | Off           |  0  | R/W |
+|         | D3  | SVDS3  | SVD criteria voltage setting                 || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D2  | SVDS2  |                                              ||              |               |  0  | R/W |
+|         | D1  | SVDS1  |                                              ||              |               |  0  | R/W |
+|_^      _| D0  | SVDS0  |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF14 | D7  | PRPRT1 | Programmable timer 1 clock control           || On           | Off           |  0  | R/W |
+|         | D6  | PST12  | Programmable timer 1 division ratio          || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | PST11  |                                              ||              |               |  0  | R/W |
+|         | D4  | PST10  |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | PRPRT0 | Programmable timer 0 clock control           || On           | Off           |  0  | R/W |
+|         | D2  | PST02  | Programmable timer 0 division ratio          || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D1  | PST01  |                                              ||              |               |  0  | R/W |
+|_^      _| D0  | PST00  |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF15 | D7  | PRPRT3 | Programmable timer 3 clock control           || On           | Off           |  0  | R/W |
+|         | D6  | PST32  | Programmable timer 3 division ratio          || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | PST31  |                                              ||              |               |  0  | R/W |
+|         | D4  | PST30  |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | PRPRT2 | Programmable timer 2 clock control           || On           | Off           |  0  | R/W |
+|         | D2  | PST22  | Programmable timer 2 division ratio          || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D1  | PST21  |                                              ||              |               |  0  | R/W |
+|_^      _| D0  | PST20  |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF17 | D7  | -      | -                                            || -            | -             |  0  | R/W |
+|         | D6  | -      | -                                            || -            | -             |  0  | R/W |
+|         | D5  | -      | -                                            || -            | -             |  0  | R/W |
+|         | D4  | -      | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D3  | PRTF3  | Programmable timer 3 source clock selection  || fOSC1        | fOSC3         |  0  | R/W |
+|         | D2  | PRTF2  | Programmable timer 2 source clock selection  || fOSC1        | fOSC3         |  0  | R/W |
+|         | D1  | PRTF1  | Programmable timer 1 source clock selection  || fOSC1        | fOSC3         |  0  | R/W |
+|_^      _| D0  | PRTF0  | Programmable timer 0 source clock selection  || fOSC1        | fOSC3         |  0  | R/W |
+| $00FF20 | D7  | PK01   | K00-K07 interrupt priority register          || Priority level 0~3          ||  0  | R/W |
+|         | D6  | PK00   |_                                            _||_                           _||  0  | R/W |
+|         | D5  | PSIF1  | Serial interface interrupt priority register || Priority level 0~3          ||  0  | R/W |
+|         | D4  | PSIF0  |_                                            _||_                           _||  0  | R/W |
+|         | D3  | PSW1   | Stopwatch timer interrupt priority register  || Priority level 0~3          ||  0  | R/W |
+|         | D2  | PSW0   |_                                            _||_                           _||  0  | R/W |
+|         | D1  | PTM1   | Clock timer interrupt priority register      || Priority level 0~3          ||  0  | R/W |
+|_^      _| D0  | PTM0   |_                                            _||_                           _||  0  | R/W |
+| $00FF21 | D7  | -      | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | -      | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D5  | PPT3   |Programmable timer 3-2 interrupt priority register|| Priority level 0~3      ||  0  | R/W |
+|         | D4  | PPT2   | -                                            || -            | -             |  -  |  0  |
+|         | D3  | PPT1   |Programmable timer 1-0 interrupt priority register|| Priority level 0~3      ||  0  | R/W |
+|         | D2  | PPT0   |_^                                           _||_^                          _||  0  | R/W |
+|         | D1  | -      | -                                            || -            | -             |  0  | R/W |
+|_^      _| D0  | -      | -                                            || -            | -             |  0  | R/W |
+| $00FF22 | D7  | -      | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | ESW100 | Stopwatch timer 100 Hz interrupt enable      || Enabled      | Disabled      |  0  | R/W |
+|         | D5  | ESW10  | Stopwatch timer 10 Hz interrupt enable       ||              |               |     |     |
+|         | D4  | ESW1   | Stopwatch timer 1 Hz interrupt enable        ||              |               |     |     |
+|         | D3  | ETM32  | Clock timer 32 Hz interrupt enable register  ||              |               |     |     |
+|         | D2  | ETM8   | Clock timer 8 Hz interrupt enable register   ||              |               |     |     |
+|         | D1  | ETM2   | Clock timer 2 Hz interrupt enable register   ||              |               |     |     |
+|_^      _| D0  | ETM1   | Clock timer 1 Hz interrupt enable register   ||_            _|_             _|_   _|_   _|
+| $00FF23 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D2  | ESERR  | Serial I/F (error) interrupt enable          || Enabled      | Disabled      |  0  | R/W |
+|         | D1  | ESREC  | Serial I/F (receiving) interrupt enable      ||              |               |     |     |
+|_^      _| D0  | ESTRA  | Serial I/F (transmitting) interrupt enable   ||_            _|_             _|_   _|_   _|
+| $00FF24 | D7  | EK07   | K07 interrupt enable register                || Enabled      | Disabled      |  0  | R/W |
+|         | D6  | EK06   | K06 interrupt enable register                ||              |               |     |     |
+|         | D5  | EK05   | K05 interrupt enable register                ||              |               |     |     |
+|         | D4  | EK04   | K04 interrupt enable register                ||              |               |     |     |
+|         | D3  | EK03   | K03 interrupt enable register                ||              |               |     |     |
+|         | D2  | EK02   | K02 interrupt enable register                ||              |               |     |     |
+|         | D1  | EK01   | K01 interrupt enable register                ||              |               |     |     |
+|_^      _| D0  | EK00   | K00 interrupt enable register                ||_            _|_             _|_   _|_   _|
+| $00FF25 | D7  | ETC3   | PTM3 compare match interrupt enable          || Enabled      | Disabled      |  0  | R/W |
+|         | D6  | ETU3   | PTM3 underflow interrupt enable              ||              |               |     |     |
+|         | D5  | ETC2   | PTM2 compare match interrupt enable          ||              |               |     |     |
+|         | D4  | ETU2   | PTM2 underflow interrupt enable              ||              |               |     |     |
+|         | D3  | ETC1   | PTM1 compare match interrupt enable          ||              |               |     |     |
+|         | D2  | ETU1   | PTM1 underflow interrupt enable              ||              |               |     |     |
+|         | D1  | ETC0   | PTM0 compare match interrupt enable          ||              |               |     |     |
+|_^      _| D0  | ETU0   | PTM0 underflow interrupt enable              ||_            _|_             _|_   _|_   _|
+| $00FF26 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | FSW100 | Stopwatch timer 100 Hz interrupt factor flag ||(R) generated | (R) not       |  0  | R/W |
+|         | D5  | FSW10  | Stopwatch timer 10 Hz interrupt factor flag  ||              |               |     |     |
+|         | D4  | FSW1   | Stopwatch timer 1 Hz interrupt factor flag   ||              |               |     |     |
+|         | D3  | FTM32  | Clock timer 32 Hz interrupt factor flag      ||_            _|_             _|     |     |
+|         | D2  | FTM8   | Clock timer 8 Hz interrupt factor flag       || (W) reset    | (W) No-op     |     |     |
+|         | D1  | FTM2   | Clock timer 2 Hz interrupt factor flag       ||              |               |     |     |
+|_^      _| D0  | FTM1   | Clock timer 1 Hz interrupt factor flag       ||_            _|_             _|_   _|_   _|
+| $00FF27 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D2  | FSERR  | Serial I/F (error) interrupt factor          ||(R) generated | (R) not       |  0  | R/W |
+|         | D1  | FSREC  | Serial I/F (receiving) interrupt factor      ||_            _|_             _|     |     |
+|_^      _| D0  | FSTRA  | Serial I/F (transmitting) interrupt factor   || (W) reset    | (W) No-op     |_   _|_   _|
+| $00FF28 | D7  | FK07   | K07 interrupt factor flag                    ||(R) generated | (R) not       |  0  | R/W |
+|         | D6  | FK06   | K06 interrupt factor flag                    ||              |               |     |     |
+|         | D5  | FK05   | K05 interrupt factor flag                    ||              |               |     |     |
+|         | D4  | FK04   | K04 interrupt factor flag                    ||_            _|_             _|     |     |
+|         | D3  | FK03   | K03 interrupt factor flag                    || (W) reset    | (W) No-op     |     |     |
+|         | D2  | FK02   | K02 interrupt factor flag                    ||              |               |     |     |
+|         | D1  | FK01   | K01 interrupt factor flag                    ||              |               |     |     |
+|_^      _| D0  | FK00   | K00 interrupt factor flag                    ||_            _|_             _|_   _|_   _|
+| $00FF29 | D7  | FTC3   | PTM3 compare match interrupt factor flag     ||(R) generated | (R) not       |  0  | R/W |
+|         | D6  | FTU3   | PTM3 underflow interrupt factor flag         ||              |               |     |     |
+|         | D5  | FTC2   | PTM2 compare match interrupt factor flag     ||              |               |     |     |
+|         | D4  | FTU2   | PTM2 underflow interrupt factor flag         ||_            _|_             _|     |     |
+|         | D3  | FTC1   | PTM1 compare match interrupt factor flag     || (W) reset    | (W) No-op     |     |     |
+|         | D2  | FTU1   | PTM1 underflow interrupt factor flag         ||              |               |     |     |
+|         | D1  | FTC0   | PTM0 compare match interrupt factor flag     ||              |               |     |     |
+|_^      _| D0  | FTU0   | PTM0 underflow interrupt factor flag         ||_            _|_             _|_   _|_   _|
+| $00FF30 | D7  |MODE16_A| PTM0-1 8/16-bit mode selection               || 16-bit x 1   | 8-bit x 2     |  0  | R/W |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | PTOUT0 | PTM0 clock output control                    || On           | Off           |  0  | R/W |
+|         | D2  | PTRUN0 | PTM0 Run/Stop control                        || Run          | Stop          |  0  | R/W |
+|         | D1  | PSET0  | PTM0 preset                                  || Preset       | No operation  |  0  |  W  |
+|_^      _| D0  | CKSEL0 | PTM0 input clock selection                   ||External clock|Internal clock |  0  | R/W |
+| $00FF31 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | PTOUT1 | PTM1 clock output control                    || On           | Off           |  0  | R/W |
+|         | D2  | PTRUN1 | PTM1 Run/Stop control                        || Run          | Stop          |  0  | R/W |
+|         | D1  | PSET1  | PTM1 preset                                  || Preset       | No operation  |  0  |  W  |
+|_^      _| D0  | CKSEL1 | PTM1 input clock selection                   ||External clock|Internal clock |  0  | R/W |
+| $00FF32 | D7  | RDR07  | PTM0 reload data D7 (MSB)                    || High         | Low           |  1  | R/W |
+|         | D6  | RDR06  | PTM0 reload data D6                          ||              |               |     |     |
+|         | D5  | RDR05  | PTM0 reload data D5                          ||              |               |     |     |
+|         | D4  | RDR04  | PTM0 reload data D4                          ||              |               |     |     |
+|         | D3  | RDR03  | PTM0 reload data D3                          ||              |               |     |     |
+|         | D2  | RDR02  | PTM0 reload data D2                          ||              |               |     |     |
+|         | D1  | RDR01  | PTM0 reload data D1                          ||              |               |     |     |
+|_^      _| D0  | RDR00  | PTM0 reload data D0 (LSB)                    ||_            _|_             _|_   _|_   _|
+| $00FF33 | D7  | RDR17  | PTM1 reload data D7 (MSB)                    || High         | Low           |  1  | R/W |
+|         | D6  | RDR16  | PTM1 reload data D6                          ||              |               |     |     |
+|         | D5  | RDR15  | PTM1 reload data D5                          ||              |               |     |     |
+|         | D4  | RDR14  | PTM1 reload data D4                          ||              |               |     |     |
+|         | D3  | RDR13  | PTM1 reload data D3                          ||              |               |     |     |
+|         | D2  | RDR12  | PTM1 reload data D2                          ||              |               |     |     |
+|         | D1  | RDR11  | PTM1 reload data D1                          ||              |               |     |     |
+|_^      _| D0  | RDR10  | PTM1 reload data D0 (LSB)                    ||_            _|_             _|_   _|_   _|
+| $00FF34 | D7  | CDR07  | PTM0 compare data D7 (MSB)                   || High         | Low           |  0  | R/W |
+|         | D6  | CDR06  | PTM0 compare data D6                         ||              |               |     |     |
+|         | D5  | CDR05  | PTM0 compare data D5                         ||              |               |     |     |
+|         | D4  | CDR04  | PTM0 compare data D4                         ||              |               |     |     |
+|         | D3  | CDR03  | PTM0 compare data D3                         ||              |               |     |     |
+|         | D2  | CDR02  | PTM0 compare data D2                         ||              |               |     |     |
+|         | D1  | CDR01  | PTM0 compare data D1                         ||              |               |     |     |
+|_^      _| D0  | CDR00  | PTM0 compare data D0 (LSB)                   ||_            _|_             _|_   _|_   _|
+| $00FF35 | D7  | CDR17  | PTM1 compare data D7 (MSB)                   || High         | Low           |  0  | R/W |
+|         | D6  | CDR16  | PTM1 compare data D6                         ||              |               |     |     |
+|         | D5  | CDR15  | PTM1 compare data D5                         ||              |               |     |     |
+|         | D4  | CDR14  | PTM1 compare data D4                         ||              |               |     |     |
+|         | D3  | CDR13  | PTM1 compare data D3                         ||              |               |     |     |
+|         | D2  | CDR12  | PTM1 compare data D2                         ||              |               |     |     |
+|         | D1  | CDR11  | PTM1 compare data D1                         ||              |               |     |     |
+|_^      _| D0  | CDR10  | PTM1 compare data D0 (LSB)                   ||_            _|_             _|_   _|_   _|
+| $00FF36 | D7  | PTM07  | PTM0 data D7 (MSB)                           || High         | Low           |  1  | R/W |
+|         | D6  | PTM06  | PTM0 data D6                                 ||              |               |     |     |
+|         | D5  | PTM05  | PTM0 data D5                                 ||              |               |     |     |
+|         | D4  | PTM04  | PTM0 data D4                                 ||              |               |     |     |
+|         | D3  | PTM03  | PTM0 data D3                                 ||              |               |     |     |
+|         | D2  | PTM02  | PTM0 data D2                                 ||              |               |     |     |
+|         | D1  | PTM01  | PTM0 data D1                                 ||              |               |     |     |
+|_^      _| D0  | PTM00  | PTM0 data D0 (LSB)                           ||_            _|_             _|_   _|_   _|
+| $00FF37 | D7  | PTM17  | PTM1 data D7 (MSB)                           || High         | Low           |  1  | R/W |
+|         | D6  | PTM16  | PTM1 data D6                                 ||              |               |     |     |
+|         | D5  | PTM15  | PTM1 data D5                                 ||              |               |     |     |
+|         | D4  | PTM14  | PTM1 data D4                                 ||              |               |     |     |
+|         | D3  | PTM13  | PTM1 data D3                                 ||              |               |     |     |
+|         | D2  | PTM12  | PTM1 data D2                                 ||              |               |     |     |
+|         | D1  | PTM11  | PTM1 data D1                                 ||              |               |     |     |
+|_^      _| D0  | PTM10  | PTM1 data D0 (LSB)                           ||_            _|_             _|_   _|_   _|
+| $00FF38 | D7  |MODE16_B| PTM2-3 8/16-bit mode selection               || 16-bit x 1   | 8-bit x 2     |  0  | R/W |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | PTOUT2 | PTM2 clock output control                    || On           | Off           |  0  | R/W |
+|         | D2  | PTRUN2 | PTM2 Run/Stop control                        || Run          | Stop          |  0  | R/W |
+|         | D1  | PSET2  | PTM2 preset                                  || Preset       | No operation  |  0  |  W  |
+|_^      _| D0  | CKSEL2 | PTM2 input clock selection                   ||External clock|Internal clock |  0  | R/W |
+| $00FF39 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | PTOUT3 | PTM3 clock output control                    || On           | Off           |  0  | R/W |
+|         | D2  | PTRUN3 | PTM3 Run/Stop control                        || Run          | Stop          |  0  | R/W |
+|         | D1  | PSET3  | PTM3 preset                                  || Preset       | No operation  |  0  |  W  |
+|_^      _| D0  | CKSEL3 | PTM3 input clock selection                   ||External clock|Internal clock |  0  | R/W |
+| $00FF3A | D7  | RDR27  | PTM2 reload data D7 (MSB)                    || High         | Low           |  1  | R/W |
+|         | D6  | RDR26  | PTM2 reload data D6                          ||              |               |     |     |
+|         | D5  | RDR25  | PTM2 reload data D5                          ||              |               |     |     |
+|         | D4  | RDR24  | PTM2 reload data D4                          ||              |               |     |     |
+|         | D3  | RDR23  | PTM2 reload data D3                          ||              |               |     |     |
+|         | D2  | RDR22  | PTM2 reload data D2                          ||              |               |     |     |
+|         | D1  | RDR21  | PTM2 reload data D1                          ||              |               |     |     |
+|_^      _| D0  | RDR20  | PTM2 reload data D0 (LSB)                    ||_            _|_             _|_   _|_   _|
+| $00FF3B | D7  | RDR37  | PTM3 reload data D7 (MSB)                    || High         | Low           |  1  | R/W |
+|         | D6  | RDR36  | PTM3 reload data D6                          ||              |               |     |     |
+|         | D5  | RDR35  | PTM3 reload data D5                          ||              |               |     |     |
+|         | D4  | RDR34  | PTM3 reload data D4                          ||              |               |     |     |
+|         | D3  | RDR33  | PTM3 reload data D3                          ||              |               |     |     |
+|         | D2  | RDR32  | PTM3 reload data D2                          ||              |               |     |     |
+|         | D1  | RDR31  | PTM3 reload data D1                          ||              |               |     |     |
+|_^      _| D0  | RDR30  | PTM3 reload data D0 (LSB)                    ||_            _|_             _|_   _|_   _|
+| $00FF3C | D7  | CDR27  | PTM2 compare data D7 (MSB)                   || High         | Low           |  0  | R/W |
+|         | D6  | CDR26  | PTM2 compare data D6                         ||              |               |     |     |
+|         | D5  | CDR25  | PTM2 compare data D5                         ||              |               |     |     |
+|         | D4  | CDR24  | PTM2 compare data D4                         ||              |               |     |     |
+|         | D3  | CDR23  | PTM2 compare data D3                         ||              |               |     |     |
+|         | D2  | CDR22  | PTM2 compare data D2                         ||              |               |     |     |
+|         | D1  | CDR21  | PTM2 compare data D1                         ||              |               |     |     |
+|_^      _| D0  | CDR20  | PTM2 compare data D0 (LSB)                   ||_            _|_             _|_   _|_   _|
+| $00FF3D | D7  | CDR37  | PTM3 compare data D7 (MSB)                   || High         | Low           |  0  | R/W |
+|         | D6  | CDR36  | PTM3 compare data D6                         ||              |               |     |     |
+|         | D5  | CDR35  | PTM3 compare data D5                         ||              |               |     |     |
+|         | D4  | CDR34  | PTM3 compare data D4                         ||              |               |     |     |
+|         | D3  | CDR33  | PTM3 compare data D3                         ||              |               |     |     |
+|         | D2  | CDR32  | PTM3 compare data D2                         ||              |               |     |     |
+|         | D1  | CDR31  | PTM3 compare data D1                         ||              |               |     |     |
+|_^      _| D0  | CDR30  | PTM3 compare data D0 (LSB)                   ||_            _|_             _|_   _|_   _|
+| $00FF3E | D7  | PTM27  | PTM2 data D7 (MSB)                           || High         | Low           |  1  | R/W |
+|         | D6  | PTM26  | PTM2 data D6                                 ||              |               |     |     |
+|         | D5  | PTM25  | PTM2 data D5                                 ||              |               |     |     |
+|         | D4  | PTM24  | PTM2 data D4                                 ||              |               |     |     |
+|         | D3  | PTM23  | PTM2 data D3                                 ||              |               |     |     |
+|         | D2  | PTM22  | PTM2 data D2                                 ||              |               |     |     |
+|         | D1  | PTM21  | PTM2 data D1                                 ||              |               |     |     |
+|_^      _| D0  | PTM20  | PTM2 data D0 (LSB)                           ||_            _|_             _|_   _|_   _|
+| $00FF3F | D7  | PTM37  | PTM3 data D7 (MSB)                           || High         | Low           |  1  | R/W |
+|         | D6  | PTM36  | PTM3 data D6                                 ||              |               |     |     |
+|         | D5  | PTM35  | PTM3 data D5                                 ||              |               |     |     |
+|         | D4  | PTM34  | PTM3 data D4                                 ||              |               |     |     |
+|         | D3  | PTM33  | PTM3 data D3                                 ||              |               |     |     |
+|         | D2  | PTM32  | PTM3 data D2                                 ||              |               |     |     |
+|         | D1  | PTM31  | PTM3 data D1                                 ||              |               |     |     |
+|_^      _| D0  | PTM30  | PTM3 data D0 (LSB)                           ||_            _|_             _|_   _|_   _|
+| $00FF40 | D7  | WDEN   | Watchdog timer enable                        || Enable       | Disable       |  1  | R/W |
+|         | D6  | FOUT2  | FOUT frequency selection                     || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | FOUT1  |                                              ||              |               |  0  | R/W |
+|         | D4  | FOUT0  |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | FOUTON | FOUT output control                          || On           | Off           |  0  | R/W |
+|         | D2  | WDRST  | Watchdog timer reset                         || Reset        | No operation  |  -  |  W  |
+|         | D1  | TMRST  | Clock timer reset                            || Reset        | No operation  |  -  |  W  |
+|_^      _| D0  | TMRUN  | Clock timer Run/Stop control                 || Run          | Stop          |  0  | R/W |
+| $00FF41 | D7  | TMD7   | Clock timer data   1 Hz                      || High         | Low           |  0  |  R  |
+|         | D6  | TMD6   | Clock timer data   2 Hz                      ||              |               |     |     |
+|         | D5  | TMD5   | Clock timer data   4 Hz                      ||              |               |     |     |
+|         | D4  | TMD4   | Clock timer data   8 Hz                      ||              |               |     |     |
+|         | D3  | TMD3   | Clock timer data  16 Hz                      ||              |               |     |     |
+|         | D2  | TMD2   | Clock timer data  32 Hz                      ||              |               |     |     |
+|         | D1  | TMD1   | Clock timer data  64 Hz                      ||              |               |     |     |
+|_^      _| D0  | TMD0   | Clock timer data 128 Hz                      ||_^           _|_^            _|_^  _|_^  _|
+| $00FF42 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D5  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D4  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D3  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D2  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D1  | SWRST  | Stopwatch timer reset                        || Reset        | No operation  |  -  |  W  |
+|_^      _| D0  | SWRUN  | Stopwatch timer Run/Stop control             || Run          | Stop          |  0  | R/W |
+| $00FF43 | D7  | SWD7   | Stopwatch timer data, BCD (1/10s)            || &nbsp;       | &nbsp;        |  0  |  R  |
+|         | D6  | SWD6   |                                              ||              |               |     |     |
+|         | D5  | SWD5   |                                              ||              |               |     |     |
+|         | D4  | SWD4   |_^                                           _||              |               |     |     |
+|         | D3  | SWD3   | Stopwatch timer data, BCD (1/100s)           ||              |               |     |     |
+|         | D2  | SWD2   |                                              ||              |               |     |     |
+|         | D1  | SWD1   |                                              ||              |               |     |     |
+|_^      _| D0  | SWD0   |_^                                           _||_            _|_             _|_^  _|_^  _|
+| $00FF44 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | BZSTP  | One-shot buzzer forcibly stop                ||Forcibly stop | No operation  |  -  |  W  |
+|         | D5  | BZSHT  | One-shot buzzer trigger/status            | R | Busy         | Ready         |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Trigger      | No operation  |_^  _|_^  _|
+|         | D4  | SHTPW  | One-shot buzzer duration width selection     || 125 msec     | 31.25 msec    |  0  | R/W |
+|         | D3  | ENRTM  | Envelope attenuation time                    || 1 sec        | 0.5 sec       |  0  | R/W |
+|         | D2  | ENRST  | Envelope reset                               || Reset        | No operation  |  -  |  W  |
+|         | D1  | ENON   | Envelope On/Off control                      || On           | Off           |  0  | R/W |
+|_^      _| D0  | BZON   | Buzzer output control                        || On           | Off           |  0  | R/W |
+| $00FF45 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | DUTY2  | Buzzer signal duty ratio selection           || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | DUTY1  |                                              ||              |               |  0  | R/W |
+|         | D4  | DUTY0  |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D2  | BZFQ2  | Buzzer frequency selection                   || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D1  | BZFQ1  |                                              ||              |               |  0  | R/W |
+|_^      _| D0  | BZFQ0  |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF48 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | EPR    | Parity enable register                       || With parity  | Non parity    |  0  | R/W |
+|         | D5  | PMD    | Parity mode selection                        || Odd          | Even          |  0  | R/W |
+|         | D4  | SCS1   | Clock source selection                       || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D3  | SCS0   |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D2  | SMD1   | Serial I/F mode selection                    || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D1  | SMD0   |_^                                           _||_            _|_             _|  0  | R/W |
+|_^      _| D0  | ESIF   | Serial I/F enable register                   || Serial I/F   | I/O port      |  0  | R/W |
+| $00FF49 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | FER    | Serial I/F framing error flag             | R | Error        | No error      |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Reset (0)    | No operation  |_^  _|_^  _|
+|         | D5  | PER    | Serial I/F parity error flag              | R | Error        | No error      |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Reset (0)    | No operation  |_^  _|_^  _|
+|         | D4  | OER    | Serial I/F overrun error flag             | R | Error        | No error      |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Reset (0)    | No operation  |_^  _|_^  _|
+|         | D3  | RXTRG  | Serial I/F receive trigger/status         | R | Run          | Stop          |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Trigger      | No operation  |_^  _|_^  _|
+|         | D2  | RXEN   | Serial I/F receive enable                    || Enabled      | Disable       |  0  | R/W |
+|         | D1  | TXTRG  | Serial I/F transmit trigger/status        | R | Run          | Stop          |  0  | R/W |
+|         |_^  _|_^     _|                                           | W | Trigger      | No operation  |_^  _|_^  _|
+|_^      _| D0  | TXEN   | Serial I/F transmit enable                   || Enabled      | Disable       |  0  | R/W |
+| $00FF4A | D7  | TRXD7  | Serial I/F transmit/Receive data D7 (MSB)    || High         | Low           |  X  | R/W |
+|         | D6  | TRXD6  | Serial I/F transmit/Receive data D6          ||              |               |     |     |
+|         | D5  | TRXD5  | Serial I/F transmit/Receive data D5          ||              |               |     |     |
+|         | D4  | TRXD4  | Serial I/F transmit/Receive data D4          ||              |               |     |     |
+|         | D3  | TRXD3  | Serial I/F transmit/Receive data D3          ||              |               |     |     |
+|         | D2  | TRXD2  | Serial I/F transmit/Receive data D2          ||              |               |     |     |
+|         | D1  | TRXD1  | Serial I/F transmit/Receive data D1          ||              |               |     |     |
+|_^      _| D0  | TRXD0  | Serial I/F transmit/Receive data D0 (LSB)    ||_            _|_             _|_   _|_   _|
+| $00FF52 | D7  | KCP07  | K07 interrupt comparison register            || Falling edge | Rising edge   |  1  | R/W |
+|         | D6  | KCP06  | K06 interrupt comparison register            ||              |               |     |     |
+|         | D5  | KCP05  | K05 interrupt comparison register            ||              |               |     |     |
+|         | D4  | KCP04  | K04 interrupt comparison register            ||              |               |     |     |
+|         | D3  | KCP03  | K03 interrupt comparison register            ||              |               |     |     |
+|         | D2  | KCP02  | K02 interrupt comparison register            ||              |               |     |     |
+|         | D1  | KCP01  | K01 interrupt comparison register            ||              |               |     |     |
+|_^      _| D0  | KCP00  | K00 interrupt comparison register            ||_            _|_             _|_   _|_   _|
+| $00FF54 | D7  | K07D   | K07 input port data                          || High level   | Low level     |  -  |  R  |
+|         | D6  | K06D   | K06 input port data                          ||              |               |     |     |
+|         | D5  | K05D   | K05 input port data                          ||              |               |     |     |
+|         | D4  | K04D   | K04 input port data                          ||              |               |     |     |
+|         | D3  | K03D   | K03 input port data                          ||              |               |     |     |
+|         | D2  | K02D   | K02 input port data                          ||              |               |     |     |
+|         | D1  | K01D   | K01 input port data                          ||              |               |     |     |
+|_^      _| D0  | K00D   | K00 input port data                          ||_            _|_             _|_   _|_   _|
+| $00FF56 | D7  | PULK07 | K07 pull-up control register                 || On           | Off           |  1  | R/W |
+|         | D6  | PULK06 | K06 pull-up control register                 ||              |               |     |     |
+|         | D5  | PULK05 | K05 pull-up control register                 ||              |               |     |     |
+|         | D4  | PULK04 | K04 pull-up control register                 ||              |               |     |     |
+|         | D3  | PULK03 | K03 pull-up control register                 ||              |               |     |     |
+|         | D2  | PULK02 | K02 pull-up control register                 ||              |               |     |     |
+|         | D1  | PULK01 | K01 pull-up control register                 ||              |               |     |     |
+|_^      _| D0  | PULK00 | K00 pull-up control register                 ||_            _|_             _|_   _|_   _|
+| $00FF58 | D7  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D6  | CTK02H | K04-K07 port chattering-eliminate setup      || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D5  | CTK01H |                                              ||              |               |  0  | R/W |
+|         | D4  | CTK00H |_^                                           _||_            _|_             _|  0  | R/W |
+|         | D3  | -      | -                                            || -            | -             |  -  |  0  |
+|         | D2  | CTK02H | K00-K03 port chattering-eliminate setup      || &nbsp;       | &nbsp;        |  0  | R/W |
+|         | D1  | CTK01H |                                              ||              |               |  0  | R/W |
+|         | D0  | CTK00H |_^                                           _||_            _|_             _|  0  | R/W |
+| $00FF60 | D7  | IOC07  | P07 I/O control register                     || Output       | Input         |  0  | R/W |
+|         | D6  | IOC06  | P06 I/O control register                     ||              |               |     |     |
+|         | D5  | IOC05  | P05 I/O control register                     ||              |               |     |     |
+|         | D4  | IOC04  | P04 I/O control register                     ||              |               |     |     |
+|         | D3  | IOC03  | P03 I/O control register                     ||              |               |     |     |
+|         | D2  | IOC02  | P02 I/O control register                     ||              |               |     |     |
+|         | D1  | IOC01  | P01 I/O control register                     ||              |               |     |     |
+|_^      _| D0  | IOC00  | P00 I/O control register                     ||_            _|_             _|_   _|_   _|
+| $00FF61 | D7  | IOC17  | P17 I/O control register                     || Output       | Input         |  0  | R/W |
+|         | D6  | IOC16  | P16 I/O control register                     ||              |               |     |     |
+|         | D5  | IOC15  | P15 I/O control register                     ||              |               |     |     |
+|         | D4  | IOC14  | P14 I/O control register                     ||              |               |     |     |
+|         | D3  | IOC13  | P13 I/O control register                     ||              |               |     |     |
+|         | D2  | IOC12  | P12 I/O control register                     ||              |               |     |     |
+|         | D1  | IOC11  | P11 I/O control register                     ||              |               |     |     |
+|_^      _| D0  | IOC10  | P10 I/O control register                     ||_            _|_             _|_   _|_   _|
+| $00FF62 | D7  | P07D   | P07 I/O port data                            || High         | Low           |  1  | R/W |
+|         | D6  | P06D   | P06 I/O port data                            ||              |               |     |     |
+|         | D5  | P05D   | P05 I/O port data                            ||              |               |     |     |
+|         | D4  | P04D   | P04 I/O port data                            ||              |               |     |     |
+|         | D3  | P03D   | P03 I/O port data                            ||              |               |     |     |
+|         | D2  | P02D   | P02 I/O port data                            ||              |               |     |     |
+|         | D1  | P01D   | P01 I/O port data                            ||              |               |     |     |
+|_^      _| D0  | P00D   | P00 I/O port data                            ||_            _|_             _|_   _|_   _|
+| $00FF63 | D7  | P17D   | P17 I/O port data                            ||              |               |     |     |
+|         | D6  | P16D   | P16 I/O port data                            ||              |               |     |     |
+|         | D5  | P15D   | P15 I/O port data                            ||              |               |     |     |
+|         | D4  | P14D   | P14 I/O port data                            ||              |               |     |     |
+|         | D3  | P13D   | P13 I/O port data                            ||              |               |     |     |
+|         | D2  | P12D   | P12 I/O port data                            ||              |               |     |     |
+|         | D1  | P11D   | P11 I/O port data                            ||              |               |     |     |
+|_^      _| D0  | P10D   | P10 I/O port data                            ||_            _|_             _|_   _|_   _|
+| $00FF64 | D7  | PULP07 | P07 pull-up control register                 || On           | Off           |  1  | R/W |
+|         | D6  | PULP06 | P06 pull-up control register                 ||              |               |     |     |
+|         | D5  | PULP05 | P05 pull-up control register                 ||              |               |     |     |
+|         | D4  | PULP04 | P04 pull-up control register                 ||              |               |     |     |
+|         | D3  | PULP03 | P03 pull-up control register                 ||              |               |     |     |
+|         | D2  | PULP02 | P02 pull-up control register                 ||              |               |     |     |
+|         | D1  | PULP01 | P01 pull-up control register                 ||              |               |     |     |
+|_^      _| D0  | PULP00 | P00 pull-up control register                 ||_            _|_             _|_   _|_   _|
+| $00FF65 | D7  | PULP17 | P17 pull-up control register                 || On           | Off           |  1  | R/W |
+|         | D6  | PULP16 | P16 pull-up control register                 ||              |               |     |     |
+|         | D5  | PULP15 | P15 pull-up control register                 ||              |               |     |     |
+|         | D4  | PULP14 | P14 pull-up control register                 ||              |               |     |     |
+|         | D3  | PULP13 | P13 pull-up control register                 ||              |               |     |     |
+|         | D2  | PULP12 | P12 pull-up control register                 ||              |               |     |     |
+|         | D1  | PULP11 | P11 pull-up control register                 ||              |               |     |     |
+|_^      _| D0  | PULP10 | P10 pull-up control register                 ||_            _|_             _|_   _|_   _|
+| $00FF70 | D7  | HZR51  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | HZR50  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D5  | HZR4H  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D4  | HZR4L  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D3  | HZR1H  | R14-R17 high impedance control               ||High impedance| Complementary |  0  | R/W |
+|         | D2  | HZR1L  | R10-R13 high impedance control               ||High impedance| Complementary |  0  | R/W |
+|         | D1  | HZR0H  | R04-R07 high impedance control               ||High impedance| Complementary |  0  | R/W |
+|_^      _| D0  | HZR0L  | R00-R03 high impedance control               ||High impedance| Complementary |  0  | R/W |
+| $00FF71 | D7  | HZR27  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | HZR26  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D5  | HZR25  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D4  | HZR24  | R24 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|         | D3  | HZR23  | R23 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|         | D2  | HZR22  | R22 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|         | D1  | HZR21  | R21 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|_^      _| D0  | HZR20  | R20 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+| $00FF72 | D7  | HZR37  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D6  | HZR36  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D5  | HZR35  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D4  | HZR34  | R/W register                                 || 1            | 0             |  0  | R/W |
+|         | D3  | HZR33  | R33 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|         | D2  | HZR32  | R32 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|         | D1  | HZR31  | R31 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+|_^      _| D0  | HZR30  | R30 high impedance control                   ||High impedance| Complementary |  0  | R/W |
+| $00FF73 | D7  | R07D   | R07 output port data                         || High         | Low           |  1  | R/W |
+|         | D6  | R06D   | R06 output port data                         || High         | Low           |  1  | R/W |
+|         | D5  | R05D   | R05 output port data                         || High         | Low           |  1  | R/W |
+|         | D4  | R04D   | R04 output port data                         || High         | Low           |  1  | R/W |
+|         | D3  | R03D   | R03 output port data                         || High         | Low           |  1  | R/W |
+|         | D2  | R02D   | R02 output port data                         || High         | Low           |  1  | R/W |
+|         | D1  | R01D   | R01 output port data                         || High         | Low           |  1  | R/W |
+|_^      _| D0  | R00D   | R00 output port data                         || High         | Low           |  1  | R/W |
+| $00FF74 | D7  | R17D   | R17 output port data                         || High         | Low           |  1  | R/W |
+|         | D6  | R16D   | R16 output port data                         || High         | Low           |  1  | R/W |
+|         | D5  | R15D   | R15 output port data                         || High         | Low           |  1  | R/W |
+|         | D4  | R14D   | R14 output port data                         || High         | Low           |  1  | R/W |
+|         | D3  | R13D   | R13 output port data                         || High         | Low           |  1  | R/W |
+|         | D2  | R12D   | R12 output port data                         || High         | Low           |  1  | R/W |
+|         | D1  | R11D   | R11 output port data                         || High         | Low           |  1  | R/W |
+|_^      _| D0  | R10D   | R10 output port data                         || High         | Low           |  1  | R/W |
+| $00FF75 | D7  | R27D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D6  | R26D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D5  | R25D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D4  | R24D   | R24 output port data                         || High         | Low           |  1  | R/W |
+|         | D3  | R23D   | R23 output port data                         || High         | Low           |  1  | R/W |
+|         | D2  | R22D   | R22 output port data                         || High         | Low           |  1  | R/W |
+|         | D1  | R21D   | R21 output port data                         || High         | Low           |  1  | R/W |
+|_^      _| D0  | R20D   | R20 output port data                         || High         | Low           |  1  | R/W |
+| $00FF76 | D7  | R37D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D6  | R36D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D5  | R35D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D4  | R34D   | R/W register                                 || 1            | 0             |  1  | R/W |
+|         | D3  | R33D   | R33 output port data                         || High         | Low           |  1  | R/W |
+|         | D2  | R32D   | R32 output port data                         || High         | Low           |  1  | R/W |
+|         | D1  | R31D   | R31 output port data                         || High         | Low           |  1  | R/W |
+|_^      _| D0  | R30D   | R30 output port data                         || High         | Low           |  1  | R/W |
+
+*;!...!:<u style="text-decoration:overline">...</u>
+{% endmd %}

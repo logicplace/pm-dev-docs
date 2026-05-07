@@ -30,18 +30,26 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <tr>
 {%- endmacro -%}
 
+{% macro olink(text, link) -%}
+    {%- if link -%}
+        <a href="{{ link }}">{{ text }}</a>
+    {%- else -%}
+        {{ text }}
+    {%- endif -%}
+{%- endmacro -%}
+
 {% macro register(address, pmh="", natural="", rowspan=1, link="") -%}
-</tr><tr>
+</tr><tr id="user-content-{{ address }}">
 <td>{{ address }}</td>
 {%- if pmh or natural -%}
 <td rowspan="{{ rowspan }}">
     {%- if pmh -%}
-        <a href="{{ (link or address[1:]) + '.md' }}">{{ pmh }}</a>
+        {{ olink(pmh, link) }}
         {%- if natural -%}
             <br/>{{ natural }}
         {%- endif -%}
     {%- elif natural -%}
-        {{ natural }}
+        {{ olink(natural, link) }}
     {%- endif -%}
 </td>
 {%- endif -%}
@@ -58,17 +66,17 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td>{{ address }}</td>
 {%- endmacro -%}
 
-{% macro td(name, content, color, colspan=1) -%}
+{% macro td(name, content, color, colspan=1, link="") -%}
 <td style="border: 2px solid; background-color:{{ colors[color] }};"
     {%- if colspan > 1 %} colspan="{{ colspan }}" {%- endif -%}
 >
     {%- if name -%}
-        <a href="{{ name }}.md">{{ name }}</a>
+        {{ olink(name, link) }}
         {%- if content -%}
             <br/>{{ content }}
         {%- endif -%}
     {%- elif content -%}
-        {{ content }}
+        {{ olink(content, link) }}
     {%- else -%}
         &nbsp;
     {%- endif -%}
@@ -103,69 +111,69 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <th style="border: 2px solid; width:60px;">&lt;&nbsp;Bit&nbsp;{{ i }}&nbsp;&gt;</th>
 {% endfor -%}
 {{ register("$00", "SYS_CTRL", "System Control", 3) }}
-{{ td("contrast", "Startup Contrast", "rwb", 6) }}
-{{ td("CE1", "Cartridge I/O Enable", "rw") }}
-{{ td("CE0", "LCD I/O Enable", "rw") }}
+{{ td("", "Startup Contrast", "rwb", 6, "lcd.md#startup-contrast") }}
+{{ td("CE1", "Cartridge I/O Enable", "rw", 1, "chip-enable.md") }}
+{{ td("CE0", "LCD I/O Enable", "rw", 1, "chip-enable.md") }}
 {{ register("$01") }}
-{{ td("01.7", "", "rwb") }}
-{{ td("01.6", "", "rwb") }}
-{{ td("awake", "System is awake", "rwb") }}
-{{ td("01.4", "", "rwb") }}
-{{ td("mcgm", "Multicart game mode", "rwb", 4) }}
+{{ td("01.7", "", "rwb", 1, "01-7.md") }}
+{{ td("01.6", "", "rwb", 1, "01-6.md") }}
+{{ td("", "System is awake", "rwb", 1, "awake.md") }}
+{{ td("01.4", "", "rwb", 1, "01-4.md") }}
+{{ td("", "Multicart game mode", "rwb", 4, "multicart.md") }}
 {{ register("$02") }}
-{{ td("EBR", "", "unk-rw") }}
-{{ td("02.6", "", "rwb") }}
-{{ td("02.5", "", "rwb") }}
-{{ td("02.4", "", "rwb") }}
-{{ td("CLKCHG", "OSC clocking CPU", "rw") }}
-{{ td("OSCC", "OSC3 on", "rw") }}
-{{ td("VDC", "System voltage", "rw", 2) }}
-{{ register("$08", "SEC_CTRL", "Second Counter Control") }}
+{{ td("EBR", "", "unk-rw", 1, "ebr.md") }}
+{{ td("02.6", "Cart needs power", "rwb", 1, "power.md#2002-bit-6") }}
+{{ td("02.5", "Suspended", "rwb", 1, "suspended.md") }}
+{{ td("02.4", "Copy of OSCC", "rwb", 1, "02-4.md") }}
+{{ td("CLKCHG", "CPU osc", "rw", 1, "osc.md#clkchg") }}
+{{ td("OSCC", "OSC3 on", "rw", 1, "osc.md#oscc") }}
+{{ td("VDC", "System voltage", "rw", 2, "vdc.md") }}
+{{ register("$08", "SEC_CTRL", "Second Counter Control", 1, "timers.md#seconds-timer") }}
 {{ unused(6) }}
 {{ td("STRST", "Reset", "wo") }}
 {{ td("STRUN", "Enable", "rw") }}
-{{ register("$09", "SEC_CNT", "Second Counter", 3) }}
+{{ register("$09", "SEC_CNT", "Second Counter", 3, "timers.md#seconds-timer") }}
 {{ td("STD", "Counter (low)", "ro", 8) }}
 {{ register("$0A") }}
 {{ td("STD", "Counter (mid)", "ro", 8) }}
 {{ register("$0B") }}
 {{ td("STD", "Counter (high)", "ro", 8) }}
-{{ register("$10", "SYS_BATT", "Battery Sensor") }}
+{{ register("$10", "SYS_BATT", "Battery Sensor", 1, "svd.md") }}
 {{ unused(2) }}
 {{ td("SVDDT", "Low Battery", "ro") }}
 {{ td("SVDON", "Battery ADC control", "rw") }}
 {{ td("SVDS", "Battery ADC threshold value", "rw", 4) }}
-{{ register("$18", "TMR1_SCALE", "PTM_A Prescalars") }}
+{{ register("$18", "TMR1_SCALE", "PTM_A Prescalars", 1, "timers.md#ptm_a") }}
 {{ td("PRPRT1", "Enable Hi", "rw") }}
 {{ td("PST1", "Hi Scalar", "rw", 3) }}
 {{ td("PRPRT0", "Enable Lo", "rw") }}
 {{ td("PST0", "Lo Scalar", "rw", 3) }}
-{{ register("$19", "TMR1_OSC", "PTM_A Osc. Select", link="18") }}
+{{ register("$19", "TMR1_OSC", "PTM_A Osc. Select", 1, "timers.md#ptm_a") }}
 {{ unused(2) }}
 {{ td("", "Enable OSC3?", "rw") }}
 {{ td("", "Enable OSC1?", "rw") }}
 {{ unused(2) }}
-{{ td("PRTF1", "2nd Osc. (Hi)", "rw") }}
-{{ td("PRTF0", "2nd Osc. (Lo)", "rw") }}
-{{ register("$1A", "TMR2_SCALE", "PTM_B Prescalars") }}
+{{ td("PRTF1", "Use OSC1 (Hi)", "rw") }}
+{{ td("PRTF0", "Use OSC1 (Lo)", "rw") }}
+{{ register("$1A", "TMR2_SCALE", "PTM_B Prescalars", 1, "timers.md#ptm_b") }}
 {{ td("PRPRT3", "Enable Hi", "rw") }}
 {{ td("PST3", "Hi Scalar", "rw", 3) }}
 {{ td("PRPRT2", "Enable Lo", "rw") }}
 {{ td("PST2", "Lo Scalar", "rw", 3) }}
-{{ register("$1B", "TMR2_OSC", "PTM_B Osc. Select", 1, "1A") }}
+{{ register("$1B", "TMR2_OSC", "PTM_B Osc. Select", 1, "timers.md#ptm_b") }}
 {{ unused(6) }}
-{{ td("PRTF3", "2nd Osc. (Hi)", "rw") }}
-{{ td("PRTF2", "2nd Osc. (Lo)", "rw") }}
-{{ register("$1C", "TMR3_SCALE", "PTM_C Prescalars") }}
+{{ td("PRTF3", "Use OSC1 (Hi)", "rw") }}
+{{ td("PRTF2", "Use OSC1 (Lo)", "rw") }}
+{{ register("$1C", "TMR3_SCALE", "PTM_C Prescalars", 1, "timers.md#ptm_c") }}
 {{ td("PRPRT5", "Enable Hi", "rw") }}
 {{ td("PST5", "Hi Scalar", "rw", 3) }}
 {{ td("PRPRT4", "Enable Lo", "rw") }}
 {{ td("PST4", "Lo Scalar", "rw", 3) }}
-{{ register("$1D", "TMR3_OSC", "PTM_C Osc. Select", 1, "1C") }}
+{{ register("$1D", "TMR3_OSC", "PTM_C Osc. Select", 1, "timers.md#ptm_c") }}
 {{ unused(6) }}
-{{ td("PRTF5", "2nd Osc. (Hi)", "rw") }}
-{{ td("PRTF4", "2nd Osc. (Lo)", "rw") }}
-{{ register("$20", "IRQ_PRI", "IRQ Priority", 3) }}
+{{ td("PRTF5", "Use OSC1 (Hi)", "rw") }}
+{{ td("PRTF4", "Use OSC1 (Lo)", "rw") }}
+{{ register("$20", "IRQ_PRI", "IRQ Priority", 3, "irq.md") }}
 {{ td("PLCD", "IRQ 06h ~ 08h", "rw", 2) }}
 {{ td("PPTB", "IRQ 0Ah ~ 0Ch", "rw", 2) }}
 {{ td("PPTA", "IRQ 0Eh ~ 10h", "rw", 2) }}
@@ -178,7 +186,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$22") }}
 {{ unused(6) }}
 {{ td("PP0", "IRQ 1Eh~20h", "rw", 2) }}
-{{ register("$23", "IRQ_ENA", "IRQ Enable", 4) }}
+{{ register("$23", "IRQ_ENA", "IRQ Enable", 4, "irq.md") }}
 {{ td("ELCD", "IRQ 06h", "rw") }}
 {{ td("ELCFR", "IRQ 08h", "rw") }}
 {{ td("ETU3", "IRQ 0Ah", "rw") }}
@@ -213,9 +221,9 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("", "IRQ 3Ah", "rw") }}
 {{ td("", "IRQ 3Ch", "rw") }}
 {{ td("", "IRQ 3Eh", "rw") }}
-{{ register("$27", "IRQ_ACT", "IRQ Factor", 4) }}
+{{ register("$27", "IRQ_ACT", "IRQ Factor", 4, "irq.md") }}
 {{ td("FLCD", "IRQ 06h", "sr") }}
-{{ td("EFCFR", "IRQ 08h", "sr") }}
+{{ td("FLCFR", "IRQ 08h", "sr") }}
 {{ td("FTU3", "IRQ 0Ah", "sr") }}
 {{ td("FTU2", "IRQ 0Ch", "sr") }}
 {{ td("FTU1", "IRQ 0Eh", "sr") }}
@@ -240,69 +248,69 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("FK01", "IRQ 36h", "sr") }}
 {{ td("FK00", "IRQ 38h", "sr") }}
 {{ register("$2A") }}
-{{ td("EP0", "IRQ 1Eh", "sr") }}
-{{ td("EP6", "IRQ 20h", "sr") }}
+{{ td("FP0", "IRQ 1Eh", "sr") }}
+{{ td("FP6", "IRQ 20h", "sr") }}
 {{ td("", "IRQ ???", "sr") }}
 {{ td("", "IRQ ???", "sr") }}
 {{ unused(1) }}
 {{ td("", "IRQ 3Ah", "sr") }}
 {{ td("", "IRQ 3Ch", "sr") }}
 {{ td("", "IRQ 3Eh", "sr") }}
-{{ register("$30", "TMR1_CTRL_L", "PTM_A Control (Lo)") }}
+{{ register("$30", "TMR1_CTRL_L", "PTM_A Control (Lo)", 1, "timers.md#ptm_a") }}
 {{ td("MODE16_A", "16-bit Mode", "rw") }}
 {{ unused(3) }}
 {{ td("PTOUT0", "", "rw") }}
 {{ td("PTRUN0", "Enable", "rw") }}
 {{ td("PSET0", "Reset", "wo") }}
 {{ td("CKSEL0", "", "rw") }}
-{{ register("$31", "TMR1_CTRL_H", "PTM_A Control (Hi)", 1, "30") }}
+{{ register("$31", "TMR1_CTRL_H", "PTM_A Control (Hi)", 1, "timers.md#ptm_a") }}
 {{ unused(4) }}
 {{ td("PTOUT1", "", "rw") }}
 {{ td("PTRUN1", "Enable", "rw") }}
 {{ td("PSET1", "Reset", "wo") }}
 {{ td("CKSEL1", "", "rw") }}
-{{ register("$32", "TMR1_PRE_L", "PTM_A Preset (Lo)") }}
+{{ register("$32", "TMR1_PRE_L", "PTM_A Preset (Lo)", 1, "timers.md#ptm_a") }}
 {{ td("RDR0", "Preset", "rw", 8) }}
-{{ register("$33", "TMR1_PRE_H", "PTM_A Preset (Hi)", 1, "32") }}
+{{ register("$33", "TMR1_PRE_H", "PTM_A Preset (Hi)", 1, "timers.md#ptm_a") }}
 {{ td("RDR1", "Preset", "rw", 8) }}
-{{ register("$34", "TMR1_PVT_L", "PTM_A Compare (Lo)") }}
+{{ register("$34", "TMR1_PVT_L", "PTM_A Compare (Lo)", 1, "timers.md#ptm_a") }}
 {{ td("CDR0", "Compare data", "rw", 8) }}
-{{ register("$35", "TMR1_PVT_H", "PTM_A Compare (Hi)", 1, "34") }}
+{{ register("$35", "TMR1_PVT_H", "PTM_A Compare (Hi)", 1, "timers.md#ptm_a") }}
 {{ td("CDR1", "Compare data", "rw", 8) }}
-{{ register("$36", "TMR1_CNT_L", "PTM_A Count (Lo)") }}
+{{ register("$36", "TMR1_CNT_L", "PTM_A Count (Lo)", 1, "timers.md#ptm_a") }}
 {{ td("PTM0", "Count", "ro", 8) }}
-{{ register("$37", "TMR1_CNT_H", "PTM_A Count (Hi)", 1, "36") }}
+{{ register("$37", "TMR1_CNT_H", "PTM_A Count (Hi)", 1, "timers.md#ptm_a") }}
 {{ td("PTM1", "Count", "ro", 8) }}
-{{ register("$38", "TMR2_CTRL_L", "PTM_B Control (Lo)") }}
+{{ register("$38", "TMR2_CTRL_L", "PTM_B Control (Lo)", 1, "timers.md#ptm_b") }}
 {{ td("MODE16_B", "16-bit Mode", "rw") }}
 {{ unused(3) }}
 {{ td("PTOUT2", "", "rw") }}
 {{ td("PTRUN2", "Enable", "rw") }}
 {{ td("PSET2", "Reset", "wo") }}
 {{ td("CKSEL2", "", "rw") }}
-{{ register("$39", "TMR2_CTRL_H", "PTM_B Control (Hi)", 1, "38") }}
+{{ register("$39", "TMR2_CTRL_H", "PTM_B Control (Hi)", 1, "timers.md#ptm_b") }}
 {{ unused(4) }}
 {{ td("PTOUT3", "", "rw") }}
 {{ td("PTRUN3", "Enable", "rw") }}
 {{ td("PSET3", "Reset", "wo") }}
 {{ td("CKSEL3", "", "rw") }}
-{{ register("$3A", "TMR2_PRE_L", "PTM_B Preset (Lo)") }}
+{{ register("$3A", "TMR2_PRE_L", "PTM_B Preset (Lo)", 1, "timers.md#ptm_b") }}
 {{ td("RDR2", "Preset", "rw", 8) }}
-{{ register("$3B", "TMR2_PRE_H", "PTM_B Preset (Hi)", 1, "3A") }}
+{{ register("$3B", "TMR2_PRE_H", "PTM_B Preset (Hi)", 1, "timers.md#ptm_b") }}
 {{ td("RDR3", "Preset", "rw", 8) }}
-{{ register("$3C", "TMR2_PVT_L", "PTM_B Compare (Lo)") }}
+{{ register("$3C", "TMR2_PVT_L", "PTM_B Compare (Lo)", 1, "timers.md#ptm_b") }}
 {{ td("CDR2", "Compare data", "rw", 8) }}
-{{ register("$3D", "TMR2_PVT_H", "PTM_B Compare (Hi)", 1, "3C") }}
+{{ register("$3D", "TMR2_PVT_H", "PTM_B Compare (Hi)", 1, "timers.md#ptm_b") }}
 {{ td("CDR3", "Compare data", "rw", 8) }}
-{{ register("$3E", "TMR2_CNT_L", "PTM_B Count (Lo)") }}
+{{ register("$3E", "TMR2_CNT_L", "PTM_B Count (Lo)", 1, "timers.md#ptm_b") }}
 {{ td("PTM2", "Count", "ro", 8) }}
-{{ register("$3F", "TMR2_CNT_H", "PTM_B Count (Hi)", 1, "3E") }}
+{{ register("$3F", "TMR2_CNT_H", "PTM_B Count (Hi)", 1, "timers.md#ptm_b") }}
 {{ td("PTM3", "Count", "ro", 8) }}
-{{ register("$40", "TMR256_CTRL", "Clock Timer Control") }}
+{{ register("$40", "TMR256_CTRL", "Clock Timer Control", 1, "timers.md#clock-timer") }}
 {{ unused(6) }}
 {{ td("TMRST", "Reset", "wo") }}
 {{ td("TMRUN", "Enable", "rw") }}
-{{ register("$41", "TMR256_CNT", "Clock Timer Counter") }}
+{{ register("$41", "TMR256_CNT", "Clock Timer Counter", 1, "timers.md#clock-timer") }}
 {{ td("TMD", "Count", "ro", 8) }}
 {{ unk_register("$44") }}
 {{ td("", "???", "unk-rw", 4) }}
@@ -319,32 +327,32 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ unk_register("$47") }}
 {{ td("", "???", "unk-x", 4) }}
 {{ td("", "???", "unk-rw", 4) }}
-{{ register("$48", "TMR3_CTRL_L", "PTM_C Control (Lo)") }}
+{{ register("$48", "TMR3_CTRL_L", "PTM_C Control (Lo)", 1, "timers.md#ptm_c") }}
 {{ td("MODE16_C", "16-bit Mode", "rw") }}
 {{ unused(3) }}
 {{ td("PTOUT4", "", "rw") }}
 {{ td("PTRUN4", "Enable", "rw") }}
 {{ td("PSET4", "Reset", "wo") }}
 {{ td("CKSEL4", "", "rw") }}
-{{ register("$49", "TMR3_CTRL_H", "PTM_C Control (Hi)", 1, "48") }}
+{{ register("$49", "TMR3_CTRL_H", "PTM_C Control (Hi)", 1, "timers.md#ptm_c") }}
 {{ unused(4) }}
 {{ td("PTOUT5", "", "rw") }}
 {{ td("PTRUN5", "Enable", "rw") }}
 {{ td("PSET5", "Reset", "wo") }}
 {{ td("CKSEL5", "", "rw") }}
-{{ register("$4A", "TMR3_PRE_L", "PTM_C Preset (Lo)") }}
+{{ register("$4A", "TMR3_PRE_L", "PTM_C Preset (Lo)", 1, "timers.md#ptm_c") }}
 {{ td("RDR4", "Preset", "rw", 8) }}
-{{ register("$4B", "TMR3_PRE_H", "PTM_C Preset (Hi)", 1, "4A") }}
+{{ register("$4B", "TMR3_PRE_H", "PTM_C Preset (Hi)", 1, "timers.md#ptm_c") }}
 {{ td("RDR5", "Preset", "rw", 8) }}
-{{ register("$4C", "TMR3_PVT_L", "PTM_C Compare (Lo)") }}
+{{ register("$4C", "TMR3_PVT_L", "PTM_C Compare (Lo)", 1, "timers.md#ptm_c") }}
 {{ td("CDR4", "Compare data", "rw", 8) }}
-{{ register("$4D", "TMR3_PVT_H", "PTM_C Compare (Hi)", 1, "4C") }}
+{{ register("$4D", "TMR3_PVT_H", "PTM_C Compare (Hi)", 1, "timers.md#ptm_c") }}
 {{ td("CDR5", "Compare data", "rw", 8) }}
-{{ register("$4E", "TMR3_CNT_L", "PTM_C Count (Lo)") }}
+{{ register("$4E", "TMR3_CNT_L", "PTM_C Count (Lo)", 1, "timers.md#ptm_c") }}
 {{ td("PTM4", "Count", "ro", 8) }}
-{{ register("$4F", "TMR3_CNT_H", "PTM_C Count (Hi)", 1, "4E") }}
+{{ register("$4F", "TMR3_CNT_H", "PTM_C Count (Hi)", 1, "timers.md#ptm_c") }}
 {{ td("PTM5", "Count", "ro", 8) }}
-{{ register("$50", "", "Keypad IRQ edge") }}
+{{ register("$50", "", "Keypad IRQ edge", 1, "irq.md#kcp1--kcp0") }}
 {{ td("KCP07", "Power", "rw")}}
 {{ td("KCP06", "Right", "rw")}}
 {{ td("KCP05", "Left", "rw")}}
@@ -353,11 +361,11 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("KCP02", "C", "rw")}}
 {{ td("KCP01", "B", "rw")}}
 {{ td("KCP00", "A", "rw")}}
-{{ register("$51", "", "Cartridge IRQ edge") }}
+{{ register("$51", "", "Cartridge IRQ edge", 1, "irq.md#kcp1--kcp0") }}
 {{ unused(6) }}
 {{ td("KCP11", "Eject", "rw") }}
 {{ td("KCP10", "Cartridge?", "rw") }}
-{{ register("$52", "KEY_PAD", "Keypad Status (Active 0)") }}
+{{ register("$52", "KEY_PAD", "Keypad Status (Active 0)", 1, "input.md") }}
 {{ td("K07D", "Power", "ro") }}
 {{ td("K06D", "Right", "ro") }}
 {{ td("K05D", "Left", "ro") }}
@@ -366,59 +374,59 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("K02D", "C", "ro") }}
 {{ td("K01D", "B", "ro") }}
 {{ td("K00D", "A", "ro") }}
-{{ register("$53", "Cart Bus", "CART_BUS") }}
+{{ register("$53", "CART_BUS", "Cart Bus", 1, "input.md") }}
 {{ unused(6) }}
 {{ td("K11D", "CARD_N", "ro") }}
 {{ td("K10D", "", "ro") }}
-{{ unk_register("$54") }}
+{{ register("$54", "", "unconfirmed", 1, "irq.md#ctk") }}
 {{ unused(1) }}
 {{ td("CTK0H", "Unused?", "unk-rw", 3) }}
 {{ unused(1) }}
 {{ td("CTK0L", "Keypad debounce rate?", "unk-rw", 3) }}
-{{ unk_register("$55") }}
+{{ register("$55", "", "unconfirmed", 1, "irq.md#ctk") }}
 {{ unused(5) }}
-{{ td("CTK0L", "Cartridge debounce rate?", "unk-rw", 3) }}
-{{ register("$60", "IO_DIR", "I/O Direction Select") }}
+{{ td("CTK1L", "Cartridge debounce rate?", "unk-rw", 3) }}
+{{ register("$60", "IO_DIR", "I/O Direction Select", 1, "io.md") }}
 {{ td("IOC07", "???", "rw") }}
 {{ td("IOC06", "Shock", "rw") }}
 {{ td("IOC05", "IR Disable", "rw") }}
 {{ td("IOC04", "Rumble", "rw") }}
 {{ td("IOC03", "EEPROM Clock", "rw") }}
 {{ td("IOC02", "EEPROM Data", "rw") }}
-{{ td("IOC01", "IR Rx", "rw") }}
-{{ td("IOC00", "IR Tx", "rw") }}
-{{ register("$61", "I/O Data Register", "IO_DATA", "PM_I_O_Port.md") }}
-{{ td("P07", "???", "rw") }}
-{{ td("P06", "Shock", "rw") }}
-{{ td("P05", "IR Disable", "rw") }}
-{{ td("P04", "Rumble", "rw") }}
-{{ td("P03", "EEPROM Clock", "rw") }}
-{{ td("P02", "EEPROM Data", "rw") }}
-{{ td("P01", "IR Rx", "rw") }}
-{{ td("P00", "IR Tx", "rw") }}
+{{ td("IOC01", "IR Tx", "rw") }}
+{{ td("IOC00", "IR Rx", "rw") }}
+{{ register("$61", "IO_DATA", "I/O Data Register", 1, "io.md") }}
+{{ td("P07D", "???", "rw") }}
+{{ td("P06D", "Shock", "rw") }}
+{{ td("P05D", "IR Disable", "rw") }}
+{{ td("P04D", "Rumble", "rw") }}
+{{ td("P03D", "EEPROM Clock", "rw") }}
+{{ td("P02D", "EEPROM Data", "rw") }}
+{{ td("P01D", "IR Tx", "rw") }}
+{{ td("P00D", "IR Rx", "rw") }}
 {{ unk_register("$62") }}
 {{ td("", "???", "unk-rw", 4) }}
 {{ td("", "???", "unk-x", 4) }}
 {{ register("$70", "AUD_CTRL", "Audio Control") }}
 {{ unused(5) }}
 {{ td("", "???", "unk-rw") }}
-{{ td("", "Mutes audio if not 0!?", "unk-rw", 2) }}
+{{ td("", "Mutes audio if not 0!?", "unk-rw", 2, "audio.md#2070-bits-10") }}
 {{ register("$71", "AUD_VOL", "Audio Volume") }}
 {{ unused(5) }}
-{{ td("", "Cart Power (1=Off; 0=On)", "rw") }}
-{{ td("", "Volume", "rw", 2) }}
-{{ register("$80", "PRC_MODE", "LCD Controller Settings") }}
+{{ td("", "Cart Power (1=Off; 0=On)", "rw", 1, "power.md") }}
+{{ td("", "Volume", "rw", 2, "audio.md#volume") }}
+{{ register("$80", "PRC_MODE", "LCD Controller Settings", 1, "lcd.md#lcd-controller") }}
 {{ unused(2) }}
 {{ td("", "Map Size", "rw", 2) }}
 {{ td("", "Enable Render", "rw") }}
 {{ td("", "Enable Sprites", "rw") }}
 {{ td("", "Enable Map", "rw") }}
 {{ td("", "Invert Map", "rw") }}
-{{ register("$81", "PRC_RATE", "LCD Rate Control") }}
+{{ register("$81", "PRC_RATE", "LCD Rate Control", 1, "lcd.md#frame-rate") }}
 {{ td("", "Frame counter", "ro", 4) }}
-{{ td("CKCN", "Rate divider", "rw", 3) }}
-{{ td("", "Initable", "rw") }}
-{{ register("$82", "PRC_MAP", "PRC Map Tile Base", 3) }}
+{{ td("", "Rate divider", "rw", 3) }}
+{{ td("LCDEN", "Enabled", "rw") }}
+{{ register("$82", "PRC_MAP", "PRC Map Tile Base", 3, "lcd.md#tilemap") }}
 {{ td("", "Map Tile Base (low)", "rw", 5) }}
 {{ unused(3) }}
 {{ register("$83") }}
@@ -426,13 +434,13 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$84") }}
 {{ unused(3) }}
 {{ td("", "Map Tile Base (high)", "rw", 5) }}
-{{ register("$85", "PRC_SCROLL_Y", "PRC Map Vertical Scroll") }}
+{{ register("$85", "PRC_SCROLL_Y", "PRC Map Vertical Scroll", 1, "lcd.md#scrolling") }}
 {{ unused(1) }}
 {{ td("", "Map Scroll Y", "rw", 7) }}
-{{ register("$86", "PRC_SCROLL_X", "PRC Map Horizontal Scroll") }}
+{{ register("$86", "PRC_SCROLL_X", "PRC Map Horizontal Scroll", 1, "lcd.md#scrolling") }}
 {{ unused(1) }}
 {{ td("", "Map Scroll X", "rw", 7) }}
-{{ register("$87", "PRC_SPR", "PRC Sprite Tile Base", 3) }}
+{{ register("$87", "PRC_SPR", "PRC Sprite Tile Base", 3, "lcd.md#sprites") }}
 {{ td("", "Sprite Tile Base (low)", "rw", 2) }}
 {{ unused(6) }}
 {{ register("$88") }}
@@ -440,7 +448,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$89") }}
 {{ unused(3) }}
 {{ td("", "Sprite Tile Base (high)", "rw", 5) }}
-{{ register("$8A", "PRC_CNT", "LCD Line Counter") }}
+{{ register("$8A", "PRC_CNT", "LCD Line Counter", 1, "lcd.md#lcd-line-counter") }}
 {{ unused(1) }}
 {{ td("", "Count", "ro", 7) }}
 {{ unk_register("$8B", "returns 0", 13) }}
@@ -469,8 +477,8 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ unused(8) }}
 {{ unk_reg_cont("$F7") }}
 {{ unused(8) }}
-{{ register("$FE", "LCD_CTRL", "LCD Raw Control Byte") }}
+{{ register("$FE", "LCD_CTRL", "LCD Raw Control Byte", 1, "lcd.md") }}
 {{ td("", "LCD Control I/O", "rw", 8) }}
-{{ register("$FF", "LCD_DATA", "LCD Raw Data Byte", 1, "FE") }}
+{{ register("$FF", "LCD_DATA", "LCD Raw Data Byte", 1, "lcd.md") }}
 {{ td("", "LCD Data I/O", "rw", 8) }}
 {{ table_end() }}
