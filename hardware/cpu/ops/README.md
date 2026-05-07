@@ -158,7 +158,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADD][+] \[HL],\[IX]  | CE,06        | \[HL] ← \[HL] + \[IX] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [ADD][+] \[HL],\[IY]  | CE,07        | \[HL] ← \[HL] + \[IY] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[+]: ops/S1C88_ADD8.md
+[+]: add8.md
 
 ### **ADC**: Addition with carry
 
@@ -181,7 +181,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADC][+c] \[HL],\[IX]  | CE,0E        | \[HL] ← \[HL] + \[IX] + C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [ADC][+c] \[HL],\[IY]  | CE,0F        | \[HL] ← \[HL] + \[IY] + C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[+c]: ops/S1C88_ADC8.md
+[+c]: adc8.md
 
 ### **SUB**: Subtraction
 
@@ -204,7 +204,7 @@ If U has `*`, this operation permits unpack operations.
 | [SUB][-] \[HL],\[IX]  | CE,16        | \[HL] ← \[HL] - \[IX] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [SUB][-] \[HL],\[IY]  | CE,17        | \[HL] ← \[HL] - \[IY] |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[-]: ops/S1C88_SUB8.md
+[-]: sub8.md
 
 ### **SBC**: Subtraction with carry
 
@@ -227,7 +227,7 @@ If U has `*`, this operation permits unpack operations.
 | [SBC][-c] \[HL],\[IX]  | CE,1E        | \[HL] ← \[HL] - \[IX] - C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [SBC][-c] \[HL],\[IY]  | CE,1F        | \[HL] ← \[HL] - \[IY] - C |      5 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[-c]: ops/S1C88_SBC8.md
+[-c]: sbc8.md
 
 ### **AND**: Logical product
 
@@ -255,7 +255,7 @@ If U has `*`, this operation permits unpack operations.
 | [AND][&] L,#nn        | CE,B1,nn     | L ← L & nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [AND][&] SC,#nn       | 9C,nn        | SC ← SC & nn             |      3 |     2 |        `↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓` |
 
-[&]: ops/S1C88_AND.md
+[&]: and.md
 
 ### **OR**: Logical sum
 
@@ -283,7 +283,7 @@ If U has `*`, this operation permits unpack operations.
 | [OR][or] L,#nn         | CE,B5,nn     | L ← L \| nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [OR][or] SC,#nn        | 9D,nn        | SC ← SC \| nn             |      3 |     2 |        `↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑` |
 
-[or]: ops/S1C88_OR.md
+[or]: or.md
 
 ### **XOR**: Exclusive OR
 
@@ -311,7 +311,7 @@ If U has `*`, this operation permits unpack operations.
 | [XOR][^] L,#nn         | CE,B9,nn     | L ← L ^ nn               |      3 |     3 |        `– – – – ↕ – – ↕` |
 | [XOR][^] SC,#nn        | 9E,nn        | SC ← SC ^ nn             |      3 |     2 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 
-[^]: ops/S1C88_XOR.md
+[^]: xor.md
 
 ### **CP**: Comparison
 
@@ -339,7 +339,7 @@ If U has `*`, this operation permits unpack operations.
 | [CP][cp] \[HL],\[IY]   | CE,37        | \[HL] - \[IY] |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [CP][cp] L,#nn         | CE,BD,nn     | L - nn        |      3 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[cp]: ops/S1C88_CP8.md
+[cp]: cp8.md
 
 ### **BIT**: Bit test
 
@@ -351,7 +351,7 @@ If U has `*`, this operation permits unpack operations.
 | [BIT][bt] \[HL],#nn     | 95,nn        | \[HL] & nn    |      3 |     2 |        `– – – – ↕ – – ↕` |
 | [BIT][bt] \[BR:ll],#nn  | DC,ll,nn     | \[BR:ll] & nn |      4 |     3 |        `– – – – ↕ – – ↕` |
 
-[bt]: ops/S1C88_BIT.md
+[bt]: bit.md
 
 ### **INC**: Increment by 1
 
@@ -365,7 +365,7 @@ If U has `*`, this operation permits unpack operations.
 | [INC][++] L         | 82           | L ← L + 1               |      2 |     1 |        `– – – – – – – ↕` |
 | [INC][++] BR        | 84           | BR ← BR + 1             |      2 |     1 |        `– – – – – – – ↕` |
 
-[++]: ops/S1C88_INC.md
+[++]: inc.md
 
 ### **DEC**: Decrement by 1
 
@@ -379,7 +379,7 @@ If U has `*`, this operation permits unpack operations.
 | [DEC][--] L         | 8A           | L ← L - 1               |      2 |     1 |        `– – – – – – – ↕` |
 | [DEC][--] BR        | 8C           | BR ← BR - 1             |      2 |     1 |        `– – – – – – – ↕` |
 
-[--]: ops/S1C88_DEC.md
+[--]: dec.md
 
 ### **MLT**: Multiplication
 
@@ -387,7 +387,7 @@ If U has `*`, this operation permits unpack operations.
 | --------- | ------------ | --------------------- | ------:| -----:|:------------------------:|
 | [MLT][*]  | CE,D8        | HL ← L * A            |     12 |     2 |        `– – – – ↕ 0 0 ↕` |
 
-[*]: ops/S1C88_MLT.md
+[*]: mlt.md
 
 ### **DIV**: Division
 
@@ -395,7 +395,7 @@ If U has `*`, this operation permits unpack operations.
 | --------- | ------------ | ---------------------- | ------:| -----:|:------------------------:|
 | [DIV][/]  | CE,D9        | L ← HL / A, H ← HL % A |     13 |     2 |        `– – – – ↕ ↕ 0 ↕` |
 
-[/]: ops/S1C88_DIV.md
+[/]: div.md
 
 ### **CPL**: Complement of 1
 
@@ -406,7 +406,7 @@ If U has `*`, this operation permits unpack operations.
 | [CPL][~] \[HL]     | CE,A3        | \[HL] ← ~\[HL]       |      4 |     2 |        `– – – – ↕ – – ↕` |
 | [CPL][~] \[BR:ll]  | CE,A2,ll     | \[BR:ll] ← ~\[BR:ll] |      5 |     3 |        `– – – – ↕ – – ↕` |
 
-[~]: ops/S1C88_CPL.md
+[~]: cpl.md
 
 ### **NEG**: Complement of 2
 
@@ -417,7 +417,7 @@ If U has `*`, this operation permits unpack operations.
 | [NEG][ng] \[HL]     | CE,A7        | \[HL] ← 0 - \[HL]       |      4 |     2 |        `– – * * ↕ ↕ ↕ ↕` |
 | [NEG][ng] \[BR:ll]  | CE,A6,ll     | \[BR:ll] ← 0 - \[BR:ll] |      5 |     3 |        `– – * * ↕ ↕ ↕ ↕` |
 
-[ng]: ops/S1C88_NEG.md
+[ng]: neg.md
 
 ## 8-bit transfer
 
@@ -567,7 +567,7 @@ If U has `*`, this operation permits unpack operations.
 | [LD][=] \[IY+L],L       | CE,57        | \[IY+L] ← L      |      4 |     2 |        `– – – – – – – –` |
 | [LD][=] \[IY+L],H       | CE,5F        | \[IY+L] ← H      |      4 |     2 |        `– – – – – – – –` |
 
-[=]: ops/S1C88_LD8.md
+[=]: ld8.md
 
 ### **EX**: Byte exchange
 
@@ -576,7 +576,7 @@ If U has `*`, this operation permits unpack operations.
 | [EX][ex] A,B      | CC           | A ↔ B     |      2 |     1 |        `– – – – – – – –` |
 | [EX][ex] A,\[HL]  | CD           | A ↔ \[HL] |      3 |     1 |        `– – – – – – – –` |
 
-[ex]: ops/S1C88_EX.md
+[ex]: ex.md
 
 ### **SWAP**: Nibble exchange
 
@@ -585,7 +585,7 @@ If U has `*`, this operation permits unpack operations.
 | [SWAP][sw] A      | F6           | ![swap nibbles in A][sw1]    |      2 |     1 |        `– – – – – – – –` |
 | [SWAP][sw] \[HL]  | F7           | ![swap nibbles in [HL]][sw2] |      3 |     1 |        `– – – – – – – –` |
 
-[sw]: ops/S1C88_SWAP.md
+[sw]: swap.md
 [sw1]: /rsc/op-swap-a.svg "swap nibbles in A"
 [sw2]: /rsc/op-swap-phl.svg "swap nibbles in \[HL\]"
 
@@ -600,7 +600,7 @@ If U has `*`, this operation permits unpack operations.
 | [RL][(] \[HL]     | CE,93        | ![rotate [HL] left thru C][(3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RL][(] \[BR:ll]  | CE,92,ll     | ![rotate [BR:ll] left thru C][(4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[(]: ops/S1C88_RL.md
+[(]: rl.md
 [(1]: /rsc/op-rl-a.svg "rotate A left thru C"
 [(2]: /rsc/op-rl-b.svg "rotate B left thru C"
 [(3]: /rsc/op-rl-phl.svg "rotate [HL] left thru C"
@@ -615,7 +615,7 @@ If U has `*`, this operation permits unpack operations.
 | [RLC][(c] \[HL]     | CE,97        | ![rotate [HL] left and set C][(c3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RLC][(c] \[BR:ll]  | CE,96,ll     | ![rotate [BR:ll] left and set C][(c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[(c]: ops/S1C88_RLC.md
+[(c]: rlc.md
 [(c1]: /rsc/op-rlc-a.svg "rotate A left and set C"
 [(c2]: /rsc/op-rlc-b.svg "rotate B left and set C"
 [(c3]: /rsc/op-rlc-phl.svg "rotate [HL] left and set C"
@@ -630,7 +630,7 @@ If U has `*`, this operation permits unpack operations.
 | [RR][)] \[HL]     | CE,9B        | ![rotate [HL] right thru C][)3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RR][)] \[BR:ll]  | CE,9A,ll     | ![rotate [BR:ll] right thru C][)4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[)]: ops/S1C88_RR.md
+[)]: rr.md
 [)1]: /rsc/op-rr-a.svg "rotate A right thru C"
 [)2]: /rsc/op-rr-b.svg "rotate B right thru C"
 [)3]: /rsc/op-rr-phl.svg "rotate [HL] right thru C"
@@ -645,7 +645,7 @@ If U has `*`, this operation permits unpack operations.
 | [RRC][)c] \[HL]     | CE,9F        | ![rotate [HL] right and set C][)c3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [RRC][)c] \[BR:ll]  | CE,9E,ll     | ![rotate [BR:ll] right and set C][)c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[)c]: ops/S1C88_RRC.md
+[)c]: rrc.md
 [)c1]: /rsc/op-rrc-a.svg "rotate A right and set C"
 [)c2]: /rsc/op-rrc-b.svg "rotate B right and set C"
 [)c3]: /rsc/op-rrc-phl.svg "rotate [HL] right and set C"
@@ -660,7 +660,7 @@ If U has `*`, this operation permits unpack operations.
 | [SLA][«<] \[HL]     | CE,83        | ![arithmetic shift [HL] left][«<3]    |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [SLA][«<] \[BR:ll]  | CE,82,ll     | ![arithmetic shift [BR:ll] left][«<4] |      5 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[«<]: ops/S1C88_SLA.md
+[«<]: sla.md
 [«<1]: /rsc/op-sll-a.svg "arithmetic shift A left"
 [«<2]: /rsc/op-sll-b.svg "arithmetic shift B left"
 [«<3]: /rsc/op-sll-phl.svg "arithmetic shift [HL] left"
@@ -675,7 +675,7 @@ If U has `*`, this operation permits unpack operations.
 | [SLL][«] \[HL]     | CE,87        | ![logical shift [HL] left][«3]    |      4 |     2 |        `– – – – ↕ – ↕ ↕` |
 | [SLL][«] \[BR:ll]  | CE,86,ll     | ![logical shift [BR:ll] left][«4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
-[«]: ops/S1C88_SLL.md
+[«]: sll.md
 [«1]: /rsc/op-sll-a.svg "logical shift A left"
 [«2]: /rsc/op-sll-b.svg "logical shift B left"
 [«3]: /rsc/op-sll-phl.svg "logical shift [HL] left"
@@ -690,7 +690,7 @@ If U has `*`, this operation permits unpack operations.
 | [SRA][»>] \[HL]     | CE,8B        | ![arithmetic shift [HL] right][»>3]    |      4 |     2 |        `– – – – ↕ 0 ↕ ↕` |
 | [SRA][»>] \[BR:ll]  | CE,8A,ll     | ![arithmetic shift [BR:ll] right][»>4] |      5 |     3 |        `– – – – ↕ 0 ↕ ↕` |
 
-[»>]: ops/S1C88_SRA.md
+[»>]: sra.md
 [»>1]: /rsc/op-sra-a.svg "arithmetic shift A right"
 [»>2]: /rsc/op-sra-b.svg "arithmetic shift B right"
 [»>3]: /rsc/op-sra-phl.svg "arithmetic shift [HL] right"
@@ -705,7 +705,7 @@ If U has `*`, this operation permits unpack operations.
 | [SRL][»] \[HL]     | CE,8F        | ![logical shift [HL] right][»3]    |      4 |     2 |        `– – – – 0 – ↕ ↕` |
 | [SRL][»] \[BR:ll]  | CE,8E,ll     | ![logical shift [BR:ll] right][»4] |      5 |     3 |        `– – – – 0 – ↕ ↕` |
 
-[»]: ops/S1C88_SRL.md
+[»]: srl.md
 [»1]: /rsc/op-srl-a.svg "logical shift A right"
 [»2]: /rsc/op-srl-b.svg "logical shift B right"
 [»3]: /rsc/op-srl-phl.svg "logical shift [HL] right"
@@ -719,7 +719,7 @@ If U has `*`, this operation permits unpack operations.
 | ----------- | ------------ | ----------------------------- | ------:| -----:|:------------------------:|
 | [PACK][pk]  | DE           | ![B and A's LSNs into A][pk1] |      2 |     1 |        `– – – – – – – –` |
 
-[pk]: ops/S1C88_PACK.md
+[pk]: pack.md
 [pk1]: /rsc/op-pack.svg "B and A's least significant nibbles into A"
 
 ### **UPCK**: Unpack
@@ -728,7 +728,7 @@ If U has `*`, this operation permits unpack operations.
 | ----------- | ------------ | --------------------------------------- | ------:| -----:|:------------------------:|
 | [UPCK][up]  | DF           | ![A's nibbles into B and A's LSNs][up1] |      2 |     1 |        `– – – – – – – –` |
 
-[up]: ops/S1C88_UPCK.md
+[up]: upck.md
 [up1]: /rsc/op-upck.svg "A's nibbles into B and A's least significant nibbles, setting most significant nibbles to 0"
 
 ### **SEP**: Code extension
@@ -737,7 +737,7 @@ If U has `*`, this operation permits unpack operations.
 | ---------- | ------------ | ---------------------------- | ------:| -----:|:------------------------:|
 | [SEP][se]  | CE,A8        | ![sign extend A over B][se1] |      3 |     2 |        `– – – – – – – –` |
 
-[se]: ops/S1C88_SEP.md
+[se]: sep.md
 [se1]: /rsc/op-sep.svg "sign extend A over B"
 
 ## 16-bit arithmetic operation
@@ -766,7 +766,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADD][+w] SP,HL     | CF,45        | SP ← SP + HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [ADD][+w] SP,#mmnn  | CF,68,nn,mm  | SP ← SP + mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[+w]: ops/S1C88_ADD16.md
+[+w]: add16.md
 
 ### **ADC**: Addition with carry
 
@@ -783,7 +783,7 @@ If U has `*`, this operation permits unpack operations.
 | [ADC][+cw] HL,IY     | CF,27        | HL ← HL + IY + C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [ADC][+cw] HL,#mmnn  | CF,61,nn,mm  | HL ← HL + mmnn + C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[+cw]: ops/S1C88_ADC16.md
+[+cw]: adc16.md
 
 ### **SUB**: Subtraction
 
@@ -809,7 +809,7 @@ If U has `*`, this operation permits unpack operations.
 | [SUB][-w] SP,HL     | CF,4D        | SP ← SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [SUB][-w] SP,#mmnn  | CF,6A,nn,mm  | SP ← SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[-w]: ops/S1C88_SUB16.md
+[-w]: sub16.md
 
 ### **SBC**: Subtraction with carry
 
@@ -826,7 +826,7 @@ If U has `*`, this operation permits unpack operations.
 | [SBC][-cw] HL,IY     | CF,2F        | HL ← HL - IY - C   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [SBC][-cw] HL,#mmnn  | CF,63,nn,mm  | HL ← HL - mmnn - C |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[-cw]: ops/S1C88_SBC16.md
+[-cw]: sbc16.md
 
 ### **CP**: Comparison
 
@@ -848,7 +848,7 @@ If U has `*`, this operation permits unpack operations.
 | [CP][cpw] SP,HL     | CF,5D        | SP - HL   |      4 |     2 |        `– – – – ↕ ↕ ↕ ↕` |
 | [CP][cpw] SP,#mmnn  | CF,6C,nn,mm  | SP - mmnn |      4 |     4 |        `– – – – ↕ ↕ ↕ ↕` |
 
-[cpw]: ops/S1C88_CP16.md
+[cpw]: cp16.md
 
 ### **INC**: Increment by 1
 
@@ -953,7 +953,7 @@ For example, in `LD BA,[hhll]` the byte _at_ hhll is loaded into A, and the foll
 | [LD][=w] \[SP+dd],IX  | CF,76,dd     | \[SP+dd] ← IX |      6 |     3 |        `– – – – – – – –` |
 | [LD][=w] \[SP+dd],IY  | CF,77,dd     | \[SP+dd] ← IY |      6 |     3 |        `– – – – – – – –` |
 
-[=w]: ops/S1C88_LD16.md
+[=w]: ld16.md
 
 ### **EX**: Byte exchange
 
@@ -988,7 +988,7 @@ For example, in `PUSH BA`, after SP is adjusted, A is written to \[SP] and B is 
 | [PUSH][ps] ALL  | CF,B8        | PUSH BA, HL, IX, IY, BR |     12 |     2 |        `– – – – – – – –` |
 | [PUSH][ps] ALE  | CF,B9        | PUSH ALL, EP, IP        |     15 |     2 |        `– – – – – – – –` |
 
-[ps]: ops/S1C88_PUSH.md
+[ps]: push.md
 
 ### **POP**: Pop
 
@@ -1012,7 +1012,7 @@ For example, in `POP BA`, the byte _at_ the top of the stack is written into A, 
 | [POP][pp] ALL  | CF,BC        | POP BR, IY, IX, HL, BA  |     11 |     2 |        `– – – – – – – –` |
 | [POP][pp] ALE  | CF,BD        | POP IP, EP, ALL         |     14 |     2 |        `– – – – – – – –` |
 
-[pp]: ops/S1C88_POP.md
+[pp]: pop.md
 
 ## Branch
 
@@ -1088,8 +1088,8 @@ jump:
 | [JRS][jcs] NF2,rr  | CE,EE,rr     | !F2 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
 | [JRS][jcs] NF3,rr  | CE,EF,rr     | !F3 ⇒ jump                |      3 | 3  |        `– – – – – – – –` |
 
-[js]: ops/S1C88_JMP.md#jrs
-[jcs]: ops/S1C88_JMP.md#conditional-jrs
+[js]: jmp.md#jrs
+[jcs]: jmp.md#conditional-jrs
 
 ### **JRL**: Relative long jump
 
@@ -1109,8 +1109,8 @@ jump:
 | [JRL][jcl] NZ,qqrr  | EF,rr,qq     | !Z ⇒ jump |      3 |     3 |        `– – – – – – – –` |
 | [JRL][jl] qqrr      | F3,rr,qq     | jump      |      3 |     3 |        `– – – – – – – –` |
 
-[jl]: ops/S1C88_JMP.md#jrl
-[jcl]: ops/S1C88_JMP.md#conditional-jrl
+[jl]: jmp.md#jrl
+[jcl]: jmp.md#conditional-jrl
 
 ### **JP**: Indirect jump
 
@@ -1122,7 +1122,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | [JP][jp] HL     | F4           | PC ← HL; CB ← NB      |      2 |     1 |        `– – – – – – – –` |
 | [JP][jp] \[kk]  | FD,kk        | PC ← \[00kk]; CB ← NB |      4 |     2 |        `– – – – – – – –` |
 
-[jp]: ops/S1C88_JMP.md#jp
+[jp]: jmp.md#jp
 
 ### **DJR**: Loop
 
@@ -1138,7 +1138,7 @@ jump:
 | ---------------- | ------------ | ------------------------ | ------:| -----:|:------------------------:|
 | [DJR][dj] NZ,rr  | F5,rr        | B ← B - 1; B == 0 ⇒ jump |      4 |     2 |        `– – – – – – – ↕` |
 
-[dj]: ops/S1C88_JMP.md#djr
+[dj]: jmp.md#djr
 
 ### **CARS**: Relative short call
 
@@ -1175,8 +1175,8 @@ call:
 | [CARS][ccs] NF2,rr  | CE,FE,rr     | !F2 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
 | [CARS][ccs] NF3,rr  | CE,FF,rr     | !F3 ⇒ call                |  6 : 3 |     3 |        `– – – – – – – –` |
 
-[cs]: ops/S1C88_CALL.md#cars
-[ccs]: ops/S1C88_CALL.md#conditional-cars
+[cs]: call.md#cars
+[ccs]: call.md#conditional-cars
 
 ### **CARL**: Relative long call
 
@@ -1197,8 +1197,8 @@ call:
 | [CARL][ccl] NZ,qqrr  | EB,rr,qq     | !Z ⇒ call |  6 : 3 |    3 |        `– – – – – – – –` |
 | [CARL][cl] qqrr      | F2,rr,qq     | call      |      6 |    3 |        `– – – – – – – –` |
 
-[cl]: ops/S1C88_CALL.md#carl
-[ccl]: ops/S1C88_CALL.md#conditional-carl
+[cl]: call.md#carl
+[ccl]: call.md#conditional-carl
 
 ### **CALL**: Indirect call
 
@@ -1209,7 +1209,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ------------------- | ------------ | ---------------------------------- | ------:| -----:|:------------------------:|
 | [CALL][ca] \[hhll]  | FB,ll,hh     | PUSH CB, PC; PC ← [hhll]; CB ← NB  |      8 |     3 |        `– – – – – – – –` |
 
-[ca]: ops/S1C88_CALL.md#call
+[ca]: call.md#call
 
 ### **RET**: Return
 
@@ -1217,7 +1217,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ---------- | ------------ | ------------------- | ------:| -----:|:------------------------:|
 | [RET][rt]  | F8           | POP PC, CB; NB ← CB |      4 |     1 |        `– – – – – – – –` |
 
-[rt]: ops/S1C88_RET.md#ret
+[rt]: ret.md#ret
 
 ### **RETE**: Exception processing return
 
@@ -1225,7 +1225,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ----------- | ------------ | ----------------------- | ------:| -----:|:------------------------:|
 | [RETE][re]  | F9           | POP SC, PC, CB; NB ← CB |      5 |     1 |        `↕ ↕ ↕ ↕ ↕ ↕ ↕ ↕` |
 
-[re]: ops/S1C88_RET.md#rete
+[re]: ret.md#rete
 
 ### **RETS**: Return and skip
 
@@ -1233,7 +1233,7 @@ For example, in `PC ← [hhll]` the byte _at_ hhll is loaded into the low byte o
 | ----------- | ------------ | -------------------------------- | ------:| -----:|:------------------------:|
 | [RETS][rs]  | FA           | POP PC, CB; NB ← CB; PC ← PC + 2 |      6 |     1 |        `– – – – – – – –` |
 
-[rs]: ops/S1C88_RET.md#rets
+[rs]: ret.md#rets
 
 ### **INT**: Software interrupt
 
@@ -1244,7 +1244,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | --------------------- | ------------ | -------------------------------------- | ------:| -----:|:------------------------:|
 | [INT][it] \[kk]       | FC,kk        | PUSH CB, PC, SC; PC ← \[00kk]; CB ← NB |      8 |     2 |        `– – – – – – – –` |
 
-[it]: ops/S1C88_CALL.md#int
+[it]: call.md#int
 
 ## System Control
 
@@ -1254,7 +1254,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ---------- | ------------ | ------------ | ------:| -----:|:------------------------:|
 | [NOP][no]  | FF           | No operation |      2 |     1 |        `– – – – – – – –` |
 
-[no]: ops/S1C88_NOP.md
+[no]: nop.md
 
 ### **HALT**: Shifts to HALT status
 
@@ -1262,7 +1262,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ----------- | ------------ | --------- | ------:| -----:|:------------------------:|
 | [HALT][ht]  | CE,AE        | Halt CPU  |      3 |     2 |        `– – – – – – – –` |
 
-[ht]: ops/S1C88_HALT.md
+[ht]: halt.md
 
 ### **SLP**: Shifts to SLEEP status
 
@@ -1270,7 +1270,7 @@ For example, in `PC ← [00kk]` the byte _at_ 00kk is loaded into the low byte o
 | ---------- | ------------ | --------- | ------:| -----:|:------------------------:|
 | [SLP][zz]  | CE,AF        | Hibernate |      3 |     2 |        `– – – – – – – –` |
 
-[zz]: ops/S1C88_SLP.md
+[zz]: slp.md
 
 ## Operation Code Map
 
