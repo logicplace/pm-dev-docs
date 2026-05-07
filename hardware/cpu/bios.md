@@ -718,7 +718,7 @@ The BIOS can initialize from two points which we call a soft reset and a hard re
 1. (soft reset) Initialize registers & CPU
 2. Store startup keypad state to $14E1
 3. Enable and power cartridge slot
-4. Initialize voltage detector criteria [->](../../software/bios/disasm.md#user-content-018B)
+4. Initialize voltage detector criteria [->](/software/bios/disasm.md#user-content-018B)
 5. Enable oscillators
 6. Configure IRQs to defaults
 7. Initialize I/O
@@ -731,8 +731,8 @@ The BIOS can initialize from two points which we call a soft reset and a hard re
 
 This represents the initial startup sequence for initializing the LCD. When turning the LCD on manually via `INT [56h]` the sequence has some slight differences.
 
-1. Clear LCD display RAM [->](../../software/bios/disasm.md#user-content-00F4)
-2. Read contrast from register $00 and send it to the LCD driver [->](../../software/bios/disasm.md#user-content-010E)
+1. Clear LCD display RAM [->](/software/bios/disasm.md#user-content-00F4)
+2. Read contrast from register $00 and send it to the LCD driver [->](/software/bios/disasm.md#user-content-010E)
 3. Disable LCD controller
 4. Send [NOP](../lcd/cmd/21.md)
 5. Send [setall off](../lcd/cmd/10.md)
@@ -743,19 +743,19 @@ This represents the initial startup sequence for initializing the LCD. When turn
 10. Send [row direction normal](../lcd/cmd/15.md)
 11. Send [color invert off](../lcd/cmd/9.md)
 12. Send [power control all on](../lcd/cmd/16.md)
-13. wait 349980 cycles (TODO: ms) [->](../../software/bios/disasm.md#user-content-08AA)
+13. wait 349980 cycles (TODO: ms) [->](/software/bios/disasm.md#user-content-08AA)
 14. Send [display on](../lcd/cmd/1.md)
 
 ### Low battery check
 
-*[Jump to code](../../software/bios/disasm.md#user-content-0120)*
+*[Jump to code](/software/bios/disasm.md#user-content-0120)*
 
 1. Turns on the <abbr title="Supply Voltage Detection">SVD</abbr> circuit
 2. Waits 200 cycles (docs require >= 100 µs)
 3. Turns off the SVD to load the result into SVDDT
 4. Reads SVDDT and goes to the low battery screen if it's a 1 (indicating the voltage is low)
 
-Note that the required voltage was set earlier [here](../../software/bios/disasm.md#user-content-018B), which is likely looking for 3.3V but the exact voltage is unknown.
+Note that the required voltage was set earlier [here](/software/bios/disasm.md#user-content-018B), which is likely looking for 3.3V but the exact voltage is unknown.
 
 ### Development cartridge
 
@@ -765,26 +765,26 @@ Note that the required voltage was set earlier [here](../../software/bios/disasm
 
 ### Copyright check
 
-*[Jump to code](../../software/bios/disasm.md#user-content-nintendo_check)*
+*[Jump to code](/software/bios/disasm.md#user-content-nintendo_check)*
 
-Checks for `NINTENDO` existing at $21A4 in cartridge ROM. The string it compares against is stored at [$0E1A](../../software/bios/disasm.md#user-content-nintendo_string)
+Checks for `NINTENDO` existing at $21A4 in cartridge ROM. The string it compares against is stored at [$0E1A](/software/bios/disasm.md#user-content-nintendo_string)
 
 If the check fails, it goes to the [Insert cartridge screen][].
 
 ### Boot software
 
-1. Initialize LCD controller for software [->](../../software/bios/disasm.md#user-content-014A)
-2. Reinitialize registers [->](../../software/bios/disasm.md#user-content-0157) [->](../../software/bios/disasm.md#user-content-016B)
-3. Clear RAM (all $00) [->](../../software/bios/disasm.md#user-content-0161)
-4. Store startup keypad state in B and cart type in A [->](../../software/bios/disasm.md#user-content-0159) [->](../../software/bios/disasm.md#user-content-016F)
-5. Disable exception handling globally [->](../../software/bios/disasm.md#user-content-0173)
-6. Jump to game entry point [->](../../software/bios/disasm.md#user-content-0175)
+1. Initialize LCD controller for software [->](/software/bios/disasm.md#user-content-014A)
+2. Reinitialize registers [->](/software/bios/disasm.md#user-content-0157) [->](/software/bios/disasm.md#user-content-016B)
+3. Clear RAM (all $00) [->](/software/bios/disasm.md#user-content-0161)
+4. Store startup keypad state in B and cart type in A [->](/software/bios/disasm.md#user-content-0159) [->](/software/bios/disasm.md#user-content-016F)
+5. Disable exception handling globally [->](/software/bios/disasm.md#user-content-0173)
+6. Jump to game entry point [->](/software/bios/disasm.md#user-content-0175)
 
 ## Screens
 
-The screen graphics and tilemaps are compressed and stored [here](../../software/bios/disasm.md#user-content-imgdata) with their animation data stored [here](../../software/bios/disasm.md#user-content-low_battery_animation).
+The screen graphics and tilemaps are compressed and stored [here](/software/bios/disasm.md#user-content-imgdata) with their animation data stored [here](/software/bios/disasm.md#user-content-low_battery_animation).
 
-To extract the graphics yourself, you may use the tool provided [here](../../software/bios/img_decoder.py)
+To extract the graphics yourself, you may use the tool provided [here](/software/bios/img_decoder.py)
 
 The compression uses a simple <abbr title="Run Length Encoded">RLE</abbr> compression algorithm:
 
@@ -792,9 +792,9 @@ The compression uses a simple <abbr title="Run Length Encoded">RLE</abbr> compre
 * 0xFBXXLL inserts the byte 0xXX LL+1 times
 * otherwise it copies the raw byte
 
-The graphics data is loaded to $1530 all at once (it does not load the screen graphics on demand) [here](../../software/bios/disasm.md#user-content-decode_picture). The tilemaps start at $1650 and the tiles start at $1830. $1530 itself is a blank tilemap. These tilemaps are 5 rows of 12 tiles each, so slightly shorter than the full screen but the full width. When displayed, they're vertically centered onto the screen.
+The graphics data is loaded to $1530 all at once (it does not load the screen graphics on demand) [here](/software/bios/disasm.md#user-content-decode_picture). The tilemaps start at $1650 and the tiles start at $1830. $1530 itself is a blank tilemap. These tilemaps are 5 rows of 12 tiles each, so slightly shorter than the full screen but the full width. When displayed, they're vertically centered onto the screen.
 
-The [play animation](../../software/bios/disasm.md#user-content-play_animation) routine first loads the blank tilemap to clear the screen, then reads the animation description in order to load the specific screen.
+The [play animation](/software/bios/disasm.md#user-content-play_animation) routine first loads the blank tilemap to clear the screen, then reads the animation description in order to load the specific screen.
 
 The animation description uses the following format:
 

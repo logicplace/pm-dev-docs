@@ -387,7 +387,7 @@ There are several variables in RAM which control the [Game Select screen][]:
 | MoveCooldown           |  1 B | $152B   |
 | KeyHistory             |  1 B | $152C   |
 
-For the details of what these do, read the disassembly [here](../software/bios/disasm.md).
+For the details of what these do, read the disassembly [here](/software/bios/disasm.md).
 
 [RemainingPlays]: #remaining-plays
 [GameStructs]: #game-structs-ram
@@ -432,7 +432,7 @@ The chip provides the <abbr title="Joint Electron Device Engineering Council">JE
 
 Specifically, this refers to the sequence of specific writes alternating between $5555 and $2AAA which maximize entropy in order to minimize the probability of accidental write operations.
 
-Refer to the sequences [listed above](#commands) and [flash_begin_cmd](../software/bios/disasm.md#user-content-flash_begin_cmd) which extracts the common write cycles.
+Refer to the sequences [listed above](#commands) and [flash_begin_cmd](/software/bios/disasm.md#user-content-flash_begin_cmd) which extracts the common write cycles.
 
 ### Game structs
 
@@ -449,15 +449,15 @@ This is an array of 96 byte structures which contains 8 entries. Any entry which
 |     $50 | 0xFF/0x00 = skip, 0xFE = unlimited, * = limited |
 | $51~$5F | Remaining plays (base 1)                        |
 
-The game name tiles are [copied to RAM](#game-name-tiles) by [this subroutine](../software/bios/disasm.md#user-content-gsm__ldl__load_name_tiles).
+The game name tiles are [copied to RAM](#game-name-tiles) by [this subroutine](/software/bios/disasm.md#user-content-gsm__ldl__load_name_tiles).
 
-When the game is selected to be played from the menu, the BIOS loads the selected game's ID into [$2001][], [maps the banks](../software/bios/disasm.md#user-content-_flash_prepare_game), and, if this is limited play, [writes the decremented number of plays byte](../software/bios/disasm.md#user-content-run_selected_game).
+When the game is selected to be played from the menu, the BIOS loads the selected game's ID into [$2001][], [maps the banks](/software/bios/disasm.md#user-content-_flash_prepare_game), and, if this is limited play, [writes the decremented number of plays byte](/software/bios/disasm.md#user-content-run_selected_game).
 
 While offset $50 being 0x00 or 0xFF causes the game loading code to skip the entry, this is likely less of an itentional identifier and more likely that it's looking for cleared data. A value of 0xFE skips checking/writing to the remaining plays information, effectively providing infinite plays. Any other value (0x01~0xFD) is treated as a limited play entry, and nothing is known about what the intended values might be nor any finer meanings.
 
-For whatever god forsaken reason, they decided to implement the remaining plays over 15 bytes in base 1 (tally marks!!). The [subroutine](../software/bios/disasm.md#user-content-0642) first checks the <abbr title="Most Significant Bit">MSB</abbr> of the first byte to extrapolate that any are set, then loops through each byte <abbr title="Most Significant Bit">MSB</abbr> to <abbr title="Least Significant Bit">LSB</abbr>, stopping at the first 0 encountered. It then removes the 1 prior to the 0 found, storing that change and its address in [RAM](#game-structs-ram) to later be written should the user select this game.
+For whatever god forsaken reason, they decided to implement the remaining plays over 15 bytes in base 1 (tally marks!!). The [subroutine](/software/bios/disasm.md#user-content-0642) first checks the <abbr title="Most Significant Bit">MSB</abbr> of the first byte to extrapolate that any are set, then loops through each byte <abbr title="Most Significant Bit">MSB</abbr> to <abbr title="Least Significant Bit">LSB</abbr>, stopping at the first 0 encountered. It then removes the 1 prior to the 0 found, storing that change and its address in [RAM](#game-structs-ram) to later be written should the user select this game.
 
-While to some extent the remaining plays bytes allow non-sequential bits containing 1s, they're effectively ignored. For whatever reason, the system is designed to [intentionally](../software/bios/disasm.md#user-content-0671) lose a byte of data if all 15 bytes are full, so a value of 120 would reduce to 111 after playing, despite reporting 119 to the software in A. This makes the effective maximum number of plays 119 instead of 120.
+While to some extent the remaining plays bytes allow non-sequential bits containing 1s, they're effectively ignored. For whatever reason, the system is designed to [intentionally](/software/bios/disasm.md#user-content-0671) lose a byte of data if all 15 bytes are full, so a value of 120 would reduce to 111 after playing, despite reporting 119 to the software in A. This makes the effective maximum number of plays 119 instead of 120.
 
 If "base 1" is unclear, the values look like this:
 
@@ -472,13 +472,13 @@ This byte is stored at the physical address $001300 and accessed through $041300
 
 #### Startup action 0
 
-Runs the [startup routine][] then writes A to [RemainingPlays][] and proceeds to the copyright check to continue booting. [code](../software/bios/disasm.md#user-content-05E5)
+Runs the [startup routine][] then writes A to [RemainingPlays][] and proceeds to the copyright check to continue booting. [code](/software/bios/disasm.md#user-content-05E5)
 
 Using this action does not affect the value of [$2001][].
 
 #### Startup action 1
 
-Runs the [startup routine][] then writes A to [RemainingPlays][] and proceeds to the copyright check to continue booting. [code](../software/bios/disasm.md#user-content-05E5)
+Runs the [startup routine][] then writes A to [RemainingPlays][] and proceeds to the copyright check to continue booting. [code](/software/bios/disasm.md#user-content-05E5)
 
 When calling `INT [68h]`, requires the [$2001][] to be set as a valid game ID. This means the startup routine must set one.
 
@@ -486,7 +486,7 @@ When calling `INT [6Ah]`, this does not prepare any game for boot.
 
 #### Startup action 2
 
-Prepares bank selections for game 0, writes 0b0001 to [$2001][], writes 0xFF to [RemainingPlays][], then proceeds to the copyright check to continue booting. [code](../software/bios/disasm.md#user-content-05F6)
+Prepares bank selections for game 0, writes 0b0001 to [$2001][], writes 0xFF to [RemainingPlays][], then proceeds to the copyright check to continue booting. [code](/software/bios/disasm.md#user-content-05F6)
 
 #### Startup action 3
 

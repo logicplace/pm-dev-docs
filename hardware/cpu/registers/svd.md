@@ -2,7 +2,7 @@
 
 The PM uses a SVD cicuit similar to the ones in the [S1C88649](../s1c88/649.md) and [S1C88848](../s1c88/848.md).
 
-The procedure to use this can be taken from [the BIOS](../../../software/bios/disasm.md#user-content-check_voltage). A summary of the steps:
+The procedure to use this can be taken from [the BIOS](/software/bios/disasm.md#user-content-check_voltage). A summary of the steps:
 
 1. Set the criteria voltage (SVDS)
 2. Set SVDON to 1

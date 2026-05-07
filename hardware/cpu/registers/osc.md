@@ -44,7 +44,7 @@ You should use the appropriate software interrupts to do this, if you can find w
 
 ### Initial system state
 
-Although unconfirmed, the system allegedly starts in normal mode. The BIOS quickly [ensures this](../../../software/bios/disasm/#user-content-00B6) and by the time it enters software, does remain in normal mode with OSC3 enabled and clocking the CPU.
+Although unconfirmed, the system allegedly starts in normal mode. The BIOS quickly [ensures this](/software/bios/disasm/#user-content-00B6) and by the time it enters software, does remain in normal mode with OSC3 enabled and clocking the CPU.
 
 ### Low power to normal mode
 

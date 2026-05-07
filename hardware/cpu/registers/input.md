@@ -32,7 +32,7 @@ K0xD ($2052) registers are read-only. When a pin is low (a value of 0), it indic
 
 Thus when KCP0x is 1 (the default), it detects the falling edge of a change in this value, which indicates the button was pressed. Resetting KCP0x to 0 detects the rising edge, which indicates the button was released.
 
-Likely as part of [MINLIB](../../../software/minlib.md), most games have a method which stores the keypad data to RAM which they poll in order to check for player input. The method looks something like this:
+Likely as part of [MINLIB](/software/minlib.md), most games have a method which stores the keypad data to RAM which they poll in order to check for player input. The method looks something like this:
 
 ```s1c88
 ; Store current keypad state in KeyPad

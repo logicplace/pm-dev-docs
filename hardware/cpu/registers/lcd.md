@@ -6,7 +6,7 @@ Registers related to LCD settings and communication or rendering graphics.
 
 $2000 bits 7~2 is a [reserved R/W register](../../../glossary.md#reserved-rw-register).
 
-This is the contrast value set by the BIOS during startup [here](../../../software/bios/disasm.md#user-content-00A5).
+This is the contrast value set by the BIOS during startup [here](/software/bios/disasm.md#user-content-00A5).
 
 This is managed from software through the use of these software interrupts:
 

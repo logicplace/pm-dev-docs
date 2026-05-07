@@ -23,7 +23,7 @@ When changing modes, you MUST step up/down one level at a time and [OSC3 must be
 * 1.3V (01) -> 2.2V (00) -> 3.3V (10)
 * 1.3V (01) <- 2.2V (00) <- 3.3V (10)
 
-The BIOS only changes between Normal and Low Power modes, and is written in a way that presumes VDC1 will never be set ([here](../../../software/bios/disasm/#user-content-0AB3) and [here](../../../software/bios/disasm/#user-content-0AE2)). Thus if software ever enters High Speed operation, it will need to exit it (step down to Normal operation) before sleeping or shutting down the console via software interrupts.
+The BIOS only changes between Normal and Low Power modes, and is written in a way that presumes VDC1 will never be set ([here](/software/bios/disasm/#user-content-0AB3) and [here](/software/bios/disasm/#user-content-0AE2)). Thus if software ever enters High Speed operation, it will need to exit it (step down to Normal operation) before sleeping or shutting down the console via software interrupts.
 
 When in Low Power mode, OSC3 must stay disabled.
 
