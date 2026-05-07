@@ -119,53 +119,53 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">PRTF4<br/>Use OSC1 (Lo)</td>
 </tr><tr id="user-content-$20">
 <td>$20</td><td rowspan="3"><a href="irq.md">IRQ_PRI</a><br/>IRQ Priority</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PLCD<br/>IRQ 06h ~ 08h</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PPTB<br/>IRQ 0Ah ~ 0Ch</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PPTA<br/>IRQ 0Eh ~ 10h</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PPTC<br/>IRQ 12h ~ 14h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#plcd">PLCD</a><br/>IRQ 06h ~ 08h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#pptb">PPTB</a><br/>IRQ 0Ah ~ 0Ch</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#ppta">PPTA</a><br/>IRQ 0Eh ~ 10h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#pptc">PPTC</a><br/>IRQ 12h ~ 14h</td>
 </tr><tr id="user-content-$21">
 <td>$21</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PTM<br/>IRQ 16h ~ 1Ch</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PK1<br/>IRQ 26h ~ 28h</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PK0<br/>IRQ 2Ah ~ 38h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#ptm">PTM</a><br/>IRQ 16h ~ 1Ch</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#pk1">PK1</a><br/>IRQ 26h ~ 28h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#pk0">PK0</a><br/>IRQ 2Ah ~ 38h</td>
 <td style="border: 2px solid; background-color:#80ff80;" colspan="2">IRQ ??? (3Ah ~ 3Eh)</td>
 </tr><tr id="user-content-$22">
 <td>$22</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
-<td style="border: 2px solid; background-color:#80ff80;" colspan="2">PP0<br/>IRQ 1Eh~20h</td>
+<td style="border: 2px solid; background-color:#80ff80;" colspan="2"><a href="irq.md#pp0">PP0</a><br/>IRQ 1Eh~20h</td>
 </tr><tr id="user-content-$23">
 <td>$23</td><td rowspan="4"><a href="irq.md">IRQ_ENA</a><br/>IRQ Enable</td>
-<td style="border: 2px solid; background-color:#80ff80;">ELCD<br/>IRQ 06h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ELCFR<br/>IRQ 08h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETU3<br/>IRQ 0Ah</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETU2<br/>IRQ 0Ch</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETU1<br/>IRQ 0Eh</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETU0<br/>IRQ 10h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETU5<br/>IRQ 12h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETC5<br/>IRQ 14h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#elcd">ELCD</a><br/>IRQ 06h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#elcfr">ELCFR</a><br/>IRQ 08h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etu3">ETU3</a><br/>IRQ 0Ah</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etu2">ETU2</a><br/>IRQ 0Ch</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etu1">ETU1</a><br/>IRQ 0Eh</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etu0">ETU0</a><br/>IRQ 10h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etu5">ETU5</a><br/>IRQ 12h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etc5">ETC5</a><br/>IRQ 14h</td>
 </tr><tr id="user-content-$24">
 <td>$24</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETM32<br/>IRQ 16h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETM8<br/>IRQ 18h</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETM2<br/>IRQ 1Ah</td>
-<td style="border: 2px solid; background-color:#80ff80;">ETM1<br/>IRQ 1Ch</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK11<br/>IRQ 26h</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK10<br/>IRQ 28h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etm32">ETM32</a><br/>IRQ 16h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etm8">ETM8</a><br/>IRQ 18h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etm2">ETM2</a><br/>IRQ 1Ah</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#etm1">ETM1</a><br/>IRQ 1Ch</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek11">EK11</a><br/>IRQ 26h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek10">EK10</a><br/>IRQ 28h</td>
 </tr><tr id="user-content-$25">
 <td>$25</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK07<br/>IRQ 2Ah</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK06<br/>IRQ 2Ch</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK05<br/>IRQ 2Eh</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK04<br/>IRQ 30h</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK03<br/>IRQ 32h</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK02<br/>IRQ 34h</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK01<br/>IRQ 36h</td>
-<td style="border: 2px solid; background-color:#80ff80;">EK00<br/>IRQ 38h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek07">EK07</a><br/>IRQ 2Ah</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek06">EK06</a><br/>IRQ 2Ch</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek05">EK05</a><br/>IRQ 2Eh</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek04">EK04</a><br/>IRQ 30h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek03">EK03</a><br/>IRQ 32h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek02">EK02</a><br/>IRQ 34h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek01">EK01</a><br/>IRQ 36h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ek00">EK00</a><br/>IRQ 38h</td>
 </tr><tr id="user-content-$26">
 <td>$26</td>
-<td style="border: 2px solid; background-color:#80ff80;">EP0<br/>IRQ 1Eh</td>
-<td style="border: 2px solid; background-color:#80ff80;">EP6<br/>IRQ 20h</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ep0">EP0</a><br/>IRQ 1Eh</td>
+<td style="border: 2px solid; background-color:#80ff80;"><a href="irq.md#ep6">EP6</a><br/>IRQ 20h</td>
 <td style="border: 2px solid; background-color:#80ff80;">IRQ ???</td>
 <td style="border: 2px solid; background-color:#80ff80;">IRQ ???</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>
@@ -174,37 +174,37 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#80ff80;">IRQ 3Eh</td>
 </tr><tr id="user-content-$27">
 <td>$27</td><td rowspan="4"><a href="irq.md">IRQ_ACT</a><br/>IRQ Factor</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FLCD<br/>IRQ 06h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FLCFR<br/>IRQ 08h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTU3<br/>IRQ 0Ah</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTU2<br/>IRQ 0Ch</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTU1<br/>IRQ 0Eh</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTU0<br/>IRQ 10h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTU5<br/>IRQ 12h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTC5<br/>IRQ 14h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#flcd">FLCD</a><br/>IRQ 06h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#flcfr">FLCFR</a><br/>IRQ 08h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftu3">FTU3</a><br/>IRQ 0Ah</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftu2">FTU2</a><br/>IRQ 0Ch</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftu1">FTU1</a><br/>IRQ 0Eh</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftu0">FTU0</a><br/>IRQ 10h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftu5">FTU5</a><br/>IRQ 12h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftc5">FTC5</a><br/>IRQ 14h</td>
 </tr><tr id="user-content-$28">
 <td>$28</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="2">&nbsp;</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTM32<br/>IRQ 16h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTM8<br/>IRQ 18h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTM2<br/>IRQ 1Ah</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FTM1<br/>IRQ 1Ch</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK11<br/>IRQ 26h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK10<br/>IRQ 28h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftm32">FTM32</a><br/>IRQ 16h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftm8">FTM8</a><br/>IRQ 18h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftm2">FTM2</a><br/>IRQ 1Ah</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#ftm1">FTM1</a><br/>IRQ 1Ch</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk11">FK11</a><br/>IRQ 26h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk10">FK10</a><br/>IRQ 28h</td>
 </tr><tr id="user-content-$29">
 <td>$29</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK07<br/>IRQ 2Ah</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK06<br/>IRQ 2Ch</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK05<br/>IRQ 2Eh</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK04<br/>IRQ 30h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK03<br/>IRQ 32h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK02<br/>IRQ 34h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK01<br/>IRQ 36h</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FK00<br/>IRQ 38h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk07">FK07</a><br/>IRQ 2Ah</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk06">FK06</a><br/>IRQ 2Ch</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk05">FK05</a><br/>IRQ 2Eh</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk04">FK04</a><br/>IRQ 30h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk03">FK03</a><br/>IRQ 32h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk02">FK02</a><br/>IRQ 34h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk01">FK01</a><br/>IRQ 36h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fk00">FK00</a><br/>IRQ 38h</td>
 </tr><tr id="user-content-$2A">
 <td>$2A</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FP0<br/>IRQ 1Eh</td>
-<td style="border: 2px solid; background-color:#ffcc00;">FP6<br/>IRQ 20h</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fp0">FP0</a><br/>IRQ 1Eh</td>
+<td style="border: 2px solid; background-color:#ffcc00;"><a href="irq.md#fp6">FP6</a><br/>IRQ 20h</td>
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ ???</td>
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ ???</td>
 <td style="border: 2px solid; background-color:#808080;">&nbsp;</td>

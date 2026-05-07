@@ -142,124 +142,42 @@ The official documentation only ever refers to 8-bit timers by name, such as PTM
 
 Note that PTM is also the name of the priority register for the clock timer. As such, PTM0 refers to an 8-bit timer, PTM_A refers to a 16-bit timer (which contains PTM1 and PTM0), and PT refers to programmable timers generally.
 
-Each 16-bit PT has the same register layout, but all registers are listed below.
+Each 16-bit PT has a register layout like below, where x0 and x1 are sequential somewhere in register space (and y0/y1 are, elsewhere), timer 0/1 are relative, and MODE16_ ends in A/B/C as appropriate. Specific ones are listed in [PTM_A](#ptm_a), [PTM_B](#ptm_b), and [PTM_C](#ptm_c) below.
 
-| Offset.Bit | Name     | Function                    | 1              | 0              | R/W |
-| ---------- | -------- | --------------------------- | -------------- | -------------- |:---:|
-| $18.7      | PRPRT1   | PTM1 clock control          | On             | Off            | R/W |
-| $18.6      | PST12    | PTM1 division ratio         |                |                | R/W |
-| $18.5      | PST11    |                             |                |                | R/W |
-| $18.4      | PST10    |                             |                |                | R/W |
-| $18.3      | PRPRT0   | PTM0 clock control          | On             | Off            | R/W |
-| $18.2      | PST02    | PTM0 division ratio         |                |                | R/W |
-| $18.1      | PST01    |                             |                |                | R/W |
-| $18.0      | PST00    |                             |                |                | R/W |
-| $19.7      | -        | -                           | -              | -              |     |
-| $19.6      | -        | -                           | -              | -              |     |
-| $19.5      | -        | -                           | -              | -              | R/W |
-| $19.4      | -        | -                           | -              | -              | R/W |
-| $19.3      | -        | -                           | -              | -              |     |
-| $19.2      | -        | -                           | -              | -              |     |
-| $19.1      | PRTF1    | PTM1 source clock selection | fOSC1          | fOSC3          | R/W |
-| $19.0      | PRTF0    | PTM0 source clock selection | fOSC1          | fOSC3          | R/W |
-| $1A.7      | PRPRT3   | PTM3 clock control          | On             | Off            | R/W |
-| $1A.6      | PST32    | PTM3 division ratio         |                |                | R/W |
-| $1A.5      | PST31    |                             |                |                | R/W |
-| $1A.4      | PST30    |                             |                |                | R/W |
-| $1A.3      | PRPRT2   | PTM2 clock control          | On             | Off            | R/W |
-| $1A.2      | PST22    | PTM2 division ratio         |                |                | R/W |
-| $1A.1      | PST21    |                             |                |                | R/W |
-| $1A.0      | PST20    |                             |                |                | R/W |
-| $1B.7      | -        | -                           | -              | -              |     |
-| $1B.6      | -        | -                           | -              | -              |     |
-| $1B.5      | -        | -                           | -              | -              |     |
-| $1B.4      | -        | -                           | -              | -              |     |
-| $1B.3      | -        | -                           | -              | -              |     |
-| $1B.2      | -        | -                           | -              | -              |     |
-| $1B.1      | PRTF3    | PTM3 source clock selection | fOSC1          | fOSC3          | R/W |
-| $1B.0      | PRTF2    | PTM2 source clock selection | fOSC1          | fOSC3          | R/W |
-| $1C.7      | PRPRT5   | PTM5 clock control          | On             | Off            | R/W |
-| $1C.6      | PST52    | PTM5 division ratio         |                |                | R/W |
-| $1C.5      | PST51    |                             |                |                | R/W |
-| $1C.4      | PST50    |                             |                |                | R/W |
-| $1C.3      | PRPRT4   | PTM4 clock control          | On             | Off            | R/W |
-| $1C.2      | PST42    | PTM4 division ratio         |                |                | R/W |
-| $1C.1      | PST41    |                             |                |                | R/W |
-| $1C.0      | PST40    |                             |                |                | R/W |
-| $1D.7      | -        | -                           | -              | -              |     |
-| $1D.6      | -        | -                           | -              | -              |     |
-| $1D.5      | -        | -                           | -              | -              |     |
-| $1D.4      | -        | -                           | -              | -              |     |
-| $1D.3      | -        | -                           | -              | -              |     |
-| $1D.2      | -        | -                           | -              | -              |     |
-| $1D.1      | PRTF5    | PTM5 source clock selection | fOSC1          | fOSC3          | R/W |
-| $1D.0      | PRTF4    | PTM4 source clock selection | fOSC1          | fOSC3          | R/W |
-| $30.7      | MODE16_A | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
-| $30.6      | -        | -                           | -              | -              |     |
-| $30.5      | -        | -                           | -              | -              |     |
-| $30.4      | -        | -                           | -              | -              |     |
-| $30.3      | PTOUT0   | PTM0 clock output control   | On             | Off            | R/W |
-| $30.2      | PTRUN0   | PTM0 Run/Stop control       | Run            | Stop           | R/W |
-| $30.1      | PSET0    | PTM0 preset                 | Preset         | No operation   |  W  |
-| $30.0      | CKSEL0   | PTM0 input clock selection  | External clock | Internal clock | R/W |
-| $31.7      | -        | -                           | -              | -              | R/W |
-| $31.6      | -        | -                           | -              | -              |     |
-| $31.5      | -        | -                           | -              | -              |     |
-| $31.4      | -        | -                           | -              | -              |     |
-| $31.3      | PTOUT1   | PTM1 clock output control   | On             | Off            | R/W |
-| $31.2      | PTRUN1   | PTM1 Run/Stop control       | Run            | Stop           | R/W |
-| $31.1      | PSET1    | PTM1 preset                 | Preset         | No operation   |  W  |
-| $31.0      | CKSEL1   | PTM1 input clock selection  | External clock | Internal clock | R/W |
-| $32        | RDR0     | PTM0 preset                 |                |                | R/W |
-| $33        | RDR1     | PTM1 preset                 |                |                | R/W |
-| $34        | CDR0     | PTM0 compare data           |                |                | R/W |
-| $35        | CDR1     | PTM1 compare data           |                |                | R/W |
-| $36        | PTM0     | PTM0 count                  |                |                |  R  |
-| $37        | PTM1     | PTM1 count                  |                |                |  R  |
-| $38.7      | MODE16_B | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
-| $38.6      | -        | -                           | -              | -              |     |
-| $38.5      | -        | -                           | -              | -              |     |
-| $38.4      | -        | -                           | -              | -              |     |
-| $38.3      | PTOUT2   | PTM2 clock output control   | On             | Off            | R/W |
-| $38.2      | PTRUN2   | PTM2 Run/Stop control       | Run            | Stop           | R/W |
-| $38.1      | PSET2    | PTM2 preset                 | Preset         | No operation   |  W  |
-| $38.0      | CKSEL2   | PTM2 input clock selection  | External clock | Internal clock | R/W |
-| $39.7      | -        | -                           | -              | -              | R/W |
-| $39.6      | -        | -                           | -              | -              |     |
-| $39.5      | -        | -                           | -              | -              |     |
-| $39.4      | -        | -                           | -              | -              |     |
-| $39.3      | PTOUT3   | PTM3 clock output control   | On             | Off            | R/W |
-| $39.2      | PTRUN3   | PTM3 Run/Stop control       | Run            | Stop           | R/W |
-| $39.1      | PSET3    | PTM3 preset                 | Preset         | No operation   |  W  |
-| $39.0      | CKSEL3   | PTM3 input clock selection  | External clock | Internal clock | R/W |
-| $3A        | RDR2     | PTM2 preset                 |                |                | R/W |
-| $3B        | RDR3     | PTM3 preset                 |                |                | R/W |
-| $3C        | CDR2     | PTM2 compare data           |                |                | R/W |
-| $3D        | CDR3     | PTM3 compare data           |                |                | R/W |
-| $3E        | PTM2     | PTM2 count                  |                |                |  R  |
-| $3F        | PTM3     | PTM3 count                  |                |                |  R  |
-| $48.7      | MODE16_C | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
-| $48.6      | -        | -                           | -              | -              |     |
-| $48.5      | -        | -                           | -              | -              |     |
-| $48.4      | -        | -                           | -              | -              |     |
-| $48.3      | PTOUT4   | PTM4 clock output control   | On             | Off            | R/W |
-| $48.2      | PTRUN4   | PTM4 Run/Stop control       | Run            | Stop           | R/W |
-| $48.1      | PSET4    | PTM4 preset                 | Preset         | No operation   |  W  |
-| $48.0      | CKSEL4   | PTM4 input clock selection  | External clock | Internal clock | R/W |
-| $49.7      | -        | -                           | -              | -              | R/W |
-| $49.6      | -        | -                           | -              | -              |     |
-| $49.5      | -        | -                           | -              | -              |     |
-| $49.4      | -        | -                           | -              | -              |     |
-| $49.3      | PTOUT5   | PTM5 clock output control   | On             | Off            | R/W |
-| $49.2      | PTRUN5   | PTM5 Run/Stop control       | Run            | Stop           | R/W |
-| $49.1      | PSET5    | PTM5 preset                 | Preset         | No operation   |  W  |
-| $49.0      | CKSEL5   | PTM5 input clock selection  | External clock | Internal clock | R/W |
-| $4A        | RDR4     | PTM4 preset                 |                |                | R/W |
-| $4B        | RDR5     | PTM5 preset                 |                |                | R/W |
-| $4C        | CDR4     | PTM4 compare data           |                |                | R/W |
-| $4D        | CDR5     | PTM5 compare data           |                |                | R/W |
-| $4E        | PTM4     | PTM4 count                  |                |                |  R  |
-| $4F        | PTM5     | PTM5 count                  |                |                |  R  |
+| Offset.Bit | Name    | Function                    | 1              | 0              | R/W |
+| ---------- | ------- | --------------------------- | -------------- | -------------- |:---:|
+| $x0.7      | PRPRT1  | PTM1 clock control          | On             | Off            | R/W |
+| $x0.6      | PST12   | PTM1 division ratio         |                |                | R/W |
+| $x0.5      | PST11   |                             |                |                | R/W |
+| $x0.4      | PST10   |                             |                |                | R/W |
+| $x0.3      | PRPRT0  | PTM0 clock control          | On             | Off            | R/W |
+| $x0.2      | PST02   | PTM0 division ratio         |                |                | R/W |
+| $x0.1      | PST01   |                             |                |                | R/W |
+| $x0.0      | PST00   |                             |                |                | R/W |
+| $x1.7      | -       | -                           | -              | -              |     |
+| $x1.6      | -       | -                           | -              | -              |     |
+| $x1.5      | -       | -                           | -              | -              |     |
+| $x1.4      | -       | -                           | -              | -              |     |
+| $x1.3      | -       | -                           | -              | -              |     |
+| $x1.2      | -       | -                           | -              | -              |     |
+| $x1.1      | PRTF1   | PTM1 source clock selection | fOSC1          | fOSC3          | R/W |
+| $x1.0      | PRTF0   | PTM0 source clock selection | fOSC1          | fOSC3          | R/W |
+| $y0.7      | MODE16_ | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
+| $y0.6      | -       | -                           | -              | -              |     |
+| $y0.5      | -       | -                           | -              | -              |     |
+| $y0.4      | -       | -                           | -              | -              |     |
+| $y0.3      | PTOUT0  | PTM0 clock output control   | On             | Off            | R/W |
+| $y0.2      | PTRUN0  | PTM0 Run/Stop control       | Run            | Stop           | R/W |
+| $y0.1      | PSET0   | PTM0 preset                 | Preset         | No operation   |  W  |
+| $y0.0      | CKSEL0  | PTM0 input clock selection  | External clock | Internal clock | R/W |
+| $y1.7      | -       | -                           | -              | -              | R/W |
+| $y1.6      | -       | -                           | -              | -              |     |
+| $y1.5      | -       | -                           | -              | -              |     |
+| $y1.4      | -       | -                           | -              | -              |     |
+| $y1.3      | PTOUT1  | PTM1 clock output control   | On             | Off            | R/W |
+| $y1.2      | PTRUN1  | PTM1 Run/Stop control       | Run            | Stop           | R/W |
+| $y1.1      | PSET1   | PTM1 preset                 | Preset         | No operation   |  W  |
+| $y1.0      | CKSEL1  | PTM1 input clock selection  | External clock | Internal clock | R/W |
 
 ### PRPRT
 
@@ -350,6 +268,49 @@ PTM_A offers two interrupts: [xTU1](irq.md#xtu1) and [xTU0](irq.md#xtu0)
 
 This is an unofficial name. You may also see it named `PTM0-1` or `timer 0/1`.
 
+#### Related registers
+
+| Offset.Bit | Name     | Function                    | 1              | 0              | R/W |
+| ---------- | -------- | --------------------------- | -------------- | -------------- |:---:|
+| $18.7      | PRPRT1   | PTM1 clock control          | On             | Off            | R/W |
+| $18.6      | PST12    | PTM1 division ratio         |                |                | R/W |
+| $18.5      | PST11    |                             |                |                | R/W |
+| $18.4      | PST10    |                             |                |                | R/W |
+| $18.3      | PRPRT0   | PTM0 clock control          | On             | Off            | R/W |
+| $18.2      | PST02    | PTM0 division ratio         |                |                | R/W |
+| $18.1      | PST01    |                             |                |                | R/W |
+| $18.0      | PST00    |                             |                |                | R/W |
+| $19.7      | -        | -                           | -              | -              |     |
+| $19.6      | -        | -                           | -              | -              |     |
+| $19.5      | -        | -                           | -              | -              | R/W |
+| $19.4      | -        | -                           | -              | -              | R/W |
+| $19.3      | -        | -                           | -              | -              |     |
+| $19.2      | -        | -                           | -              | -              |     |
+| $19.1      | PRTF1    | PTM1 source clock selection | fOSC1          | fOSC3          | R/W |
+| $19.0      | PRTF0    | PTM0 source clock selection | fOSC1          | fOSC3          | R/W |
+| $30.7      | MODE16_A | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
+| $30.6      | -        | -                           | -              | -              |     |
+| $30.5      | -        | -                           | -              | -              |     |
+| $30.4      | -        | -                           | -              | -              |     |
+| $30.3      | PTOUT0   | PTM0 clock output control   | On             | Off            | R/W |
+| $30.2      | PTRUN0   | PTM0 Run/Stop control       | Run            | Stop           | R/W |
+| $30.1      | PSET0    | PTM0 preset                 | Preset         | No operation   |  W  |
+| $30.0      | CKSEL0   | PTM0 input clock selection  | External clock | Internal clock | R/W |
+| $31.7      | -        | -                           | -              | -              | R/W |
+| $31.6      | -        | -                           | -              | -              |     |
+| $31.5      | -        | -                           | -              | -              |     |
+| $31.4      | -        | -                           | -              | -              |     |
+| $31.3      | PTOUT1   | PTM1 clock output control   | On             | Off            | R/W |
+| $31.2      | PTRUN1   | PTM1 Run/Stop control       | Run            | Stop           | R/W |
+| $31.1      | PSET1    | PTM1 preset                 | Preset         | No operation   |  W  |
+| $31.0      | CKSEL1   | PTM1 input clock selection  | External clock | Internal clock | R/W |
+| $32        | RDR0     | PTM0 preset                 |                |                | R/W |
+| $33        | RDR1     | PTM1 preset                 |                |                | R/W |
+| $34        | CDR0     | PTM0 compare data           |                |                | R/W |
+| $35        | CDR1     | PTM1 compare data           |                |                | R/W |
+| $36        | PTM0     | PTM0 count                  |                |                |  R  |
+| $37        | PTM1     | PTM1 count                  |                |                |  R  |
+
 ### PTM_B
 
 *For more information, see its [main page](../timers.md#ptm_b)*
@@ -360,6 +321,48 @@ PTM_B offers two interrupts: [xTU3](irq.md#xtu3) and [xTU2](irq.md#xtu3)
 
 This is an unofficial name. You may also see it named `PTM2-3` or `timer 2/3`.
 
+#### Related registers
+
+
+| $1A.7      | PRPRT3   | PTM3 clock control          | On             | Off            | R/W |
+| $1A.6      | PST32    | PTM3 division ratio         |                |                | R/W |
+| $1A.5      | PST31    |                             |                |                | R/W |
+| $1A.4      | PST30    |                             |                |                | R/W |
+| $1A.3      | PRPRT2   | PTM2 clock control          | On             | Off            | R/W |
+| $1A.2      | PST22    | PTM2 division ratio         |                |                | R/W |
+| $1A.1      | PST21    |                             |                |                | R/W |
+| $1A.0      | PST20    |                             |                |                | R/W |
+| $1B.7      | -        | -                           | -              | -              |     |
+| $1B.6      | -        | -                           | -              | -              |     |
+| $1B.5      | -        | -                           | -              | -              |     |
+| $1B.4      | -        | -                           | -              | -              |     |
+| $1B.3      | -        | -                           | -              | -              |     |
+| $1B.2      | -        | -                           | -              | -              |     |
+| $1B.1      | PRTF3    | PTM3 source clock selection | fOSC1          | fOSC3          | R/W |
+| $1B.0      | PRTF2    | PTM2 source clock selection | fOSC1          | fOSC3          | R/W |
+| $38.7      | MODE16_B | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
+| $38.6      | -        | -                           | -              | -              |     |
+| $38.5      | -        | -                           | -              | -              |     |
+| $38.4      | -        | -                           | -              | -              |     |
+| $38.3      | PTOUT2   | PTM2 clock output control   | On             | Off            | R/W |
+| $38.2      | PTRUN2   | PTM2 Run/Stop control       | Run            | Stop           | R/W |
+| $38.1      | PSET2    | PTM2 preset                 | Preset         | No operation   |  W  |
+| $38.0      | CKSEL2   | PTM2 input clock selection  | External clock | Internal clock | R/W |
+| $39.7      | -        | -                           | -              | -              | R/W |
+| $39.6      | -        | -                           | -              | -              |     |
+| $39.5      | -        | -                           | -              | -              |     |
+| $39.4      | -        | -                           | -              | -              |     |
+| $39.3      | PTOUT3   | PTM3 clock output control   | On             | Off            | R/W |
+| $39.2      | PTRUN3   | PTM3 Run/Stop control       | Run            | Stop           | R/W |
+| $39.1      | PSET3    | PTM3 preset                 | Preset         | No operation   |  W  |
+| $39.0      | CKSEL3   | PTM3 input clock selection  | External clock | Internal clock | R/W |
+| $3A        | RDR2     | PTM2 preset                 |                |                | R/W |
+| $3B        | RDR3     | PTM3 preset                 |                |                | R/W |
+| $3C        | CDR2     | PTM2 compare data           |                |                | R/W |
+| $3D        | CDR3     | PTM3 compare data           |                |                | R/W |
+| $3E        | PTM2     | PTM2 count                  |                |                |  R  |
+| $3F        | PTM3     | PTM3 count                  |                |                |  R  |
+
 ### PTM_C
 
 *For more information, see its [main page](../timers.md#ptm_c)*
@@ -369,3 +372,44 @@ A combination of PTM5 as the hi byte and PTM4 as the lo byte. Also see the [audi
 PTM_C offers two interrupts: [xTU5](irq.md#xtu5) and [xTC5](irq.md#xtc5)
 
 This is an unofficial name.
+
+#### Related registers
+
+| $1C.7      | PRPRT5   | PTM5 clock control          | On             | Off            | R/W |
+| $1C.6      | PST52    | PTM5 division ratio         |                |                | R/W |
+| $1C.5      | PST51    |                             |                |                | R/W |
+| $1C.4      | PST50    |                             |                |                | R/W |
+| $1C.3      | PRPRT4   | PTM4 clock control          | On             | Off            | R/W |
+| $1C.2      | PST42    | PTM4 division ratio         |                |                | R/W |
+| $1C.1      | PST41    |                             |                |                | R/W |
+| $1C.0      | PST40    |                             |                |                | R/W |
+| $1D.7      | -        | -                           | -              | -              |     |
+| $1D.6      | -        | -                           | -              | -              |     |
+| $1D.5      | -        | -                           | -              | -              |     |
+| $1D.4      | -        | -                           | -              | -              |     |
+| $1D.3      | -        | -                           | -              | -              |     |
+| $1D.2      | -        | -                           | -              | -              |     |
+| $1D.1      | PRTF5    | PTM5 source clock selection | fOSC1          | fOSC3          | R/W |
+| $1D.0      | PRTF4    | PTM4 source clock selection | fOSC1          | fOSC3          | R/W |
+| $48.7      | MODE16_C | 8/16-bit mode selection     | 16-bit x 1     | 8-bit x 2      | R/W |
+| $48.6      | -        | -                           | -              | -              |     |
+| $48.5      | -        | -                           | -              | -              |     |
+| $48.4      | -        | -                           | -              | -              |     |
+| $48.3      | PTOUT4   | PTM4 clock output control   | On             | Off            | R/W |
+| $48.2      | PTRUN4   | PTM4 Run/Stop control       | Run            | Stop           | R/W |
+| $48.1      | PSET4    | PTM4 preset                 | Preset         | No operation   |  W  |
+| $48.0      | CKSEL4   | PTM4 input clock selection  | External clock | Internal clock | R/W |
+| $49.7      | -        | -                           | -              | -              | R/W |
+| $49.6      | -        | -                           | -              | -              |     |
+| $49.5      | -        | -                           | -              | -              |     |
+| $49.4      | -        | -                           | -              | -              |     |
+| $49.3      | PTOUT5   | PTM5 clock output control   | On             | Off            | R/W |
+| $49.2      | PTRUN5   | PTM5 Run/Stop control       | Run            | Stop           | R/W |
+| $49.1      | PSET5    | PTM5 preset                 | Preset         | No operation   |  W  |
+| $49.0      | CKSEL5   | PTM5 input clock selection  | External clock | Internal clock | R/W |
+| $4A        | RDR4     | PTM4 preset                 |                |                | R/W |
+| $4B        | RDR5     | PTM5 preset                 |                |                | R/W |
+| $4C        | CDR4     | PTM4 compare data           |                |                | R/W |
+| $4D        | CDR5     | PTM5 compare data           |                |                | R/W |
+| $4E        | PTM4     | PTM4 count                  |                |                |  R  |
+| $4F        | PTM5     | PTM5 count                  |                |                |  R  |

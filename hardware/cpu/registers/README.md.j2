@@ -174,47 +174,47 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("PRTF5", "Use OSC1 (Hi)", "rw") }}
 {{ td("PRTF4", "Use OSC1 (Lo)", "rw") }}
 {{ register("$20", "IRQ_PRI", "IRQ Priority", 3, "irq.md") }}
-{{ td("PLCD", "IRQ 06h ~ 08h", "rw", 2) }}
-{{ td("PPTB", "IRQ 0Ah ~ 0Ch", "rw", 2) }}
-{{ td("PPTA", "IRQ 0Eh ~ 10h", "rw", 2) }}
-{{ td("PPTC", "IRQ 12h ~ 14h", "rw", 2) }}
+{{ td("PLCD", "IRQ 06h ~ 08h", "rw", 2, "irq.md#plcd") }}
+{{ td("PPTB", "IRQ 0Ah ~ 0Ch", "rw", 2, "irq.md#pptb") }}
+{{ td("PPTA", "IRQ 0Eh ~ 10h", "rw", 2, "irq.md#ppta") }}
+{{ td("PPTC", "IRQ 12h ~ 14h", "rw", 2, "irq.md#pptc") }}
 {{ register("$21") }}
-{{ td("PTM", "IRQ 16h ~ 1Ch", "rw", 2) }}
-{{ td("PK1", "IRQ 26h ~ 28h", "rw", 2) }}
-{{ td("PK0", "IRQ 2Ah ~ 38h", "rw", 2) }}
+{{ td("PTM", "IRQ 16h ~ 1Ch", "rw", 2, "irq.md#ptm") }}
+{{ td("PK1", "IRQ 26h ~ 28h", "rw", 2, "irq.md#pk1") }}
+{{ td("PK0", "IRQ 2Ah ~ 38h", "rw", 2, "irq.md#pk0") }}
 {{ td("", "IRQ ??? (3Ah ~ 3Eh)", "rw", 2) }}
 {{ register("$22") }}
 {{ unused(6) }}
-{{ td("PP0", "IRQ 1Eh~20h", "rw", 2) }}
+{{ td("PP0", "IRQ 1Eh~20h", "rw", 2, "irq.md#pp0") }}
 {{ register("$23", "IRQ_ENA", "IRQ Enable", 4, "irq.md") }}
-{{ td("ELCD", "IRQ 06h", "rw") }}
-{{ td("ELCFR", "IRQ 08h", "rw") }}
-{{ td("ETU3", "IRQ 0Ah", "rw") }}
-{{ td("ETU2", "IRQ 0Ch", "rw") }}
-{{ td("ETU1", "IRQ 0Eh", "rw") }}
-{{ td("ETU0", "IRQ 10h", "rw") }}
-{{ td("ETU5", "IRQ 12h", "rw") }}
-{{ td("ETC5", "IRQ 14h", "rw") }}
+{{ td("ELCD", "IRQ 06h", "rw", 1, "irq.md#elcd") }}
+{{ td("ELCFR", "IRQ 08h", "rw", 1, "irq.md#elcfr") }}
+{{ td("ETU3", "IRQ 0Ah", "rw", 1, "irq.md#etu3") }}
+{{ td("ETU2", "IRQ 0Ch", "rw", 1, "irq.md#etu2") }}
+{{ td("ETU1", "IRQ 0Eh", "rw", 1, "irq.md#etu1") }}
+{{ td("ETU0", "IRQ 10h", "rw", 1, "irq.md#etu0") }}
+{{ td("ETU5", "IRQ 12h", "rw", 1, "irq.md#etu5") }}
+{{ td("ETC5", "IRQ 14h", "rw", 1, "irq.md#etc5") }}
 {{ register("$24") }}
 {{ unused(2) }}
-{{ td("ETM32", "IRQ 16h", "rw") }}
-{{ td("ETM8", "IRQ 18h", "rw") }}
-{{ td("ETM2", "IRQ 1Ah", "rw") }}
-{{ td("ETM1", "IRQ 1Ch", "rw") }}
-{{ td("EK11", "IRQ 26h", "rw") }}
-{{ td("EK10", "IRQ 28h", "rw") }}
+{{ td("ETM32", "IRQ 16h", "rw", 1, "irq.md#etm32") }}
+{{ td("ETM8", "IRQ 18h", "rw", 1, "irq.md#etm8") }}
+{{ td("ETM2", "IRQ 1Ah", "rw", 1, "irq.md#etm2") }}
+{{ td("ETM1", "IRQ 1Ch", "rw", 1, "irq.md#etm1") }}
+{{ td("EK11", "IRQ 26h", "rw", 1, "irq.md#ek11") }}
+{{ td("EK10", "IRQ 28h", "rw", 1, "irq.md#ek10") }}
 {{ register("$25") }}
-{{ td("EK07", "IRQ 2Ah", "rw") }}
-{{ td("EK06", "IRQ 2Ch", "rw") }}
-{{ td("EK05", "IRQ 2Eh", "rw") }}
-{{ td("EK04", "IRQ 30h", "rw") }}
-{{ td("EK03", "IRQ 32h", "rw") }}
-{{ td("EK02", "IRQ 34h", "rw") }}
-{{ td("EK01", "IRQ 36h", "rw") }}
-{{ td("EK00", "IRQ 38h", "rw") }}
+{{ td("EK07", "IRQ 2Ah", "rw", 1, "irq.md#ek07") }}
+{{ td("EK06", "IRQ 2Ch", "rw", 1, "irq.md#ek06") }}
+{{ td("EK05", "IRQ 2Eh", "rw", 1, "irq.md#ek05") }}
+{{ td("EK04", "IRQ 30h", "rw", 1, "irq.md#ek04") }}
+{{ td("EK03", "IRQ 32h", "rw", 1, "irq.md#ek03") }}
+{{ td("EK02", "IRQ 34h", "rw", 1, "irq.md#ek02") }}
+{{ td("EK01", "IRQ 36h", "rw", 1, "irq.md#ek01") }}
+{{ td("EK00", "IRQ 38h", "rw", 1, "irq.md#ek00") }}
 {{ register("$26") }}
-{{ td("EP0", "IRQ 1Eh", "rw") }}
-{{ td("EP6", "IRQ 20h", "rw") }}
+{{ td("EP0", "IRQ 1Eh", "rw", 1, "irq.md#ep0") }}
+{{ td("EP6", "IRQ 20h", "rw", 1, "irq.md#ep6") }}
 {{ td("", "IRQ ???", "rw") }}
 {{ td("", "IRQ ???", "rw") }}
 {{ unused(1) }}
@@ -222,34 +222,34 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ td("", "IRQ 3Ch", "rw") }}
 {{ td("", "IRQ 3Eh", "rw") }}
 {{ register("$27", "IRQ_ACT", "IRQ Factor", 4, "irq.md") }}
-{{ td("FLCD", "IRQ 06h", "sr") }}
-{{ td("FLCFR", "IRQ 08h", "sr") }}
-{{ td("FTU3", "IRQ 0Ah", "sr") }}
-{{ td("FTU2", "IRQ 0Ch", "sr") }}
-{{ td("FTU1", "IRQ 0Eh", "sr") }}
-{{ td("FTU0", "IRQ 10h", "sr") }}
-{{ td("FTU5", "IRQ 12h", "sr") }}
-{{ td("FTC5", "IRQ 14h", "sr") }}
+{{ td("FLCD", "IRQ 06h", "sr", 1, "irq.md#flcd") }}
+{{ td("FLCFR", "IRQ 08h", "sr", 1, "irq.md#flcfr") }}
+{{ td("FTU3", "IRQ 0Ah", "sr", 1, "irq.md#ftu3") }}
+{{ td("FTU2", "IRQ 0Ch", "sr", 1, "irq.md#ftu2") }}
+{{ td("FTU1", "IRQ 0Eh", "sr", 1, "irq.md#ftu1") }}
+{{ td("FTU0", "IRQ 10h", "sr", 1, "irq.md#ftu0") }}
+{{ td("FTU5", "IRQ 12h", "sr", 1, "irq.md#ftu5") }}
+{{ td("FTC5", "IRQ 14h", "sr", 1, "irq.md#ftc5") }}
 {{ register("$28") }}
 {{ unused(2) }}
-{{ td("FTM32", "IRQ 16h", "sr") }}
-{{ td("FTM8", "IRQ 18h", "sr") }}
-{{ td("FTM2", "IRQ 1Ah", "sr") }}
-{{ td("FTM1", "IRQ 1Ch", "sr") }}
-{{ td("FK11", "IRQ 26h", "sr") }}
-{{ td("FK10", "IRQ 28h", "sr") }}
+{{ td("FTM32", "IRQ 16h", "sr", 1, "irq.md#ftm32") }}
+{{ td("FTM8", "IRQ 18h", "sr", 1, "irq.md#ftm8") }}
+{{ td("FTM2", "IRQ 1Ah", "sr", 1, "irq.md#ftm2") }}
+{{ td("FTM1", "IRQ 1Ch", "sr", 1, "irq.md#ftm1") }}
+{{ td("FK11", "IRQ 26h", "sr", 1, "irq.md#fk11") }}
+{{ td("FK10", "IRQ 28h", "sr", 1, "irq.md#fk10") }}
 {{ register("$29") }}
-{{ td("FK07", "IRQ 2Ah", "sr") }}
-{{ td("FK06", "IRQ 2Ch", "sr") }}
-{{ td("FK05", "IRQ 2Eh", "sr") }}
-{{ td("FK04", "IRQ 30h", "sr") }}
-{{ td("FK03", "IRQ 32h", "sr") }}
-{{ td("FK02", "IRQ 34h", "sr") }}
-{{ td("FK01", "IRQ 36h", "sr") }}
-{{ td("FK00", "IRQ 38h", "sr") }}
+{{ td("FK07", "IRQ 2Ah", "sr", 1, "irq.md#fk07") }}
+{{ td("FK06", "IRQ 2Ch", "sr", 1, "irq.md#fk06") }}
+{{ td("FK05", "IRQ 2Eh", "sr", 1, "irq.md#fk05") }}
+{{ td("FK04", "IRQ 30h", "sr", 1, "irq.md#fk04") }}
+{{ td("FK03", "IRQ 32h", "sr", 1, "irq.md#fk03") }}
+{{ td("FK02", "IRQ 34h", "sr", 1, "irq.md#fk02") }}
+{{ td("FK01", "IRQ 36h", "sr", 1, "irq.md#fk01") }}
+{{ td("FK00", "IRQ 38h", "sr", 1, "irq.md#fk00") }}
 {{ register("$2A") }}
-{{ td("FP0", "IRQ 1Eh", "sr") }}
-{{ td("FP6", "IRQ 20h", "sr") }}
+{{ td("FP0", "IRQ 1Eh", "sr", 1, "irq.md#fp0") }}
+{{ td("FP6", "IRQ 20h", "sr", 1, "irq.md#fp6") }}
 {{ td("", "IRQ ???", "sr") }}
 {{ td("", "IRQ ???", "sr") }}
 {{ unused(1) }}
