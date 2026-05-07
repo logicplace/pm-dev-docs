@@ -133,4 +133,4 @@ PUSH BA
 ; SP = 0x2000
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

@@ -37,4 +37,4 @@ UPCK
 ; B = 0x02
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

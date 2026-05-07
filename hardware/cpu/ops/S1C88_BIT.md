@@ -78,4 +78,4 @@ JNZ OddAccu  ; Called when first bit is 1.
 JZ EvenAccu
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

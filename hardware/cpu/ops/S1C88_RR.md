@@ -78,4 +78,4 @@ RR [HL]
 ; SC = (Zero=0):(Carry=1):(Negative=1)
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

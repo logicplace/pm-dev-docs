@@ -8,7 +8,7 @@ Additionally, the S1C88V20 provides the capability to handle up to 32 exception 
 
 The CPU is clocked at 4.00 MHz, although the processor operates on a 4 cycle data access period, leaving the system with a theoretical limit of 1 MIPS.
 
-- [Instruction Set](S1C88_InstructionSet.md)
+- [Instruction Set](ops)
 - [The Memory Map](memory.md)
   - [The Hardware Registers](registers)
 - [Internal BIOS](bios.md)

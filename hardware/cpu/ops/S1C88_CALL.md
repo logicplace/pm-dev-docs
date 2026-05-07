@@ -172,4 +172,4 @@ LD NB, $0F
 CALL function_at_bank_16
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

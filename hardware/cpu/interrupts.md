@@ -603,7 +603,7 @@ def _cart_eject_irq():
 	return jump(0x1FFD)  # last 3 bytes of RAM
 ```
 
-These routines indicate that when $2001 bit 7 is 1, there should be a [JRL](S1C88_InstructionSet.md#jrl-relative-long-jump), which is exactly 3 bytes, at $1FFD to another location in RAM which has code that can, for instance, check if another cartridge has been inserted and/or do something when one is.
+These routines indicate that when $2001 bit 7 is 1, there should be a [JRL](ops#jrl-relative-long-jump), which is exactly 3 bytes, at $1FFD to another location in RAM which has code that can, for instance, check if another cartridge has been inserted and/or do something when one is.
 
 [wake_from_irq]: ../../software/bios/disasm.md#user-content-wake_from_irq
 [_key_power_irq]: ../../software/bios/disasm.md#user-content-_key_power_irq

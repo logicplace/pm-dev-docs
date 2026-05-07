@@ -153,4 +153,4 @@ ADC A,$01
 ; SC = (Zero=1):(Carry=1):(Overflow=0):(Negative=0)
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

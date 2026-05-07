@@ -74,4 +74,4 @@ SLA [HL]
 ; SC = (Zero=1):(Carry=1):(Overflow=1):(Negative=0)
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

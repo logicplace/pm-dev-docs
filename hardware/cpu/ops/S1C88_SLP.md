@@ -32,4 +32,4 @@ None
 INT [48h]
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

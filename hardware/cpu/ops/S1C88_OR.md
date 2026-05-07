@@ -109,4 +109,4 @@ OR A, $55
 ; SC = (Zero=0):(Negative=1)
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

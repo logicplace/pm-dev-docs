@@ -42,4 +42,4 @@ SWAP [HL]
 ; [HL] = 0x6F
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)

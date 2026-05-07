@@ -152,4 +152,4 @@ LD NB, $0F
 JMP function_at_bank_15
 ```
 
-[**« Back to Instruction set**](../S1C88_InstructionSet.md)
+[**« Back to Instruction set**](./README.md)
