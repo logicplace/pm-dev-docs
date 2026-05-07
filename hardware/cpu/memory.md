@@ -1,6 +1,6 @@
 # Memory
 
-The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decoded, and thus only cartridge memory mirrors. Externally, the cartridge bus is only 21 bits wide, so anything at or past $200000 is guaranteed to be a mirror of cartridge memory.
+The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decoded, and thus only cartridge memory mirrors. Externally, the cartridge bus is only 21 bits wide (11+2 physically), so anything at or past $200000 is guaranteed to be a mirror of cartridge memory.
 
 | Start   | End     | Size    | Description                    |
 | ------- | ------- | ------- | ------------------------------ |
@@ -9,6 +9,8 @@ The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decode
 | $002000 | $0020FF | 256 B   | [Hardware Registers][]         |
 | $002100 | $1FFFFF | \~2 MiB | [Cartridge Memory][]           |
 | $200000 | $FFFFFF | mirrors | [Cartridge Memory][] (mirrors) |
+
+The mirrors start with a high byte at $20, $40, $60, $80, $A0, $C0, and $E0.
 
 TODO: accessing higher cartridge memory on the PM2040 and its derivatives
 
@@ -32,13 +34,13 @@ The BIOS *does not* contain code for the [LCD Controller][] (which is likely mic
 
 ## RAM
 
-The memory used in the Pokémon mini is general purpose static RAM. It is high speed and there is no performance hit for accessing it other than the instruction processing speed. The biggest problem with the system is that the RAM is small, only 4 KiB, and also shared with the [LCD Controller][]. Sections of this memory can be disabled, but up to 1248 bytes can be repurposed for video.
+The memory used in the Pokémon mini is general purpose static RAM. It is high speed and there is no performance hit for accessing it other than the instruction processing speed. The biggest problem with the system is that the RAM is small, only 4 KiB, and also shared with the [LCD Controller][]. Sections of the shared memory can be reclaimed, but up to 1248 bytes is used for video.
 
 "General Purpose Memory" as listed in the tables below is considered unused and is safe for all use at any time. Disabling various parts of the [LCD Controller][] can free up additional memory.
 
 If the frame buffer is disabled, the entire controller is disabled. The sprites and map can be disabled individually, however it's not recommended to disable the map yet enable sprites outside very special use cases. Should you disable either, those spaces in the below table are available for you to use generally. The start of the tile map does not move if only sprites are disabled.
 
-The map size also affects available memory. For the 24x16 map size, selected by setting MAPSIZ to 3, the tile map area is 384 bytes. For every other size, the tile map area is 192 bytes.
+The map size also affects available memory. For the 24x16 map size, selected by setting [$2080 bits 5~4](registers/lcd.md#map-size) to 3, the tile map area is 384 bytes. For every other size, the tile map area is 192 bytes.
 
 | Start | End   | Size       | Description            |
 | ----- | ----- | ---------- | ---------------------- |
@@ -52,15 +54,15 @@ The map size also affects available memory. For the 24x16 map size, selected by 
 [Sprite Attributes]: [lcd_controller.md#sprite-rendering-stage]
 [Tile Map]: [lcd_controller.md#map-rendering-stage]
 
-Typically a game has copy, sprites, and map enabled and doesn't use a MAPSIZ of 3. This would have general purpose memory start at $1420. Because it starts at $14E0 with the maximal allocation for the LCD Controller, the official EPSON locator will allocate your declared variables after $14E0, though you can access the other space directly or by using the `_at` attribute in C during the declaration (TODO: check whether the locator complains and whether or not there's a way to get around that, maybe volatile).
+Typically a game has copy, sprites, and map enabled and doesn't use a map size of 24x16. This would have general purpose memory start at $1420. Because it starts at $14E0 with the maximal allocation for the LCD Controller, the official EPSON locator will allocate your declared variables after $14E0, though you can access the other space directly or by using the `_at` attribute in C during the declaration (TODO: check whether the locator complains and whether or not there's a way to get around that, maybe volatile).
 
-With pm.h, you can disable everything by simply doing `PRC_MODE = 0` though this will also reset the MAPSIZ to 12x16 and disable INVMAP. If you want to temporarily disable the driver, use `PRC_MODE &= ~COPY_ENABLE` and then `PRC_MODE |= COPY_ENABLE` to reenable it. You can use that same structure to disable/enable sprites and the tile map with `SPRITE_ENABLE` and `MAP_ENABLE` respectively.
+With pm.h, you can disable everything by simply doing `PRC_MODE = 0` though this will also reset the map size to 12x16 and disable tilemap inversion. If you want to temporarily disable the driver, use `PRC_MODE &= ~COPY_ENABLE` and then `PRC_MODE |= COPY_ENABLE` to reenable it. You can use that same structure to disable/enable sprites and the tile map with `SPRITE_ENABLE` and `MAP_ENABLE` respectively.
 
 ## Hardware Registers
 
 *For a full list of hardware registers, see its [main page](registers)*
 
-The hardware registers are mapped to $002000-$0020FF. Typically they're access by setting the BR register to $20 and using operations which work on `[BR:ll]` where *ll* is the lower byte, which indicates the register to access. However, those operations only work on one byte at a time, so two access both bytes of two byte registers, you need to use, for example, `[$2030]` for TMR1_CTRL.
+The hardware registers are mapped to $002000-$0020FF. Typically they're accessed by setting the BR register to $20 and using operations which work on `[BR:ll]` where *ll* is the lower byte, which indicates the register to access. However, those operations only work on one byte at a time, so to access both bytes of two byte registers, you need to use, for example, `[$2030]` for TMR1_CTRL.
 
 ## Cartridge Memory
 
@@ -116,6 +118,8 @@ For all release games this is `MN` however for the dev cart (as indicated in the
 ### IRQs
 
 When an IRQ is triggered, you must write a 1 to its factor flag before calling RETE (or modifying the interrupt flags) or else it will continuously trigger.
+
+The 6 bytes available per IRQ are sized to contain a `LD NB,#bb` and a `JRL qqrr` each being 3 bytes long.
 
 To fill in an IRQ as unused, you can use the following code:
 

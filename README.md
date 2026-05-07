@@ -17,19 +17,23 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
 - Stuff I'm not sure about from "Unknown PM Stuff" page (with grammar fixes):
   - The precise timing of a video frame. \<- Hmm, how precise?
   - ~~The number of cycles each value of PRC_CNT takes~~
-  - Check to see which IRQs are masked by the IRQ Enable and IRQ Branch flags
+  - ~~Check to see which IRQs are masked by the interrupt flags~~
   - ~~Determine the approximate amount of time sprite draw, map draw, and frame copy take (maybe min \\ max \\ avg)~~
   - ~~Determine when the PRC stages fire (relative to PRC_CNT)~~
 - Which/if timers sleep while the system is suspended
   - See HALT/SLEEP section of official docs
-- ~~Check undocumented Minx instruction behavior~~ [Done](Talk:S1C88_InstructionSet.md#illegal-instructions)
+- ~~Check undocumented Minx instruction behavior~~ [Done](hardware/cpu/ops#illegal-instructions)
   - This needs to be double-checked on the console with better/confirmed use of the scientific method. Not just the tester tool, but ROMs specifically written to test everything
   - Some info like "crashes" was turned into ??? here, because we don't know the actual operation (it crashes because of some important reason!)
 - Check all terminology, make sure it matches up with EPSON docs.
 - ~~Glossary page, move Open-Bus.md there.~~ Tho the glossary page is on-going
+- Double check all data is transferred from LCD_Controller, PM_IRQs, PM_Pinouts, and PM_Second_Counter
+- Remaining to do: PM_Audio, PM_I_O_Port, PM_PRC
 - New layout with sub-directories, see below.
 
 ### Proposed layout
+
+I moved tech specs to a single page instead, this hasn't been reflected here yet.
 
 - Hardware
   - CPU: S1C88*
