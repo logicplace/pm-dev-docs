@@ -67,7 +67,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {%- endmacro -%}
 
 {% macro td(name, content, color, colspan=1, link="") -%}
-<td style="border: 2px solid; background-color:{{ colors[color] }};"
+<td style="border: 2px solid; background-color:{{ colors[color] }}; {%- if name|length >= 8 %} padding-left:0; padding-right:0 {%- endif %}"
     {%- if colspan > 1 %} colspan="{{ colspan }}" {%- endif -%}
 >
     {%- if name -%}
@@ -364,7 +364,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {{ register("$51", "", "Cartridge IRQ edge", 1, "irq.md#kcp1--kcp0") }}
 {{ unused(6) }}
 {{ td("KCP11", "Eject", "rw") }}
-{{ td("KCP10", "Cartridge?", "rw") }}
+{{ td("KCP10", "Cartridge", "rw") }}
 {{ register("$52", "KEY_PAD", "Keypad Status (Active 0)", 1, "input.md") }}
 {{ td("K07D", "Power", "ro") }}
 {{ td("K06D", "Right", "ro") }}

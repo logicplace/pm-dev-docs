@@ -213,7 +213,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#ffcc00;">IRQ 3Eh</td>
 </tr><tr id="user-content-$30">
 <td>$30</td><td rowspan="1"><a href="timers.md#ptm_a">TMR1_CTRL_L</a><br/>PTM_A Control (Lo)</td>
-<td style="border: 2px solid; background-color:#80ff80;">MODE16_A<br/>16-bit Mode</td>
+<td style="border: 2px solid; background-color:#80ff80; padding-left:0; padding-right:0">MODE16_A<br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTOUT0</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTRUN0<br/>Enable</td>
@@ -246,7 +246,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#00ffff;" colspan="8">PTM1<br/>Count</td>
 </tr><tr id="user-content-$38">
 <td>$38</td><td rowspan="1"><a href="timers.md#ptm_b">TMR2_CTRL_L</a><br/>PTM_B Control (Lo)</td>
-<td style="border: 2px solid; background-color:#80ff80;">MODE16_B<br/>16-bit Mode</td>
+<td style="border: 2px solid; background-color:#80ff80; padding-left:0; padding-right:0">MODE16_B<br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTOUT2</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTRUN2<br/>Enable</td>
@@ -310,7 +310,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td style="border: 2px solid; background-color:#c0ff00;" colspan="4">???</td>
 </tr><tr id="user-content-$48">
 <td>$48</td><td rowspan="1"><a href="timers.md#ptm_c">TMR3_CTRL_L</a><br/>PTM_C Control (Lo)</td>
-<td style="border: 2px solid; background-color:#80ff80;">MODE16_C<br/>16-bit Mode</td>
+<td style="border: 2px solid; background-color:#80ff80; padding-left:0; padding-right:0">MODE16_C<br/>16-bit Mode</td>
 <td style="border: 2px solid; background-color:#808080;" colspan="3">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTOUT4</td>
 <td style="border: 2px solid; background-color:#80ff80;">PTRUN4<br/>Enable</td>
@@ -355,7 +355,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 <td>$51</td><td rowspan="1"><a href="irq.md#kcp1--kcp0">Cartridge IRQ edge</a></td>
 <td style="border: 2px solid; background-color:#808080;" colspan="6">&nbsp;</td>
 <td style="border: 2px solid; background-color:#80ff80;">KCP11<br/>Eject</td>
-<td style="border: 2px solid; background-color:#80ff80;">KCP10<br/>Cartridge?</td>
+<td style="border: 2px solid; background-color:#80ff80;">KCP10<br/>Cartridge</td>
 </tr><tr id="user-content-$52">
 <td>$52</td><td rowspan="1"><a href="input.md">KEY_PAD</a><br/>Keypad Status (Active 0)</td>
 <td style="border: 2px solid; background-color:#00ffff;">K07D<br/>Power</td>
