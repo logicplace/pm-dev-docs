@@ -81,8 +81,8 @@ Much of this information comes from [this document](http://www.rayslogic.com/Sof
 
 ### Symbol meanings
 
-For a list of CPU registers, see [here](README.md#registers).
-For a list of flags in SC and CC, see [here](README.md#sc-and-cc-registers).
+For a list of CPU registers, see [here](../README.md#registers).
+For a list of flags in SC and CC, see [here](../README.md#sc-and-cc-registers).
 
 | Symbol             | Meaning                                    |
 |:------------------:| ------------------------------------------ |
