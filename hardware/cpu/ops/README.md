@@ -586,8 +586,8 @@ If U has `*`, this operation permits unpack operations.
 | [SWAP][sw] \[HL]  | F7           | ![swap nibbles in [HL]][sw2] |      3 |     1 |        `– – – – – – – –` |
 
 [sw]: swap.md
-[sw1]: /rsc/op-swap-a.svg "swap nibbles in A"
-[sw2]: /rsc/op-swap-phl.svg "swap nibbles in \[HL\]"
+[sw1]: /assets/img/svg/op-swap-a.svg "swap nibbles in A"
+[sw2]: /assets/img/svg/op-swap-phl.svg "swap nibbles in \[HL\]"
 
 ## Rotate/shift
 
@@ -601,10 +601,10 @@ If U has `*`, this operation permits unpack operations.
 | [RL][(] \[BR:ll]  | CE,92,ll     | ![rotate [BR:ll] left thru C][(4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
 [(]: rl.md
-[(1]: /rsc/op-rl-a.svg "rotate A left thru C"
-[(2]: /rsc/op-rl-b.svg "rotate B left thru C"
-[(3]: /rsc/op-rl-phl.svg "rotate [HL] left thru C"
-[(4]: /rsc/op-rl-pbrll.svg "rotate [BR:ll] left thru C"
+[(1]: /assets/img/svg/op-rl-a.svg "rotate A left thru C"
+[(2]: /assets/img/svg/op-rl-b.svg "rotate B left thru C"
+[(3]: /assets/img/svg/op-rl-phl.svg "rotate [HL] left thru C"
+[(4]: /assets/img/svg/op-rl-pbrll.svg "rotate [BR:ll] left thru C"
 
 ### **RLC**: Rotate to left
 
@@ -616,10 +616,10 @@ If U has `*`, this operation permits unpack operations.
 | [RLC][(c] \[BR:ll]  | CE,96,ll     | ![rotate [BR:ll] left and set C][(c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
 [(c]: rlc.md
-[(c1]: /rsc/op-rlc-a.svg "rotate A left and set C"
-[(c2]: /rsc/op-rlc-b.svg "rotate B left and set C"
-[(c3]: /rsc/op-rlc-phl.svg "rotate [HL] left and set C"
-[(c4]: /rsc/op-rlc-pbrll.svg "rotate [BR:ll] left and set C"
+[(c1]: /assets/img/svg/op-rlc-a.svg "rotate A left and set C"
+[(c2]: /assets/img/svg/op-rlc-b.svg "rotate B left and set C"
+[(c3]: /assets/img/svg/op-rlc-phl.svg "rotate [HL] left and set C"
+[(c4]: /assets/img/svg/op-rlc-pbrll.svg "rotate [BR:ll] left and set C"
 
 ### **RR**: Rotate to right with carry
 
@@ -631,10 +631,10 @@ If U has `*`, this operation permits unpack operations.
 | [RR][)] \[BR:ll]  | CE,9A,ll     | ![rotate [BR:ll] right thru C][)4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
 [)]: rr.md
-[)1]: /rsc/op-rr-a.svg "rotate A right thru C"
-[)2]: /rsc/op-rr-b.svg "rotate B right thru C"
-[)3]: /rsc/op-rr-phl.svg "rotate [HL] right thru C"
-[)4]: /rsc/op-rr-pbrll.svg "rotate [BR:ll] right thru C"
+[)1]: /assets/img/svg/op-rr-a.svg "rotate A right thru C"
+[)2]: /assets/img/svg/op-rr-b.svg "rotate B right thru C"
+[)3]: /assets/img/svg/op-rr-phl.svg "rotate [HL] right thru C"
+[)4]: /assets/img/svg/op-rr-pbrll.svg "rotate [BR:ll] right thru C"
 
 ### **RRC**: Rotate to right
 
@@ -646,10 +646,10 @@ If U has `*`, this operation permits unpack operations.
 | [RRC][)c] \[BR:ll]  | CE,9E,ll     | ![rotate [BR:ll] right and set C][)c4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
 [)c]: rrc.md
-[)c1]: /rsc/op-rrc-a.svg "rotate A right and set C"
-[)c2]: /rsc/op-rrc-b.svg "rotate B right and set C"
-[)c3]: /rsc/op-rrc-phl.svg "rotate [HL] right and set C"
-[)c4]: /rsc/op-rrc-pbrll.svg "rotate [BR:ll] right and set C"
+[)c1]: /assets/img/svg/op-rrc-a.svg "rotate A right and set C"
+[)c2]: /assets/img/svg/op-rrc-b.svg "rotate B right and set C"
+[)c3]: /assets/img/svg/op-rrc-phl.svg "rotate [HL] right and set C"
+[)c4]: /assets/img/svg/op-rrc-pbrll.svg "rotate [BR:ll] right and set C"
 
 ### **SLA**: Arithmetic shift to left
 
@@ -661,10 +661,10 @@ If U has `*`, this operation permits unpack operations.
 | [SLA][«<] \[BR:ll]  | CE,82,ll     | ![arithmetic shift [BR:ll] left][«<4] |      5 |     3 |        `– – – – ↕ ↕ ↕ ↕` |
 
 [«<]: sla.md
-[«<1]: /rsc/op-sll-a.svg "arithmetic shift A left"
-[«<2]: /rsc/op-sll-b.svg "arithmetic shift B left"
-[«<3]: /rsc/op-sll-phl.svg "arithmetic shift [HL] left"
-[«<4]: /rsc/op-sll-pbrll.svg "arithmetic shift [BR:ll] left"
+[«<1]: /assets/img/svg/op-sll-a.svg "arithmetic shift A left"
+[«<2]: /assets/img/svg/op-sll-b.svg "arithmetic shift B left"
+[«<3]: /assets/img/svg/op-sll-phl.svg "arithmetic shift [HL] left"
+[«<4]: /assets/img/svg/op-sll-pbrll.svg "arithmetic shift [BR:ll] left"
 
 ### **SLL**: Logical shift to left
 
@@ -676,10 +676,10 @@ If U has `*`, this operation permits unpack operations.
 | [SLL][«] \[BR:ll]  | CE,86,ll     | ![logical shift [BR:ll] left][«4] |      5 |     3 |        `– – – – ↕ – ↕ ↕` |
 
 [«]: sll.md
-[«1]: /rsc/op-sll-a.svg "logical shift A left"
-[«2]: /rsc/op-sll-b.svg "logical shift B left"
-[«3]: /rsc/op-sll-phl.svg "logical shift [HL] left"
-[«4]: /rsc/op-sll-pbrll.svg "logical shift [BR:ll] left"
+[«1]: /assets/img/svg/op-sll-a.svg "logical shift A left"
+[«2]: /assets/img/svg/op-sll-b.svg "logical shift B left"
+[«3]: /assets/img/svg/op-sll-phl.svg "logical shift [HL] left"
+[«4]: /assets/img/svg/op-sll-pbrll.svg "logical shift [BR:ll] left"
 
 ### **SRA**: Arithmetic shift to right
 
@@ -691,10 +691,10 @@ If U has `*`, this operation permits unpack operations.
 | [SRA][»>] \[BR:ll]  | CE,8A,ll     | ![arithmetic shift [BR:ll] right][»>4] |      5 |     3 |        `– – – – ↕ 0 ↕ ↕` |
 
 [»>]: sra.md
-[»>1]: /rsc/op-sra-a.svg "arithmetic shift A right"
-[»>2]: /rsc/op-sra-b.svg "arithmetic shift B right"
-[»>3]: /rsc/op-sra-phl.svg "arithmetic shift [HL] right"
-[»>4]: /rsc/op-sra-pbrll.svg "arithmetic shift [BR:ll] right"
+[»>1]: /assets/img/svg/op-sra-a.svg "arithmetic shift A right"
+[»>2]: /assets/img/svg/op-sra-b.svg "arithmetic shift B right"
+[»>3]: /assets/img/svg/op-sra-phl.svg "arithmetic shift [HL] right"
+[»>4]: /assets/img/svg/op-sra-pbrll.svg "arithmetic shift [BR:ll] right"
 
 ### **SRL**: Logical shift to right
 
@@ -706,10 +706,10 @@ If U has `*`, this operation permits unpack operations.
 | [SRL][»] \[BR:ll]  | CE,8E,ll     | ![logical shift [BR:ll] right][»4] |      5 |     3 |        `– – – – 0 – ↕ ↕` |
 
 [»]: srl.md
-[»1]: /rsc/op-srl-a.svg "logical shift A right"
-[»2]: /rsc/op-srl-b.svg "logical shift B right"
-[»3]: /rsc/op-srl-phl.svg "logical shift [HL] right"
-[»4]: /rsc/op-srl-pbrll.svg "logical shift [BR:ll] right"
+[»1]: /assets/img/svg/op-srl-a.svg "logical shift A right"
+[»2]: /assets/img/svg/op-srl-b.svg "logical shift B right"
+[»3]: /assets/img/svg/op-srl-phl.svg "logical shift [HL] right"
+[»4]: /assets/img/svg/op-srl-pbrll.svg "logical shift [BR:ll] right"
 
 ## Auxiliary operation
 
@@ -720,7 +720,7 @@ If U has `*`, this operation permits unpack operations.
 | [PACK][pk]  | DE           | ![B and A's LSNs into A][pk1] |      2 |     1 |        `– – – – – – – –` |
 
 [pk]: pack.md
-[pk1]: /rsc/op-pack.svg "B and A's least significant nibbles into A"
+[pk1]: /assets/img/svg/op-pack.svg "B and A's least significant nibbles into A"
 
 ### **UPCK**: Unpack
 
@@ -729,7 +729,7 @@ If U has `*`, this operation permits unpack operations.
 | [UPCK][up]  | DF           | ![A's nibbles into B and A's LSNs][up1] |      2 |     1 |        `– – – – – – – –` |
 
 [up]: upck.md
-[up1]: /rsc/op-upck.svg "A's nibbles into B and A's least significant nibbles, setting most significant nibbles to 0"
+[up1]: /assets/img/svg/op-upck.svg "A's nibbles into B and A's least significant nibbles, setting most significant nibbles to 0"
 
 ### **SEP**: Code extension
 
@@ -738,7 +738,7 @@ If U has `*`, this operation permits unpack operations.
 | [SEP][se]  | CE,A8        | ![sign extend A over B][se1] |      3 |     2 |        `– – – – – – – –` |
 
 [se]: sep.md
-[se1]: /rsc/op-sep.svg "sign extend A over B"
+[se1]: /assets/img/svg/op-sep.svg "sign extend A over B"
 
 ## 16-bit arithmetic operation
 

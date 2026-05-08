@@ -33,7 +33,7 @@ When looking at the cart side, "left" is the negative end of the battery termina
 
 When looking at the screen side, "left" is where the LEFT contact is and "top" is where the IR blaster is. In this orientation all the button contact labels can be read correctly.
 
-![board sections image](../assets/img/board_sections.png)
+![board sections image](/assets/img/board/sections.png)
 
 For terminals on a component, they're described based on the orientation of the text on the silk-screen. Known components' pins may be named.
 
@@ -85,8 +85,6 @@ The A# (e.g. A4) printed under PAD1 is not a component label, but the purpose is
 All capacitors on the main board, except for three of them, are surface mounted (SMD) multilayer ceramic capacitors (MLCC).
 
 C1, C4, and C5 are all SMD cylindrical aluminum electrolytic capacitors with a capacitance of 100 <abbr title="microfarad">μF</abbr>. They're 6.3mm diameter and ~4.5 mm tall.
-
-
 
 <table>
 <thead>
@@ -1032,6 +1030,10 @@ A 2-pin spring contact ERM vibration motor contained in a light gray silicone sl
 * Pitch (of motor): 1.5 mm
 * Silicone sleeve: 11.6 mm tall, 4.9 mm wide, 5.5 mm depth, 0.5 mm at thinnest to 1.8 mm at thickest
 
+![rumble motor inserted](/assets/img/board/rumble_motor_inserted.png)
+![rumble motor side with sleeve](/assets/img/board/rumble_motor_side.png)
+![rumble motor side without sleeve](/assets/img/board/rumble_motor_text.png)
+
 ## PAD2
 
 Pin 1 connects [BZ][] through a red wire to the inner circle (top electrode) of the speaker. Pin 2 connects [BZ-][] through a black wire to the outer circle (metal plate).
@@ -1171,6 +1173,8 @@ The cartridge slot shield. Located cart-side, top. Has a long indented line with
 * Depth: ~8.2 mm (base), ~6.7 mm (bottom)
 * Height: ~1.6 mm (bottom), < 0.9 mm (top, this is where it rises to off the board)
 
+![S1 image](/assets/img/board/shield.png)
+
 ## Switches
 
 [SW1]: #sw1
@@ -1186,6 +1190,9 @@ The top pin is GND and the bottom connects to the [CPU][U3].
 * Shield: ~0.3 mm thick, 8.1 mm long, 3.6 mm "height" (side), 3.5 mm height not including through-hole pins
 * Button: 1.3 mm "height", 3 mm diameter
 
+![SW1 front](/assets/img/board/sw1_front.png)
+![SW1 top](/assets/img/board/sw1_top.png)
+
 ### SW2
 
 A 2-pin enclosed reed switch (TODO: confirm type). Located cart-side, bottom left.
@@ -1199,6 +1206,10 @@ The pins are labeled, pin 1 is signal and pin 2 is GND.
 * Diameter of groove on top: ~7.6 mm
 * Diameter of widest point on top: ~10.1 mm
 * Pitch: ~7 mm (active pins), ~6 mm (shield pins)
+
+![SW2 top](/assets/img/board/shock_top.png)
+![SW2 bottom-facing side](/assets/img/board/shock_back.png)
+![SW2 left-facing side](/assets/img/board/shock_side.png)
 
 ## Test points
 
@@ -1242,6 +1253,8 @@ Basically no component is labeled and no schematic has been made so all I can do
 * One SOT363 chip
 * ALPS: a 6 mm x 6 mm 2-pin chip that looks circular from the top
 
+![daughter board](/assets/img/board/daughter_board.png)
+
 ### Pins
 
 The pins are not labeled, so instead we use the numbers and names from Tauwasser's schematic.
@@ -1276,6 +1289,8 @@ I/O listed from the perspective of the EEPROM. PS = Power Supply.
 |   8   | VCC  | PS  | Power supply       |
 
 Other I2C devices, such as a [DS1621 digital thermometer](https://web.archive.org/web/20080412185344/http://lupin.shizzle.it/?p=55), can be wired to the SDA/SCL lines of the EEPROM chip to add them to the bus.
+
+![EEPROM](/assets/img/board/eeprom.png)
 
 ## U3
 
@@ -1764,12 +1779,19 @@ The [IrDA blaster](ir.md). As of yet unidentified. Located screen-side, top cent
 * Bulb diameter: ~3.3 mm
 * Pitch: ~0.8 mm
 
-[![IR blaster front](../assets/img/ir_blaster_front_th.png)](../assets/img/ir_blaster_front.png)
-[![IR blaster back](../assets/img/ir_blaster_back_th.png)](../assets/img/ir_blaster_back.png)
+[![IR blaster front](/assets/img/board/ir_blaster_front_th.png)](/assets/img/board/ir_blaster_front.png)
+[![IR blaster back](/assets/img/board/ir_blaster_back_th.png)](/assets/img/board/ir_blaster_back.png)
 
 It's surrounded by a ~0.5mm thick rubber tape, exposing only the LEDs. The tape is essentially a rectangle with two corners cut out to allow it to bend around the casing.
 
-![tape with dimensions](../assets/img/ir_tape.png)
+![tape with dimensions](/assets/img/board/ir_tape.png)
+
+It has a plastic cover over it that slots into the front shell. Two screws screw through the board, holes of this shield on the side, and into the front shell.
+
+![IR shield inserted](/assets/img/board/ir_shield_inserted.png)
+![IR shield bottom](/assets/img/board/ir_shield_bottom.png)
+![IR shield front](/assets/img/board/ir_shield_front.png)
+![IR shield back](/assets/img/board/ir_shield_back.png)
 
 ### Pins
 
@@ -1951,6 +1973,10 @@ This component is non-polarized so the pins don't have names or numbers as it ca
 * 11021 stamped in black above CN3
 * 0140 next to 94V-0 rating
 * B 7 written in pencil on the cartridge connector
+* Various places: >ABS<
+* Two lines embossed on rubber membrane: H1 18
+* Embossed on back of C plastic and D-pad plastic: 1-1
+* Embossed on IR cover: 1-3
 * Rumble motor: AJ0681 Ac
 * C1/C5: black fill down left side with three lines of text: 1 8 / 100 / 6V where the V is pushed up slightly due to being at the right edge of the face (oriented 90⁰ clockwise)
 * C4: black fill down left side with three lines of text: 100 1MC 1R9 (oriented 90⁰ clockwise)
