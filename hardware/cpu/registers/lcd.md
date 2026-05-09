@@ -70,6 +70,12 @@ These values do not wrap the screen but are instead soft capped to stay within t
 
 When either $2086 or $2087 is set, it checks if the value is valid within the current [map size](#map-size), and, if so, copies it to an internal register. Changing the map size does not validate the current values, and can cause the controller to render unexpected data as tiles. (TODO: check if it uses the current value internally or if it uses the current values in the scroll registers)
 
+#### Color invert
+
+$2080 bit 0 is a R/W register.
+
+This bit inverts the entire tilemap display so that a tile's graphics bit of 0 = black and 1 = white.
+
 ### Sprites
 
 Enable sprite rendering by setting $2080 bit 2 to 1. Set the sprite set base address in $2089~$2087 then enable each sprite you want to use and set up the indexes and positions for them in [OAM][RAM].
@@ -108,7 +114,7 @@ This is controlled by the [LCD on][] and [LCD off][] software interrupts. If thi
 
 $208A bits 6~0 is a read-only register.
 
-This value starts at 1 and counts up by 1 every time the [FR](../../board.md#user-content-lcd-29) pin goes low. It counts to 65 then on the next count it resets to 1.
+This value starts at 1 and counts up by 1 every time the [CL](../../board.md#user-content-lcd-28) pin goes low. It counts to 65 then on the next count it resets to 1.
 
 ## Direct LCD control
 

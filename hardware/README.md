@@ -48,7 +48,7 @@ External bus with 21 bits for address (11+2 physically) & 8 bits for data.
 
 96x64 monochrome LCD, 1 bit per pixel (bpp), running at around a 75±10 Hz refresh rate. Toggling pixels allows to add a 3rd color with half tone.
 
-It contains an on-glass driver which communicates on registers $20FE and $20FF as well as a line counter in $208A incremented by the FR line which counts 1 to 65 (inclusive).
+It contains an on-glass driver which communicates on registers $20FE and $20FF as well by the [FR](../board.md#user-content-lcd-29) which resets register $208A to 1 and increases $2081's frame counter by 1.
 
 ### [LCD Controller](cpu/lcd_controller.md)
 
