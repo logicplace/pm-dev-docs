@@ -142,11 +142,11 @@ Before you first enable a timer, you'll want to configure its basic settings. Se
 
 | For timer(s)  | Use OSC1         | Use OSC3          |
 | ------------- | ---------------- | ----------------- |
-| PTM0 & PTM_A | `TMR1_OSC |= 1;` | `TMR1_OSC &= ~1;` |
+| PTM0 & PTM_A  | `TMR1_OSC |= 1;` | `TMR1_OSC &= ~1;` |
 | PTM1          | `TMR1_OSC |= 2;` | `TMR1_OSC &= ~2;` |
-| PTM2 & PTM_B | `TMR2_OSC |= 1;` | `TMR2_OSC &= ~1;` |
+| PTM2 & PTM_B  | `TMR2_OSC |= 1;` | `TMR2_OSC &= ~1;` |
 | PTM3          | `TMR2_OSC |= 2;` | `TMR2_OSC &= ~2;` |
-| PTM4 & PTM_C | `TMR3_OSC |= 1;` | `TMR3_OSC &= ~1;` |
+| PTM4 & PTM_C  | `TMR3_OSC |= 1;` | `TMR3_OSC &= ~1;` |
 | PTM5          | `TMR3_OSC |= 2;` | `TMR3_OSC &= ~2;` |
 
 After this you configure the division ratio (prescale), reload data (preset), and compare data (pivot). This can be changed regularly while the timer is running in order to adjust when some overflow occurs.
@@ -178,9 +178,9 @@ The table below lists the timers and which registers control these three values.
 | PTM3   | PST3     | RDR3      | CDR3      |
 | PTM4   | PST4     | RDR4      | CDR4      |
 | PTM5   | PST5     | RDR5      | CDR5      |
-| PTM_A | PST0     | RDR1:RDR0 | CDR1:CDR0 |
-| PTM_B | PST2     | RDR3:RDR2 | CDR3:CDR2 |
-| PTM_C | PST4     | RDR5:RDR4 | CDR5:CDR4 |
+| PTM_A  | PST0     | RDR1:RDR0 | CDR1:CDR0 |
+| PTM_B  | PST2     | RDR3:RDR2 | CDR3:CDR2 |
+| PTM_C  | PST4     | RDR5:RDR4 | CDR5:CDR4 |
 
 With pm.h:
 
@@ -192,9 +192,9 @@ With pm.h:
 | PTM3   | TMR2_SCALE | TMR2_PRE_H | TMR2_PVT_H | TMR2_CNT_H |
 | PTM4   | TMR3_SCALE | TMR3_PRE_L | TMR3_PVT_L | TMR3_CNT_L |
 | PTM5   | TMR3_SCALE | TMR3_PRE_H | TMR3_PVT_H | TMR3_CNT_H |
-| PTM_A | TMR1_SCALE | TMR1_PRE   | TMR1_PVT   | TMR1_CNT   |
-| PTM_B | TMR2_SCALE | TMR2_PRE   | TMR2_PVT   | TMR2_CNT   |
-| PTM_C | TMR3_SCALE | TMR3_PRE   | TMR3_PVT   | TMR3_CNT   |
+| PTM_A  | TMR1_SCALE | TMR1_PRE   | TMR1_PVT   | TMR1_CNT   |
+| PTM_B  | TMR2_SCALE | TMR2_PRE   | TMR2_PVT   | TMR2_CNT   |
+| PTM_C  | TMR3_SCALE | TMR3_PRE   | TMR3_PVT   | TMR3_CNT   |
 
 The scale registers are constructed as `PRPRTy:PSTy:PRPRTx:PSTx` where each PST register is 3 bits and y = x + 1. This means that in order to set the prescale for PTM0 you must do `TMR1_SCALE &= ~0x07;` to clear then `TMR1_SCALE |= prescale;` to assign it. For PTM1 you must do `TMR1_SCALE &= ~0x70;` to clear then `TMR1_SCALE |= prescale << 4;` to assign it. They are initialized to 0 so there's no need to clear it in startup code. PRPRT registers should always be set to 1.
 
@@ -212,10 +212,10 @@ Although all of these interrupts can exist, not all of them are known to be mapp
 | PTM3 underflow   | FTU3   | ETU3   | PPT2-3   | $2114                  |
 | PTM5 underflow   | FTU5   | ETU5   | PPT4-5   | $212c                  |
 | PTM5 CDR match   | FTC5   | ETC5   | PPT4-5   | $2132                  |
-| PTM_A underflow | FTU1   | ETU1   | PPT0-1   | $2120                  |
-| PTM_B underflow | FTU3   | ETU3   | PPT2-3   | $2114                  |
-| PTM_C underflow | FTU5   | ETU5   | PPT4-5   | $212c                  |
-| PTM_C CDR match | FTC5   | ETC5   | PPT4-5   | $2132                  |
+| PTM_A underflow  | FTU1   | ETU1   | PPT0-1   | $2120                  |
+| PTM_B underflow  | FTU3   | ETU3   | PPT2-3   | $2114                  |
+| PTM_C underflow  | FTU5   | ETU5   | PPT4-5   | $212c                  |
+| PTM_C CDR match  | FTC5   | ETC5   | PPT4-5   | $2132                  |
 
 With pm.h, the factor flags are all in IRQ_ACT1, the enable flags in IRQ_ENA1, and the priority flags in IRQ_PRI1.
 
@@ -226,9 +226,9 @@ With pm.h, the factor flags are all in IRQ_ACT1, the enable flags in IRQ_ENA1, a
 | PTM2   | IRQ1_TIM2_LO_UF | n/a             | PRI_TIM2       |
 | PTM3   | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
 | PTM5   | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
-| PTM_A | IRQ1_TIM1_HI_UF | n/a             | PRI_TIM1       |
-| PTM_B | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
-| PTM_C | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
+| PTM_A  | IRQ1_TIM1_HI_UF | n/a             | PRI_TIM1       |
+| PTM_B  | IRQ1_TIM2_HI_UF | n/a             | PRI_TIM2       |
+| PTM_C  | IRQ1_TIM3_HI_UF | IRQ1_TIM3_PIVOT | PRI_TIM3       |
 
 For more information about how interrupts work, see [Interrupts](cpu/interrupts.md).
 
