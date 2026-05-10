@@ -83,7 +83,7 @@ In order to enable frame copy, [$2080](./registers/lcd.md#lcd-controller) needs 
   * `PRC_MODE |= COPY_ENABLE;` to enable rendering & frame copy
   * `PRC_MODE &= ~COPY_ENABLE;` to disable rendering entirely (TODO: confirm)
 
-When the controller reaches this step, it assumes the frame buffer stored at $1000+ is ready, and sends it via [LCD commands](./registers/lcd.md#direct-lcd-control) to the LCD driver over a serial connection. The copy routine sends the commands one would expect:
+When the controller reaches this step, it assumes the frame buffer stored at $1000+ is ready, and sends it via [LCD commands](./registers/lcd.md#direct-lcd-control) to the LCD driver over a parallel connection. The copy routine sends the commands one would expect:
 
 1. [Set page](../lcd/cmd/3.md) to 0
 2. [Set column](../lcd/cmd/4.md) (hi then lo) to 0
