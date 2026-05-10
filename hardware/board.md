@@ -936,19 +936,19 @@ The keypad uses contacts under a likely silicone membrane with a carbon coating 
 
 ### A
 
-The TL and BR contact points are GND while the other connects to the [CPU][U3] and [TP1][].
+The top-left and bottom-right contact points are GND while the other connects to the [CPU][U3] and [TP1][].
 
 ### B
 
-The TL and BR contact points are GND while the other connects to the [CPU][U3].
+The top-left and bottom-right contact points are GND while the other connects to the [CPU][U3].
 
 ### POWER
 
-The TL and BR contact points are GND while the other two connect to the [CPU][U3] and [TP2][].
+The top-left and bottom-right contact points are GND while the other two connect to the [CPU][U3] and [TP2][].
 
 ### RESET
 
-The TL and BR contact points are GND while the other two connect to the [CPU][U3].
+The top-left and bottom-right contact points are GND while the other two connect to the [CPU](#user-content-cpu-11), [U5][], and the [LCD](#user-content-fpc-26).
 
 ### UP
 
