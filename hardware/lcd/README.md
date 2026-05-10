@@ -36,6 +36,7 @@ The reflector is taped to the board with approx. 28mm (l) x 4mm (w) x 3.6mm (h) 
 * Segments: 132
 * Commons: 65
 * Display RAM: 132x65 = 8580 bits
+  * The final row is not for graphical data, but is allocated to the static indicator subsystem.
 * Microprocessor interface: 8-bit parallel
 * Frequency: 33 KHz
 * Package: Chip on Glass (COG)
@@ -85,7 +86,7 @@ Listed below are the commands, written to CTRL.
 | [18b][18] | Contrast           | `- - v v v v v v` | $00 - $FF |
 | [19a][19] | Static indicator   | `1 0 1 0 1 1 0 x` | $AC - $AD |
 | [19b][19] | Static indicator   | `- - - - - - m m` | $00 - $FF |
-| [20][]    | Power saver        | `               ` |           |
+| [20][]    | Power saver        |                   |           |
 | [21][]    | NOP                | `1 1 1 0 0 0 1 1` | $E3       |
 | [22][]    | Test               | `1 1 1 1 - - - -` | $F0 - $FF |
 
