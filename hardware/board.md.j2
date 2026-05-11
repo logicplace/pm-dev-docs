@@ -177,6 +177,8 @@ C1, C4, and C5 are all SMD cylindrical aluminum electrolytic capacitors with a c
 
 ### CN3
 
+*For more information on the LCD, see its [main page](./lcd)*
+
 Connector slot for the FPC to the LCD, pins 1 (left) and 29 (right) are labeled.
 
 * White portion:
@@ -266,6 +268,8 @@ I/O listed from the perspective of the LCD. PS = Power Supply.
 [LFR]: #user-content-fpc-29
 
 ### CN4
+
+*For more information on the cartridge, see its [main page](./cartridge.md)*
 
 Cartridge slot connector, pins 33 (left) and 1 (right) are labeled.
 
@@ -360,6 +364,8 @@ TODO: confirm voltage, is it really 3.3v ??
 [B17]: #user-content-b17
 
 ## Contacts
+
+*For more information on the keypad, see its [main page](./cpu/io.md#dedicated-inputs)*
 
 The keypad uses contacts under a likely silicone membrane with a carbon coating on the bottom bridging them to ground. The C button is [SW1][] rather than one of these.
 
@@ -457,6 +463,8 @@ The left contact (labeled 2) is GND. This pad connects the rumble motor mounted 
 
 ### Motor
 
+*For more on how to use the rumble motor, see [here](./cpu/io.md#rumble)*
+
 A 2-pin spring contact ERM vibration motor contained in a light gray silicone sleeve which can be slipped off with some trouble, inserted into the case back without glue.
 
 * Height: 15.7 (total), 12.3 (cylinder with exit bump), 11.4 (cylinder)
@@ -477,6 +485,8 @@ A 2-pin spring contact ERM vibration motor contained in a light gray silicone sl
 Pin 1 connects [BZ][] through a red wire to the inner circle (top electrode) of the speaker. Pin 2 connects [BZ-][] through a black wire to the outer circle (metal plate).
 
 ### Speaker
+
+*For more information, see its [main page](./cpu/sound.md)*
 
 ~20 mm diameter piezo buzzer with ~15 mm inner diameter (incl. ring). It's glued to the back casing. Thickness unknown.
 
@@ -620,6 +630,8 @@ The cartridge slot shield. Located cart-side, top. Has a long indented line with
 
 ### SW1
 
+*For more information on the C button, see the [keypad page](./cpu/io.md#dedicated-inputs)*
+
 A 2-pin right-angle push button switch with grounded shield. Located cart-side, top left.
 
 The top pin is GND and the bottom connects to the [CPU][U3].
@@ -632,6 +644,8 @@ The top pin is GND and the bottom connects to the [CPU][U3].
 ![SW1 top](/assets/img/board/sw1_top.png)
 
 ### SW2
+
+*For more on how to use the shock sensor, see [here](./cpu/io.md#shock)*
 
 A 2-pin enclosed reed switch (TODO: confirm type). Located cart-side, bottom left.
 
@@ -733,6 +747,8 @@ Other I2C devices, such as a [DS1621 digital thermometer](https://web.archive.or
 ![EEPROM](/assets/img/board/eeprom.png)
 
 ## U3
+
+*For more information on the CPU, see its [main page](./cpu)*
 
 The [S1C88V20](cpu) with glob top. Locate screen-side, middle center.
 
@@ -885,6 +901,8 @@ I/O listed from the perspective of the CPU. PS = Power Supply.
 
 ## U4
 
+*For more information, see its [main page](./ir.md)*
+
 The [IrDA blaster](ir.md). As of yet unidentified. Located screen-side, top center.
 
 * Including the shield but not pins: 10 mm long x 3.2 mm deep x ~3.7 mm high
@@ -953,6 +971,8 @@ The pin numbers here follow the designations for the SC-82AB package type where 
 
 ### Y1
 
+*For more information, see [OSC1](./cpu/timers.md#osc1)*
+
 This is a low-power 32.768 kHz crystal resonator (passive oscillator) notably used for maintaining the real-time clock, but is also used elsewhere. This is named `X'tal1` in the S1C88 technical manuals.
 
 It does have a marking but it may not be visible; it's an engraved text `KDS` followed by a number representing the final digit of the year it was printed in then a letter representing the month (A for January up to M for December (it skips I)). It's not a surface-mount component, but is glued down.
@@ -983,6 +1003,8 @@ This component is non-polarized so the pins don't have names or numbers as it ca
 | Bottom | [OSC1][]   |
 
 ### Y2
+
+*For more information, see [OSC3](./cpu/timers.md#osc3)*
 
 This is the high-speed 4.00 MHz ceramic resonator (passive oscillator) used for the general purpose timers, communicating with the system bus and I/O, and clocking the CPU during normal operation. Because it's using a ceramic oscillator for Y2 this is either named `Ceramic` or `CR` in the S1C88 technical manuals.
 
