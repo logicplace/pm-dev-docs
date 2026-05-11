@@ -27,8 +27,11 @@ This is the repo for the Pokémon mini documentation hosted [here](https://www.p
   - Some info like "crashes" was turned into ??? here, because we don't know the actual operation (it crashes because of some important reason!)
 - Check all terminology, make sure it matches up with EPSON docs.
 - ~~Glossary page, move Open-Bus.md there.~~ Tho the glossary page is on-going
-- Double check all data is transferred from LCD_Controller, PM_IRQs, PM_Pinouts, and PM_Second_Counter
-- Remaining to do: PM_Audio, PM_I_O_Port, PM_PRC
+- Remaining to do: PM_Audio
+- From PM_PRC:
+  - Test frame copy disabling rendering or not
+  - "It is not uncommon for commercial games to disable the render done IRQ, and simply probe the strobe manually. Shock tetris uses this to double the number of on screen sprites."
+  - Cycle timing, not sure where to put it, and want a test ROM for it
 - New layout with sub-directories, see below.
 
 ### Proposed layout
