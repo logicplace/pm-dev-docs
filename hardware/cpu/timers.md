@@ -40,6 +40,8 @@ A timer which increments once every second. It uses [OSC1][] as its clock source
 
 This timer informs the real-time clock (RTC) in commercial games. As such, if homebrew resets or pauses the timer or sleeps the console (TODO?), it will force commercial games to ask for the user to enter the time again.
 
+This timer continues to tick while the system is [HALT](./standby.md)ed.
+
 * Write 0 to STRUN to pause this timer or 1 to start it.
   * When reading, 0 means paused and 1 means running.
   * In pm.h, STRST is bit 0 of SEC_CTRL
