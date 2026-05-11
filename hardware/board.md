@@ -642,6 +642,8 @@ Pin names are largely from the community.
 
 I/O listed from the perspective of the CPU. PS = Power Supply.
 
+TODO: confirm voltage, is it really 3.3v ??
+
 <table>
 <thead>
 <tr>
@@ -1272,6 +1274,8 @@ I/O listed from the perspective of U1. PS = Power Supply.
 ## U2
 
 A 24xx64-alike TSSOP-8 package EEPROM. Located cart-side, bottom right.
+
+### Pins
 
 Pins 1-4 (left) and 7 (right) are wired to GND.
 

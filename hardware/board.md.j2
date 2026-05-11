@@ -95,7 +95,7 @@ C1, C4, and C5 are all SMD cylindrical aluminum electrolytic capacitors with a c
 
 {% md {"symbols": "~"} %}
 | Label        | Populated? | Location                       | Capacitance | Description                       |
-| ------------ | ---------- | --------------------------     | ----------- | --------------------------------- |
+| ------------ | ---------- | ------------------------------ | ----------- | --------------------------------- |
 | {{a("C1")}}  | yes        | B MR                           | 100 μF      | electrolytic                      |
 | {{a("C2")}}  | yes        | B MR, left of [C1][]+          | ?           | ceramic                           |
 | {{a("C3")}}  | yes        | F ML, right of [C4][]          | ?           | ceramic                           |
@@ -279,6 +279,8 @@ Cartridge slot connector, pins 33 (left) and 1 (right) are labeled.
 Pin names are largely from the community.
 
 I/O listed from the perspective of the CPU. PS = Power Supply.
+
+TODO: confirm voltage, is it really 3.3v ??
 
 {% md {"symbols": "~"} %}
 | Pin #       | Card pin     | Name   | I/O | Description                                                |
@@ -708,6 +710,8 @@ I/O listed from the perspective of U1. PS = Power Supply.
 ## U2
 
 A 24xx64-alike TSSOP-8 package EEPROM. Located cart-side, bottom right.
+
+### Pins
 
 Pins 1-4 (left) and 7 (right) are wired to GND.
 
