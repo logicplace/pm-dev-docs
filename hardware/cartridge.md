@@ -6,6 +6,8 @@ To open the case, there are two Y1 tri-wing screws on the back. Once removed, sl
 
 When in its case, much of the front of the board is covered by the sticker; only the ROM chip is visible. The back is in full view, and is a silk-screen containing a logo, copyright, and cartridge code: MIN-KCM1-01.
 
+The ornamental design patent is [USD478127](https://patents.google.com/patent/USD478127S1/en?oq=USD478127).
+
 TODO: board scans
 
 The case is approximately:
