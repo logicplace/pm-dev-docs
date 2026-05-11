@@ -36,6 +36,8 @@ The [SC](./README.md#sc-and-cc-registers) register's top two bits, 7~6, limit wh
 
 When the interrupt triggers, the value of I1~I0 is incremented, preventing the interrupt from continuously triggering. The handler must reset the [factor flag]() so that when SC is reset by `RETE` it's not immediately triggered again.
 
+The PM has three non-maskable interrupts: [00h][], [02h][], and [04h][]. Other than the first one which is the startup/hard reset vector, the functions of the other two are unconfirmed. However, they're the same in every other S1C88 processor in the family: zero division and watchdog timer, respectively.
+
 ## Interrupt priority
 
 The 29 maskable interrupts are divided into 9 groups. Each of these groups are then provided a 2 bit priority encoder. These encoders define the order in which exception interrupts are processed. They're processed by priority first, then by the vector address (earlier = higher priority). If an interrupt group is assigned a priority of 0, all the interrupts for the group are implicity disabled.
@@ -74,12 +76,12 @@ Each interrupt's section lists which commercial games define a non-dummy handler
 | [04h][]    | $00AB  |          | NMI                      ||| Watchdog timer ?                             |
 | [06h][]    | $01CF  | $2108    | $20.7~6  | $23.7  | $27.7  | [LCD copy complete][lcdc]                    |
 | [08h][]    | $01E0  | $210E    | $20.7~6  | $23.6  | $27.6  | [Frame divider overflow][lcdc]               |
-| [0Ah][]    | $01F1  | $2114    | $20.5~4  | $23.5  | $27.5  | [PTM3 underflow][gpt]              |
-| [0Ch][]    | $0202  | $211A    | $20.5~4  | $23.4  | $27.4  | [PTM2 underflow (8-bit only)][gpt] |
-| [0Eh][]    | $0213  | $2120    | $20.3~2  | $23.3  | $27.3  | [PTM1 underflow][gpt]              |
-| [10h][]    | $0224  | $2126    | $20.3~2  | $23.2  | $27.2  | [PTM0 underflow (8-bit only)][gpt] |
-| [12h][]    | $0235  | $212C    | $20.1~0  | $23.1  | $27.1  | [PTM5 underflow][gpt3]             |
-| [14h][]    | $0246  | $2132    | $20.1~0  | $23.0  | $27.0  | [PTM_C compare match][gpt3]                         |
+| [0Ah][]    | $01F1  | $2114    | $20.5~4  | $23.5  | $27.5  | [PTM3 underflow][gpt]                        |
+| [0Ch][]    | $0202  | $211A    | $20.5~4  | $23.4  | $27.4  | [PTM2 underflow (8-bit only)][gpt]           |
+| [0Eh][]    | $0213  | $2120    | $20.3~2  | $23.3  | $27.3  | [PTM1 underflow][gpt]                        |
+| [10h][]    | $0224  | $2126    | $20.3~2  | $23.2  | $27.2  | [PTM0 underflow (8-bit only)][gpt]           |
+| [12h][]    | $0235  | $212C    | $20.1~0  | $23.1  | $27.1  | [PTM5 underflow][gpt3]                       |
+| [14h][]    | $0246  | $2132    | $20.1~0  | $23.0  | $27.0  | [PTM_C compare match][gpt3]                  |
 | [16h][]    | $025A  | $2138    | $21.7~6  | $24.5  | $28.5  | [32Hz (from Clock Timer)][clk]               |
 | [18h][]    | $026B  | $213E    | $21.7~6  | $24.4  | $28.4  | [8Hz (from Clock Timer)][clk]                |
 | [1Ah][]    | $027C  | $2144    | $21.7~6  | $24.3  | $28.3  | [2Hz (from Clock Timer)][clk]                |
