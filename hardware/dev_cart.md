@@ -1,27 +1,10 @@
 # Official flash cartridge
 
-Much of the BIOS is dedicated to handling an official flash cart using a SST39LF016 or SST39VF016 (or possibly SST39VN016) chip. Since the screen says "GAME SELECT" we can presume it's either a flash cart intended for developers, a demo cart for displays, or possibly the [sample cart](#sample-cart) with some caveats.
+Much of the BIOS is dedicated to handling an official flash cart using a SST39LF016 or SST39VF016 (or possibly SST39VN016) chip. Since the screen says "GAME SELECT" we can presume it's either a flash cart intended for developers, a demo cart for displays, or possibly the [sample cart][] with some caveats.
 
 It's designed to hold up to 8 games of 256 KiB each (or fewer, larger games). As such (along with other evidence), each bank is presumably 256 KiB. Because banks can be mixed and matched, it would be theoretically possible to store more than 8 games on it if they had common code (for example, MINLIB) but the selection menu isn't designed for that case.
 
-## Sample cart
-
-The sample cart is a flash cartridge distributed to (likely) reporters in Japan at the time. One sample cart (00954) has been dumped, which contained the full release version of Pokémon Party mini (JP).
-
-These contain a SST39VN016-120-4C-WH flash chip which is a 32-pin version of the typically 40-pin SST39VF016. However it should be software compatible, so even if the code does not refer to this chip, it should be mostly compatible.
-
-* SST - Manufacturer (Silicon Storage Technology, Inc.)
-* 39 - Product Series: Multi-Purpose Flash
-* V - 2.7-3.6V
-* N - ???
-* 016 - Device Density: 16 Megabit (2 MiB)
-* 120 - Read Access Speed: 120 ns
-* 4 - Minimum Endurance: 10,000 cycles
-* C - Temperature Range: Commercial (0⁰C to +70⁰C)
-* W - Package Type: TSOP
-* H - Package Modifier: 32 leads
-
-The circuit board however does not contain a separate mapper chip and there definitely should be a mapper. However, it's possible that the chip contains the mapper as well.
+[sample cart]: ./cartridge.md#sample-cartridge
 
 ## Chip details
 
@@ -32,7 +15,7 @@ Although the exact part number hasn't been confirmed, the product ID is 0xBFD9 w
 * BF - Manufacturer's ID: SST
 * D9 - Device ID: SST39LF/VF016
 
-Considering the [sample cart](#sample-cart), we can presume it uses the SST39VF016 chip if not the SST39VN016 chip.
+Considering the [sample cart][], we can presume it uses the SST39VF016 chip if not the SST39VN016 chip.
 
 It's a 2 MiB chip matching the addressable limit of the PM. The mapper separates this space into 8 configurable banks of 256 KiB offering 4 data pages (or 8 code banks) per external bank/page (what the mapper considers a page).
 
