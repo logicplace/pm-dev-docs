@@ -39,7 +39,7 @@ Any register not included on this list reads as [Open-Bus](/glossary.md#open-bus
 {%- endmacro -%}
 
 {% macro register(address, pmh="", natural="", rowspan=1, link="") -%}
-</tr><tr id="user-content-{{ address }}">
+</tr><tr id="user-content-{{ address[1:] | lower }}">
 <td>{{ address }}</td>
 {%- if pmh or natural -%}
 <td rowspan="{{ rowspan }}">
