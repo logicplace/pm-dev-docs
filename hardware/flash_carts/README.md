@@ -8,9 +8,9 @@ WARNING: When writing to a flash cart, you need to either remove the cartridge f
 
 ## Currently available
 
-* [PM2040](./pm2040.md): 2 or 16 MB with multicart support
-* [PokMini](./pokmini.md): 2 MB with*out* multicart support
-* [DITTO mini](./ditto.md): 2 MB with multicart support
+* [PM2040](./pm2040.md): 2 or 16 MiB with multicart support
+* [PokMini](./pokmini.md): 2 MiB with*out* multicart support
+* [DITTO mini](./ditto.md): 2 MiB with multicart support
 * [Leon·DIY](./leon_diy.md): China only, 512 KiB
 
 ## Previously available
