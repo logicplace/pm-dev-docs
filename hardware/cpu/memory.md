@@ -12,7 +12,7 @@ The Pokémon mini has a 24-bit internal addressing bus. The entire bus is decode
 
 The mirrors start with a high byte at $20, $40, $60, $80, $A0, $C0, and $E0.
 
-TODO: accessing higher cartridge memory on the PM2040 and its derivatives
+Reading from higher ROM on a [PM2040](../flash_carts/pm2040.md)-based cart, which can have up to 16 MB ROM, requires a custom firmware.
 
 [Internal BIOS]: #internal-bios
 [RAM]: #ram

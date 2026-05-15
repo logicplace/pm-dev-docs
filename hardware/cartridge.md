@@ -1,20 +1,14 @@
 # Cartridge
 
+*For the cartridge header used for software, see [here](./cpu/memory.md#cartridge-memory)*
+
 A commercial Pokémon mini cartridge is a 512 KiB ROM with a staggered 32-pin connector. The pins as well as an unnecessary border around the top have an ENIG finish.
 
 To open the case, there are two Y1 tri-wing screws on the back. Once removed, slide the front half of the case downward then it's free to remove. The board will just fall out.
 
 When in its case, much of the front of the board is covered by the sticker; only the ROM chip is visible. The back is in full view, and is a silk-screen containing a logo, copyright, and cartridge code: MIN-KCM1-01.
 
-The ornamental design patent is [USD478127](https://patents.google.com/patent/USD478127S1/en?oq=USD478127).
-
 TODO: board scans
-
-The case is approximately:
-
-* Width: 33.5 mm
-* Height: 26.5 mm (back), 33 mm (arc of the rounded part)
-* Thickness: 1 mm (most of the plastic), 5.1 mm (back to sticker), 8.2 mm (thickest)
 
 The board is approximately:
 
@@ -22,6 +16,27 @@ The board is approximately:
 * Screw hole cutouts diameter: 4.5 mm
 * Height: 23 mm
 * Thickness: 1 mm thick
+
+## Shells
+
+The ornamental design patent is [USD478127](https://patents.google.com/patent/USD478127S1/en?oq=USD478127).
+
+The case is approximately:
+
+* Width: 33.5 mm
+* Height: 26.5 mm (back), 33 mm (arc of the rounded part)
+* Thickness: 1 mm (most of the plastic), 5.1 mm (back to sticker), 8.2 mm (thickest)
+
+There are a handful of shell designs which fit commercial game PCBs and [flash carts](./flash_carts) which are compatible with it.
+
+* By [Ksanto](https://www.thingiverse.com/thing:3592237), designed for [DITTO mini][] but also works for [PokeCard 512 rev 2+][]
+  * Based on Ksanto's, by [4thAxisDesign](https://www.thingiverse.com/thing:6660072), offers a version with a hole (positioned for the [PokeCard 512 rev 2+][] and [DITTO mini][]) and one without, as well as using the notch on the bottom shell by [AlexiG](https://www.thingiverse.com/thing:5894655) to support the [PokMini][] PCBs.
+* By [cyborg_ar](/assets/img/cart/aftermarket/cyborg_ar_2018-12-03.png) which was intended for [DITTO mini][] but never got a hole. STLs were never released nor was the shell finished.
+* By [Pikpol](/assets/img/cart/aftermarket/pikpol_shell_clear.jpg), also in [yellow](/assets/img/cart/aftermarket/pikpol_shell_yellow.jpg), which was intended for [DITTO mini][]. STLs were never released.
+
+[DITTO mini]: ./flash_carts/ditto.md
+[PokeCard 512 rev 2+]: ./flash_carts/pokecard.md
+[PokMini]: ./flash_carts/pokmini.md
 
 ## Using this document
 
@@ -78,7 +93,7 @@ TODO: confirm voltage, is it really 3.3v ??
 <thead>
 <tr>
 <th align="center">Contact</th>
-<th align="center">[CN4][] pin</th>
+<th align="center"><a href="./board.md#cn4">CN4</a> pin</th>
 <th>Name</th>
 <th align="center">I/O</th>
 <th>Description</th>
@@ -333,7 +348,7 @@ TODO: confirm voltage, is it really 3.3v ??
 
 On commercial ROMs this is a MX23L4004-12A mask ROM chip. It's a 32-TSOP, 20 mm wide x 8 mm tall.
 
-Seemingly no other Macronix chip uses this address latching scheme and the datasheet is not available.
+Seemingly no other Macronix chip uses this address demuxing scheme and the datasheet is not available.
 
 * MX - Manufacturer (Macronix International Co., Ltd.)
 * 23 - Type: Mask ROM
@@ -399,6 +414,7 @@ The label on the cart says:
 * SAMPLE
 * 00954
 * ポケモンミニ専用カートリッジ MIN-002
+  * T/L: Pokémon mini Sample Cartridge
 * Pokémon mini
 * In the PM: 22
 * © 2001 NINTENDO
@@ -418,7 +434,7 @@ The layout of the components is different, presumably due to the different width
 
 ### U1
 
-This is a SST39VN016-120-4C-WH flash chip which is a 32-pin version of the typically 40-pin SST39VF016. However it should be software compatible, so even if the code does not refer to this chip, it should be mostly compatible.
+This is a SST39VN016-120-4C-WH flash chip which is a 32-pin version of the typically 40-pin [SST39VF016](https://www.backoldgaming.com/data/medias/files/39vf016/SST39VF080_SiliconStorageTechnology.pdf). However it should be software compatible, so even if the BIOS does not refer to this chip, it should be mostly compatible with its dev cart functions.
 
 * SST - Manufacturer (Silicon Storage Technology, Inc.)
 * 39 - Product Series: Multi-Purpose Flash

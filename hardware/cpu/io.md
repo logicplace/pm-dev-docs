@@ -82,9 +82,9 @@ See also: [interrupt][K07i], [registers][K07r]
 
 This input is a cartridge-defined input, essentially. A cartridge can decide what it means. It can be polled or handled by interrupt.
 
-No commercial game uses this pin for anything. Several flash cards have this pin connected such that it could be driven to do something with custom firmware, but no existing firmware drives it for any purpose.
+No commercial game uses this pin for anything. The [PM2040](../flash_carts/pm2040.md#cartridge-irq) has this pin connected such that it could be driven to do something with custom firmware, but no existing firmware drives it for any purpose.
 
-TODO: info on how to drive it for certain flash cards
+The [DITTO mini](../flash_carts/ditto.md), [PokMini](../flash_carts/pokmini.md), [PokeCard 512](../flash_carts/pokecard.md), and [Leon·DIY](../flash_carts/other.md#leon-diy) do not have any trace to this pin. Unconfirmed for other flash carts.
 
 See also: [interrupt][K10i], [registers][K10r]
 

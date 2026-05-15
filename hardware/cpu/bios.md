@@ -147,7 +147,7 @@ The `INT` operation can also invoke hardware interrupts, ignoring the [interrupt
 [7Ch]: #7ch
 [7Eh]: #set-frame-rate-divider
 [80h]: #get-frame-rate-divider
-[82h]: #valid-multi-cart-game-index
+[82h]: #valid-multicart-game-index
 [84h]: #flash-cart-commands
 [86h]: #flash-cart-commands
 [88h]: #flash-cart-commands
@@ -444,7 +444,7 @@ JRS Z, success
 ; contents of B/XP lost
 ```
 
-Turns on the cartidge power (if one is inserted) and prepares the [selected game][$2001] from the multi-cart. In the event of an error, the cartridge slot is unpowered (if it was previously unpowered).
+Turns on the cartidge power (if one is inserted) and prepares the [selected game][$2001] from the multicart. In the event of an error, the cartridge slot is unpowered (if it was previously unpowered).
 
 `A` returns the result of this routine. 0 for success, 1 for no cart inserted, or 2 for some other error.
 
@@ -609,7 +609,7 @@ Official software which uses this:
 * [Puzzle][]: TODO: why/when
 * [Puzzle 2][]: TODO: why/when
 
-### Valid multi-cart game index
+### Valid multicart game index
 
 In previous documentation, this was known as "test cart type".
 
@@ -620,7 +620,7 @@ INT [82h]
 JRS NZ, multicart
 ```
 
-If this returns Z=0, it means bits 2~0 of [$2001][] represent a valid game ID in an [official multi-cart](../dev_cart.md) set up. Z=1 doesn't mean it's not an official multi-cart set up, it could mean that it didn't use the game select screen *or* that it's a release game/unsupported flash cart/etc.
+If this returns Z=0, it means bits 2~0 of [$2001][] represent a valid game ID in an [official multicart](../dev_cart.md) set up. Z=1 doesn't mean it's not an official multicart set up, it could mean that it didn't use the game select screen *or* that it's a release game/unsupported flash cart/etc.
 
 No official software uses this.
 

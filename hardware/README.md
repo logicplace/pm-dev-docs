@@ -27,6 +27,7 @@ The machine has a 4 KiB internal mask ROM (BIOS), 4 KiB of internal RAM (shared 
   - [PM2040 and derivatives](flash_carts/pm2040.md)
   - [DITTO mini](flash_carts/ditto.md)
   - [PokMini](flash_carts/pokmini.md)
+  - [Leon·DIY](flash_carts/leon_diy.md)
   - [PokeCard 512](flash_carts/pokecard.md)
   - [Others](flash_carts/other.md)
 

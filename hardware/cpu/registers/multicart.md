@@ -2,7 +2,7 @@
 
 *Also see [here](../../dev_cart.md#2001)*
 
-$2001 bits 3~0 are [reserved R/W registers](../../../glossary.md#reserved-rw-register) used for storing information related to the BIOS's [multicart](../bios.md#valid-multi-cart-game-index). Bit 3 is essentially a flag stating what sort of information is in bits 2~0.
+$2001 bits 3~0 are [reserved R/W registers](../../../glossary.md#reserved-rw-register) used for storing information related to the BIOS's [multicart](../bios.md#valid-multicart-game-index). Bit 3 is essentially a flag stating what sort of information is in bits 2~0.
 
 Bit 3 is set as 1 [here](/software/bios/disasm/#user-content-06D6). It's reset to 0 during [initial boot](/software/bios/disasm/#user-content-00C7) and during [shutdown](/software/bios/disasm/#user-content-07AB).
 
