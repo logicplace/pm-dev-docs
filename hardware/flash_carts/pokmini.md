@@ -2,7 +2,7 @@
 
 Designed by insideGadgets, the [PokMini](https://shop.insidegadgets.com/product/pokemon-mini-2mb-flash-cart/) is a low cost 2 MiB flash cart.
 
-Since this board can fit in an official PM cartridge, it can use any of [those models](../cartridge.md#shells), but it doesn't have the screw notches causing it to be slightly loose without a bottom shell designed for it, [like so](https://www.thingiverse.com/thing:6660072).
+Since this board can fit in an official PM cartridge, it can use [those models](../cartridge.md#shells), but it doesn't have the screw notches causing it to be slightly loose or even fall out of one without a bottom shell designed for it, [like so](https://www.thingiverse.com/thing:6660072).
 
 A label designed by CaptainZ available [here](/assets/other/PokMini_label_by_CaptainZ.psd)
 ![PokMini label by CaptainZ](/assets/img/flash/pokmini_label.png)
