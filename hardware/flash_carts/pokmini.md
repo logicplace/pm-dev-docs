@@ -62,8 +62,6 @@ With FlashGBX:
 
 With GBx PM Flasher:
 
-Does not work with v1.0
-
 6. Drag and drop your ROM onto gbxcart_rw_pokmini_2mb_flasher.exe to flash it
 
 ![proper connection](/assets/img/flash/ig_flashing.jpg "proper connection")
