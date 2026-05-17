@@ -46,7 +46,7 @@ Happysoul is a member of the community who has produced a few flash carts for hi
 
 ## Rem's flash cart
 
-This was a design of the [PM2040](./pm2040.md) in the form factor of a typical cartridge size. Rem was able to produce working versions, but never distributed them.
+This was a design of the [PM2040](./pm2040.md) with 16 MiB capacity in the form factor of a typical cartridge size. Rem was able to produce working versions and sold a few copies.
 
 ![Rem's flash cart proto](/assets/img/flash/rem_2025-07-11.jpg "first print, not entirely functional")
 ![Rem's flash cart PCB](/assets/img/flash/rem_2025-07-17.png "board layout")

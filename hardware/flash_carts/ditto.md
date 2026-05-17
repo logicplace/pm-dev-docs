@@ -23,6 +23,7 @@ When you order a DITTO mini from a2heaven, it comes with official cartridge labe
 ## Technical specifications
 
 * Capacity: 2 MiB
+* Power current consumption: ~80 mAh
 * Theoretical flashing speeds: 30s (512 KiB), 2m (2 MiB)
 * Flash memory: [SST39VF1681](http://ww1.microchip.com/downloads/en/devicedoc/25040a.pdf)
 * Bridge chip: [XC9572XL-10VQ64C](https://www.xilinx.com/support/documentation/data_sheets/ds057.pdf)
