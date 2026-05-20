@@ -836,7 +836,7 @@ The animation data contains 6 bytes + the footer and specifies a play time of 28
 
 ### Game Select screen
 
-A screen showcasing a game selection menu. It has no animations but is rather an interactive menu. A portion of this menu is preloaded but some in dynamically loaded once the BIOS decides it needs it.
+A screen showcasing a game selection menu. It has no animations but is rather an interactive menu. A portion of this menu is preloaded but some is dynamically loaded once the BIOS decides it needs it.
 
 The game names are pulled from the cartridge as 9 raw tile graphics, allowing for any styling of the name.
 
